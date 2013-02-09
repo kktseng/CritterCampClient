@@ -72,6 +72,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
@@ -89,9 +92,12 @@
     <Compile Include="ScreenManager\IScreenFactory.cs" />
     <Compile Include="ScreenManager\ScreenFactory.cs" />
     <Compile Include="ScreenManager\ScreenManager.cs" />
-    <Compile Include="Screens\Button.cs" />
     <Compile Include="Screens\HomeScreen.cs" />
+    <Compile Include="Screens\LoadingScreen.cs" />
     <Compile Include="Screens\MenuScreen.cs" />
+    <Compile Include="Screens\OfflineScreen.cs" />
+    <Compile Include="TCPConnection.cs" />
+    <Compile Include="TextureData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -149,6 +155,9 @@
     </Reference>
     <Reference Include="MonoGame.Framework" Condition=" '$(Platform)' == 'x86' ">
       <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsPhone\x86\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Json.NET\WP8\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

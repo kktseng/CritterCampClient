@@ -30,12 +30,16 @@ namespace CritterCamp
             // Frame rate is 30 fps by default for Windows Phone.
             TargetElapsedTime = TimeSpan.FromTicks(333333);
 
+            // Create the screen factory and add it to the Services
+            screenFactory = new ScreenFactory();
+            Services.AddService(typeof(IScreenFactory), screenFactory);
+
             //Create a new instance of the Screen Manager
             screenManager = new ScreenManager(this);
             Components.Add(screenManager);
 
             //Add two new screens
-            screenManager.AddScreen(new HomeScreen(), null);
+            screenManager.AddScreen(new OfflineScreen(), null);
         }
     }
 }
