@@ -15,14 +15,14 @@ namespace CritterCamp
 {
     public partial class GamePage : PhoneApplicationPage
     {
-        private Game1 _game;
+        private CritterCampGame _game;
 
         // Constructor
         public GamePage()
         {
             InitializeComponent();
 
-            _game = XamlGame<Game1>.Create("", XnaSurface);
+            _game = XamlGame<CritterCampGame>.Create("", XnaSurface);
 
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
