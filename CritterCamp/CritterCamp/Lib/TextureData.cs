@@ -9,6 +9,9 @@ namespace CritterCamp {
         // Max number of sprites allowed in a single row
         public static int spriteSheetWidth = 10;
 
+        // Gutter size in pixels
+        public static int spriteSheetGutter = 2;
+
         // All background sprites for maps
         public enum mapTexture {
             nightSky1, nightSky2, nightSky3, nightSky4,

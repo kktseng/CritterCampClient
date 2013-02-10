@@ -45,6 +45,8 @@ namespace CritterCamp.Screens.Games {
         protected bool syncing;
         protected int currentRank;
 
+        protected Vector2 currentGesture = new Vector2(0);
+
         protected Phase phase = Phase.Initialize;
         protected enum Phase {
             Initialize,
@@ -82,7 +84,7 @@ namespace CritterCamp.Screens.Games {
             }
 
             // Enable flick gestures
-            EnabledGestures = GestureType.FreeDrag | GestureType.Flick | GestureType.HorizontalDrag | GestureType.VerticalDrag;
+            EnabledGestures = GestureType.FreeDrag | GestureType.DragComplete;
         }
 
         public override void Activate(bool instancePreserved) {
@@ -161,20 +163,23 @@ namespace CritterCamp.Screens.Games {
         public override void HandleInput(GameTime gameTime, InputState input) {
             foreach(GestureSample gesture in input.Gestures) {
                 System.Diagnostics.Debug.WriteLine(gesture.Delta);
-                if(gesture.GestureType == GestureType.Flick) {
-                    if(gesture.Delta.X > gesture.Delta.Y) {
-                        if(gesture.Delta.X > 0) {
+                if(gesture.GestureType == GestureType.FreeDrag) {
+                    currentGesture += gesture.Delta;
+                } else if(gesture.GestureType == GestureType.DragComplete) {
+                    if(Math.Abs(currentGesture.X) > Math.Abs(currentGesture.Y)) {
+                        if(currentGesture.X > 0) {
                             processCommand(Direction.Up);
                         } else {
                             processCommand(Direction.Down);
                         }
                     } else {
-                        if(gesture.Delta.Y > 0) {
-                            processCommand(Direction.Left);
-                        } else {
+                        if(currentGesture.Y > 0) {
                             processCommand(Direction.Right);
+                        } else {
+                            processCommand(Direction.Left);
                         }
                     }
+                    currentGesture = new Vector2(0);
                 }
             }
 

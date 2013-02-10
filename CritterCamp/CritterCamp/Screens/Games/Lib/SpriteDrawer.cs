@@ -48,8 +48,8 @@ namespace CritterCamp.Screens.Games.Lib {
             // Check to see if sprites are in bounds
             if(coord.X >= -spriteDim.X && coord.X < backBuffer.X + spriteDim.X && coord.Y >= -spriteDim.Y && coord.Y < backBuffer.Y + spriteDim.Y) {
                 sb.Draw(texture, coord, new Rectangle(
-                    (spriteNum % TextureData.spriteSheetWidth) * (int)spriteDim.X + rect.Left,
-                    (spriteNum / TextureData.spriteSheetWidth) * (int)spriteDim.Y + rect.Top,
+                    (spriteNum % TextureData.spriteSheetWidth) * (int)(spriteDim.X + TextureData.spriteSheetGutter) + rect.Left,
+                    (spriteNum / TextureData.spriteSheetWidth) * (int)(spriteDim.Y + TextureData.spriteSheetGutter) + rect.Top,
                     rect.Right, rect.Bottom
                 ), Color.White, Constants.ROTATION + spriteRotation, spriteDim / 2, drawScale * spriteScale, SpriteEffects.None, 0f);
             }
