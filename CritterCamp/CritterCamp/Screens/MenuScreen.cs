@@ -52,7 +52,6 @@ namespace CritterCamp.Screens {
 
             // Read in our gestures
             foreach(GestureSample gesture in input.Gestures) {
-                // If we have a tap
                 if(gesture.GestureType == GestureType.Tap) {
                     // Test the tap against the buttons until one of the buttons handles the tap
                     //foreach(Button b in menuButtons) {

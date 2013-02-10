@@ -92,10 +92,14 @@
     <Compile Include="ScreenManager\IScreenFactory.cs" />
     <Compile Include="ScreenManager\ScreenFactory.cs" />
     <Compile Include="ScreenManager\ScreenManager.cs" />
+    <Compile Include="Screens\Games\CritterCorral.cs" />
+    <Compile Include="Screens\Games\StarryNight.cs" />
     <Compile Include="Screens\HomeScreen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
     <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Screens\OfflineScreen.cs" />
+    <Compile Include="Screens\ScoreScreen.cs" />
+    <Compile Include="Screens\TutorialScreen.cs" />
     <Compile Include="TCPConnection.cs" />
     <Compile Include="TextureData.cs" />
   </ItemGroup>

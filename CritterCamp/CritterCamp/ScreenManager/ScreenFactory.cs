@@ -7,7 +7,10 @@
 //-----------------------------------------------------------------------------
 #endregion
 
+using CritterCamp;
+using CritterCamp.Screens;
 using System;
+using Windows.ApplicationModel.Core;
 
 namespace GameStateManagement {
     /// <summary>
@@ -16,9 +19,13 @@ namespace GameStateManagement {
     /// </summary>
     public class ScreenFactory : IScreenFactory {
         public GameScreen CreateScreen(Type screenType) {
-            // All of our screens have empty constructors so we can just use Activator
-            return Activator.CreateInstance(screenType) as GameScreen;
-
+            if(screenType == typeof(TutorialScreen)) {
+                Helpers.GameList currGame = (Helpers.GameList)CoreApplication.Properties["currentGame"];
+                TutorialScreen screen = new TutorialScreen(currGame);
+                return screen;
+            } else {
+                return Activator.CreateInstance(screenType) as GameScreen;
+            }
             // If we had more complex screens that had constructors or needed properties set,
             // we could do that before handing the screen back to the ScreenManager. For example
             // you might have something like this:

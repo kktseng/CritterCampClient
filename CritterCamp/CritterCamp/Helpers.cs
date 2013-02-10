@@ -11,6 +11,10 @@ using Windows.ApplicationModel.Core;
 
 namespace CritterCamp {
     public static class Helpers {
+        public enum GameList {
+            StarryNight,
+            CritterCorral
+        }
         public delegate void SyncDelegate(JArray data);
 
         public static void Sync(SyncDelegate sd) {

@@ -16,7 +16,6 @@ using Windows.ApplicationModel.Core;
 
 namespace CritterCamp.Screens {
     class OfflineScreen : GameScreen {
-        /// <param name="title">The title of the screen</param>
         public OfflineScreen() {
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
@@ -111,8 +110,8 @@ namespace CritterCamp.Screens {
                 CoreApplication.Properties["TCPSocket"] = conn;
 
                 // Navigate to home page
-                // TODO
-                LoadingScreen.Load(ScreenManager, false, null, new HomeScreen());
+                ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
+                LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(HomeScreen)));
             }
         }
 
