@@ -39,7 +39,11 @@ namespace CritterCamp.Screens {
             if((string)o["action"] == "start_game") {
                 conn.pMessageReceivedEvent -= StartGame;
                 JArray playerInfo = (JArray)o["players"];
-                string playerData = playerInfo.ToString();
+                List<string> usernames = new List<string>();
+                foreach(JObject playerData in playerInfo) {
+                    usernames.Add((string)playerData["username"]);
+                }
+                CoreApplication.Properties["group_usernames"] = usernames;
                 CoreApplication.Properties["currentGame"] = Helpers.GameList.StarryNight;
                 ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
                 LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(TutorialScreen)));

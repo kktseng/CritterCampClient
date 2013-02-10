@@ -16,13 +16,13 @@ namespace CritterCamp {
         public static float RATIO_15_9 = 15f / 9f;
         public static float RATIO_4_3 = 4f / 3f;
 
-        public static int PHONE_BUFFER_WIDTH_16_9 = 853;
-        public static int PHONE_BUFFER_WIDTH_15_9 = 800;
-
-        public static int MAX_WP8_WIDTH = 1280;
-        public static int MAX_WINRT_WIDTH = 1920;
-
         public static int BUFFER_WIDTH = 1920;
         public static int BUFFER_HEIGHT = 1080;
+
+        public static int BUFFER_SPRITE_DIM = 96;
+
+        // All constants under here vary with platform
+        public static float ROTATION = ROTATE_90;
+        public static int SPRITE_DIM = 64;
     }
 }

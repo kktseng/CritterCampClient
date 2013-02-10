@@ -72,9 +72,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Configuration.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="Helpers.cs" />
+    <Compile Include="Lib\Configuration.cs" />
+    <Compile Include="Lib\Constants.cs" />
+    <Compile Include="Lib\Helpers.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
@@ -92,16 +92,24 @@
     <Compile Include="ScreenManager\IScreenFactory.cs" />
     <Compile Include="ScreenManager\ScreenFactory.cs" />
     <Compile Include="ScreenManager\ScreenManager.cs" />
-    <Compile Include="Screens\Games\CritterCorral.cs" />
-    <Compile Include="Screens\Games\StarryNight.cs" />
+    <Compile Include="Screens\Games\BaseGameScreen.cs" />
+    <Compile Include="Screens\Games\CritterCorralScreen.cs" />
+    <Compile Include="Screens\Games\Lib\AnimatedObject.cs" />
+    <Compile Include="Screens\Games\Lib\SpriteDrawer.cs" />
+    <Compile Include="Screens\Games\Lib\TextBanner.cs" />
+    <Compile Include="Screens\Games\Lib\TileMap.cs" />
+    <Compile Include="Screens\Games\StarryNightScreen.cs" />
+    <Compile Include="Screens\Games\StarryNight\Arrow.cs" />
+    <Compile Include="Screens\Games\StarryNight\Player.cs" />
+    <Compile Include="Screens\Games\StarryNight\Smoke.cs" />
     <Compile Include="Screens\HomeScreen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
     <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Screens\OfflineScreen.cs" />
     <Compile Include="Screens\ScoreScreen.cs" />
     <Compile Include="Screens\TutorialScreen.cs" />
-    <Compile Include="TCPConnection.cs" />
-    <Compile Include="TextureData.cs" />
+    <Compile Include="Lib\TCPConnection.cs" />
+    <Compile Include="Lib\TextureData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -120,6 +128,22 @@
     <Content Include="Content\menufont.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\doodads.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\effects.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mapTextures.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\pig.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\snTextures.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Fakes Include="Fakes\MonoGame.Framework.fakes" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
@@ -164,6 +188,7 @@
       <HintPath>..\..\Json.NET\WP8\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <Target Name="MonoGame_RemoveXnaAssemblies" AfterTargets="ImplicitlyExpandTargetFramework">

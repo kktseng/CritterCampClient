@@ -1,4 +1,5 @@
 using CritterCamp.Screens;
+using CritterCamp.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,7 +23,6 @@ namespace CritterCamp
             Content.RootDirectory = "Content";
 
             graphics = new GraphicsDeviceManager(this);
-
             graphics.IsFullScreen = true;
 
             //graphics.SynchronizeWithVerticalRetrace = false;
@@ -34,11 +34,15 @@ namespace CritterCamp
             screenFactory = new ScreenFactory();
             Services.AddService(typeof(IScreenFactory), screenFactory);
 
-            //Create a new instance of the Screen Manager
+            // Create a new instance of the Screen Manager
             screenManager = new ScreenManager(this);
             Components.Add(screenManager);
 
-            //Add two new screens
+            // Create a Sprite Drawer
+            SpriteDrawer spriteDrawer = new SpriteDrawer(screenManager);
+            Services.AddService(typeof(SpriteDrawer), spriteDrawer);
+
+            // Add new screens
             screenManager.AddScreen(new OfflineScreen(), null);
         }
     }

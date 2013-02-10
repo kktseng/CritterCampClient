@@ -22,7 +22,7 @@ namespace CritterCamp.Screens {
                 if(gesture.GestureType == GestureType.Tap) {
                     Helpers.Sync((JArray data) => {
                         ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
-                        LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(typeof(StarryNight)));
+                        LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(typeof(StarryNightScreen)));
                     }, "tutorial");
                 }
             }

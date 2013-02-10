@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 
 namespace CritterCamp {
     public static class TextureData {
-        public static int PHONE_SPRITE_DIM = 64;
-        public static int WINRT_SPRITE_DIM = 96;
-
         // Max number of sprites allowed in a single row
         public static int spriteSheetWidth = 10;
 
@@ -29,7 +26,7 @@ namespace CritterCamp {
             longGrass1
         }
 
-        public enum Player {
+        public enum PlayerStates {
             standing,
             jump1, jump2, jump3, jump4,
             pickup1, pickup2, pickup3,

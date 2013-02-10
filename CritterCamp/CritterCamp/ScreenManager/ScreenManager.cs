@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Xml.Linq;
+using CritterCamp.Screens.Games.Lib;
 #endregion
 
 namespace GameStateManagement {
@@ -108,7 +109,7 @@ namespace GameStateManagement {
         /// </summary>
         public override void Initialize() {
             base.Initialize();
-
+            ((SpriteDrawer)Game.Services.GetService(typeof(SpriteDrawer))).Initialize();
             isInitialized = true;
         }
 

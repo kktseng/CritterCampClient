@@ -1,0 +1,52 @@
+﻿using CritterCamp.Screens.Games.Lib;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CritterCamp.Screens.Games.StarryNight {
+    public class Arrow : AnimatedObject<ArrowStates> {
+        public Direction dir;
+        public float scale;
+
+        public Arrow(BaseGameScreen screen, Direction dir, Texture2D img, Vector2 coord, float scale)
+            : base(screen, "sn", coord) {
+            this.dir = dir;
+            this.scale = scale;
+            setState(ArrowStates.FadeIn);
+            maxCycles = 1;
+        }
+
+        protected override void setAnim() {
+            List<Frame> fadeIn = new List<Frame>();
+            for(int i = 0; i < 11; i++) {
+                fadeIn.Add(new Frame((int)TextureData.snTexture.arrow1 + i, 50));
+            }
+            animation.Add(ArrowStates.FadeIn, fadeIn);
+            List<Frame> fadeOut = new List<Frame>(fadeIn);
+            fadeOut.Reverse(); // Reverse frame order for fade out
+            animation.Add(ArrowStates.FadeOut, fadeOut);
+            animation.Add(ArrowStates.Green, new List<Frame>() {
+                new Frame((int)TextureData.snTexture.greenArrow, 1)
+            });
+            animation.Add(ArrowStates.Red, new List<Frame>() {
+               new Frame((int)TextureData.snTexture.redArrow, 1)
+            });
+        }
+
+        public override void animate(double time) {
+            base.animate(time);
+            if(numCycles == 1 && state == ArrowStates.FadeOut) {
+                visible = false;
+            }
+        }
+
+        public override void draw() {
+            SpriteDrawer sd = (SpriteDrawer)screen.ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+            sd.Draw(getImg(), getCoord(), getNum(), spriteRotation: (int)dir * Constants.ROTATE_90, spriteScale: scale);
+        }
+    }
+}

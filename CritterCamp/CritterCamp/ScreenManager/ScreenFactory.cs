@@ -9,7 +9,9 @@
 
 using CritterCamp;
 using CritterCamp.Screens;
+using CritterCamp.Screens.Games;
 using System;
+using System.Collections.Generic;
 using Windows.ApplicationModel.Core;
 
 namespace GameStateManagement {
@@ -23,6 +25,9 @@ namespace GameStateManagement {
                 Helpers.GameList currGame = (Helpers.GameList)CoreApplication.Properties["currentGame"];
                 TutorialScreen screen = new TutorialScreen(currGame);
                 return screen;
+            } else if(typeof(BaseGameScreen).IsAssignableFrom(screenType)) {
+                List<string> usernames = (List<string>)CoreApplication.Properties["group_usernames"];
+                return Activator.CreateInstance(screenType, new object[2] { usernames, usernames }) as GameScreen;
             } else {
                 return Activator.CreateInstance(screenType) as GameScreen;
             }
