@@ -21,7 +21,7 @@ namespace CritterCamp.Screens {
             foreach(GestureSample gesture in input.Gestures) {
                 if(gesture.GestureType == GestureType.Tap) {
                     Helpers.Sync((JArray data) => {
-                        ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
+                        ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));                 
                         LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(typeof(StarryNightScreen)));
                     }, "tutorial");
                 }

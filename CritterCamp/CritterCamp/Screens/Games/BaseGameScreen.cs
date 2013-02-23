@@ -23,6 +23,8 @@ namespace CritterCamp.Screens.Games {
         protected List<IAnimatedObject> toAdd = new List<IAnimatedObject>();
         protected List<IAnimatedObject> toRemove = new List<IAnimatedObject>();
 
+        protected bool scoreReceived = false; // We can't exit immediately due to race conditions
+
         public BaseGameScreen() : base() {
         }
 
@@ -30,8 +32,14 @@ namespace CritterCamp.Screens.Games {
             JObject o = JObject.Parse(message);
             // Check for final score
             if((string)o["action"] == "score") {
+                Dictionary<string, int> scoreMap = new Dictionary<string, int>();
                 JArray scores = (JArray)o["scores"];
-                //QuitGame(scores.ToString());
+                foreach(JObject score in scores) {
+                    scoreMap.Add((string)score["username"], (int)score["score"]);
+                }
+                CoreApplication.Properties["scores"] = scoreMap;
+                scoreReceived = true;
+
             }
         }
 
@@ -100,6 +108,12 @@ namespace CritterCamp.Screens.Games {
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
+            // If the score has already been received, it's time to quit
+            if(scoreReceived) {
+                ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
+                LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(typeof(ScoreScreen)));
+                return;
+            }
             UpdateActors(gameTime);
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
@@ -110,6 +124,7 @@ namespace CritterCamp.Screens.Games {
 
         public override void Unload() {
             removeConn();
+            cm.Unload();
             base.Unload();
         }
     }

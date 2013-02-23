@@ -162,7 +162,6 @@ namespace CritterCamp.Screens.Games {
 
         public override void HandleInput(GameTime gameTime, InputState input) {
             foreach(GestureSample gesture in input.Gestures) {
-                System.Diagnostics.Debug.WriteLine(gesture.Delta);
                 if(gesture.GestureType == GestureType.FreeDrag) {
                     currentGesture += gesture.Delta;
                 } else if(gesture.GestureType == GestureType.DragComplete) {

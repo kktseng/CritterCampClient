@@ -31,8 +31,8 @@ namespace CritterCamp.Screens {
 
             // End the operation
             Stream postStream = request.EndGetRequestStream(asynchronousResult);
-            //string post = "username=chicken&password=260d619c03f90246712a3692553e7efa";
-            string post = "username=flin&password=5215e16966ea4e8f14d94990d13c2a2e";
+            //string post = "username=chicken&password=260d619c03f90246712a3692553e7efa&version=0.1";
+            string post = "username=flin&password=5215e16966ea4e8f14d94990d13c2a2e&version=0.1";
 
             // Convert the string into a byte array. 
             byte[] byteArray = Encoding.UTF8.GetBytes(post);
