@@ -83,10 +83,12 @@ namespace CritterCamp.Screens.Games.Lib {
         }
 
         public void DrawString(SpriteFont font, string text, Vector2 coord, Color color) {
-            SpriteBatch sb = sm.SpriteBatch;
-            
+            SpriteBatch sb = sm.SpriteBatch;        
+            Vector2 size = font.MeasureString(text);
+
             // Scale coordinates back to backBuffer
             coord /= coordScale;
+            coord -= size / 2;
             coord = new Vector2(backBuffer.X - coord.Y, coord.X);
 
             sb.DrawString(font, text, coord, color, Constants.ROTATION, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);

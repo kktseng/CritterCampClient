@@ -40,6 +40,7 @@ namespace GameStateManagement {
 
         SpriteBatch spriteBatch;
         SpriteFont font;
+        Dictionary<string, Texture2D> textures = new Dictionary<string,Texture2D>();
         Texture2D blankTexture;
 
         bool isInitialized;
@@ -85,6 +86,10 @@ namespace GameStateManagement {
         /// </summary>
         public Texture2D BlankTexture {
             get { return blankTexture; }
+        }
+
+        public Dictionary<string, Texture2D> Textures {
+            get { return textures; }
         }
 
 

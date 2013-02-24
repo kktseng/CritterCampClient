@@ -13,6 +13,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameStateManagement;
+using Microsoft.Xna.Framework.Input.Touch;
 
 #endregion
 
@@ -55,6 +56,7 @@ namespace CritterCamp.Screens {
             this.loadingIsSlow = loadingIsSlow;
             this.screensToLoad = screensToLoad;
 
+            EnabledGestures = GestureType.Tap; // Monogame goes on an infinite loop if I don't do this..
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
         }
 
@@ -74,7 +76,6 @@ namespace CritterCamp.Screens {
             LoadingScreen loadingScreen = new LoadingScreen(screenManager,
                                                             loadingIsSlow,
                                                             screensToLoad);
-
             screenManager.AddScreen(loadingScreen, controllingPlayer);
         }
 

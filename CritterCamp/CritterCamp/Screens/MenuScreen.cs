@@ -1,4 +1,5 @@
-﻿using GameStateManagement;
+﻿using CritterCamp.Screens.Games.Lib;
+using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -15,13 +16,23 @@ namespace CritterCamp.Screens {
     /// Provides a basic base screen for menus on Windows Phone leveraging the Button class.
     /// </summary>
     class MenuScreen : GameScreen {
+
+        List<Button> menuButtons = new List<Button>();
+        Vector2 coordScale, backBuffer;
+
+        /// <summary>
+        /// Gets the list of buttons, so derived classes can add or change the menu contents.
+        /// </summary>
+        protected IList<Button> MenuButtons {
+            get { return menuButtons; }
+        }
+
         /// <summary>
         /// Creates the PhoneMenuScreen with a particular title.
         /// </summary>
         /// <param name="title">The title of the screen</param>
         public MenuScreen(string title) {
-            TransitionOnTime = TimeSpan.FromSeconds(0.5);
-            TransitionOffTime = TimeSpan.FromSeconds(0.5);
+
 
             // We need tap gestures to hit the buttons
             EnabledGestures = GestureType.Tap;
@@ -30,7 +41,6 @@ namespace CritterCamp.Screens {
         public override void Activate(bool instancePreserved) {
             // When the screen is activated, we have a valid ScreenManager so we can arrange
             // our buttons on the screen
-            float y = 140f;
             float center = ScreenManager.GraphicsDevice.Viewport.Bounds.Center.X;
 
             base.Activate(instancePreserved);
@@ -47,18 +57,26 @@ namespace CritterCamp.Screens {
         protected virtual void OnCancel() { }
 
         public override void HandleInput(GameTime gameTime, InputState input) {
-            // Test for the menuCancel action
-
-
             // Read in our gestures
             foreach(GestureSample gesture in input.Gestures) {
+                // If we have a tap
                 if(gesture.GestureType == GestureType.Tap) {
+                    System.Diagnostics.Debug.WriteLine("tap " + input.Gestures.Count);
+                    // Wait for backbuffer to initialize
+                    if(coordScale == null)
+                        return;
+
+                    Vector2 scaledPos = gesture.Position;
+
+                    // Flip coordinates to scale with backBuffer
+                    scaledPos = new Vector2(gesture.Position.Y, backBuffer.X - gesture.Position.X);
+                    scaledPos *= coordScale;
+
                     // Test the tap against the buttons until one of the buttons handles the tap
-                    //foreach(Button b in menuButtons) {
-                    //    if(b.HandleTap(gesture.Position))
-                    //        break;
-                    //}
-                    System.Diagnostics.Debug.WriteLine("tap");
+                    foreach(Button b in menuButtons) {
+                        if(b.HandleTap(scaledPos))
+                            break;
+                    }
                 }
             }
 
@@ -69,10 +87,17 @@ namespace CritterCamp.Screens {
             GraphicsDevice graphics = ScreenManager.GraphicsDevice;
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
-
+            SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+            coordScale = sd.coordScale;
+            backBuffer = sd.backBuffer;
+           
             spriteBatch.Begin();
 
             graphics.Clear(Color.Yellow);
+
+            // Draw all of the buttons
+            foreach(Button b in menuButtons)
+                b.Draw(this);
 
             // Make the menu slide into place during transitions, using a
             // power curve to make things look more interesting (this makes

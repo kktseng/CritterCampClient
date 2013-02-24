@@ -39,7 +39,7 @@ namespace CritterCamp.Screens.Games.Lib {
                 sd.Draw(screen.textureList["doodads"], coord - new Vector2(offset - Constants.BUFFER_SPRITE_DIM * i, Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.Doodads.signTopMid);
                 sd.Draw(screen.textureList["doodads"], coord - new Vector2(offset - Constants.BUFFER_SPRITE_DIM * i, -Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.Doodads.signBtmMid);
             }
-            sd.DrawString(font, text, coord - new Vector2(size.X / 2, size.Y / 2));
+            sd.DrawString(font, text, coord);
         }
 
         public void setText(string text) {

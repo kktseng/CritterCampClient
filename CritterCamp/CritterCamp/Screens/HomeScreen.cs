@@ -11,26 +11,29 @@ using Windows.ApplicationModel.Core;
 
 namespace CritterCamp.Screens {
     class HomeScreen : MenuScreen {
+        private bool looking = false;
+        private bool startingGame = false;
+
         public HomeScreen()
             : base("Main Menu") {
-
+            Button play = new Button(this, "Play");
+            play.Position = new Vector2(960, 300);
+            play.Tapped += playButton_Tapped;
+            MenuButtons.Add(play);
         }
 
-        public override void HandleInput(GameTime gameTime, InputState input) {
-            // Read in our gestures
-            foreach(GestureSample gesture in input.Gestures) {
-                // If we have a tap
-                if(gesture.GestureType == GestureType.Tap) {
-                    // Start looking for a group
-                    TCPConnection conn = (TCPConnection)CoreApplication.Properties["TCPSocket"];
-                    conn.pMessageReceivedEvent += StartGame;
+        void playButton_Tapped(object sender, EventArgs e) {
+            if(!looking) {
+                System.Diagnostics.Debug.WriteLine("stahp");
+                looking = true;
 
-                    // Search for group
-                    conn.SendMessage(@"{ ""action"": ""group"", ""type"": ""join"", ""game"": ""starry_night"" }");
-                }
+                // Start looking for a group
+                TCPConnection conn = (TCPConnection)CoreApplication.Properties["TCPSocket"];
+                conn.pMessageReceivedEvent += StartGame;
+
+                // Search for group
+                conn.SendMessage(@"{ ""action"": ""group"", ""type"": ""join"", ""game"": ""starry_night"" }");
             }
-
-            base.HandleInput(gameTime, input);
         }
 
         protected virtual void StartGame(string message, bool error, TCPConnection connection) {
@@ -45,9 +48,17 @@ namespace CritterCamp.Screens {
                 }
                 CoreApplication.Properties["group_usernames"] = usernames;
                 CoreApplication.Properties["currentGame"] = Helpers.GameList.StarryNight;
+                startingGame = true;
+                conn.pMessageReceivedEvent -= StartGame;
+            }
+        }
+
+        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
+            if(startingGame) {
                 ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
                 LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(TutorialScreen)));
             }
+            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
     }
 }
