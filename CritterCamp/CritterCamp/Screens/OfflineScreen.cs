@@ -93,7 +93,6 @@ namespace CritterCamp.Screens {
                     JObject o = JObject.Parse(message);
                     // TODO: Base TCP handler handles the following
                     /**
-                     * Leaderboard updates
                      * Friend list updates
                      * Party updates
                      * Store transactions

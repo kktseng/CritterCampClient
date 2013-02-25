@@ -72,7 +72,6 @@ namespace GameStateManagement
             Gestures.Clear();
             while (TouchPanel.IsGestureAvailable)
             {
-                System.Diagnostics.Debug.WriteLine("avail");
                 Gestures.Add(TouchPanel.ReadGesture());
             }
         }

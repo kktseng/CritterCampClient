@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CritterCamp.Screens.Games {
-    class CritterCorralScreen : BaseGameScreen {
-        public CritterCorralScreen(List<string> usernames, List<string> pictures)
+    class JetpackJamboree : BaseGameScreen {
+        public JetpackJamboree(List<string> usernames, List<string> pictures)
             : base() {
        
             EnabledGestures = GestureType.FreeDrag | GestureType.DragComplete;

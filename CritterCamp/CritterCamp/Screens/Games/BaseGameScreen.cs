@@ -18,6 +18,7 @@ namespace CritterCamp.Screens.Games {
 
         protected ContentManager cm;
         protected TCPConnection conn;
+        protected int expGained;
 
         protected List<IAnimatedObject> actors = new List<IAnimatedObject>();
         protected List<IAnimatedObject> toAdd = new List<IAnimatedObject>();
@@ -38,8 +39,20 @@ namespace CritterCamp.Screens.Games {
                     scoreMap.Add((string)score["username"], (int)score["score"]);
                 }
                 CoreApplication.Properties["scores"] = scoreMap;
-                scoreReceived = true;
 
+                JObject packet = new JObject(
+                    new JProperty("action", "rank"),
+                    new JProperty("type", "submit"),
+                    new JProperty("exp_gained", expGained),
+                    new JProperty("gold_gained", expGained / 10)
+                );
+                conn.SendMessage(packet.ToString());
+            } else if((string)o["action"] == "rank") {
+                if((string)o["type"] == "submit") {
+                    CoreApplication.Properties["myLevel"] = (int)o["level"];
+                    CoreApplication.Properties["myExpPercentage"] = (int)o["percentage"];
+                }
+                scoreReceived = true;
             }
         }
 

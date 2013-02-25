@@ -11,18 +11,21 @@ namespace CritterCamp.Screens.Games.Lib {
         void animate(double time);
     }
     public abstract class AnimatedObject<T> : IAnimatedObject {
-        protected struct Frame {
+        public struct Frame {
             public int spriteNum;
             public int length;
             public Vector2 offset;
+            public SpriteEffects effect;
 
             public Frame(int spriteNum, int length) : this(spriteNum, length, new Vector2(0, 0)) { }
 
-            public Frame(int spriteNum, int length, Vector2 offset) {
+            public Frame(int spriteNum, int length, Vector2 offset, SpriteEffects effect = SpriteEffects.None) {
                 this.offset = offset;
                 this.spriteNum = spriteNum;
                 this.length = length;
+                this.effect = effect;
             }
+
         };
         protected BaseGameScreen screen;
 
@@ -64,28 +67,24 @@ namespace CritterCamp.Screens.Games.Lib {
             return screen.textureList[imgName];
         }
 
-        public int getNum() {
+        public Frame? getFrame() {
             int frameCount = 0;
             foreach(Frame f in animation[state]) {
                 frameCount += f.length;
                 if(frame < frameCount) {
-                    return f.spriteNum;
+                    return f;
                 }
             }
             // Should never reach here
-            return -1;
+            return null;
+        }
+
+        public int getNum() {
+            return getFrame().Value.spriteNum;
         }
 
         public Vector2 getCoord() {
-            int frameCount = 0;
-            foreach(Frame f in animation[state]) {
-                frameCount += f.length;
-                if(frame < frameCount) {
-                    return coord + f.offset;
-                }
-            }
-            // Should never reach here
-            return coord;
+            return coord + getFrame().Value.offset;
         }
 
         public void move(Vector2 offset) {
@@ -145,7 +144,7 @@ namespace CritterCamp.Screens.Games.Lib {
 
         public virtual void draw() {
             SpriteDrawer sd = (SpriteDrawer)screen.ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
-            sd.Draw(getImg(), getCoord(), getNum());
+            sd.Draw(getImg(), getCoord(), getNum(), getFrame().Value.effect);
         }
     }
 }

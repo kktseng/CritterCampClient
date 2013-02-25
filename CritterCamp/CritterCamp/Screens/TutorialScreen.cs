@@ -19,7 +19,6 @@ namespace CritterCamp.Screens {
         public override void HandleInput(GameTime gameTime, InputState input) {
             // Read in our gestures
             foreach(GestureSample gesture in input.Gestures) {
-                System.Diagnostics.Debug.WriteLine("taptap");
                 if(gesture.GestureType == GestureType.Tap) {
                     Helpers.Sync((JArray data) => {
                         ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));                 

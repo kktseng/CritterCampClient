@@ -19,12 +19,17 @@ namespace CritterCamp.Screens {
             Button play = new Button(this, "Play");
             play.Position = new Vector2(960, 300);
             play.Tapped += playButton_Tapped;
+
+            Button leader = new Button(this, "Leaderboards");
+            leader.Position = new Vector2(960, 600);
+            leader.Tapped += leaderButton_Tapped;
+
             MenuButtons.Add(play);
+            MenuButtons.Add(leader);
         }
 
         void playButton_Tapped(object sender, EventArgs e) {
             if(!looking) {
-                System.Diagnostics.Debug.WriteLine("stahp");
                 looking = true;
 
                 // Start looking for a group
@@ -36,11 +41,15 @@ namespace CritterCamp.Screens {
             }
         }
 
+        void leaderButton_Tapped(object sender, EventArgs e) {
+            ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
+            LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(LeaderScreen)));
+        }
+
         protected virtual void StartGame(string message, bool error, TCPConnection connection) {
-            TCPConnection conn = (TCPConnection)CoreApplication.Properties["TCPSocket"];
             JObject o = JObject.Parse(message);
             if((string)o["action"] == "start_game") {
-                conn.pMessageReceivedEvent -= StartGame;
+                connection.pMessageReceivedEvent -= StartGame;
                 JArray playerInfo = (JArray)o["players"];
                 List<string> usernames = new List<string>();
                 foreach(JObject playerData in playerInfo) {
@@ -49,7 +58,6 @@ namespace CritterCamp.Screens {
                 CoreApplication.Properties["group_usernames"] = usernames;
                 CoreApplication.Properties["currentGame"] = Helpers.GameList.StarryNight;
                 startingGame = true;
-                conn.pMessageReceivedEvent -= StartGame;
             }
         }
 

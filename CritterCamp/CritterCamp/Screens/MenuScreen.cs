@@ -32,8 +32,6 @@ namespace CritterCamp.Screens {
         /// </summary>
         /// <param name="title">The title of the screen</param>
         public MenuScreen(string title) {
-
-
             // We need tap gestures to hit the buttons
             EnabledGestures = GestureType.Tap;
         }
@@ -61,7 +59,6 @@ namespace CritterCamp.Screens {
             foreach(GestureSample gesture in input.Gestures) {
                 // If we have a tap
                 if(gesture.GestureType == GestureType.Tap) {
-                    System.Diagnostics.Debug.WriteLine("tap " + input.Gestures.Count);
                     // Wait for backbuffer to initialize
                     if(coordScale == null)
                         return;
@@ -69,7 +66,9 @@ namespace CritterCamp.Screens {
                     Vector2 scaledPos = gesture.Position;
 
                     // Flip coordinates to scale with backBuffer
-                    scaledPos = new Vector2(gesture.Position.Y, backBuffer.X - gesture.Position.X);
+                    if(Constants.ROTATION != 0) {
+                        scaledPos = new Vector2(gesture.Position.Y, backBuffer.X - gesture.Position.X);
+                    }
                     scaledPos *= coordScale;
 
                     // Test the tap against the buttons until one of the buttons handles the tap
@@ -93,7 +92,7 @@ namespace CritterCamp.Screens {
            
             spriteBatch.Begin();
 
-            graphics.Clear(Color.Yellow);
+            sd.Draw(ScreenManager.Textures["menuBG"], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2 + 36), 0, new Vector2(1280, 768));
 
             // Draw all of the buttons
             foreach(Button b in menuButtons)

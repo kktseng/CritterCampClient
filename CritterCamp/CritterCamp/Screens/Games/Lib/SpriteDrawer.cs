@@ -36,14 +36,15 @@ namespace CritterCamp.Screens.Games.Lib {
             drawScale = new Vector2(backBuffer.Y / (Constants.SPRITE_DIM * Constants.MAP_WIDTH));
         }
 
-        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect, float spriteRotation = 0, float spriteScale = 1f) {
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect,  SpriteEffects effect, float spriteRotation = 0, float spriteScale = 1f) {
             SpriteBatch sb = sm.SpriteBatch;
             
             // Scale coordinates back to backBuffer
             coord /= coordScale;
 
             // Fix coordinates for landscape
-            coord = new Vector2(backBuffer.X - coord.Y, coord.X);
+            if(Constants.ROTATION != 0)
+                coord = new Vector2(backBuffer.X - coord.Y, coord.X);
 
             // Check to see if sprites are in bounds
             if(coord.X >= -spriteDim.X && coord.X < backBuffer.X + spriteDim.X && coord.Y >= -spriteDim.Y && coord.Y < backBuffer.Y + spriteDim.Y) {
@@ -51,16 +52,20 @@ namespace CritterCamp.Screens.Games.Lib {
                     (spriteNum % TextureData.spriteSheetWidth) * (int)(spriteDim.X + TextureData.spriteSheetGutter) + rect.Left,
                     (spriteNum / TextureData.spriteSheetWidth) * (int)(spriteDim.Y + TextureData.spriteSheetGutter) + rect.Top,
                     rect.Right, rect.Bottom
-                ), Color.White, Constants.ROTATION + spriteRotation, spriteDim / 2, drawScale * spriteScale, SpriteEffects.None, 0f);
+                ), Color.White, Constants.ROTATION + spriteRotation, spriteDim / 2, drawScale * spriteScale, effect, 0f);
             }
         }
 
-        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, float spriteRotation = 0, float spriteScale = 1f) {
-            Draw(texture, coord, spriteNum, spriteDim, new Rectangle(0, 0, (int)spriteDim.X, (int)spriteDim.Y), spriteRotation: spriteRotation, spriteScale: spriteScale);
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, float spriteRotation = 0, float spriteScale = 1f, SpriteEffects effect = SpriteEffects.None) {
+            Draw(texture, coord, spriteNum, spriteDim, new Rectangle(0, 0, (int)spriteDim.X, (int)spriteDim.Y), effect, spriteRotation: spriteRotation, spriteScale: spriteScale);
         }
 
         public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Rectangle rect, float spriteRotation = 0, float spriteScale = 1f) {
-            Draw(texture, coord, spriteNum, sprite_dim, rect, spriteRotation: spriteRotation, spriteScale: spriteScale);
+            Draw(texture, coord, spriteNum, sprite_dim, rect, SpriteEffects.None, spriteRotation: spriteRotation, spriteScale: spriteScale);
+        }
+
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, SpriteEffects effect, float spriteRotation = 0, float spriteScale = 1f) {
+            Draw(texture, coord, spriteNum, sprite_dim, effect: effect, spriteRotation: spriteRotation, spriteScale: spriteScale);
         }
 
         public void Draw(Texture2D texture, Vector2 coord, int spriteNum, float spriteRotation = 0, float spriteScale = 1f) {
@@ -89,7 +94,9 @@ namespace CritterCamp.Screens.Games.Lib {
             // Scale coordinates back to backBuffer
             coord /= coordScale;
             coord -= size / 2;
-            coord = new Vector2(backBuffer.X - coord.Y, coord.X);
+
+            if(Constants.ROTATION != 0)
+                coord = new Vector2(backBuffer.X - coord.Y, coord.X);
 
             sb.DrawString(font, text, coord, color, Constants.ROTATION, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
         }

@@ -106,6 +106,7 @@ namespace CritterCamp.Screens.Games {
             TextureData.mapTexture ns4 = TextureData.mapTexture.nightSky4;
             TextureData.mapTexture lgn = TextureData.mapTexture.longGrassNight;
             TextureData.mapTexture lg1 = TextureData.mapTexture.longGrass1;
+
             TextureData.mapTexture gr1 = TextureData.mapTexture.grass1;
             TextureData.mapTexture gr2 = TextureData.mapTexture.grass2;
             TextureData.mapTexture gr3 = TextureData.mapTexture.grass3;
@@ -381,6 +382,7 @@ namespace CritterCamp.Screens.Games {
                         ))
                     );
                     conn.SendMessage(packet.ToString());
+                    expGained = (5 - players[playerName].rank) * 100;
                     phase = Phase.Sleep;
                 }
             } else if(phase == Phase.Sleep) {

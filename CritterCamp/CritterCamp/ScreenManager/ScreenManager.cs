@@ -129,6 +129,7 @@ namespace GameStateManagement {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = content.Load<SpriteFont>("menufont");
             blankTexture = content.Load<Texture2D>("blank");
+            textures["menuBG"] = content.Load<Texture2D>("bg1");
 
             // Tell each of the screens to load their content.
             foreach(GameScreen screen in screens) {

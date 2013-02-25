@@ -104,6 +104,7 @@
     <Compile Include="Screens\Games\StarryNight\Player.cs" />
     <Compile Include="Screens\Games\StarryNight\Smoke.cs" />
     <Compile Include="Screens\HomeScreen.cs" />
+    <Compile Include="Screens\LeaderScreen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
     <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Screens\OfflineScreen.cs" />
