@@ -104,7 +104,7 @@ namespace CritterCamp.Screens.Games {
             }
             toAdd.RemoveRange(0, addLen);
             foreach(IAnimatedObject actor in actors) {
-                actor.animate(gameTime.ElapsedGameTime.TotalMilliseconds);
+                actor.animate(gameTime.ElapsedGameTime);
             }
             for(int i = remLen - 1; i >= 0; i--) {
                 actors.Remove(toRemove[i]);

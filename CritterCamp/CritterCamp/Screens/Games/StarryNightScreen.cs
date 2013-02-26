@@ -19,16 +19,6 @@ namespace CritterCamp.Screens.Games {
         Left, Up, Right, Down
     }
 
-    public enum PlayerDanceStates {
-        Standing,
-        DanceLeft, DanceUp, DanceRight, DanceDown
-    }
-
-    public enum ArrowStates {
-        FadeIn, FadeOut,
-        Green, Red
-    }
-
     class StarryNightScreen : BaseGameScreen {
         public static int MAX_ROUNDS = 5;
         public static int COMMAND_INCR = 2;
@@ -100,65 +90,21 @@ namespace CritterCamp.Screens.Games {
 
         public void setMap() {
             tileMap = new TileMap(textureList["map"]);
-            TextureData.mapTexture ns1 = TextureData.mapTexture.nightSky1;
-            TextureData.mapTexture ns2 = TextureData.mapTexture.nightSky2;
-            TextureData.mapTexture ns3 = TextureData.mapTexture.nightSky3;
-            TextureData.mapTexture ns4 = TextureData.mapTexture.nightSky4;
-            TextureData.mapTexture lgn = TextureData.mapTexture.longGrassNight;
-            TextureData.mapTexture lg1 = TextureData.mapTexture.longGrass1;
-
-            TextureData.mapTexture gr1 = TextureData.mapTexture.grass1;
-            TextureData.mapTexture gr2 = TextureData.mapTexture.grass2;
-            TextureData.mapTexture gr3 = TextureData.mapTexture.grass3;
-            TextureData.mapTexture dbl = TextureData.mapTexture.dirtBL;
-            TextureData.mapTexture drt = TextureData.mapTexture.dirt;
-            TextureData.mapTexture dib = TextureData.mapTexture.dirtB;
-            TextureData.mapTexture dbr = TextureData.mapTexture.dirtBR;
-            TextureData.mapTexture dil = TextureData.mapTexture.dirtL;
-            TextureData.mapTexture dir = TextureData.mapTexture.dirtR;
-            TextureData.mapTexture dit = TextureData.mapTexture.dirtT;
-            TextureData.mapTexture dtl = TextureData.mapTexture.dirtTL;
-            TextureData.mapTexture dtr = TextureData.mapTexture.dirtTR;
-
-            TextureData.mapTexture[,] map = new TextureData.mapTexture[,] {
-                { ns4, ns2, ns3, ns4, ns1, ns2, ns3, ns4, ns1, ns2, ns3, ns4, ns1, ns2, ns3, ns4, ns1, ns2, ns3, ns4 },
-                { ns2, ns3, ns2, ns4, ns4, ns3, ns2, ns4, ns3, ns1, ns2, ns3, ns4, ns4, ns2, ns2, ns4, ns1, ns2, ns3 },
-                { ns3, ns3, ns1, ns2, ns3, ns4, ns1, ns2, ns3, ns4, ns3, ns3, ns4, ns3, ns3, ns2, ns2, ns4, ns3, ns2 },
-                { ns2, ns3, ns4, ns3, ns2, ns3, ns3, ns4, ns1, ns3, ns4, ns1, ns2, ns4, ns2, ns1, ns2, ns2, ns4, ns1 },
-                { ns3, ns2, ns3, ns4, ns1, ns3, ns1, ns4, ns3, ns2, ns2, ns3, ns4, ns3, ns3, ns4, ns2, ns2, ns3, ns2 },
-                { ns4, ns1, ns2, ns2, ns4, ns4, ns3, ns3, ns4, ns1, ns4, ns3, ns4, ns1, ns2, ns3, ns3, ns1, ns2, ns3 },
-                { lgn, lgn, lgn, lgn, lgn, lgn, lgn, lgn, lgn, lgn, lgn, lgn, lgn, lgn, lgn, lgn, lgn, lgn, lgn, lgn },
-                { lg1, lg1, lg1, lg1, lg1, lg1, lg1, lg1, lg1, lg1, lg1, lg1, lg1, lg1, lg1, lg1, lg1, lg1, lg1, lg1 },
-                { dbl, gr3, gr1, gr1, gr2, gr3, gr1, dbr, dib, dbl, gr1, gr2, gr1, dbr, dib, dbl, gr1, gr2, gr1, gr1 },
-                { dil, gr1, gr1, gr3, dbr, dbl, gr1, dtr, drt, dil, gr1, gr1, dbr, drt, dit, dit, dbl, dbr, dbl, gr1 },
-                { dtl, gr1, dbr, dib, dit, dtl, gr1, gr2, dtr, dtl, dbr, dib, drt, dtl, gr3, gr1, dir, drt, dil, gr3 },
-                { gr1, gr1, dtr, dtl, gr1, gr1, dbr, dib, dbl, gr1, dtr, drt, dil, gr1, gr1, gr2, dtr, drt, dtl, gr1 }
+            int[,] map = new int[,] {
+                {  3,  1,  2,  3,  0,  1,  2,  3,  0,  1,  2,  3,  0,  1,  2,  3,  0,  1,  2,  3 },
+                {  1,  2,  1,  3,  3,  2,  1,  3,  2,  0,  1,  2,  3,  3,  1,  1,  3,  0,  1,  2 },
+                {  2,  2,  0,  1,  2,  3,  0,  1,  2,  3,  2,  2,  3,  2,  2,  1,  1,  3,  2,  1 },
+                {  1,  2,  3,  2,  1,  2,  2,  3,  0,  2,  3,  0,  1,  3,  1,  0,  1,  1,  3,  0 },
+                {  2,  1,  2,  3,  0,  2,  0,  3,  2,  1,  1,  2,  3,  2,  2,  3,  1,  1,  2,  1 },
+                {  3,  0,  1,  1,  3,  3,  2,  2,  3,  0,  3,  2,  3,  0,  1,  2,  2,  0,  1,  2 },
+                { 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16 },
+                { 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17 },
+                {  9,  6,  4,  4,  5,  6,  4, 10, 11,  9,  4,  5,  4, 10, 11,  9,  4,  5,  4,  4 },
+                { 14,  4,  4,  6, 10,  9,  4,  8, 15, 14,  4,  4, 10, 15, 12, 12,  9, 10,  9,  4 },
+                {  7,  4, 10, 11, 12,  7,  4,  5,  8,  7, 10, 11, 15,  7,  6,  4, 13, 15, 14,  6 },
+                {  4,  4,  8,  7,  4,  4, 10, 11,  9,  4,  8, 15, 14,  4,  4,  5,  8, 15,  7,  4 }
             };
             tileMap.setMap(map);
-        }
-
-        protected override void MessageReceived(string message, bool error, TCPConnection connection) {
-            base.MessageReceived(message, error, connection);
-            JObject o = JObject.Parse(message);
-            if((string)o["action"] == "game" && (string)o["name"] == "starry_night") {
-                JObject data = (JObject)o["data"];
-                if((string)data["action"] == "update") {
-                    // Accept player update packets in both input and timeup phase
-                    if(phase == Phase.Input || phase == Phase.Timeup) {
-                        string source = (string)data["source"];
-                        if(players.ContainsKey(source)) {
-                            // If the client side commands are more updates, ignore the update
-                            JArray commands = (JArray)data["commands"];
-                            if(players[source].input.Count() < commands.Count()) {
-                                players[source].input.Clear();
-                                foreach(JToken command in commands) {
-                                    players[source].input.Add((Direction)(int)command);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         public override void HandleInput(GameTime gameTime, InputState input) {
@@ -184,28 +130,6 @@ namespace CritterCamp.Screens.Games {
             }
 
             base.HandleInput(gameTime, input);
-        }
-
-        protected void processCommand(Direction command) {
-            if(phase == Phase.Input) {
-                // Only add commands if player hasn't exceeded the number of commands
-                int numArrows = players[playerName].input.Count();
-                if(numArrows < commandNum) {
-                    players[playerName].input.Add(command);
-                    inputArrows.Add(new Arrow(this, command, textureList["sn"], new Vector2(150 + 120 * numArrows, 150), 1f));
-
-                    // Send the command information to the server
-                    JObject packet = new JObject(
-                        new JProperty("action", "game"),
-                        new JProperty("name", "starry_night"),
-                        new JProperty("data", new JObject(
-                            new JProperty("action", "command"),
-                            new JProperty("commands", players[playerName].input.Cast<int>().ToList())
-                        ))
-                    );
-                    conn.SendMessage(packet.ToString());
-                }
-            }
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
@@ -413,6 +337,52 @@ namespace CritterCamp.Screens.Games {
             }
             ScreenManager.SpriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        protected override void MessageReceived(string message, bool error, TCPConnection connection) {
+            base.MessageReceived(message, error, connection);
+            JObject o = JObject.Parse(message);
+            if((string)o["action"] == "game" && (string)o["name"] == "starry_night") {
+                JObject data = (JObject)o["data"];
+                if((string)data["action"] == "update") {
+                    // Accept player update packets in both input and timeup phase
+                    if(phase == Phase.Input || phase == Phase.Timeup) {
+                        string source = (string)data["source"];
+                        if(players.ContainsKey(source)) {
+                            // If the client side commands are more updates, ignore the update
+                            JArray commands = (JArray)data["commands"];
+                            if(players[source].input.Count() < commands.Count()) {
+                                players[source].input.Clear();
+                                foreach(JToken command in commands) {
+                                    players[source].input.Add((Direction)(int)command);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        protected void processCommand(Direction command) {
+            if(phase == Phase.Input) {
+                // Only add commands if player hasn't exceeded the number of commands
+                int numArrows = players[playerName].input.Count();
+                if(numArrows < commandNum) {
+                    players[playerName].input.Add(command);
+                    inputArrows.Add(new Arrow(this, command, textureList["sn"], new Vector2(150 + 120 * numArrows, 150), 1f));
+
+                    // Send the command information to the server
+                    JObject packet = new JObject(
+                        new JProperty("action", "game"),
+                        new JProperty("name", "starry_night"),
+                        new JProperty("data", new JObject(
+                            new JProperty("action", "command"),
+                            new JProperty("commands", players[playerName].input.Cast<int>().ToList())
+                        ))
+                    );
+                    conn.SendMessage(packet.ToString());
+                }
+            }
         }
     }
 }

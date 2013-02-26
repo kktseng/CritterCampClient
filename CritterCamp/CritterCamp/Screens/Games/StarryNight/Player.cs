@@ -9,6 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CritterCamp.Screens.Games.StarryNight {
+    public enum PlayerDanceStates {
+        Standing,
+        DanceLeft,
+        DanceUp,
+        DanceRight,
+        DanceDown
+    }
+
     public class Player : AnimatedObject<PlayerDanceStates>, IComparable<Player> {
         public int health;
         public List<Direction> input;

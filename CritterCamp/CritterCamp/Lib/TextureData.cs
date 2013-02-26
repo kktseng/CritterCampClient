@@ -44,12 +44,9 @@ namespace CritterCamp {
         }
 
         public enum Doodads {
-            signTopLeft,
-            signTopMid,
-            signTopRight,
-            signBtmLeft,
-            signBtmMid,
-            signBtmRight
+            signTopLeft, signTopMid, signTopRight, signBtmLeft, signBtmMid, signBtmRight,
+            jetPack1, jetPack2, jetPack3, jetPack4, jetFlame1, jetFlame2,
+            fenceTopEnd, fenceBottomEnd, fenceTopLeft, fenceLeftEnd, fence3Way, fence2Way, fenceTopRight, fenceRightEnd
         }
 
         public enum snTexture {
@@ -57,6 +54,14 @@ namespace CritterCamp {
             greenArrow, redArrow,
             timer,
             rocket1, rocket2
+        }
+
+        public enum jjTextures {
+            cautionTop, cautionRight, cautionLeft, cautionBottom,
+            orangeL, orange_, orangeLCurve, orangeTCurve, orangeCross,
+            greenL, green_, greenLCurve, greenTCurve, greenCross,
+            blueL, blue_, blueLCurve, blueTCurve, blueCross,
+            pinkL, pink_, pinkLCurve, pinkTCurve, pinkCross
         }
 
         public enum SmallDoodads {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CritterCamp.Screens.Games.Lib {
     public class TileMap {
-        protected TextureData.mapTexture[,] map;
+        protected int[,] map;
         protected Texture2D mapTextures;
 
         public TileMap(Texture2D mapTextures) {
@@ -16,12 +16,12 @@ namespace CritterCamp.Screens.Games.Lib {
         }
 
         // Sets the entire map
-        public void setMap(TextureData.mapTexture[,] map) {
+        public void setMap(int[,] map) {
             this.map = map;
         }
 
         // Replaces a single tile in the map
-        public void setMap(int row, int col, TextureData.mapTexture tile) {
+        public void setMap(int row, int col, int tile) {
             map[col, row] = tile;
         }
 
@@ -32,10 +32,14 @@ namespace CritterCamp.Screens.Games.Lib {
 
             for(int i = 0; i < map.GetLength(0); i++) {
                 for(int j = 0; j < map.GetLength(1); j++) {
+                    if(map[i, j] == -1) {
+                        continue;
+                    }
+
                     // All coordinates are scaled to WinRT resolutions and rendered correctly through SpriteDrawer
                     int x = Constants.BUFFER_SPRITE_DIM * j + Constants.BUFFER_SPRITE_DIM / 2;
                     int y = Constants.BUFFER_SPRITE_DIM * i + Constants.BUFFER_SPRITE_DIM / 2;
-                    int spriteNum = (int)map[i, j];
+                    int spriteNum = map[i, j];
 
                     sd.Draw(mapTextures, new Vector2(x, y), spriteNum);
                 }

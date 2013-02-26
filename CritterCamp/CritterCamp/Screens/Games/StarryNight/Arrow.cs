@@ -8,6 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CritterCamp.Screens.Games.StarryNight {
+    public enum ArrowStates {
+        FadeIn,
+        FadeOut,
+        Green,
+        Red
+    }
+
     public class Arrow : AnimatedObject<ArrowStates> {
         public Direction dir;
         public float scale;
@@ -37,7 +44,7 @@ namespace CritterCamp.Screens.Games.StarryNight {
             });
         }
 
-        public override void animate(double time) {
+        public override void animate(TimeSpan time) {
             base.animate(time);
             if(numCycles == 1 && state == ArrowStates.FadeOut) {
                 visible = false;

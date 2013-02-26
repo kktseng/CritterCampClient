@@ -8,7 +8,7 @@ namespace CritterCamp.Screens.Games.Lib {
     public interface IAnimatedObject {
         bool isVisible();
         void draw();
-        void animate(double time);
+        void animate(TimeSpan time);
     }
     public abstract class AnimatedObject<T> : IAnimatedObject {
         public struct Frame {
@@ -31,6 +31,7 @@ namespace CritterCamp.Screens.Games.Lib {
 
         protected string imgName;
         protected Vector2 coord;
+        protected Vector2 velocity = new Vector2(0, 0);
         protected bool visible = true;
 
         protected T state;
@@ -118,12 +119,12 @@ namespace CritterCamp.Screens.Games.Lib {
             return visible;
         }
 
-        public virtual void animate(double time) {
+        public virtual void animate(TimeSpan time) {
             if(!visible) {
                 return;
             }
             int temp = frame;
-            frame = (int)((frame + time) % maxFrame);
+            frame = (int)((frame + time.TotalMilliseconds) % maxFrame);
             if(frame < temp) {
                 numCycles++;
                 if(maxCycles > 0 && numCycles >= maxCycles) {
@@ -140,6 +141,7 @@ namespace CritterCamp.Screens.Games.Lib {
                     }
                 }
             }
+            coord += velocity * (float)time.TotalSeconds;
         }
 
         public virtual void draw() {
