@@ -76,6 +76,20 @@ namespace CritterCamp {
                 // Pass the message along
                 if(message.Length != 0) { // valid message sent by server
                     if(pMessageReceivedEvent != null) {
+                        int index = message.IndexOf("}{");
+                        while (index != -1) {
+                            // there is a }{ string in the message. message contains more than 1 json
+                            // split the string at the }{ and send it to the delegates
+
+                            System.Diagnostics.Debug.WriteLine("Sent to delegate: " + message.Substring(0, index + 1));
+                            pMessageReceivedEvent(message.Substring(0,index+1), false, this); // send it to callback
+                            message = message.Substring(index+1);
+                            index = message.IndexOf("}{");
+                        }
+
+                        // send the remaining string
+
+                        System.Diagnostics.Debug.WriteLine("Sent to delegate: " + message);
                         pMessageReceivedEvent(message, false, this); // send it to callback
                     }
                 } else { // empty message means connection was closed by server
