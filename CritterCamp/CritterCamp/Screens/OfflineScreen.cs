@@ -32,7 +32,7 @@ namespace CritterCamp.Screens {
             // End the operation
             Stream postStream = request.EndGetRequestStream(asynchronousResult);
             //string post = "username=chicken&password=260d619c03f90246712a3692553e7efa&version=0.1";
-            string post = "username=flin&password=5215e16966ea4e8f14d94990d13c2a2e&version=0.1";
+            string post = "username=test_user1&password=password&version=0.1";
 
             // Convert the string into a byte array. 
             byte[] byteArray = Encoding.UTF8.GetBytes(post);
@@ -137,7 +137,7 @@ namespace CritterCamp.Screens {
                     request.AllowWriteStreamBuffering = true;
                     request.Method = "POST";
                     request.ContentType = "application/x-www-form-urlencoded";
-                    CoreApplication.Properties["username"] = "flin";
+                    CoreApplication.Properties["username"] = "test_user1";
                     request.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), request);
                 }
             }

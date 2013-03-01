@@ -47,21 +47,20 @@ namespace CritterCamp.Screens.Games.StarryNight {
                 new Frame((int)TextureData.PlayerStates.pickup2, 100),
                 new Frame((int)TextureData.PlayerStates.pickup3, 150)
             });
-            animation.Add(PlayerDanceStates.DanceLeft, new List<Frame>() {
-                new Frame((int)TextureData.PlayerStates.punchLeft1, 75),
-                new Frame((int)TextureData.PlayerStates.punchLeft2, 75, new Vector2(-13, 0)),
-                new Frame((int)TextureData.PlayerStates.punchLeft3, 150, new Vector2(-13, 0))
-            });
             animation.Add(PlayerDanceStates.DanceRight, new List<Frame>() {
-                new Frame((int)TextureData.PlayerStates.punchLeft1, 75, new Vector2(0, 0), effect: SpriteEffects.FlipHorizontally),
-                new Frame((int)TextureData.PlayerStates.punchLeft2, 75, new Vector2(13, 0), effect: SpriteEffects.FlipHorizontally),
-                new Frame((int)TextureData.PlayerStates.punchLeft3, 150, new Vector2(13, 0), effect: SpriteEffects.FlipHorizontally)
+                new Frame((int)TextureData.PlayerStates.punchRight1, 75),
+                new Frame((int)TextureData.PlayerStates.punchRight2, 75, new Vector2(-13, 0)),
+                new Frame((int)TextureData.PlayerStates.punchRight3, 150, new Vector2(-13, 0))
+            });
+            animation.Add(PlayerDanceStates.DanceLeft, new List<Frame>() {
+                new Frame((int)TextureData.PlayerStates.punchRight1, 75, new Vector2(0, 0), effect: SpriteEffects.FlipHorizontally),
+                new Frame((int)TextureData.PlayerStates.punchRight2, 75, new Vector2(13, 0), effect: SpriteEffects.FlipHorizontally),
+                new Frame((int)TextureData.PlayerStates.punchRight3, 150, new Vector2(13, 0), effect: SpriteEffects.FlipHorizontally)
             });
         }
 
-        public override void draw() {
+        public override void draw(SpriteDrawer sd) {
             for(int j = 0; j < health; j++) {
-                SpriteDrawer sd = (SpriteDrawer)screen.ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
                 sd.Draw(getImg(), getCoord() + new Vector2(100 * j, 0), getNum(), effect: getFrame().Value.effect);
             }
         }

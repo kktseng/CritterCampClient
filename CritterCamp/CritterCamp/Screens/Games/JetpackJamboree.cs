@@ -1,4 +1,5 @@
-﻿using CritterCamp.Screens.Games.Lib;
+﻿using CritterCamp.Screens.Games.JetpackJamboree;
+using CritterCamp.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,11 +13,25 @@ using System.Threading.Tasks;
 
 namespace CritterCamp.Screens.Games {
     class JetpackJamboreeScreen : BaseGameScreen {
+        public static int PIG_DELAY = 2;
+        public static int MAX_PIG_COUNT = 10;
+
         protected TileMap tileMap, doodadMap;
+        protected TimeSpan timeSincePig;
+
+        protected Pig selectedPig;
+        protected Vector2 old_pos;
+
+        protected List<Pig> mainPigs = new List<Pig>();
+        protected List<List<Pig>> pennedPigs = new List<List<Pig>>();
+
+        protected Random rand = new Random();
 
         public JetpackJamboreeScreen(List<string> usernames, List<string> pictures)
             : base() {
-            
+            for(int i = 0; i < 4; i++) {
+                pennedPigs.Add(new List<Pig>());
+            }
             EnabledGestures = GestureType.FreeDrag | GestureType.DragComplete;
         }
 
@@ -47,44 +62,94 @@ namespace CritterCamp.Screens.Games {
                 {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 }
             };
             int[,] ddMap = new int[,] {
-                {  -1, -1, -1, -1, -1, 14, 17, 17, 19, -1, -1, 15, 17, 17, 18, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 12, -1, -1, -1, -1, -1, -1, -1, -1, 12, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, 18, 21, 21, 23, -1, -1, 19, 21, 21, 22, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 12, -1, -1, -1, -1, -1, -1, -1, -1, 12, -1, -1, -1, -1, -1 },
-                {  17, 17, 17, 17, 17, 18, -1, -1, -1, -1, -1, -1, -1, -1, 14, 17, 17, 17, 17, 17 },
-                {  17, 17, 17, 17, 17, 18, -1, -1, -1, -1, -1, -1, -1, -1, 14, 17, 17, 17, 17, 17 },
-                {  -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
+                {  21, 21, 21, 21, 21, 22, -1, -1, -1, -1, -1, -1, -1, -1, 18, 21, 21, 21, 21, 21 },
+                {  21, 21, 21, 21, 21, 22, -1, -1, -1, -1, -1, -1, -1, -1, 18, 21, 21, 21, 21, 21 },
+                {  -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 12, -1, -1, -1, -1, -1, -1, -1, -1, 12, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 12, -1, -1, -1, -1, -1, -1, -1, -1, 12, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 15, 17, 17, 17, 17, 17, 17, 17, 17, 19, -1, -1, -1, -1, -1 }
+                {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, 19, 21, 21, 21, 21, 21, 21, 21, 21, 23, -1, -1, -1, -1, -1 }
             };
             tileMap.setMap(map);
             doodadMap.setMap(ddMap);
         }
 
         public override void HandleInput(GameTime gameTime, InputState input) {
-            foreach(GestureSample gesture in input.Gestures) {
-                if(gesture.GestureType == GestureType.FreeDrag) {
-                
-                } else if(gesture.GestureType == GestureType.DragComplete) {
-                
+            // release any pig that was being dragged
+            if(input.TouchState.Count == 0) {
+                if(selectedPig != null) {
+                    if(selectedPig.drop(old_pos)) {
+                        pennedPigs[selectedPig.color].Add(selectedPig);
+                        mainPigs.Remove(selectedPig);
+                    }
+                    selectedPig.selected = false;
+                }
+                selectedPig = null;
+            } else {
+                foreach(TouchLocation loc in input.TouchState) {
+                    if(coordScale == null) {
+                        return;
+                    }
+                    Vector2 scaledPos = loc.Position;
+
+                    // Flip coordinates to scale with backBuffer
+                    if(Constants.ROTATION != 0) {
+                        scaledPos = new Vector2(loc.Position.Y, backBuffer.X - loc.Position.X);
+                    }
+                    scaledPos *= coordScale;
+
+                    if(selectedPig == null) {
+                        foreach(Pig p in mainPigs) {
+                            // Don't let users grab falling pigs
+                            if(p.getState() == PigStates.Falling)
+                                continue;
+                            Rectangle pig = new Rectangle((int)p.getCoord().X - 50, (int)p.getCoord().Y - 50, 100, 100);
+                            if(pig.Contains(new Point((int)scaledPos.X, (int)scaledPos.Y))) {
+                                selectedPig = p;
+                                p.selected = true;
+                                old_pos = selectedPig.getCoord();
+                                break;
+                            }
+                        }
+                    } else {
+                        selectedPig.setCoord(scaledPos);
+                        break;
+                    }
                 }
             }
-            
+
             base.HandleInput(gameTime, input);
         }
 
-        protected override void MessageReceived(string message, bool error, TCPConnection connection) {
-            base.MessageReceived(message, error, connection);
-            JObject o = JObject.Parse(message);
-            if((string)o["action"] == "game" && (string)o["name"] == "jetpack_jamboree") {
-                JObject data = (JObject)o["data"];
-            }
-        }
-
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
+            // Randomly bring in pigs
+            if((gameTime.TotalGameTime - timeSincePig).TotalSeconds > PIG_DELAY && rand.Next(1000) < gameTime.TotalGameTime.Seconds) {
+                mainPigs.Add(new Pig(this, PigStates.Entering, rand));
+                timeSincePig = gameTime.TotalGameTime;
+            }
+
+            // Check if any sections are filled
+            for(int i = 0; i < pennedPigs.Count; i++) {
+                if(pennedPigs[i].Count > MAX_PIG_COUNT) {
+                    foreach(Pig p in pennedPigs[i]) {
+                        p.setState(PigStates.Flying);
+                    }
+                    pennedPigs[i].Clear();
+                    // Send packet to send pigs to other players
+                    JObject packet = new JObject(
+                        new JProperty("action", "game"),
+                        new JProperty("name", "jetpack_jamboree")
+
+                    );
+                    conn.SendMessage(packet.ToString());
+                }
+            }
+
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
@@ -102,10 +167,18 @@ namespace CritterCamp.Screens.Games {
             DrawLaunchpad(sd, new Vector2(Constants.BUFFER_SPRITE_DIM * 15, Constants.BUFFER_SPRITE_DIM * 7), 3);
             doodadMap.draw(sd);
 
-            DrawActors(gameTime);
+            DrawActors(sd);
 
             ScreenManager.SpriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        protected override void MessageReceived(string message, bool error, TCPConnection connection) {
+            base.MessageReceived(message, error, connection);
+            JObject o = JObject.Parse(message);
+            if((string)o["action"] == "game" && (string)o["name"] == "jetpack_jamboree") {
+                JObject data = (JObject)o["data"];
+            }
         }
 
         protected void DrawLaunchpad(SpriteDrawer sd, Vector2 coord, int color) {

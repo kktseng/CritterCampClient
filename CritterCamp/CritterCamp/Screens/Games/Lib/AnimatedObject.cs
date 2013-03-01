@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace CritterCamp.Screens.Games.Lib {
     public interface IAnimatedObject {
         bool isVisible();
-        void draw();
+        void draw(SpriteDrawer sd);
         void animate(TimeSpan time);
     }
     public abstract class AnimatedObject<T> : IAnimatedObject {
@@ -34,7 +34,7 @@ namespace CritterCamp.Screens.Games.Lib {
         protected Vector2 velocity = new Vector2(0, 0);
         protected bool visible = true;
 
-        protected T state;
+        protected T state { get; private set; }
         protected Dictionary<T, List<Frame>> animation = new Dictionary<T, List<Frame>>();
         protected int frame = 0;
         protected int maxFrame;
@@ -80,7 +80,7 @@ namespace CritterCamp.Screens.Games.Lib {
             return null;
         }
 
-        public int getNum() {
+        public virtual int getNum() {
             return getFrame().Value.spriteNum;
         }
 
@@ -144,8 +144,7 @@ namespace CritterCamp.Screens.Games.Lib {
             coord += velocity * (float)time.TotalSeconds;
         }
 
-        public virtual void draw() {
-            SpriteDrawer sd = (SpriteDrawer)screen.ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+        public virtual void draw(SpriteDrawer sd) {
             sd.Draw(getImg(), getCoord(), getNum(), getFrame().Value.effect);
         }
     }

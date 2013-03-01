@@ -11,6 +11,7 @@ using System;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
+using CritterCamp.Screens.Games.Lib;
 
 namespace GameStateManagement
 {
@@ -35,6 +36,8 @@ namespace GameStateManagement
     /// </summary>
     public abstract class GameScreen
     {
+
+        protected Vector2 coordScale, backBuffer;
         /// <summary>
         /// Normally when one screen is brought up over the top of another,
         /// the first screen will transition off to make room for the new
@@ -332,7 +335,11 @@ namespace GameStateManagement
         /// <summary>
         /// This is called when the screen should draw itself.
         /// </summary>
-        public virtual void Draw(GameTime gameTime) { }
+        public virtual void Draw(GameTime gameTime) {
+            SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+            coordScale = sd.coordScale;
+            backBuffer = sd.backBuffer;
+        }
 
 
         /// <summary>

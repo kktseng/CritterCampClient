@@ -18,7 +18,6 @@ namespace CritterCamp.Screens {
     class MenuScreen : GameScreen {
 
         List<Button> menuButtons = new List<Button>();
-        Vector2 coordScale, backBuffer;
 
         /// <summary>
         /// Gets the list of buttons, so derived classes can add or change the menu contents.
@@ -87,8 +86,6 @@ namespace CritterCamp.Screens {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
-            coordScale = sd.coordScale;
-            backBuffer = sd.backBuffer;
            
             spriteBatch.Begin();
 

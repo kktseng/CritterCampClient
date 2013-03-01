@@ -112,10 +112,10 @@ namespace CritterCamp.Screens.Games {
             toRemove.RemoveRange(0, remLen);
         }
 
-        protected void DrawActors(GameTime gameTime) {
+        protected void DrawActors(SpriteDrawer sd) {
             foreach(IAnimatedObject actor in actors) {
                 if(actor.isVisible()) {
-                    actor.draw();
+                    actor.draw(sd);
                 }
             }
         }

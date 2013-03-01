@@ -35,9 +35,9 @@ namespace CritterCamp {
             pickup1, pickup2, pickup3,
             walkRight1, walkRight2, walkRight3, walkRight4,
             punchRight1, punchRight2, punchRight3,
-            walkLeft1, walkLeft2, walkLeft3, walkLeft4,
-            punchLeft1, punchLeft2, punchLeft3
+            walkDown1, walkDown2
         }
+        public static int playerStateCount = (Enum.GetNames(typeof(PlayerStates)).Length + spriteSheetWidth - 1) / spriteSheetWidth * spriteSheetWidth;
 
         public enum Effects {
             smoke1, smoke2, smoke3, smoke4
@@ -45,7 +45,9 @@ namespace CritterCamp {
 
         public enum Doodads {
             signTopLeft, signTopMid, signTopRight, signBtmLeft, signBtmMid, signBtmRight,
-            jetPack1, jetPack2, jetPack3, jetPack4, jetFlame1, jetFlame2,
+            jetPack1, jetPack2, jetPack3, jetPack4,
+            sideJet1, sideJet2, sideJet3, sideJet4,
+            jetFlame1, jetFlame2,
             fenceTopEnd, fenceBottomEnd, fenceTopLeft, fenceLeftEnd, fence3Way, fence2Way, fenceTopRight, fenceRightEnd
         }
 

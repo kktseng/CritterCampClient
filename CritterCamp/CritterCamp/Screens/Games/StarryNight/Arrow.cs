@@ -51,8 +51,7 @@ namespace CritterCamp.Screens.Games.StarryNight {
             }
         }
 
-        public override void draw() {
-            SpriteDrawer sd = (SpriteDrawer)screen.ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+        public override void draw(SpriteDrawer sd) {
             sd.Draw(getImg(), getCoord(), getNum(), spriteRotation: (int)dir * Constants.ROTATE_90, spriteScale: scale);
         }
     }

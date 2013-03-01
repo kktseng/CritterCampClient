@@ -318,7 +318,7 @@ namespace CritterCamp.Screens.Games {
             ScreenManager.SpriteBatch.Begin();
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
             tileMap.draw(sd);
-            DrawActors(gameTime);
+            DrawActors(sd);
             if(banner != null) {
                 // Draw banner
                 banner.Draw(new Vector2(Constants.BUFFER_WIDTH / 2, 300));
