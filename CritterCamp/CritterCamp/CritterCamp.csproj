@@ -74,6 +74,7 @@
     </Compile>
     <Compile Include="Lib\Configuration.cs" />
     <Compile Include="Lib\Constants.cs" />
+    <Compile Include="Lib\HTTPConnection.cs" />
     <Compile Include="Lib\Helpers.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="GamePage.xaml.cs">

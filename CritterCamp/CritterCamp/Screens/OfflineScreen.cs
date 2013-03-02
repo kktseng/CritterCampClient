@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using Windows.ApplicationModel.Core;
 
@@ -23,47 +24,9 @@ namespace CritterCamp.Screens {
             EnabledGestures = GestureType.Tap;
         }
 
-        ////////////////////////////////////////
-        //     SUPER GHETTO HTTP CALLBACK
-        ////////////////////////////////////////
-        private void GetRequestStreamCallback(IAsyncResult asynchronousResult) {
-            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
-
-            // End the operation
-            Stream postStream = request.EndGetRequestStream(asynchronousResult);
-            //string post = "username=chicken&password=260d619c03f90246712a3692553e7efa&version=0.1";
-            string post = "username=test_user1&password=password&version=0.1";
-
-            // Convert the string into a byte array. 
-            byte[] byteArray = Encoding.UTF8.GetBytes(post);
-
-            // Write to the request stream.
-            postStream.Write(byteArray, 0, post.Length);
-            postStream.Close();
-
-            // Start the asynchronous operation to get the response
-            request.BeginGetResponse(new AsyncCallback(GetResponseCallback), request);
-        }
-
-        private void GetResponseCallback(IAsyncResult asynchronousResult) {
-            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
-
-            // End the operation
-            HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
-            Stream streamResponse = response.GetResponseStream();
-            StreamReader streamRead = new StreamReader(streamResponse);
-            string responseString = streamRead.ReadToEnd();
-
-            // Close the stream object
-            streamResponse.Close();
-            streamRead.Close();
-
-            // Release the HttpWebResponse
-            response.Close();
-
-            HandleLoginResponse(responseString);
-        }
-        /////////////////////////////////////////
+        // TODO: build these using URI builder
+        string url = "http://" + Configuration.HOSTNAME + ":8080/login";
+        string postData = "username=test_user1&password=password&version=0.1";
 
         private async void HandleLoginResponse(String response) {
             System.Diagnostics.Debug.WriteLine(response);
@@ -114,31 +77,30 @@ namespace CritterCamp.Screens {
             }
         }
 
+        private async void startLogin() {
+            // Attempt to login to the server using HTTPS
+            // Lookup login credentials through SQLite
+            // If login credentials don't exist, navigate to user creation screen
+
+            HTTPConnectionResult loginResult = await HTTPConnection.GetPostResult(url, postData);
+            if (!loginResult.error) { // not an error connecting to server
+                // pass the data to handle login response
+                HandleLoginResponse(loginResult.message);
+                CoreApplication.Properties["username"] = "test_user1";
+            }
+            else {
+                // there was an error when connecting to the http server
+                // TODO: create a popup
+                System.Diagnostics.Debug.WriteLine("Error connecting to http server");
+            }
+        }
+
         public override void HandleInput(GameTime gameTime, InputState input) {
             // Read in our gestures
             foreach(GestureSample gesture in input.Gestures) {
                 // If we have a tap
                 if(gesture.GestureType == GestureType.Tap) {
-                    // Attempt to login to the server using HTTPS
-                    // Lookup login credentials through SQLite
-                    // If login credentials don't exist, navigate to user creation screen
-                    /////////////////////////////////////
-                    //      GHETTO TEST HTTP STUFF
-                    /////////////////////////////////////
-                    // DEV
-                    // test user: chicken
-                    // test pass: 260d619c03f90246712a3692553e7efa
-                    // test user: flin
-                    // test pass: 5215e16966ea4e8f14d94990d13c2a2e
-                    // PROD
-                    // test user: pig
-                    // test pass: cfbfef4cd57ad6c712e6fff9e6e0487498a836e3
-                    HttpWebRequest request = (HttpWebRequest)HttpWebRequest.CreateHttp("http://" + Configuration.HOSTNAME + ":8080/login");
-                    request.AllowWriteStreamBuffering = true;
-                    request.Method = "POST";
-                    request.ContentType = "application/x-www-form-urlencoded";
-                    CoreApplication.Properties["username"] = "test_user1";
-                    request.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), request);
+                    startLogin();
                 }
             }
 

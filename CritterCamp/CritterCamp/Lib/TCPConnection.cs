@@ -9,15 +9,15 @@ using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 
 namespace CritterCamp {
-    public delegate void MessageReceived(string message, bool error, TCPConnection connection); // Callback for when a message is received from the server
-    public delegate void ConnectionClosed();
+    public delegate void TCPMessageReceived(string message, bool error, TCPConnection connection); // Callback for when a message is received from the server
+    public delegate void TCPConnectionClosed();
 
     public class TCPConnection {
         StreamSocket mSocket = null; // Cached Socket object that will be used by each call for the lifetime of this class
         DataWriter writer;
         DataReader reader;
-        public MessageReceived pMessageReceivedEvent; // delegate object for message received callback
-        public ConnectionClosed pConnectionClosedEvent; // delegate ovbject connection closed callback
+        public TCPMessageReceived pMessageReceivedEvent; // delegate object for message received callback
+        public TCPConnectionClosed pConnectionClosedEvent; // delegate object connection closed callback
         private int mId;
         private static int sConnectionId = 0;
 
