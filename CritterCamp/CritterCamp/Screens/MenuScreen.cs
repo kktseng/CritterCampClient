@@ -58,17 +58,13 @@ namespace CritterCamp.Screens {
             foreach(GestureSample gesture in input.Gestures) {
                 // If we have a tap
                 if(gesture.GestureType == GestureType.Tap) {
-                    // Wait for backbuffer to initialize
-                    if(coordScale == null)
-                        return;
-
                     Vector2 scaledPos = gesture.Position;
 
-                    // Flip coordinates to scale with backBuffer
+                    // Flip coordinates to scale with input buffer
                     if(Constants.ROTATION != 0) {
-                        scaledPos = new Vector2(gesture.Position.Y, backBuffer.X - gesture.Position.X);
+                        scaledPos = new Vector2(gesture.Position.Y, Constants.INPUT_HEIGHT - gesture.Position.X);
                     }
-                    scaledPos *= coordScale;
+                    scaledPos *= Constants.INPUT_SCALE;
 
                     // Test the tap against the buttons until one of the buttons handles the tap
                     foreach(Button b in menuButtons) {

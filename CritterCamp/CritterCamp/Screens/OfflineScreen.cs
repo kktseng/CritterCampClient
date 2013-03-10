@@ -26,7 +26,7 @@ namespace CritterCamp.Screens {
 
         // TODO: build these using URI builder
         string url = "http://" + Configuration.HOSTNAME + ":8080/login";
-        string postData = "username=test_user1&password=password&version=0.1";
+        string postData = "username=test_user2&password=password&version=0.1";
 
         private async void HandleLoginResponse(String response) {
             System.Diagnostics.Debug.WriteLine(response);
@@ -86,7 +86,7 @@ namespace CritterCamp.Screens {
             if (!loginResult.error) { // not an error connecting to server
                 // pass the data to handle login response
                 HandleLoginResponse(loginResult.message);
-                CoreApplication.Properties["username"] = "test_user1";
+                CoreApplication.Properties["username"] = "test_user2";
             }
             else {
                 // there was an error when connecting to the http server

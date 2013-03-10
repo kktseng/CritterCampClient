@@ -37,7 +37,7 @@ namespace CritterCamp.Screens {
                 conn.pMessageReceivedEvent += StartGame;
 
                 // Search for group
-                conn.SendMessage(@"{ ""action"": ""group"", ""type"": ""join"", ""game"": ""starry_night"" }");
+                conn.SendMessage(@"{ ""action"": ""group"", ""type"": ""join"" }");
             }
         }
 

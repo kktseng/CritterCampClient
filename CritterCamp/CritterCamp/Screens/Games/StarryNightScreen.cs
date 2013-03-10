@@ -53,21 +53,18 @@ namespace CritterCamp.Screens.Games {
         protected Dictionary<string, Player> players = new Dictionary<string, Player>();
         protected List<Arrow> commandList = new List<Arrow>();
         protected List<Arrow> inputArrows = new List<Arrow>();
-        protected List<string> usernames;
 
         protected int rounds = 0; // Number of rounds that have been played
         protected int commandNum = COMMAND_INIT; // Number of commands to display
         protected int currentMove; // Current dance move
         protected double timerBar = 0;
-        protected string playerName = (string)CoreApplication.Properties["username"];
         private TimeSpan start;
         private TimeSpan timer;
 
         // temp until I can figure out how to deal with fonts
         protected SpriteFont arial;
 
-        public StarryNightScreen(List<string> usernames, List<string> pictures) : base() {
-            this.usernames = usernames;
+        public StarryNightScreen(List<string> usernames, List<string> pictures) : base(usernames, pictures) {
             currentRank = usernames.Count;
             for(int i = 0; i < usernames.Count; i++) {
                 players[usernames[i]] = new Player(this, new Vector2(100 + 650 * i, 800));

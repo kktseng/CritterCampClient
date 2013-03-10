@@ -24,9 +24,14 @@ namespace CritterCamp.Screens.Games {
         protected List<IAnimatedObject> toAdd = new List<IAnimatedObject>();
         protected List<IAnimatedObject> toRemove = new List<IAnimatedObject>();
 
+        protected string playerName = (string)CoreApplication.Properties["username"];
+        protected List<string> usernames, pictures;
+
         protected bool scoreReceived = false; // We can't exit immediately due to race conditions
 
-        public BaseGameScreen() : base() {
+        public BaseGameScreen(List<string> usernames, List<string> pictures) : base() {
+            this.usernames = usernames;
+            this.pictures = pictures;
         }
 
         protected virtual void MessageReceived(string message, bool error, TCPConnection connection) {

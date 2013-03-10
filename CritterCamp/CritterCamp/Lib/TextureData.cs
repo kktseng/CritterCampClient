@@ -43,6 +43,10 @@ namespace CritterCamp {
             smoke1, smoke2, smoke3, smoke4
         }
 
+        public enum Explosions {
+            nuke1, nuke2, nuke3, nuke4, nuke5, nuke6, nuke7, nuke8, nuke9, nuke10, nuke11, nuke12, nuke13, nuke14, nuke15, nuke16
+        }
+
         public enum Doodads {
             signTopLeft, signTopMid, signTopRight, signBtmLeft, signBtmMid, signBtmRight,
             jetPack1, jetPack2, jetPack3, jetPack4,

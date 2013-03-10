@@ -15,6 +15,7 @@ namespace CritterCamp.Screens.Games {
     class JetpackJamboreeScreen : BaseGameScreen {
         public static int PIG_DELAY = 2;
         public static int MAX_PIG_COUNT = 10;
+        public bool exploded = false;
 
         protected TileMap tileMap, doodadMap;
         protected TimeSpan timeSincePig;
@@ -28,7 +29,7 @@ namespace CritterCamp.Screens.Games {
         protected Random rand = new Random();
 
         public JetpackJamboreeScreen(List<string> usernames, List<string> pictures)
-            : base() {
+            : base(usernames, pictures) {
             for(int i = 0; i < 4; i++) {
                 pennedPigs.Add(new List<Pig>());
             }
@@ -41,6 +42,7 @@ namespace CritterCamp.Screens.Games {
             textureList["map"] = cm.Load<Texture2D>("mapTextures");
             textureList["doodads"] = cm.Load<Texture2D>("doodads");
             textureList["pig"] = cm.Load<Texture2D>("pig");
+            textureList["explosion"] = cm.Load<Texture2D>("explosion");
             setMap();
         }
 
@@ -92,16 +94,13 @@ namespace CritterCamp.Screens.Games {
                 selectedPig = null;
             } else {
                 foreach(TouchLocation loc in input.TouchState) {
-                    if(coordScale == null) {
-                        return;
-                    }
                     Vector2 scaledPos = loc.Position;
 
-                    // Flip coordinates to scale with backBuffer
+                    // Flip coordinates to scale with input buffer
                     if(Constants.ROTATION != 0) {
-                        scaledPos = new Vector2(loc.Position.Y, backBuffer.X - loc.Position.X);
+                        scaledPos = new Vector2(loc.Position.Y, Constants.INPUT_HEIGHT - loc.Position.X);
                     }
-                    scaledPos *= coordScale;
+                    scaledPos *= Constants.INPUT_SCALE;
 
                     if(selectedPig == null) {
                         foreach(Pig p in mainPigs) {
@@ -113,12 +112,16 @@ namespace CritterCamp.Screens.Games {
                                 selectedPig = p;
                                 p.selected = true;
                                 old_pos = selectedPig.getCoord();
+
+                                if(p.getState() == PigStates.Entering) {
+                                    old_pos += new Vector2(0, 96);
+                                    p.timeLeft = Pig.EXPLODE_TIME;
+                                }
                                 break;
                             }
                         }
                     } else {
                         selectedPig.setCoord(scaledPos);
-                        break;
                     }
                 }
             }
@@ -126,30 +129,48 @@ namespace CritterCamp.Screens.Games {
             base.HandleInput(gameTime, input);
         }
 
-        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
-            // Randomly bring in pigs
-            if((gameTime.TotalGameTime - timeSincePig).TotalSeconds > PIG_DELAY && rand.Next(1000) < gameTime.TotalGameTime.Seconds) {
-                mainPigs.Add(new Pig(this, PigStates.Entering, rand));
-                timeSincePig = gameTime.TotalGameTime;
-            }
-
-            // Check if any sections are filled
-            for(int i = 0; i < pennedPigs.Count; i++) {
-                if(pennedPigs[i].Count > MAX_PIG_COUNT) {
-                    foreach(Pig p in pennedPigs[i]) {
-                        p.setState(PigStates.Flying);
-                    }
-                    pennedPigs[i].Clear();
-                    // Send packet to send pigs to other players
-                    JObject packet = new JObject(
-                        new JProperty("action", "game"),
-                        new JProperty("name", "jetpack_jamboree")
-
-                    );
-                    conn.SendMessage(packet.ToString());
+        public void Explode() {
+            exploded = true;
+            for(int i = 0; i < 4; i++) {
+                foreach(Pig p in pennedPigs[i]) {
+                    p.setState(PigStates.Standing);
                 }
             }
+            foreach(Pig p in mainPigs) {
+                p.setState(PigStates.Standing);
+            }
+        }
 
+        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
+            if(!exploded) {
+                // Randomly bring in pigs
+                if((gameTime.TotalGameTime - timeSincePig).TotalSeconds > PIG_DELAY && rand.Next(1000) < gameTime.TotalGameTime.Seconds) {
+                    mainPigs.Add(new Pig(this, PigStates.Entering, rand));
+                    timeSincePig = gameTime.TotalGameTime;
+                }
+
+                // Check if any sections are filled
+                for(int i = 0; i < pennedPigs.Count; i++) {
+                    if(pennedPigs[i].Count >= MAX_PIG_COUNT) {
+                        foreach(Pig p in pennedPigs[i]) {
+                            p.setState(PigStates.Flying);
+                        }
+                        pennedPigs[i].Clear();
+                        // Send packet to send pigs to other players
+                        JObject packet = new JObject(
+                            new JProperty("action", "game"),
+                            new JProperty("name", "jetpack_jamboree"),
+                            new JProperty("data", new JObject(
+                                new JProperty("action", "fly"),
+                                new JProperty("color", i)
+                            ))
+                        );
+                        conn.SendMessage(packet.ToString());
+                    }
+                }
+            } else {
+
+            }
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
@@ -178,6 +199,14 @@ namespace CritterCamp.Screens.Games {
             JObject o = JObject.Parse(message);
             if((string)o["action"] == "game" && (string)o["name"] == "jetpack_jamboree") {
                 JObject data = (JObject)o["data"];
+                if(playerName != (string)data["source"]) {
+                    // Add new pigs flying in
+                    for(int i = 0; i < (int)(MAX_PIG_COUNT / (usernames.Count - 1)); i++) {
+                        Pig p = new Pig(this, PigStates.Falling, rand);
+                        p.color = (int)data["color"];
+                        mainPigs.Add(p);
+                    }
+                }
             }
         }
 

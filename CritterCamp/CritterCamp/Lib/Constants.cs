@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,11 @@ namespace CritterCamp {
 
         public static int BUFFER_WIDTH = 1920;
         public static int BUFFER_HEIGHT = 1080;
+
+        public static int INPUT_WIDTH = 800;
+        public static int INPUT_HEIGHT = 480;
+
+        public static Vector2 INPUT_SCALE = new Vector2((float)BUFFER_WIDTH / (float)INPUT_WIDTH, (float)BUFFER_HEIGHT / (float)INPUT_HEIGHT);
 
         public static int BUFFER_SPRITE_DIM = 96;
 
