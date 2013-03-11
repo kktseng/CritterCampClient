@@ -26,6 +26,8 @@ namespace CritterCamp.Screens.Games {
         protected List<Pig> mainPigs = new List<Pig>();
         protected List<List<Pig>> pennedPigs = new List<List<Pig>>();
 
+        protected List<string> deadUsers = new List<string>(); // keeps track of who lost
+
         protected Random rand = new Random();
 
         public JetpackJamboreeScreen(List<string> usernames, List<string> pictures)
@@ -139,6 +141,15 @@ namespace CritterCamp.Screens.Games {
             foreach(Pig p in mainPigs) {
                 p.setState(PigStates.Standing);
             }
+            // Inform other players of explosion
+            JObject packet = new JObject(
+                new JProperty("action", "game"),
+                new JProperty("name", "jetpack_jamboree"),
+                new JProperty("data", new JObject(
+                    new JProperty("action", "exploded")
+                ))
+            );
+            conn.SendMessage(packet.ToString());
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
@@ -199,12 +210,34 @@ namespace CritterCamp.Screens.Games {
             JObject o = JObject.Parse(message);
             if((string)o["action"] == "game" && (string)o["name"] == "jetpack_jamboree") {
                 JObject data = (JObject)o["data"];
-                if(playerName != (string)data["source"]) {
-                    // Add new pigs flying in
-                    for(int i = 0; i < (int)(MAX_PIG_COUNT / (usernames.Count - 1)); i++) {
-                        Pig p = new Pig(this, PigStates.Falling, rand);
-                        p.color = (int)data["color"];
-                        mainPigs.Add(p);
+                if((string)data["action"] == "add") {
+                    if(playerName != (string)data["source"]) {
+                        // Add new pigs flying in
+                        for(int i = 0; i < (int)(MAX_PIG_COUNT / (usernames.Count - 1)); i++) {
+                            Pig p = new Pig(this, PigStates.Falling, rand);
+                            p.color = (int)data["color"];
+                            mainPigs.Add(p);
+                        }
+                    }
+                } else if((string)data["action"] == "exploded") {
+                    string exploded_user = (string)data["source"];
+                    if(!deadUsers.Contains(exploded_user)) {
+                        deadUsers.Insert(0, exploded_user);
+                        if(deadUsers.Count == usernames.Count - 1 && !deadUsers.Contains(playerName)) {
+                            deadUsers.Insert(0, playerName);
+                        }
+                        if(deadUsers.Count >= usernames.Count) {
+                            // Sync scores
+                            JObject packet = new JObject(
+                                new JProperty("action", "group"),
+                                new JProperty("type", "report_score"),
+                                new JProperty("score", new JObject(
+                                    from username in deadUsers
+                                    select new JProperty(username, deadUsers.IndexOf(username))
+                                ))
+                            );
+                            conn.SendMessage(packet.ToString());
+                        }
                     }
                 }
             }

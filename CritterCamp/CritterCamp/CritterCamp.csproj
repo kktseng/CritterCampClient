@@ -95,7 +95,7 @@
     <Compile Include="ScreenManager\ScreenManager.cs" />
     <Compile Include="Screens\Button.cs" />
     <Compile Include="Screens\Games\BaseGameScreen.cs" />
-    <Compile Include="Screens\Games\JetpackJamboree.cs" />
+    <Compile Include="Screens\Games\JetpackJamboreeScreen.cs" />
     <Compile Include="Screens\Games\JetpackJamboree\Explosion.cs" />
     <Compile Include="Screens\Games\JetpackJamboree\Pig.cs" />
     <Compile Include="Screens\Games\Lib\AnimatedObject.cs" />

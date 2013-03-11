@@ -25,7 +25,7 @@ namespace CritterCamp.Screens {
         }
 
         // TODO: build these using URI builder
-        string url = "http://" + Configuration.HOSTNAME + ":8080/login";
+        string url = "https://" + Configuration.HOSTNAME + ":8888/login";
         string postData = "username=test_user2&password=password&version=0.1";
 
         private async void HandleLoginResponse(String response) {
