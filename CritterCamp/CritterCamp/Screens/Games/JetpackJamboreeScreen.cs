@@ -30,8 +30,8 @@ namespace CritterCamp.Screens.Games {
 
         protected Random rand = new Random();
 
-        public JetpackJamboreeScreen(List<string> usernames, List<string> pictures)
-            : base(usernames, pictures) {
+        public JetpackJamboreeScreen(List<PlayerData> playerData)
+            : base(playerData) {
             for(int i = 0; i < 4; i++) {
                 pennedPigs.Add(new List<Pig>());
             }
@@ -213,7 +213,7 @@ namespace CritterCamp.Screens.Games {
                 if((string)data["action"] == "add") {
                     if(playerName != (string)data["source"]) {
                         // Add new pigs flying in
-                        for(int i = 0; i < (int)(MAX_PIG_COUNT / (usernames.Count - 1)); i++) {
+                        for(int i = 0; i < (int)(MAX_PIG_COUNT / (playerData.Count - 1)); i++) {
                             Pig p = new Pig(this, PigStates.Falling, rand);
                             p.color = (int)data["color"];
                             mainPigs.Add(p);
@@ -223,10 +223,10 @@ namespace CritterCamp.Screens.Games {
                     string exploded_user = (string)data["source"];
                     if(!deadUsers.Contains(exploded_user)) {
                         deadUsers.Insert(0, exploded_user);
-                        if(deadUsers.Count == usernames.Count - 1 && !deadUsers.Contains(playerName)) {
+                        if(deadUsers.Count == playerData.Count - 1 && !deadUsers.Contains(playerName)) {
                             deadUsers.Insert(0, playerName);
                         }
-                        if(deadUsers.Count >= usernames.Count) {
+                        if(deadUsers.Count >= playerData.Count) {
                             // Sync scores
                             JObject packet = new JObject(
                                 new JProperty("action", "group"),

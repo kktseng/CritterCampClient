@@ -14,7 +14,17 @@ namespace CritterCamp.Screens {
     class VotingScreen : GameScreen {
         protected bool voted = false;
 
+        protected List<PlayerData> players = new List<PlayerData>();
+
         public VotingScreen() {
+            // Load relevant information
+            JArray playerInfo = (JArray)CoreApplication.Properties["group_info"];
+            JArray gameChoices = (JArray)CoreApplication.Properties["game_choices"];
+            foreach(JObject playerData in playerInfo) {
+                players.Add(new PlayerData((string)playerData["username"], (string)playerData["profile"], (int)playerData["level"]));
+            }
+            CoreApplication.Properties["player_data"] = players;
+
             // Allow the user to tap
             EnabledGestures = GestureType.Tap;
         }
@@ -26,7 +36,7 @@ namespace CritterCamp.Screens {
                     Helpers.Sync((JArray data) => {
                         CoreApplication.Properties["currentGame"] = typeof(JetpackJamboreeScreen);
                         ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));                 
-                        LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(typeof(JetpackJamboreeScreen)));
+                        LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(typeof(TutorialScreen)));
                     }, "myvote");
                 }
             }

@@ -25,8 +25,8 @@ namespace GameStateManagement {
                 Type currGame = (Type)CoreApplication.Properties["currentGame"];
                 return new TutorialScreen(currGame);
             } else if(typeof(BaseGameScreen).IsAssignableFrom(screenType)) {
-                List<string> usernames = (List<string>)CoreApplication.Properties["group_usernames"];
-                return Activator.CreateInstance(screenType, new object[2] { usernames, usernames }) as GameScreen;
+                List<PlayerData> playerData = (List<PlayerData>)CoreApplication.Properties["player_data"];
+                return Activator.CreateInstance(screenType, new object[1] { playerData }) as GameScreen;
             } else {
                 return Activator.CreateInstance(screenType) as GameScreen;
             }

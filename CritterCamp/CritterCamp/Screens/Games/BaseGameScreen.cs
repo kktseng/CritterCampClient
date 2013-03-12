@@ -12,6 +12,17 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 
 namespace CritterCamp.Screens.Games {
+    public struct PlayerData {
+        public string username;
+        public string profile;
+        public int level;
+
+        public PlayerData(string username, string profile, int level) {
+            this.username = username;
+            this.profile = profile;
+            this.level = level;
+        }
+    }
     public class BaseGameScreen : GameScreen {
         public Dictionary<string, Texture2D> textureList = new Dictionary<string, Texture2D>();
         public Dictionary<string, SpriteFont> fontList = new Dictionary<string, SpriteFont>();
@@ -25,13 +36,12 @@ namespace CritterCamp.Screens.Games {
         protected List<IAnimatedObject> toRemove = new List<IAnimatedObject>();
 
         protected string playerName = (string)CoreApplication.Properties["username"];
-        protected List<string> usernames, pictures;
+        protected List<PlayerData> playerData;
 
         protected bool scoreReceived = false; // We can't exit immediately due to race conditions
 
-        public BaseGameScreen(List<string> usernames, List<string> pictures) : base() {
-            this.usernames = usernames;
-            this.pictures = pictures;
+        public BaseGameScreen(List<PlayerData> playerData) : base() {
+            this.playerData = playerData;
         }
 
         protected virtual void MessageReceived(string message, bool error, TCPConnection connection) {

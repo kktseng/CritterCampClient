@@ -48,14 +48,12 @@ namespace CritterCamp.Screens {
 
         protected virtual void StartGame(string message, bool error, TCPConnection connection) {
             JObject o = JObject.Parse(message);
-            if((string)o["action"] == "start_game") {
+            if((string)o["action"] == "group" && (string)o["type"] == "ready") {
                 connection.pMessageReceivedEvent -= StartGame;
-                JArray playerInfo = (JArray)o["players"];
-                List<string> usernames = new List<string>();
-                foreach(JObject playerData in playerInfo) {
-                    usernames.Add((string)playerData["username"]);
-                }
-                CoreApplication.Properties["group_usernames"] = usernames;
+                JArray playerInfo = (JArray)o["users"];
+                JArray gameChoices = (JArray)o["vote"];
+                CoreApplication.Properties["group_info"] = playerInfo;
+                CoreApplication.Properties["game_choices"] = gameChoices;
                 startingGame = true;
             }
         }

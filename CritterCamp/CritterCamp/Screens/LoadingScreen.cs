@@ -32,8 +32,7 @@ namespace CritterCamp.Screens {
     ///   next screen, which may take a long time to load its data. The loading
     ///   screen will be the only thing displayed while this load is taking place.
     /// </summary>
-    class LoadingScreen : GameScreen
-    {
+    class LoadingScreen : GameScreen {
         #region Fields
 
         bool loadingIsSlow;
@@ -51,8 +50,7 @@ namespace CritterCamp.Screens {
         /// be activated via the static Load method instead.
         /// </summary>
         private LoadingScreen(ScreenManager screenManager, bool loadingIsSlow,
-                              GameScreen[] screensToLoad)
-        {
+                              GameScreen[] screensToLoad) {
             this.loadingIsSlow = loadingIsSlow;
             this.screensToLoad = screensToLoad;
 
@@ -66,10 +64,9 @@ namespace CritterCamp.Screens {
         /// </summary>
         public static void Load(ScreenManager screenManager, bool loadingIsSlow,
                                 PlayerIndex? controllingPlayer,
-                                params GameScreen[] screensToLoad)
-        {
+                                params GameScreen[] screensToLoad) {
             // Tell all the current screens to transition off.
-            foreach (GameScreen screen in screenManager.GetScreens())
+            foreach(GameScreen screen in screenManager.GetScreens())
                 screen.ExitScreen();
 
             // Create and activate the loading screen.
@@ -89,20 +86,16 @@ namespace CritterCamp.Screens {
         /// Updates the loading screen.
         /// </summary>
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
-                                                       bool coveredByOtherScreen)
-        {
+                                                       bool coveredByOtherScreen) {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
             // If all the previous screens have finished transitioning
             // off, it is time to actually perform the load.
-            if (otherScreensAreGone)
-            {
+            if(otherScreensAreGone) {
                 ScreenManager.RemoveScreen(this);
 
-                foreach (GameScreen screen in screensToLoad)
-                {
-                    if (screen != null)
-                    {
+                foreach(GameScreen screen in screensToLoad) {
+                    if(screen != null) {
                         ScreenManager.AddScreen(screen, ControllingPlayer);
                     }
                 }
@@ -118,16 +111,14 @@ namespace CritterCamp.Screens {
         /// <summary>
         /// Draws the loading screen.
         /// </summary>
-        public override void Draw(GameTime gameTime)
-        {
+        public override void Draw(GameTime gameTime) {
             // If we are the only active screen, that means all the previous screens
             // must have finished transitioning off. We check for this in the Draw
             // method, rather than in Update, because it isn't enough just for the
             // screens to be gone: in order for the transition to look good we must
             // have actually drawn a frame without them before we perform the load.
-            if ((ScreenState == ScreenState.Active) &&
-                (ScreenManager.GetScreens().Length == 1))
-            {
+            if((ScreenState == ScreenState.Active) &&
+                (ScreenManager.GetScreens().Length == 1)) {
                 otherScreensAreGone = true;
             }
 
@@ -137,8 +128,7 @@ namespace CritterCamp.Screens {
             // second while returning from the game to the menus. This parameter
             // tells us how long the loading is going to take, so we know whether
             // to bother drawing the message.
-            if (loadingIsSlow)
-            {
+            if(loadingIsSlow) {
                 SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
                 SpriteFont font = ScreenManager.Font;
 

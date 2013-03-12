@@ -1,6 +1,7 @@
 ﻿using CritterCamp.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
@@ -16,8 +17,8 @@ namespace CritterCamp.Screens {
     /// Provides a basic base screen for menus on Windows Phone leveraging the Button class.
     /// </summary>
     class MenuScreen : GameScreen {
-
-        List<Button> menuButtons = new List<Button>();
+        protected List<Button> menuButtons = new List<Button>();
+        private Type backScreen = null;
 
         /// <summary>
         /// Gets the list of buttons, so derived classes can add or change the menu contents.
@@ -35,7 +36,27 @@ namespace CritterCamp.Screens {
             EnabledGestures = GestureType.Tap;
         }
 
+        public void setBack(Type backScreen) {
+            this.backScreen = backScreen;
+            Button back = new Button(this, "backButton", new Vector2(160, 160));
+            back.Position = new Vector2(200, 200);
+            back.Tapped += goBack;
+            menuButtons.Add(back);
+        }
+
+        protected void goBack(object sender, EventArgs e) {
+            ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
+            LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(backScreen));
+        }
+
         public override void Activate(bool instancePreserved) {
+            // Load the button image if not loaded
+            ContentManager cm = ScreenManager.Game.Content;
+            if(!ScreenManager.Textures.ContainsKey("button")) {
+                ScreenManager.Textures.Add("button", cm.Load<Texture2D>("button600"));
+                ScreenManager.Textures.Add("backButton", cm.Load<Texture2D>("backButton"));
+            }
+
             // When the screen is activated, we have a valid ScreenManager so we can arrange
             // our buttons on the screen
             float center = ScreenManager.GraphicsDevice.Viewport.Bounds.Center.X;
@@ -88,8 +109,9 @@ namespace CritterCamp.Screens {
             sd.Draw(ScreenManager.Textures["menuBG"], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2 + 36), 0, new Vector2(1280, 768));
 
             // Draw all of the buttons
-            foreach(Button b in menuButtons)
+            foreach(Button b in menuButtons) {
                 b.Draw(this);
+            }
 
             // Make the menu slide into place during transitions, using a
             // power curve to make things look more interesting (this makes

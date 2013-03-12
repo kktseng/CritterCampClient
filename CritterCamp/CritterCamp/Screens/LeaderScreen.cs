@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using CritterCamp.Screens.Games.Lib;
+using Microsoft.Xna.Framework;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,7 @@ namespace CritterCamp.Screens {
             : base("Leaderboards") {
             // Request the leaderboards
             TCPConnection conn = (TCPConnection)CoreApplication.Properties["TCPSocket"];
+            setBack(typeof(HomeScreen));
             JObject packet = new JObject(
                 new JProperty("action", "rank"),
                 new JProperty("type", "leader")
@@ -27,10 +30,20 @@ namespace CritterCamp.Screens {
             if((string)o["action"] == "rank" && (string)o["type"] == "leader") {
                 connection.pMessageReceivedEvent -= handleLeaders;
                 JArray leaderArr = (JArray)o["leaders"];
-                foreach(string name in leaderArr) {
-                    leaders.Add(name);
+                foreach(JToken name in leaderArr) {
+                    leaders.Add((string)name);
                 }
             }
+        }
+
+        public override void Draw(GameTime gameTime) {
+            base.Draw(gameTime);
+            ScreenManager.SpriteBatch.Begin();
+            SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+            for(int i = 0; i < leaders.Count; i++) {
+                sd.DrawString(ScreenManager.Font, (i + 1) + ". " + leaders[i], new Vector2(1000, 100 + 100 * i));
+            }
+            ScreenManager.SpriteBatch.End();
         }
     }
 

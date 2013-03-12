@@ -14,7 +14,9 @@ namespace CritterCamp.Screens {
     /// Represents a touchable button.
     /// </summary>
     class Button {
-        public string Text = "Button";
+        public string Text = "";
+        public string image;
+        public Vector2 size;
         public Vector2 Position = Vector2.Zero;
 
         public event EventHandler<EventArgs> Tapped;
@@ -25,6 +27,13 @@ namespace CritterCamp.Screens {
         /// <param name="text">The text to display in the button.</param>
         public Button(GameScreen screen, string text) {
             Text = text;
+            size = new Vector2(600, 160);
+            image = "button";
+        }
+
+        public Button(GameScreen screen, string image, Vector2 size) {
+            this.image = image;
+            this.size = size;
         }
 
         /// <summary>
@@ -41,7 +50,6 @@ namespace CritterCamp.Screens {
         /// <param name="tap">The location of the tap.</param>
         /// <returns>True if the button was tapped, false otherwise.</returns>
         public bool HandleTap(Vector2 tap) {
-            Vector2 size = new Vector2(600, 160);
             if(tap.X >= Position.X - size.X / 2 &&
                 tap.Y >= Position.Y - size.Y / 2 &&
                 tap.X <= Position.X + size.X / 2 &&
@@ -63,16 +71,8 @@ namespace CritterCamp.Screens {
             SpriteFont font = screen.ScreenManager.Font;
             SpriteDrawer sd = (SpriteDrawer)screen.ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
 
-            // Load the button image if not loaded
-            if(!screen.ScreenManager.Textures.ContainsKey("button")) {
-                ContentManager cm = screen.ScreenManager.Game.Content;
-                screen.ScreenManager.Textures.Add("button", cm.Load<Texture2D>("button600"));
-            }
-            Texture2D button = screen.ScreenManager.Textures["button"];
-
-            // Draw the button
-            
-            sd.Draw(button, Position, 0, new Vector2(600, 160));
+            // Draw the button           
+            sd.Draw(screen.ScreenManager.Textures[image], Position, 0, size);
             sd.DrawString(font, Text, Position); 
         }
     }
