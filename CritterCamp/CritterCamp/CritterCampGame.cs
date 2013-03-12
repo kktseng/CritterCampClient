@@ -5,13 +5,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace CritterCamp
-{
+namespace CritterCamp {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class CritterCampGame : Game
-    {
+    public class CritterCampGame : Game {
         GraphicsDeviceManager graphics;
         ScreenManager screenManager;
         ScreenFactory screenFactory;

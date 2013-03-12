@@ -11,8 +11,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace GameStateManagement
-{
+namespace GameStateManagement {
     /// <summary>
     /// Defines an action that is designated by some set of buttons and/or keys.
     /// 
@@ -25,8 +24,7 @@ namespace GameStateManagement
     /// without having to directly modify the InputState type. This means more customization by your games
     /// without having to change the core classes of Game State Management.
     /// </summary>
-    public class InputAction
-    {
+    public class InputAction {
         private readonly Buttons[] buttons;
         private readonly Keys[] keys;
         private readonly bool newPressOnly;
@@ -43,8 +41,7 @@ namespace GameStateManagement
         /// <param name="keys">An array of keys that can trigger the action.</param>
         /// <param name="newPressOnly">Whether the action only occurs on the first press of one of the buttons/keys, 
         /// false if it occurs each frame one of the buttons/keys is down.</param>
-        public InputAction(Buttons[] buttons, Keys[] keys, bool newPressOnly)
-        {
+        public InputAction(Buttons[] buttons, Keys[] keys, bool newPressOnly) {
             // Store the buttons and keys. If the arrays are null, we create a 0 length array so we don't
             // have to do null checks in the Evaluate method
             this.buttons = buttons != null ? buttons.Clone() as Buttons[] : new Buttons[0];
@@ -60,31 +57,25 @@ namespace GameStateManagement
         /// <param name="controllingPlayer">The player to test, or null to allow any player.</param>
         /// <param name="player">If controllingPlayer is null, this is the player that performed the action.</param>
         /// <returns>True if the action occurred, false otherwise.</returns>
-        public bool Evaluate(InputState state, PlayerIndex? controllingPlayer, out PlayerIndex player)
-        {
+        public bool Evaluate(InputState state, PlayerIndex? controllingPlayer, out PlayerIndex player) {
             // Figure out which delegate methods to map from the state which takes care of our "newPressOnly" logic
             ButtonPress buttonTest;
             KeyPress keyTest;
-            if (newPressOnly)
-            {
+            if(newPressOnly) {
                 buttonTest = state.IsNewButtonPress;
                 keyTest = state.IsNewKeyPress;
-            }
-            else
-            {
+            } else {
                 buttonTest = state.IsButtonPressed;
                 keyTest = state.IsKeyPressed;
             }
 
             // Now we simply need to invoke the appropriate methods for each button and key in our collections
-            foreach (Buttons button in buttons)
-            {
-                if (buttonTest(button, controllingPlayer, out player))
+            foreach(Buttons button in buttons) {
+                if(buttonTest(button, controllingPlayer, out player))
                     return true;
             }
-            foreach (Keys key in keys)
-            {
-                if (keyTest(key, controllingPlayer, out player))
+            foreach(Keys key in keys) {
+                if(keyTest(key, controllingPlayer, out player))
                     return true;
             }
 

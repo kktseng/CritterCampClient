@@ -11,15 +11,12 @@ using Microsoft.Xna.Framework;
 using MonoGame.Framework.WindowsPhone;
 using CritterCamp.Resources;
 
-namespace CritterCamp
-{
-    public partial class GamePage : PhoneApplicationPage
-    {
+namespace CritterCamp {
+    public partial class GamePage : PhoneApplicationPage {
         private CritterCampGame _game;
 
         // Constructor
-        public GamePage()
-        {
+        public GamePage() {
             InitializeComponent();
 
             _game = XamlGame<CritterCampGame>.Create("", XnaSurface);

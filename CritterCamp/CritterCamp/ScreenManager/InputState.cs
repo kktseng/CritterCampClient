@@ -12,16 +12,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 
-namespace GameStateManagement
-{
+namespace GameStateManagement {
     /// <summary>
     /// Helper for reading input from keyboard, gamepad, and touch input. This class 
     /// tracks both the current and previous state of the input devices, and implements 
     /// query methods for high level input actions such as "move up through the menu"
     /// or "pause the game".
     /// </summary>
-    public class InputState
-    {
+    public class InputState {
         public const int MaxInputs = 4;
 
         public readonly KeyboardState[] CurrentKeyboardStates;
@@ -35,13 +33,12 @@ namespace GameStateManagement
         public TouchCollection TouchState;
 
         public readonly List<GestureSample> Gestures = new List<GestureSample>();
-        
+
 
         /// <summary>
         /// Constructs a new input state.
         /// </summary>
-        public InputState()
-        {
+        public InputState() {
             CurrentKeyboardStates = new KeyboardState[MaxInputs];
             CurrentGamePadStates = new GamePadState[MaxInputs];
 
@@ -54,10 +51,8 @@ namespace GameStateManagement
         /// <summary>
         /// Reads the latest state user input.
         /// </summary>
-        public void Update()
-        {
-            for (int i = 0; i < MaxInputs; i++)
-            {
+        public void Update() {
+            for(int i = 0; i < MaxInputs; i++) {
                 LastKeyboardStates[i] = CurrentKeyboardStates[i];
                 LastGamePadStates[i] = CurrentGamePadStates[i];
 
@@ -70,8 +65,7 @@ namespace GameStateManagement
 
             // Read in any detected gestures into our list for the screens to later process
             Gestures.Clear();
-            while (TouchPanel.IsGestureAvailable)
-            {
+            while(TouchPanel.IsGestureAvailable) {
                 Gestures.Add(TouchPanel.ReadGesture());
             }
         }
@@ -83,19 +77,15 @@ namespace GameStateManagement
         /// If this is null, it will accept input from any player. When a keypress
         /// is detected, the output playerIndex reports which player pressed it.
         /// </summary>
-        public bool IsKeyPressed(Keys key, PlayerIndex? controllingPlayer, out PlayerIndex playerIndex)
-        {
-            if (controllingPlayer.HasValue)
-            {
+        public bool IsKeyPressed(Keys key, PlayerIndex? controllingPlayer, out PlayerIndex playerIndex) {
+            if(controllingPlayer.HasValue) {
                 // Read input from the specified player.
                 playerIndex = controllingPlayer.Value;
 
                 int i = (int)playerIndex;
 
                 return CurrentKeyboardStates[i].IsKeyDown(key);
-            }
-            else
-            {
+            } else {
                 // Accept input from any player.
                 return (IsKeyPressed(key, PlayerIndex.One, out playerIndex) ||
                         IsKeyPressed(key, PlayerIndex.Two, out playerIndex) ||
@@ -111,19 +101,15 @@ namespace GameStateManagement
         /// If this is null, it will accept input from any player. When a button press
         /// is detected, the output playerIndex reports which player pressed it.
         /// </summary>
-        public bool IsButtonPressed(Buttons button, PlayerIndex? controllingPlayer, out PlayerIndex playerIndex)
-        {
-            if (controllingPlayer.HasValue)
-            {
+        public bool IsButtonPressed(Buttons button, PlayerIndex? controllingPlayer, out PlayerIndex playerIndex) {
+            if(controllingPlayer.HasValue) {
                 // Read input from the specified player.
                 playerIndex = controllingPlayer.Value;
 
                 int i = (int)playerIndex;
 
                 return CurrentGamePadStates[i].IsButtonDown(button);
-            }
-            else
-            {
+            } else {
                 // Accept input from any player.
                 return (IsButtonPressed(button, PlayerIndex.One, out playerIndex) ||
                         IsButtonPressed(button, PlayerIndex.Two, out playerIndex) ||
@@ -139,10 +125,8 @@ namespace GameStateManagement
         /// If this is null, it will accept input from any player. When a keypress
         /// is detected, the output playerIndex reports which player pressed it.
         /// </summary>
-        public bool IsNewKeyPress(Keys key, PlayerIndex? controllingPlayer, out PlayerIndex playerIndex)
-        {
-            if (controllingPlayer.HasValue)
-            {
+        public bool IsNewKeyPress(Keys key, PlayerIndex? controllingPlayer, out PlayerIndex playerIndex) {
+            if(controllingPlayer.HasValue) {
                 // Read input from the specified player.
                 playerIndex = controllingPlayer.Value;
 
@@ -150,9 +134,7 @@ namespace GameStateManagement
 
                 return (CurrentKeyboardStates[i].IsKeyDown(key) &&
                         LastKeyboardStates[i].IsKeyUp(key));
-            }
-            else
-            {
+            } else {
                 // Accept input from any player.
                 return (IsNewKeyPress(key, PlayerIndex.One, out playerIndex) ||
                         IsNewKeyPress(key, PlayerIndex.Two, out playerIndex) ||
@@ -168,10 +150,8 @@ namespace GameStateManagement
         /// If this is null, it will accept input from any player. When a button press
         /// is detected, the output playerIndex reports which player pressed it.
         /// </summary>
-        public bool IsNewButtonPress(Buttons button, PlayerIndex? controllingPlayer, out PlayerIndex playerIndex)
-        {
-            if (controllingPlayer.HasValue)
-            {
+        public bool IsNewButtonPress(Buttons button, PlayerIndex? controllingPlayer, out PlayerIndex playerIndex) {
+            if(controllingPlayer.HasValue) {
                 // Read input from the specified player.
                 playerIndex = controllingPlayer.Value;
 
@@ -179,9 +159,7 @@ namespace GameStateManagement
 
                 return (CurrentGamePadStates[i].IsButtonDown(button) &&
                         LastGamePadStates[i].IsButtonUp(button));
-            }
-            else
-            {
+            } else {
                 // Accept input from any player.
                 return (IsNewButtonPress(button, PlayerIndex.One, out playerIndex) ||
                         IsNewButtonPress(button, PlayerIndex.Two, out playerIndex) ||
