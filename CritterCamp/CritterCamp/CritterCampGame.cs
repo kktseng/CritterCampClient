@@ -41,7 +41,7 @@ namespace CritterCamp {
             Services.AddService(typeof(SpriteDrawer), spriteDrawer);
 
             // Add new screens
-            screenManager.AddScreen(new OfflineScreen(), null);
+            screenManager.AddScreen(new HomeScreen(), null);
         }
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using Microsoft.Xna.Framework;
 using MonoGame.Framework.WindowsPhone;
 using CritterCamp.Resources;
+using System.IO.IsolatedStorage;
 
 namespace CritterCamp {
     public partial class GamePage : PhoneApplicationPage {
