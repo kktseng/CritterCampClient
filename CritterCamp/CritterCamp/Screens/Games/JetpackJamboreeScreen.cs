@@ -35,7 +35,6 @@ namespace CritterCamp.Screens.Games {
             for(int i = 0; i < 4; i++) {
                 pennedPigs.Add(new List<Pig>());
             }
-            EnabledGestures = GestureType.FreeDrag | GestureType.DragComplete;
         }
 
         public override void Activate(bool instancePreserved) {
