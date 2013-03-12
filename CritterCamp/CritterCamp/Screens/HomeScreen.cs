@@ -56,7 +56,6 @@ namespace CritterCamp.Screens {
                     usernames.Add((string)playerData["username"]);
                 }
                 CoreApplication.Properties["group_usernames"] = usernames;
-                CoreApplication.Properties["currentGame"] = Helpers.GameList.StarryNight;
                 startingGame = true;
             }
         }
@@ -64,7 +63,7 @@ namespace CritterCamp.Screens {
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             if(startingGame) {
                 ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
-                LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(TutorialScreen)));
+                LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(VotingScreen)));
             }
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }

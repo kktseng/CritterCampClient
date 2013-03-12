@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CritterCamp.Screens.Games.StarryNight {
+namespace CritterCamp.Screens.Games.TwilightTango {
     public class Smoke : AnimatedObject<bool> {
         public Smoke(BaseGameScreen screen, Vector2 coord)
             : base(screen, "effects", coord, dieWhenFinished: true) {

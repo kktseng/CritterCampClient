@@ -55,14 +55,14 @@ namespace CritterCamp {
             fenceTopEnd, fenceBottomEnd, fenceTopLeft, fenceLeftEnd, fence3Way, fence2Way, fenceTopRight, fenceRightEnd
         }
 
-        public enum snTexture {
+        public enum twilightTexture {
             arrow1, arrow2, arrow3, arrow4, arrow5, arrow6, arrow7, arrow8, arrow9, arrow10, arrow11,
             greenArrow, redArrow,
             timer,
             rocket1, rocket2
         }
 
-        public enum jjTextures {
+        public enum jetpackTextures {
             cautionTop, cautionRight, cautionLeft, cautionBottom,
             orangeL, orange_, orangeLCurve, orangeTCurve, orangeCross,
             greenL, green_, greenLCurve, greenTCurve, greenCross,

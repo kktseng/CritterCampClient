@@ -22,9 +22,8 @@ namespace GameStateManagement {
     public class ScreenFactory : IScreenFactory {
         public GameScreen CreateScreen(Type screenType) {
             if(screenType == typeof(TutorialScreen)) {
-                Helpers.GameList currGame = (Helpers.GameList)CoreApplication.Properties["currentGame"];
-                TutorialScreen screen = new TutorialScreen(currGame);
-                return screen;
+                Type currGame = (Type)CoreApplication.Properties["currentGame"];
+                return new TutorialScreen(currGame);
             } else if(typeof(BaseGameScreen).IsAssignableFrom(screenType)) {
                 List<string> usernames = (List<string>)CoreApplication.Properties["group_usernames"];
                 return Activator.CreateInstance(screenType, new object[2] { usernames, usernames }) as GameScreen;

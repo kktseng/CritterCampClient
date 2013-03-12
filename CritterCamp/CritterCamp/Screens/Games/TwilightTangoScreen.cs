@@ -1,5 +1,5 @@
 ﻿using CritterCamp.Screens.Games.Lib;
-using CritterCamp.Screens.Games.StarryNight;
+using CritterCamp.Screens.Games.TwilightTango;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -19,7 +19,7 @@ namespace CritterCamp.Screens.Games {
         Left, Up, Right, Down
     }
 
-    class StarryNightScreen : BaseGameScreen {
+    class TwilightTangoScreen : BaseGameScreen {
         public static int MAX_ROUNDS = 5;
         public static int COMMAND_INCR = 2;
         public static int COMMAND_INIT = 6;
@@ -64,7 +64,7 @@ namespace CritterCamp.Screens.Games {
         // temp until I can figure out how to deal with fonts
         protected SpriteFont arial;
 
-        public StarryNightScreen(List<string> usernames, List<string> pictures) : base(usernames, pictures) {
+        public TwilightTangoScreen(List<string> usernames, List<string> pictures) : base(usernames, pictures) {
             currentRank = usernames.Count;
             for(int i = 0; i < usernames.Count; i++) {
                 players[usernames[i]] = new Player(this, new Vector2(100 + 650 * i, 800));
@@ -76,7 +76,7 @@ namespace CritterCamp.Screens.Games {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            textureList["sn"] = cm.Load<Texture2D>("snTextures");
+            textureList["twilight"] = cm.Load<Texture2D>("twilightTextures");
             textureList["map"] = cm.Load<Texture2D>("mapTextures");
             textureList["doodads"] = cm.Load<Texture2D>("doodads");
             textureList["effects"] = cm.Load<Texture2D>("effects");
@@ -158,7 +158,7 @@ namespace CritterCamp.Screens.Games {
                             JToken commandArray = data[0]; // Temporary hack
                             JArray a = JArray.Parse((string)commandArray);
                             for(int i = 0; i < commandNum; i++) {
-                                commandList.Add(new Arrow(this, (Direction)(int)a[i], textureList["sn"], new Vector2(200 + 250 * (i % 7), 200 + 250 * (i / 7)), 1.4f));
+                                commandList.Add(new Arrow(this, (Direction)(int)a[i], textureList["twilight"], new Vector2(200 + 250 * (i % 7), 200 + 250 * (i / 7)), 1.4f));
                                 commandList[commandList.Count - 1].setVisibility(false);
 
                             }
@@ -323,14 +323,14 @@ namespace CritterCamp.Screens.Games {
             // Draw timer bar
             if(timerBar > 0) {
                 for(int i = 0; i < (timerBar * 18) - 1; i++) {
-                    sd.Draw(textureList["sn"], new Vector2(Constants.BUFFER_SPRITE_DIM * 1.5f + Constants.BUFFER_SPRITE_DIM * i, 64), (int)TextureData.snTexture.timer);
+                    sd.Draw(textureList["twilight"], new Vector2(Constants.BUFFER_SPRITE_DIM * 1.5f + Constants.BUFFER_SPRITE_DIM * i, 64), (int)TextureData.twilightTexture.timer);
                 }
                 bool rocketBool = (((int)(timerBar * 15d) % 2) == 0);
-                int rocket = rocketBool ? (int)TextureData.snTexture.rocket1 : (int)TextureData.snTexture.rocket2;
+                int rocket = rocketBool ? (int)TextureData.twilightTexture.rocket1 : (int)TextureData.twilightTexture.rocket2;
                 float rocketOffset = rocketBool ? 0 : 8;
                 // Final bar, draw the partial bar
-                sd.Draw(textureList["sn"], new Vector2(Constants.BUFFER_SPRITE_DIM * 1.5f + Constants.BUFFER_SPRITE_DIM * (int)Math.Floor(timerBar * 18), 64), (int)TextureData.snTexture.timer, new Rectangle(0, 0, (int)(timerBar % (1d / 18d) * 64d * 18d), 64));
-                sd.Draw(textureList["sn"], new Vector2(Constants.BUFFER_SPRITE_DIM + (float)(timerBar * (Constants.BUFFER_WIDTH - 2 * Constants.BUFFER_SPRITE_DIM)), 60 + rocketOffset), rocket);
+                sd.Draw(textureList["twilight"], new Vector2(Constants.BUFFER_SPRITE_DIM * 1.5f + Constants.BUFFER_SPRITE_DIM * (int)Math.Floor(timerBar * 18), 64), (int)TextureData.twilightTexture.timer, new Rectangle(0, 0, (int)(timerBar % (1d / 18d) * 64d * 18d), 64));
+                sd.Draw(textureList["twilight"], new Vector2(Constants.BUFFER_SPRITE_DIM + (float)(timerBar * (Constants.BUFFER_WIDTH - 2 * Constants.BUFFER_SPRITE_DIM)), 60 + rocketOffset), rocket);
             }
             ScreenManager.SpriteBatch.End();
             base.Draw(gameTime);
@@ -339,7 +339,7 @@ namespace CritterCamp.Screens.Games {
         protected override void MessageReceived(string message, bool error, TCPConnection connection) {
             base.MessageReceived(message, error, connection);
             JObject o = JObject.Parse(message);
-            if((string)o["action"] == "game" && (string)o["name"] == "starry_night") {
+            if((string)o["action"] == "game" && (string)o["name"] == "twilight_tango") {
                 JObject data = (JObject)o["data"];
                 if((string)data["action"] == "update") {
                     // Accept player update packets in both input and timeup phase
@@ -366,12 +366,12 @@ namespace CritterCamp.Screens.Games {
                 int numArrows = players[playerName].input.Count();
                 if(numArrows < commandNum) {
                     players[playerName].input.Add(command);
-                    inputArrows.Add(new Arrow(this, command, textureList["sn"], new Vector2(150 + 120 * numArrows, 150), 1f));
+                    inputArrows.Add(new Arrow(this, command, textureList["twilight"], new Vector2(150 + 120 * numArrows, 150), 1f));
 
                     // Send the command information to the server
                     JObject packet = new JObject(
                         new JProperty("action", "game"),
-                        new JProperty("name", "starry_night"),
+                        new JProperty("name", "twilight_tango"),
                         new JProperty("data", new JObject(
                             new JProperty("action", "command"),
                             new JProperty("commands", players[playerName].input.Cast<int>().ToList())

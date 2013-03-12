@@ -102,10 +102,10 @@
     <Compile Include="Screens\Games\Lib\SpriteDrawer.cs" />
     <Compile Include="Screens\Games\Lib\TextBanner.cs" />
     <Compile Include="Screens\Games\Lib\TileMap.cs" />
-    <Compile Include="Screens\Games\StarryNightScreen.cs" />
-    <Compile Include="Screens\Games\StarryNight\Arrow.cs" />
-    <Compile Include="Screens\Games\StarryNight\Player.cs" />
-    <Compile Include="Screens\Games\StarryNight\Smoke.cs" />
+    <Compile Include="Screens\Games\TwilightTangoScreen.cs" />
+    <Compile Include="Screens\Games\TwilightTango\Arrow.cs" />
+    <Compile Include="Screens\Games\TwilightTango\Player.cs" />
+    <Compile Include="Screens\Games\TwilightTango\Smoke.cs" />
     <Compile Include="Screens\HomeScreen.cs" />
     <Compile Include="Screens\LeaderScreen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
@@ -115,6 +115,7 @@
     <Compile Include="Screens\TutorialScreen.cs" />
     <Compile Include="Lib\TCPConnection.cs" />
     <Compile Include="Lib\TextureData.cs" />
+    <Compile Include="Screens\VotingScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -130,7 +131,7 @@
     <Content Include="Content\blank.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\menufont.xnb">
+    <Content Include="Content\Fonts\menufont.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\effects.xnb">
@@ -148,10 +149,10 @@
     <Content Include="Content\button600.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\snTextures.xnb">
+    <Content Include="Content\twilightTextures.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\jjTextures.xnb">
+    <Content Include="Content\jetpackTextures.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\pig.xnb">
@@ -161,6 +162,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\explosion.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Fonts\matiz48.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\AppManifest.xml" />

@@ -8,13 +8,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 
 namespace CritterCamp.Screens {
-    class TutorialScreen : GameScreen {
-        Type game;
-        public TutorialScreen(Type game) {
-            this.game = game;
+    class VotingScreen : GameScreen {
+        protected bool voted = false;
 
+        public VotingScreen() {
             // Allow the user to tap
             EnabledGestures = GestureType.Tap;
         }
@@ -24,9 +24,10 @@ namespace CritterCamp.Screens {
             foreach(GestureSample gesture in input.Gestures) {
                 if(gesture.GestureType == GestureType.Tap) {
                     Helpers.Sync((JArray data) => {
+                        CoreApplication.Properties["currentGame"] = typeof(JetpackJamboreeScreen);
                         ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));                 
-                        LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(game));
-                    }, "tutorial");
+                        LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(typeof(JetpackJamboreeScreen)));
+                    }, "myvote");
                 }
             }
 
@@ -34,7 +35,7 @@ namespace CritterCamp.Screens {
         }
 
         public override void Draw(GameTime gameTime) {
-            ScreenManager.GraphicsDevice.Clear(Color.Purple);
+            ScreenManager.GraphicsDevice.Clear(Color.Bisque);
 
             base.Draw(gameTime);
         }

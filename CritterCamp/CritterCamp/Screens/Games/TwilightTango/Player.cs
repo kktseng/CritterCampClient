@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CritterCamp.Screens.Games.StarryNight {
+namespace CritterCamp.Screens.Games.TwilightTango {
     public enum PlayerDanceStates {
         Standing,
         DanceLeft,

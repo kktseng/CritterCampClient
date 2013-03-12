@@ -40,7 +40,7 @@ namespace CritterCamp.Screens.Games {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            textureList["jj"] = cm.Load<Texture2D>("jjTextures");
+            textureList["jetpack"] = cm.Load<Texture2D>("jetpackTextures");
             textureList["map"] = cm.Load<Texture2D>("mapTextures");
             textureList["doodads"] = cm.Load<Texture2D>("doodads");
             textureList["pig"] = cm.Load<Texture2D>("pig");
@@ -249,48 +249,48 @@ namespace CritterCamp.Screens.Games {
             for(int i = 0; i < 5; i++) {
                 for(int j = 0; j < 5; j++) {
                     if(i == 0) {
-                        sd.Draw(textureList["jj"], coord + new Vector2(dim / 2, dim * (j + 0.5f)), (int)TextureData.jjTextures.cautionLeft);
+                        sd.Draw(textureList["jetpack"], coord + new Vector2(dim / 2, dim * (j + 0.5f)), (int)TextureData.jetpackTextures.cautionLeft);
                         if(j == 0) {
-                            sd.Draw(textureList["jj"], coord + new Vector2(dim / 2), (int)TextureData.jjTextures.orangeL + color * 5, SpriteEffects.FlipVertically);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim / 2), (int)TextureData.jetpackTextures.orangeL + color * 5, SpriteEffects.FlipVertically);
                         } else if(j == 4) {
-                            sd.Draw(textureList["jj"], coord + new Vector2(dim / 2, dim * 4.5f), (int)TextureData.jjTextures.orangeL + color * 5);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim / 2, dim * 4.5f), (int)TextureData.jetpackTextures.orangeL + color * 5);
                         } else {
-                            sd.Draw(textureList["jj"], coord + new Vector2(dim / 2, dim * (j + 0.5f)), (int)TextureData.jjTextures.orange_ + color * 5, spriteRotation: Constants.ROTATE_90);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim / 2, dim * (j + 0.5f)), (int)TextureData.jetpackTextures.orange_ + color * 5, spriteRotation: Constants.ROTATE_90);
                         }
                     } else if(i == 4) {
-                        sd.Draw(textureList["jj"], coord + new Vector2(dim * 4.5f, dim * (j + 0.5f)), (int)TextureData.jjTextures.cautionRight);
+                        sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 4.5f, dim * (j + 0.5f)), (int)TextureData.jetpackTextures.cautionRight);
                         if(j == 0) {
-                            sd.Draw(textureList["jj"], coord + new Vector2(dim * 4.5f, dim / 2), (int)TextureData.jjTextures.orangeL + color * 5, SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 4.5f, dim / 2), (int)TextureData.jetpackTextures.orangeL + color * 5, SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally);
                         } else if(j == 4) {
-                            sd.Draw(textureList["jj"], coord + new Vector2(dim * 4.5f), (int)TextureData.jjTextures.orangeL + color * 5, SpriteEffects.FlipHorizontally);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 4.5f), (int)TextureData.jetpackTextures.orangeL + color * 5, SpriteEffects.FlipHorizontally);
                         } else {
-                            sd.Draw(textureList["jj"], coord + new Vector2(dim * 4.5f, dim * (j + 0.5f)), (int)TextureData.jjTextures.orange_ + color * 5, spriteRotation: Constants.ROTATE_90 * 3);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 4.5f, dim * (j + 0.5f)), (int)TextureData.jetpackTextures.orange_ + color * 5, spriteRotation: Constants.ROTATE_90 * 3);
                         }
                     }
                     if(j == 0) {
-                        sd.Draw(textureList["jj"], coord + new Vector2(dim * (i + 0.5f), dim / 2), (int)TextureData.jjTextures.cautionTop);
+                        sd.Draw(textureList["jetpack"], coord + new Vector2(dim * (i + 0.5f), dim / 2), (int)TextureData.jetpackTextures.cautionTop);
                         if(i != 0 && i != 4) {
-                            sd.Draw(textureList["jj"], coord + new Vector2(dim * (i + 0.5f), dim / 2), (int)TextureData.jjTextures.orange_ + color * 5, spriteRotation: Constants.ROTATE_90 * 2);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * (i + 0.5f), dim / 2), (int)TextureData.jetpackTextures.orange_ + color * 5, spriteRotation: Constants.ROTATE_90 * 2);
                         }
                     } else if(j == 4) {
-                        sd.Draw(textureList["jj"], coord + new Vector2(dim * (i + 0.5f), dim * 4.5f), (int)TextureData.jjTextures.cautionBottom);
+                        sd.Draw(textureList["jetpack"], coord + new Vector2(dim * (i + 0.5f), dim * 4.5f), (int)TextureData.jetpackTextures.cautionBottom);
                         if(i != 0 && i != 4) {
-                            sd.Draw(textureList["jj"], coord + new Vector2(dim * (i + 0.5f), dim * 4.5f), (int)TextureData.jjTextures.orange_ + color * 5);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * (i + 0.5f), dim * 4.5f), (int)TextureData.jetpackTextures.orange_ + color * 5);
                         }
                     }
                 }
             }
 
             // Draw the circle
-            sd.Draw(textureList["jj"], coord + new Vector2(dim * 1.5f, dim * 1.5f), (int)TextureData.jjTextures.orangeLCurve + color * 5);
-            sd.Draw(textureList["jj"], coord + new Vector2(dim * 2.5f, dim * 1.5f), (int)TextureData.jjTextures.orangeTCurve + color * 5);
-            sd.Draw(textureList["jj"], coord + new Vector2(dim * 3.5f, dim * 1.5f), (int)TextureData.jjTextures.orangeLCurve + color * 5, SpriteEffects.FlipHorizontally);
-            sd.Draw(textureList["jj"], coord + new Vector2(dim * 1.5f, dim * 2.5f), (int)TextureData.jjTextures.orangeTCurve + color * 5, spriteRotation: Constants.ROTATE_90 * 3);
-            sd.Draw(textureList["jj"], coord + new Vector2(dim * 2.5f, dim * 2.5f), (int)TextureData.jjTextures.orangeCross + color * 5);
-            sd.Draw(textureList["jj"], coord + new Vector2(dim * 3.5f, dim * 2.5f), (int)TextureData.jjTextures.orangeTCurve + color * 5, spriteRotation: Constants.ROTATE_90);
-            sd.Draw(textureList["jj"], coord + new Vector2(dim * 1.5f, dim * 3.5f), (int)TextureData.jjTextures.orangeLCurve + color * 5, SpriteEffects.FlipVertically);
-            sd.Draw(textureList["jj"], coord + new Vector2(dim * 2.5f, dim * 3.5f), (int)TextureData.jjTextures.orangeTCurve + color * 5, spriteRotation: Constants.ROTATE_90 * 2);
-            sd.Draw(textureList["jj"], coord + new Vector2(dim * 3.5f, dim * 3.5f), (int)TextureData.jjTextures.orangeLCurve + color * 5, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 1.5f, dim * 1.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 2.5f, dim * 1.5f), (int)TextureData.jetpackTextures.orangeTCurve + color * 5);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 3.5f, dim * 1.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5, SpriteEffects.FlipHorizontally);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 1.5f, dim * 2.5f), (int)TextureData.jetpackTextures.orangeTCurve + color * 5, spriteRotation: Constants.ROTATE_90 * 3);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 2.5f, dim * 2.5f), (int)TextureData.jetpackTextures.orangeCross + color * 5);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 3.5f, dim * 2.5f), (int)TextureData.jetpackTextures.orangeTCurve + color * 5, spriteRotation: Constants.ROTATE_90);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 1.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5, SpriteEffects.FlipVertically);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 2.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeTCurve + color * 5, spriteRotation: Constants.ROTATE_90 * 2);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 3.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically);
         }
     }
 }

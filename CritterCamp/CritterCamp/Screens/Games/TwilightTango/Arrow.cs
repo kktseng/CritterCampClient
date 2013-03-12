@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CritterCamp.Screens.Games.StarryNight {
+namespace CritterCamp.Screens.Games.TwilightTango {
     public enum ArrowStates {
         FadeIn,
         FadeOut,
@@ -20,7 +20,7 @@ namespace CritterCamp.Screens.Games.StarryNight {
         public float scale;
 
         public Arrow(BaseGameScreen screen, Direction dir, Texture2D img, Vector2 coord, float scale)
-            : base(screen, "sn", coord) {
+            : base(screen, "twilight", coord) {
             this.dir = dir;
             this.scale = scale;
             setState(ArrowStates.FadeIn);
@@ -30,17 +30,17 @@ namespace CritterCamp.Screens.Games.StarryNight {
         protected override void setAnim() {
             List<Frame> fadeIn = new List<Frame>();
             for(int i = 0; i < 11; i++) {
-                fadeIn.Add(new Frame((int)TextureData.snTexture.arrow1 + i, 50));
+                fadeIn.Add(new Frame((int)TextureData.twilightTexture.arrow1 + i, 50));
             }
             animation.Add(ArrowStates.FadeIn, fadeIn);
             List<Frame> fadeOut = new List<Frame>(fadeIn);
             fadeOut.Reverse(); // Reverse frame order for fade out
             animation.Add(ArrowStates.FadeOut, fadeOut);
             animation.Add(ArrowStates.Green, new List<Frame>() {
-                new Frame((int)TextureData.snTexture.greenArrow, 1)
+                new Frame((int)TextureData.twilightTexture.greenArrow, 1)
             });
             animation.Add(ArrowStates.Red, new List<Frame>() {
-               new Frame((int)TextureData.snTexture.redArrow, 1)
+               new Frame((int)TextureData.twilightTexture.redArrow, 1)
             });
         }
 
