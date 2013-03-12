@@ -102,6 +102,10 @@ namespace CritterCamp {
             }
         }
 
+        public void Disconnect() {
+            SendMessage("");
+        }
+
         private void Close() {
             // detach the stream and close it
             writer.DetachStream();

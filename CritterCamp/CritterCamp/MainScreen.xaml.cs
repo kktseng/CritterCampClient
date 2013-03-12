@@ -31,26 +31,49 @@ namespace CritterCamp {
         string password;
 
         void onLoaded(object sender, RoutedEventArgs e) {
-            // populate the text boxes with the previous login information
-            string username;
-            string password;
+            Status.Text = ""; // clear any messages 
 
+            // check and see if we have a tcp connection already
+            Object conn;
+            if (CoreApplication.Properties.TryGetValue("TCPSocket", out conn)) {
+                ((TCPConnection)conn).Disconnect(); // disconnect the exisiting connection
+                CoreApplication.Properties["TCPSocket"] = null;
+            }
+
+            // get previous login information if it exists
             if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("username", out username) &&
                 IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("password", out password)) {
                 // login information is already in the app
 
-                // populate the text boxes and automatically login
-                Username.Text = username;
-                PasswordBox.Password = password;
-                Login(false);
+                UserInput.Visibility = Visibility.Collapsed; // hide the input boxes
+                PlayButton.Visibility = Visibility.Visible; // show the play button
+                Status.Text = "Welcome back " + username + "!";
+            } else {
+                // no previous login information. ask the user for their information
+                UserInput.Visibility = Visibility.Collapsed; // show the input boxes
+                PlayButton.Visibility = Visibility.Visible; // hide the play button
             }
         }
 
         private void Register_Click(object sender, RoutedEventArgs e) {
+            // update our local username and password variables
+            Username.Text = Username.Text.Trim();
+            username = Username.Text.Trim();
+            password = PasswordBox.Password;
+
             Register();
         }
 
         private void Login_Click(object sender, RoutedEventArgs e) {
+            // update our local username and password variables
+            Username.Text = Username.Text.Trim();
+            username = Username.Text.Trim();
+            password = PasswordBox.Password;
+
+            Login(false);
+        }
+
+        private void Play_Click(object sender, RoutedEventArgs e) {
             Login(false);
         }
 
@@ -89,10 +112,6 @@ namespace CritterCamp {
                 return;
             connecting = true;
 
-            Username.Text = Username.Text.Trim();
-            username = Username.Text.Trim();
-            password = PasswordBox.Password;
-
             if (!ValidateUsername(username)) { // only allow valid usernames to login
                 connecting = false;
                 return;
@@ -124,10 +143,6 @@ namespace CritterCamp {
             if (connecting) // only allow one connection at once
                 return;
             connecting = true;
-
-            Username.Text = Username.Text.Trim();
-            username = Username.Text.Trim();
-            password = PasswordBox.Password;
 
             if (!ValidateUsername(username)) { // only allow valid usernames to login
                 connecting = false;

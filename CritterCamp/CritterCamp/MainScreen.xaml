@@ -27,15 +27,18 @@
 
         <!--ContentPanel - place additional content here -->
         <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <TextBlock>Username:</TextBlock>
-            <TextBox x:Name="Username"></TextBox>
-            <TextBlock>Password:</TextBlock>
-            <PasswordBox x:Name="PasswordBox"></PasswordBox>
-            <StackPanel Orientation="Horizontal">
-                <Button Click="Register_Click">Register</Button>
-                <Button Click="Login_Click">Login</Button>
+            <StackPanel x:Name="UserInput">
+                <TextBlock>Username:</TextBlock>
+                <TextBox x:Name="Username"></TextBox>
+                <TextBlock>Password:</TextBlock>
+                <PasswordBox x:Name="PasswordBox"></PasswordBox>
+                <StackPanel Orientation="Horizontal">
+                    <Button Click="Register_Click">Register</Button>
+                    <Button Click="Login_Click">Login</Button>
+                </StackPanel>
             </StackPanel>
             <TextBlock x:Name="Status"></TextBlock>
+            <Button x:Name="PlayButton" Click="Play_Click" HorizontalAlignment="Center" Visibility="Collapsed">Play</Button>
         </StackPanel>
     </Grid>
 
