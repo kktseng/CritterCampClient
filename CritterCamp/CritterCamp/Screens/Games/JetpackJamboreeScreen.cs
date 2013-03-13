@@ -108,7 +108,7 @@ namespace CritterCamp.Screens.Games {
                             // Don't let users grab falling pigs
                             if(p.getState() == PigStates.Falling)
                                 continue;
-                            Rectangle pig = new Rectangle((int)p.getCoord().X - 50, (int)p.getCoord().Y - 50, 100, 100);
+                            Rectangle pig = new Rectangle((int)p.getCoord().X - 75, (int)p.getCoord().Y - 75, 150, 150);
                             if(pig.Contains(new Point((int)scaledPos.X, (int)scaledPos.Y))) {
                                 selectedPig = p;
                                 p.selected = true;
@@ -226,8 +226,17 @@ namespace CritterCamp.Screens.Games {
                             deadUsers.Insert(0, playerName);
                         }
                         if(deadUsers.Count >= playerData.Count) {
-                            // Sync scores
+                            // Tell other players game is finished
                             JObject packet = new JObject(
+                                new JProperty("action", "game"),
+                                new JProperty("name", "jetpack_jamboree"),
+                                new JProperty("data", new JObject(
+                                    new JProperty("action", "exploded")
+                                ))
+                            );
+                            conn.SendMessage(packet.ToString());
+                            // Sync scores
+                            packet = new JObject(
                                 new JProperty("action", "group"),
                                 new JProperty("type", "report_score"),
                                 new JProperty("score", new JObject(

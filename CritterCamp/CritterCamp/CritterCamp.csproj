@@ -105,6 +105,7 @@
     <Compile Include="Screens\Games\Lib\SpriteDrawer.cs" />
     <Compile Include="Screens\Games\Lib\TextBanner.cs" />
     <Compile Include="Screens\Games\Lib\TileMap.cs" />
+    <Compile Include="Screens\Games\MissileMadnessScreen.cs" />
     <Compile Include="Screens\Games\TwilightTangoScreen.cs" />
     <Compile Include="Screens\Games\TwilightTango\Arrow.cs" />
     <Compile Include="Screens\Games\TwilightTango\Player.cs" />
@@ -173,6 +174,9 @@
     <Content Include="Content\Fonts\matiz48.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\missileTextures.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
@@ -215,7 +219,9 @@
       <HintPath>..\..\Json.NET\WP8\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Screens\Games\MissileMadness\" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <Target Name="MonoGame_RemoveXnaAssemblies" AfterTargets="ImplicitlyExpandTargetFramework">
