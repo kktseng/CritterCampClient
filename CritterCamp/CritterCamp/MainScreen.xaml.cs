@@ -50,8 +50,8 @@ namespace CritterCamp {
                 Status.Text = "Welcome back " + username + "!";
             } else {
                 // no previous login information. ask the user for their information
-                UserInput.Visibility = Visibility.Collapsed; // show the input boxes
-                PlayButton.Visibility = Visibility.Visible; // hide the play button
+                UserInput.Visibility = Visibility.Visible; // show the input boxes
+                PlayButton.Visibility = Visibility.Collapsed; // hide the play button
             }
         }
 
