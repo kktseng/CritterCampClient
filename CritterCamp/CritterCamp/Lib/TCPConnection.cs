@@ -103,7 +103,7 @@ namespace CritterCamp {
         }
 
         public void Disconnect() {
-            SendMessage("");
+            SendMessage("close");
         }
 
         private void Close() {

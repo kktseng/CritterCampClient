@@ -30,8 +30,8 @@ namespace CritterCamp.Screens {
             if((string)o["action"] == "rank" && (string)o["type"] == "leader") {
                 connection.pMessageReceivedEvent -= handleLeaders;
                 JArray leaderArr = (JArray)o["leaders"];
-                foreach(JToken name in leaderArr) {
-                    leaders.Add((string)name);
+                foreach(JObject name in leaderArr) {
+                    leaders.Add((string)name["username"]);
                 }
             }
         }
