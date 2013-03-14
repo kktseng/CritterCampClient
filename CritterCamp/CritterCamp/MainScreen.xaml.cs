@@ -34,12 +34,20 @@ namespace CritterCamp {
             Status.Text = ""; // clear any messages 
 
             // check and see if we have a tcp connection already
-            Object conn;
-            if (CoreApplication.Properties.TryGetValue("TCPSocket", out conn)) {
-                ((TCPConnection)conn).Disconnect(); // disconnect the exisiting connection
-                CoreApplication.Properties["TCPSocket"] = null;
+            if (CoreApplication.Properties.ContainsKey("TCPSocket")) {
+                ((TCPConnection)CoreApplication.Properties["TCPSocket"]).Disconnect(); // disconnect the exisiting connection
+                CoreApplication.Properties.Remove("TCPSocket");
             }
 
+            // check and see if we have an error message to display
+            if (CoreApplication.Properties.ContainsKey("error")) {
+                Status.Text = (string)CoreApplication.Properties["error"]; // show the error message
+                CoreApplication.Properties.Remove("error");
+
+                UserInput.Visibility = Visibility.Collapsed; // hide the input boxes
+                PlayButton.Visibility = Visibility.Collapsed; // hide the play button
+                ResumeButton.Visibility = Visibility.Visible; // show the resume button
+            } else 
             // get previous login information if it exists
             if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("username", out username) &&
                 IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("password", out password)) {
@@ -47,7 +55,7 @@ namespace CritterCamp {
 
                 UserInput.Visibility = Visibility.Collapsed; // hide the input boxes
                 PlayButton.Visibility = Visibility.Visible; // show the play button
-                Status.Text = "Welcome back " + username + "!";
+                Status.Text += "Welcome back " + username + "!";
             } else {
                 // no previous login information. ask the user for their information
                 UserInput.Visibility = Visibility.Visible; // show the input boxes
@@ -202,14 +210,19 @@ namespace CritterCamp {
                             CoreApplication.Properties.Remove("SyncDelegate");
                         }
                     };
-                    await conn.Connect();
-                    // authorize the connection using auth key recieved from http login
-                    conn.SendMessage("{\"auth\": \"" + response.auth + "\"}");
-                    CoreApplication.Properties["TCPSocket"] = conn;
+                    conn.pConnectionClosedEvent += TCPConnectionClosed;
+                    if (conn.Connect()) {
+                        // authorize the connection using auth key recieved from http login
+                        conn.SendMessage("{\"auth\": \"" + response.auth + "\"}");
+                        CoreApplication.Properties["TCPSocket"] = conn;
 
-                    // navigate to gamepage to start the game
-                    CoreApplication.Properties["username"] = username;
-                    NavigationService.Navigate(new Uri("/GamePage.xaml", UriKind.Relative));
+                        // navigate to gamepage to start the game
+                        CoreApplication.Properties["username"] = username;
+                        NavigationService.Navigate(new Uri("/GamePage.xaml", UriKind.Relative));
+                    } else {
+                        System.Diagnostics.Debug.WriteLine("Error connecting to TCP server");
+                        Status.Text = "Error connecting to server. Please try again.";
+                    }
                 }
 
             } else {
@@ -219,6 +232,18 @@ namespace CritterCamp {
             }
 
             connecting = false;
+        }
+        
+        void TCPConnectionClosed(bool error, TCPConnection connection) {
+            if (error) {
+                // connection timeout out
+                CoreApplication.Properties["error"] = "Lost connection to server.";
+            }
+            Dispatcher.BeginInvoke(() => {
+                if (NavigationService.CanGoBack) {
+                    NavigationService.GoBack();
+                }
+            });
         }
     }
 

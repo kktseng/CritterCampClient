@@ -39,6 +39,7 @@
             </StackPanel>
             <TextBlock x:Name="Status"></TextBlock>
             <Button x:Name="PlayButton" Click="Play_Click" HorizontalAlignment="Center" Visibility="Collapsed">Play</Button>
+            <Button x:Name="ResumeButton" Click="Play_Click" HorizontalAlignment="Center" Visibility="Collapsed">Resume</Button>
         </StackPanel>
     </Grid>
 
