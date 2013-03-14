@@ -209,17 +209,20 @@ namespace CritterCamp {
                             sd((JArray)o["data"]);
                             CoreApplication.Properties.Remove("SyncDelegate");
                         }
+                        if (o["conn_id"] != null) {
+                            // authorize the connection using auth key recieved from http login
+                            conn.SendMessage("{\"auth\": \"" + response.auth + "\"}");
+                            CoreApplication.Properties["TCPSocket"] = conn;
+
+                            // navigate to gamepage to start the game
+                            CoreApplication.Properties["username"] = username;
+                            Dispatcher.BeginInvoke(() => {
+                                NavigationService.Navigate(new Uri("/GamePage.xaml", UriKind.Relative));
+                            });
+                        }
                     };
                     conn.pConnectionClosedEvent += TCPConnectionClosed;
-                    if (conn.Connect()) {
-                        // authorize the connection using auth key recieved from http login
-                        conn.SendMessage("{\"auth\": \"" + response.auth + "\"}");
-                        CoreApplication.Properties["TCPSocket"] = conn;
-
-                        // navigate to gamepage to start the game
-                        CoreApplication.Properties["username"] = username;
-                        NavigationService.Navigate(new Uri("/GamePage.xaml", UriKind.Relative));
-                    } else {
+                    if (!conn.Connect()) {
                         System.Diagnostics.Debug.WriteLine("Error connecting to TCP server");
                         Status.Text = "Error connecting to server. Please try again.";
                     }

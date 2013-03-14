@@ -71,7 +71,7 @@ namespace CritterCamp.Screens {
             base.Draw(gameTime);
             ScreenManager.SpriteBatch.Begin();
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
-            if (looking && gameTime.TotalGameTime.Seconds % 2 < 1) {
+            if (looking && gameTime.TotalGameTime.TotalMilliseconds % 1000 < 600) {
                 sd.DrawString(ScreenManager.Font, "Searching for players...", new Vector2(1000, 900));
             }
             ScreenManager.SpriteBatch.End();
