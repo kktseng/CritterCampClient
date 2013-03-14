@@ -110,7 +110,7 @@ namespace CritterCamp {
                             // split the string at the }{ and send it to the delegates
 
                             string messageToPass = message.Substring(0, index + 1);
-                            if (messageToPass != "ACK") {
+                            if (messageToPass != "{ACK}") {
                                 pMessageReceivedEvent(messageToPass, false, this); // send it to callback
                             }
                             message = message.Substring(index+1);
@@ -118,7 +118,7 @@ namespace CritterCamp {
                         }
 
                         // send the remaining string
-                        if (message != "ACK") {
+                        if (message != "{ACK}") {
                             pMessageReceivedEvent(message, false, this); // send it to callback
                         }
                     }
