@@ -1,4 +1,5 @@
-﻿using GameStateManagement;
+﻿using CritterCamp.Screens.Games.Lib;
+using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
 using Newtonsoft.Json.Linq;
@@ -64,6 +65,16 @@ namespace CritterCamp.Screens {
                 LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(VotingScreen)));
             }
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+        }
+
+        public override void Draw(GameTime gameTime) {
+            base.Draw(gameTime);
+            ScreenManager.SpriteBatch.Begin();
+            SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+            if (looking && gameTime.TotalGameTime.Seconds % 2 < 1) {
+                sd.DrawString(ScreenManager.Font, "Searching for players...", new Vector2(1000, 900));
+            }
+            ScreenManager.SpriteBatch.End();
         }
     }
 }
