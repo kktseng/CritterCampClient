@@ -28,7 +28,7 @@ namespace CritterCamp {
                 JObject syncPacket = new JObject(
                     new JProperty("action", "group"),
                     new JProperty("type", "sync"),
-                    new JProperty("timeout", 5),
+                    new JProperty("timeout", 10),
                     new JProperty("data", data)
                 );
                 CoreApplication.Properties["SyncDelegate"] = sd;
