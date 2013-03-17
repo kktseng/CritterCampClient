@@ -13,7 +13,7 @@ namespace CritterCamp {
     public delegate void TCPConnectionClosed(bool error, TCPConnection connection); // Callback for when a this connection is closed
 
     public class TCPConnection {
-        private static readonly int TIMEOUT = 5000; // timeout is 5000ms
+        private static readonly int TIMEOUT = 4000; // timeout is 4s
 
         StreamSocket mSocket = null; // Cached Socket object that will be used by each call for the lifetime of this class
         DataWriter writer;
@@ -23,7 +23,7 @@ namespace CritterCamp {
         private int mId;
         private static int sConnectionId = 0;
 
-        private CancellationTokenSource readTimeoutCancelToken;
+        private bool sendKeepAlive = false;
 
         public TCPConnection() {
             mId = sConnectionId++;
@@ -66,6 +66,7 @@ namespace CritterCamp {
 
             // start listening for messages
             Task.Run(() => StartReceiving()); // start receiving on a new thread
+            Task.Run(() => StartKeepAlive()); // start receiving on a new thread
             return true;
         }
 
@@ -78,7 +79,6 @@ namespace CritterCamp {
             // Call StoreAsync method to store the data to a backing stream
             await writer.StoreAsync();
             System.Diagnostics.Debug.WriteLine("Sent: " + data);
-            StartReadTimeout(); // start a timeout on the read
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace CritterCamp {
                     }
                 }
 
-                CancelReadTimeout();
+                sendKeepAlive = false; // we recieved a message so dont have to send a keepalive
                 string message = reader.ReadString(reader.UnconsumedBufferLength);
                 System.Diagnostics.Debug.WriteLine("Received: " + message);
 
@@ -110,7 +110,7 @@ namespace CritterCamp {
                             // split the string at the }{ and send it to the delegates
 
                             string messageToPass = message.Substring(0, index + 1);
-                            if (messageToPass != "{ACK}") {
+                            if (messageToPass != "{}") {
                                 pMessageReceivedEvent(messageToPass, false, this); // send it to callback
                             }
                             message = message.Substring(index+1);
@@ -118,7 +118,7 @@ namespace CritterCamp {
                         }
 
                         // send the remaining string
-                        if (message != "{ACK}") {
+                        if (message != "{}") {
                             pMessageReceivedEvent(message, false, this); // send it to callback
                         }
                     }
@@ -132,32 +132,41 @@ namespace CritterCamp {
             }
         }
 
-        private void StartReadTimeout() {
-            // if there is timeout task running already, do nothing
-            if (readTimeoutCancelToken == null) {
-                readTimeoutCancelToken = new CancellationTokenSource();
-                CancellationToken ct = readTimeoutCancelToken.Token;
-                Task.Run(() => {
-                    Thread.Sleep(TIMEOUT); // sleep this thread for the timeout time
+        private void StartKeepAlive() {
+            while (mSocket != null) {
+                sendKeepAlive = true;
+                Thread.Sleep(TIMEOUT); // sleep this thread for the timeout time
 
-                    if (!ct.IsCancellationRequested) {
-                        // if this task was not cancelled by the time it wakes up
-                        System.Diagnostics.Debug.WriteLine("TCP connection timed out for response. " + 
-                            "Ignore next System.Exception error because its caused by this timeout");
-                        if (pConnectionClosedEvent != null) {
-                            pConnectionClosedEvent(true, this);
-                        }
+                if (mSocket == null) {
+                    break; // connection was closed already
+                }
+                if (!sendKeepAlive) { // received a response in the last timeout time
+                    // continue this loop to sleep again
+                    continue;
+                }
 
-                        Close(); // close this connection
-                    }
-                }, ct);
-            }
-        }
+                // otherwise we did not receive a message since timeout time ago
+                SendMessage("{}"); // send a ping message to the server
 
-        private void CancelReadTimeout() {
-            if (readTimeoutCancelToken != null) { // if there is a timeout task running, cancel it
-                readTimeoutCancelToken.Cancel();
-                readTimeoutCancelToken = null;
+                Thread.Sleep(TIMEOUT); // sleep this thread for the timeout time
+                if (mSocket == null) {
+                    break; // connection was closed already
+                }
+                if (!sendKeepAlive) { // received a response in the last timeout time
+                    // continue this loop to sleep again
+                    continue;
+                }
+
+                // otherwise did not receive an answer to our ping within the timeout time
+                // assume the connection died
+                System.Diagnostics.Debug.WriteLine("TCP connection timed out for response. " +
+                    "Ignore next System.Exception error because its caused by this timeout");
+                if (pConnectionClosedEvent != null) {
+                    pConnectionClosedEvent(true, this);
+                }
+
+                Close(); // close this connection
+                break;
             }
         }
 
