@@ -14,19 +14,12 @@ namespace CritterCamp {
 
         // All background sprites for maps
         public enum mapTexture {
-            nightSky1, nightSky2, nightSky3, nightSky4,
-            grass1, grass2, grass3,
-            dirtTL,
-            dirtTR,
-            dirtBL,
-            dirtBR,
-            dirtB,
-            dirtT,
-            dirtR,
-            dirtL,
-            dirt,
-            longGrassNight,
-            longGrass1
+            nightSky1, nightSky2, nightSky3, nightSky4, // 0
+            grass1, grass2, grass3, // 4
+            dirtTL, dirtTR, dirtBL, dirtBR, // 7
+            dirtB, dirtT, dirtR, dirtL, // 11
+            dirt, // 12
+            longGrassNight, longGrass1 // 13
         }
 
         public enum PlayerStates {

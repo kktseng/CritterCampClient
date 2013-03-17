@@ -41,10 +41,10 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
         );
 
         private static Rectangle[] areas = new Rectangle[] {
-            new Rectangle(1495, 700, 360, 360),
-            new Rectangle(75, 20, 360, 360),
-            new Rectangle(75, 700, 360, 360),
-            new Rectangle(1495, 20, 360, 360)
+            new Rectangle(1495, 640, 360, 360),
+            new Rectangle(65, 50, 360, 360),
+            new Rectangle(65, 640, 360, 360),
+            new Rectangle(1495, 50, 360, 360)
         };
 
         private Random rand;
@@ -155,6 +155,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
         }
 
         public override void draw(SpriteDrawer sd) {
+            int jetPackState = rand.Next(0, 1);
             switch(state) {
                 case PigStates.WalkLeft:
                     base.draw(sd);
@@ -166,12 +167,12 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
                     break;
                 case PigStates.Flying:
                     sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
-                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 20) + new Vector2(0, Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.jetFlame1);
+                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 40) + new Vector2(0, Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.jetFlame1 + jetPackState);
                     base.draw(sd);
                     break;
                 case PigStates.Falling:
                     sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
-                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 20) + new Vector2(0, Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.jetFlame1);
+                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 40) + new Vector2(0, Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.jetFlame1 + jetPackState);
                     base.draw(sd);
                     break;
                 case PigStates.Entering:
@@ -190,8 +191,19 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
             walk();
             if(checkBounds(MAIN_BOUNDS, new TimeSpan(0))) {
                 return false;
-            } else if(checkBounds(areas[color], new TimeSpan(0))) {
+            // provide some leeway when checking bounds
+            } else if(checkBounds(new Rectangle(areas[color].X - 80, areas[color].Y - 10, areas[color].Width + 160, areas[color].Height + 20), new TimeSpan(0))) {
                 curBounds = areas[color];
+                Vector2 testCoord = coord + velocity * 0.1f;
+                // if set in leeway, push pig back towards middle
+                if(testCoord.X <= areas[color].X + 60)
+                    coord.X += areas[color].X - coord.X + 40;
+                if(testCoord.X >= areas[color].X + areas[color].Width - 60)
+                    coord.X -= coord.X - areas[color].X - areas[color].Width + 40;
+                if(testCoord.Y <= areas[color].Y + 60)
+                    coord.Y += areas[color].Y - coord.Y + 40;
+                if(testCoord.Y >= areas[color].Y + areas[color].Height - 60)
+                    coord.Y -= coord.Y - areas[color].Y - areas[color].Height + 40;
                 return true;
             } else {
                 coord = old_pos;

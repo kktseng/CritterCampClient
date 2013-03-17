@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace CritterCamp.Screens.Games {
     class JetpackJamboreeScreen : BaseGameScreen {
         public static int PIG_DELAY = 2;
-        public static int MAX_PIG_COUNT = 10;
+        public static int MAX_PIG_COUNT = 6;
         public bool exploded = false;
 
         protected TileMap tileMap, doodadMap;
@@ -51,19 +51,19 @@ namespace CritterCamp.Screens.Games {
             tileMap = new TileMap(textureList["map"], -32);
             doodadMap = new TileMap(textureList["doodads"], -32);
             int[,] map = new int[,] {
+                {   4,  4,  4,  4,  4,  4,  6,  5,  4,  5,  4,  4,  6,  5,  4,  4,  4,  4,  4,  4 },
+                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  6,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
+                {   4,  4,  4,  4,  4,  4,  6,  4,  4,  5,  4,  4,  6,  4,  4,  4,  4,  4,  4,  4 },
+                {   4,  4,  4,  4,  4,  4,  4,  5,  4,  4,  6,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
+                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  6,  4,  4,  4,  4,  4,  4,  4 },
+                {   4,  4,  4,  4,  4,  4,  6,  4,  6,  4,  5,  4,  5,  4,  4,  4,  4,  4,  4,  4 },
                 {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 }
+                {   4,  4,  4,  4,  4,  4,  5,  4,  4,  6,  4,  6,  4,  4,  4,  4,  4,  4,  4,  4 },
+                {   4,  4,  4,  4,  4,  4,  4,  6,  4,  4,  5,  4,  5,  4,  4,  4,  4,  4,  4,  4 },
+                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  6,  4,  4,  5,  4,  4,  4,  4,  4,  4,  4 },
+                {   4,  4,  4,  4,  4,  4,  4,  5,  4,  4,  4,  5,  4,  4,  4,  4,  4,  4,  4,  4 },
+                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  6,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
+                {   4,  4,  4,  4,  4,  4,  5,  6,  4,  5,  4,  4,  5,  6,  4,  4,  4,  4,  4,  4 }
             };
             int[,] ddMap = new int[,] {
                 {  21, 21, 21, 21, 21, 22, -1, -1, 16, -1, -1, 16, -1, -1, 18, 21, 21, 21, 21, 21 },
@@ -157,7 +157,9 @@ namespace CritterCamp.Screens.Games {
             if(!exploded) {
                 // Randomly bring in pigs
                 if((gameTime.TotalGameTime - timeSincePig).TotalSeconds > PIG_DELAY && rand.Next(1000) < gameTime.TotalGameTime.Seconds) {
-                    mainPigs.Add(new Pig(this, PigStates.Entering, rand));
+                    if(rand.Next(0, 1) == 0) {
+                        mainPigs.Add(new Pig(this, PigStates.Entering, rand));
+                    }
                     timeSincePig = gameTime.TotalGameTime;
                 }
 

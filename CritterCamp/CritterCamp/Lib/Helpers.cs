@@ -22,7 +22,7 @@ namespace CritterCamp {
             Sync(sd, "");
         }
 
-        public static void Sync( SyncDelegate sd, string data) {
+        public static void Sync(SyncDelegate sd, string data) {
             if(!CoreApplication.Properties.ContainsKey("SyncDelegate")) {
                 // Send packet to trigger Sync
                 JObject syncPacket = new JObject(

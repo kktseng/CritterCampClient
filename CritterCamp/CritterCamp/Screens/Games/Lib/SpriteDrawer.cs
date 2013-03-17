@@ -115,6 +115,7 @@ namespace CritterCamp.Screens.Games.Lib {
             Vector2 size = font.MeasureString(text) * drawScale;
 
             // Scale coordinates back to backBuffer
+            coord += new Vector2(0, offset);
             coord /= coordScale;
             coord -= size / 2;
 
