@@ -18,6 +18,7 @@ namespace CritterCamp.Screens {
     /// </summary>
     class MenuScreen : GameScreen {
         protected List<Button> menuButtons = new List<Button>();
+        private string background = "paperBG";
         private Type backScreen = null;
 
         /// <summary>
@@ -34,6 +35,15 @@ namespace CritterCamp.Screens {
         public MenuScreen(string title) {
             // We need tap gestures to hit the buttons
             EnabledGestures = GestureType.Tap;
+        }
+
+        /// <summary>
+        /// Creates the PhoneMenuScreen with a particular title.
+        /// </summary>
+        /// <param name="title">The title of the screen</param>
+        /// <param name="background">The texture to display as the background</param>
+        public MenuScreen(string title, string background) : this(title) {
+            this.background = background;
         }
 
         public void setBack(Type backScreen) {
@@ -55,6 +65,10 @@ namespace CritterCamp.Screens {
             if(!ScreenManager.Textures.ContainsKey("button")) {
                 ScreenManager.Textures.Add("button", cm.Load<Texture2D>("button600"));
                 ScreenManager.Textures.Add("backButton", cm.Load<Texture2D>("backButton"));
+            }
+
+            if (!ScreenManager.Textures.ContainsKey(background)) {
+                ScreenManager.Textures.Add(background, cm.Load<Texture2D>(background));
             }
 
             // When the screen is activated, we have a valid ScreenManager so we can arrange
@@ -103,10 +117,9 @@ namespace CritterCamp.Screens {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
-           
-            sd.Begin();
 
-            sd.Draw(ScreenManager.Textures["paperBG"], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 773));
+            sd.Begin();
+            sd.Draw(ScreenManager.Textures[background], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 768));
 
             // Draw all of the buttons
             foreach(Button b in menuButtons) {

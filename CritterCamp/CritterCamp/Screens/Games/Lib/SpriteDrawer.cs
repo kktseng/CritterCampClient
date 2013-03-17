@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace CritterCamp.Screens.Games.Lib {
     // Used to store constant information on a player's customized model
-    public struct PlayerData {
+    public struct PlayerDataSprite {
         public Texture2D body, faces, accessories, hats;
-        public PlayerData(Texture2D body, Texture2D faces, Texture2D accessories = null, Texture2D hats = null) {
+        public PlayerDataSprite(Texture2D body, Texture2D faces, Texture2D accessories = null, Texture2D hats = null) {
             this.body = body;
             this.faces = faces;
             this.accessories = accessories;
@@ -99,7 +99,7 @@ namespace CritterCamp.Screens.Games.Lib {
             Draw(texture, coord, spriteNum, spriteScale: 2f);
         }
 
-        public void DrawPlayer(PlayerData pdata, Vector2 coord, TextureData.PlayerStates state, float spriteRotation = 0, float spriteScale = 1f) {
+        public void DrawPlayer(PlayerDataSprite pdata, Vector2 coord, TextureData.PlayerStates state, float spriteRotation = 0, float spriteScale = 1f) {
             Draw(pdata.body, coord, (int)state, spriteRotation, spriteScale);
             Draw(pdata.faces, coord, (int)state, spriteRotation, spriteScale);
             if(pdata.accessories != null) {
@@ -110,19 +110,27 @@ namespace CritterCamp.Screens.Games.Lib {
             }
         }
 
-        public void DrawString(SpriteFont font, string text, Vector2 coord, Color color) {
-            SpriteBatch sb = sm.SpriteBatch;        
+        public void DrawString(SpriteFont font, string text, Vector2 coord, Color color, bool center) {
+            SpriteBatch sb = sm.SpriteBatch;
             Vector2 size = font.MeasureString(text) * drawScale;
 
             // Scale coordinates back to backBuffer
             coord += new Vector2(0, offset);
             coord /= coordScale;
-            coord -= size / 2;
 
-            if(Constants.ROTATION != 0)
+            if (center) { // move the coordinates if we want to center it
+                coord -= size / 2;
+            }
+
+            if (Constants.ROTATION != 0)
                 coord = new Vector2(backBuffer.X - coord.Y, coord.X);
 
             sb.DrawString(font, text, coord, color, Constants.ROTATION, new Vector2(0, 0), drawScale, SpriteEffects.None, 0f);
+        }
+
+        // draws the string with the string centered at the coordinates
+        public void DrawString(SpriteFont font, string text, Vector2 coord, Color color) {
+            DrawString(font, text, coord, Color.Black, true);
         }
 
         public void DrawString(SpriteFont font, string text, Vector2 coord) {

@@ -81,7 +81,7 @@ namespace CritterCamp.Screens.Games {
             textureList["doodads"] = cm.Load<Texture2D>("doodads");
             textureList["effects"] = cm.Load<Texture2D>("effects");
             textureList["pig"] = cm.Load<Texture2D>("pig");
-            arial = cm.Load<SpriteFont>("menufont");
+            arial = cm.Load<SpriteFont>("Fonts/menufont");
             setMap();
         }
 

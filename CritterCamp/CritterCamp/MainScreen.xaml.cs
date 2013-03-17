@@ -24,7 +24,7 @@ namespace CritterCamp {
 
         string urlLogin = "http://" + Configuration.HOSTNAME + ":8080/login";
         string urlRegister = "http://" + Configuration.HOSTNAME + ":8080/login/create";
-        string postDataFormat = "username={0}&password={1}&version=0.1";
+        string postDataFormat = "username={0}&password={1}&version=1.0";
         bool connecting = false;
 
         string username;

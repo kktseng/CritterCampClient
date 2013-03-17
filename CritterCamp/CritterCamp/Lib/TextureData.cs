@@ -66,5 +66,9 @@ namespace CritterCamp {
         public enum SmallDoodads {
             heart
         }
+
+        public enum games {
+            missleMadness, twilightTango, jetpackJamboree
+        }
     }
 }

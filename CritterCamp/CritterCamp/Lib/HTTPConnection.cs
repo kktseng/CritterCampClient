@@ -13,6 +13,7 @@ using System.IO;
 namespace CritterCamp {
     public class HTTPConnection {
         public static async Task<HTTPConnectionResult> GetPostResult(string url, string postData) {
+            System.Diagnostics.Debug.WriteLine("HTTP Sent: " + url + "/" + postData);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             bool error = false;
             request.AllowWriteStreamBuffering = true;
@@ -55,7 +56,9 @@ namespace CritterCamp {
 
             // return the message as an HTTPConnectionResult
             using (StreamReader sr = new StreamReader(response.GetResponseStream())) {
-                return new HTTPConnectionResult(error, sr.ReadToEnd());
+                string message = sr.ReadToEnd();
+                System.Diagnostics.Debug.WriteLine("HTTP Receive: " + message);
+                return new HTTPConnectionResult(error, message);
             }
         }
     }
