@@ -18,6 +18,7 @@ namespace CritterCamp.Screens.Games.Lib {
             this.hats = hats;
         }
     }
+
     public class SpriteDrawer {
         public Vector2 backBuffer, coordScale, drawScale;
         public Vector2 sprite_dim = new Vector2(Constants.SPRITE_DIM);
@@ -30,10 +31,17 @@ namespace CritterCamp.Screens.Games.Lib {
 
         public void Initialize() {
             backBuffer = new Vector2(sm.Game.GraphicsDevice.PresentationParameters.BackBufferWidth, sm.Game.GraphicsDevice.PresentationParameters.BackBufferHeight);
+            float ratio = 1f;
+            if(backBuffer.Y / backBuffer.X == Constants.RATIO_15_9) {
+                ratio = Constants.CONVERSION_15_9;
+            }
 
             // Scaling is based only on X width for now due to discrepancies in aspect ratio
             coordScale = new Vector2(Constants.BUFFER_WIDTH / backBuffer.Y);
+            coordScale.Y /= ratio;
+
             drawScale = new Vector2(backBuffer.Y / (Constants.SPRITE_DIM * Constants.MAP_WIDTH));
+            drawScale.Y *= ratio;
         }
 
         public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect,  SpriteEffects effect, float spriteRotation = 0, float spriteScale = 1f) {
