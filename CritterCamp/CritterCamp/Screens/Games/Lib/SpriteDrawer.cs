@@ -22,6 +22,8 @@ namespace CritterCamp.Screens.Games.Lib {
     public class SpriteDrawer {
         public Vector2 backBuffer, coordScale, drawScale;
         public Vector2 sprite_dim = new Vector2(Constants.SPRITE_DIM);
+        // public Matrix scale;
+        public int offset = 0; // used to offset non 16:9 screens to the center
 
         protected ScreenManager sm;
 
@@ -31,23 +33,36 @@ namespace CritterCamp.Screens.Games.Lib {
 
         public void Initialize() {
             backBuffer = new Vector2(sm.Game.GraphicsDevice.PresentationParameters.BackBufferWidth, sm.Game.GraphicsDevice.PresentationParameters.BackBufferHeight);
-            float ratio = 1f;
-            if(backBuffer.Y / backBuffer.X == Constants.RATIO_15_9) {
-                ratio = Constants.CONVERSION_15_9;
+            //float ratio = 1f;
+            if((int)(backBuffer.Y / (float)backBuffer.X * 1000) == (int)(Constants.RATIO_16_9 * 1000)) {
+               // ratio = Constants.CONVERSION_15_9;
+                offset = Constants.OFFSET_16_9;
+            } else if((int)((float)backBuffer.Y / (float)backBuffer.X * 1000) == (int)(Constants.RATIO_15_9 * 1000)) {
+                offset = Constants.OFFSET_15_9;
             }
+            // scale = Matrix.CreateScale(1f / ratio, 1f, 1f);
 
             // Scaling is based only on X width for now due to discrepancies in aspect ratio
             coordScale = new Vector2(Constants.BUFFER_WIDTH / backBuffer.Y);
-            coordScale.Y /= ratio;
 
             drawScale = new Vector2(backBuffer.Y / (Constants.SPRITE_DIM * Constants.MAP_WIDTH));
-            drawScale.Y *= ratio;
+
+        }
+
+        public void Begin() {
+            // sm.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise, null, scale);
+            sm.SpriteBatch.Begin();
+        }
+
+        public void End() {
+            sm.SpriteBatch.End();
         }
 
         public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect,  SpriteEffects effect, float spriteRotation = 0, float spriteScale = 1f) {
             SpriteBatch sb = sm.SpriteBatch;
             
             // Scale coordinates back to backBuffer
+            coord += new Vector2(0, offset);
             coord /= coordScale;
 
             // Fix coordinates for landscape

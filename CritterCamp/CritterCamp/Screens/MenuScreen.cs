@@ -104,9 +104,9 @@ namespace CritterCamp.Screens {
             SpriteFont font = ScreenManager.Font;
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
            
-            spriteBatch.Begin();
+            sd.Begin();
 
-            sd.Draw(ScreenManager.Textures["menuBG"], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2 + 36), 0, new Vector2(1280, 768));
+            sd.Draw(ScreenManager.Textures["paperBG"], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 773));
 
             // Draw all of the buttons
             foreach(Button b in menuButtons) {
@@ -129,7 +129,7 @@ namespace CritterCamp.Screens {
             //spriteBatch.DrawString(font, menuTitle, titlePosition, titleColor, 0,
                                    //titleOrigin, titleScale, SpriteEffects.None, 0);
 
-            spriteBatch.End();
+            sd.End();
 
             base.Draw(gameTime);
         }

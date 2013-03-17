@@ -312,8 +312,8 @@ namespace CritterCamp.Screens.Games {
         }
 
         public override void Draw(GameTime gameTime) {
-            ScreenManager.SpriteBatch.Begin();
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+            sd.Begin();
             tileMap.draw(sd);
             DrawActors(sd);
             if(banner != null) {
@@ -332,7 +332,7 @@ namespace CritterCamp.Screens.Games {
                 sd.Draw(textureList["twilight"], new Vector2(Constants.BUFFER_SPRITE_DIM * 1.5f + Constants.BUFFER_SPRITE_DIM * (int)Math.Floor(timerBar * 18), 64), (int)TextureData.twilightTexture.timer, new Rectangle(0, 0, (int)(timerBar % (1d / 18d) * 64d * 18d), 64));
                 sd.Draw(textureList["twilight"], new Vector2(Constants.BUFFER_SPRITE_DIM + (float)(timerBar * (Constants.BUFFER_WIDTH - 2 * Constants.BUFFER_SPRITE_DIM)), 60 + rocketOffset), rocket);
             }
-            ScreenManager.SpriteBatch.End();
+            sd.End();
             base.Draw(gameTime);
         }
 

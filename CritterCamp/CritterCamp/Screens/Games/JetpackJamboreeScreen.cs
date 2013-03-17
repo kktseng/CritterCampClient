@@ -48,9 +48,10 @@ namespace CritterCamp.Screens.Games {
         }
 
         public void setMap() {
-            tileMap = new TileMap(textureList["map"]);
-            doodadMap = new TileMap(textureList["doodads"]);
+            tileMap = new TileMap(textureList["map"], -32);
+            doodadMap = new TileMap(textureList["doodads"], -32);
             int[,] map = new int[,] {
+                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
                 {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
                 {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
                 {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
@@ -65,18 +66,19 @@ namespace CritterCamp.Screens.Games {
                 {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 }
             };
             int[,] ddMap = new int[,] {
-                {  -1, -1, -1, -1, -1, 18, 21, 21, 23, -1, -1, 19, 21, 21, 22, -1, -1, -1, -1, -1 },
+                {  21, 21, 21, 21, 21, 22, -1, -1, 16, -1, -1, 16, -1, -1, 18, 21, 21, 21, 21, 21 },
+                {  -1, -1, -1, -1, -1, 18, 21, 21, 22, -1, -1, 18, 21, 21, 22, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
                 {  21, 21, 21, 21, 21, 22, -1, -1, -1, -1, -1, -1, -1, -1, 18, 21, 21, 21, 21, 21 },
-                {  21, 21, 21, 21, 21, 22, -1, -1, -1, -1, -1, -1, -1, -1, 18, 21, 21, 21, 21, 21 },
                 {  -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 19, 21, 21, 21, 21, 21, 21, 21, 21, 23, -1, -1, -1, -1, -1 }
+                {  -1, -1, -1, -1, -1, 18, 21, 21, 22, -1, -1, 18, 21, 21, 22, -1, -1, -1, -1, -1 },
+                {  21, 21, 21, 21, 21, 21, -1, -1, 16, -1, -1, 16, -1, -1, 21, 21, 21, 21, 21, 21 },
             };
             tileMap.setMap(map);
             doodadMap.setMap(ddMap);
@@ -187,20 +189,20 @@ namespace CritterCamp.Screens.Games {
         
 
         public override void Draw(GameTime gameTime) {
-            ScreenManager.SpriteBatch.Begin();
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+            sd.Begin();
 
             // Draw the game map
             tileMap.draw(sd);
-            DrawLaunchpad(sd, new Vector2(0, 0), 0);
-            DrawLaunchpad(sd, new Vector2(Constants.BUFFER_SPRITE_DIM * 15, 0), 1);
-            DrawLaunchpad(sd, new Vector2(0, Constants.BUFFER_SPRITE_DIM * 7), 2);
-            DrawLaunchpad(sd, new Vector2(Constants.BUFFER_SPRITE_DIM * 15, Constants.BUFFER_SPRITE_DIM * 7), 3);
+            DrawLaunchpad(sd, new Vector2(0, -Constants.BUFFER_OFFSET + 64), 0);
+            DrawLaunchpad(sd, new Vector2(Constants.BUFFER_SPRITE_DIM * 15, -Constants.BUFFER_OFFSET + 64), 1);
+            DrawLaunchpad(sd, new Vector2(0, Constants.BUFFER_SPRITE_DIM * 7 - Constants.BUFFER_OFFSET - 32), 2);
+            DrawLaunchpad(sd, new Vector2(Constants.BUFFER_SPRITE_DIM * 15, Constants.BUFFER_SPRITE_DIM * 7 - Constants.BUFFER_OFFSET - 32), 3);
             doodadMap.draw(sd);
 
             DrawActors(sd);
 
-            ScreenManager.SpriteBatch.End();
+            sd.End();
             base.Draw(gameTime);
         }
 
