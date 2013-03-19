@@ -60,8 +60,8 @@ namespace CritterCamp.Screens.Games.TwilightTango {
         }
 
         public override void draw(SpriteDrawer sd) {
-            for(int j = 0; j < health; j++) {
-                sd.Draw(getImg(), getCoord() + new Vector2(100 * j, 0), getNum(), effect: getFrame().Value.effect);
+            for(int i = 0; i < health; i++) {
+                sd.Draw(getImg(), getCoord() + new Vector2(100 * i, 0), getNum(), effect: getFrame().Value.effect);
             }
         }
 

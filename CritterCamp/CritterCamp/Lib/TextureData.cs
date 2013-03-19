@@ -18,8 +18,9 @@ namespace CritterCamp {
             grass1, grass2, grass3, // 4
             dirtTL, dirtTR, dirtBL, dirtBR, // 7
             dirtB, dirtT, dirtR, dirtL, // 11
-            dirt, // 12
-            longGrassNight, longGrass1 // 13
+            dirt, // 15
+            longGrassNight, longGrass1, // 16
+            tree, treeLeft, treeMiddle, treeRight // 18
         }
 
         public enum PlayerStates {

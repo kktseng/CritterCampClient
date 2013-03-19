@@ -67,7 +67,7 @@ namespace CritterCamp.Screens.Games {
         public TwilightTangoScreen(List<PlayerData> playerData) : base(playerData) {
             currentRank = playerData.Count;
             for(int i = 0; i < playerData.Count; i++) {
-                players[playerData[i].username] = new Player(this, new Vector2(100 + 650 * i, 800));
+                players[playerData[i].username] = new Player(this, new Vector2(100 + 450 * i, 800));
             }
 
             // Enable flick gestures
@@ -94,7 +94,7 @@ namespace CritterCamp.Screens.Games {
                 {  1,  2,  3,  2,  1,  2,  2,  3,  0,  2,  3,  0,  1,  3,  1,  0,  1,  1,  3,  0 },
                 {  2,  1,  2,  3,  0,  2,  0,  3,  2,  1,  1,  2,  3,  2,  2,  3,  1,  1,  2,  1 },
                 {  3,  0,  1,  1,  3,  3,  2,  2,  3,  0,  3,  2,  3,  0,  1,  2,  2,  0,  1,  2 },
-                { 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16 },
+                { 20, 20, 21, 19, 20, 20, 21, 16, 18, 18, 19, 20, 20, 20, 21, 19, 20, 20, 20, 20 },
                 { 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17 },
                 {  9,  6,  4,  4,  5,  6,  4, 10, 11,  9,  4,  5,  4, 10, 11,  9,  4,  5,  4,  4 },
                 { 14,  4,  4,  6, 10,  9,  4,  8, 15, 14,  4,  4, 10, 15, 12, 12,  9, 10,  9,  4 },
