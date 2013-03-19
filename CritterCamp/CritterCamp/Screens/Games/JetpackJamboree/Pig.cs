@@ -22,7 +22,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
         public static TimeSpan EXPLODE_TIME = new TimeSpan(0, 0, 10);
 
         private static int MIN_FLY_ENTER = 600;
-        private static int MAX_FLY_ENTER = 1320;
+        private static int MAX_FLY_ENTER = 1250;
         private static int WALK_IN_ENTER = 960;
 
         private static int FLY_TIME = 1450;
@@ -37,7 +37,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
             MIN_FLY_ENTER,
             (int)(Constants.BUFFER_SPRITE_DIM),
             MAX_FLY_ENTER - MIN_FLY_ENTER,
-            (int)(Constants.BUFFER_HEIGHT - Constants.BUFFER_SPRITE_DIM * 2f)
+            (int)(Constants.BUFFER_HEIGHT - Constants.BUFFER_SPRITE_DIM * 2.5f)
         );
 
         private static Rectangle[] areas = new Rectangle[] {
@@ -155,7 +155,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
         }
 
         public override void draw(SpriteDrawer sd) {
-            int jetPackState = rand.Next(0, 1);
+            int jetFlameState = rand.Next(0, 1);
             switch(state) {
                 case PigStates.WalkLeft:
                     base.draw(sd);
@@ -167,12 +167,12 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
                     break;
                 case PigStates.Flying:
                     sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
-                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 40) + new Vector2(0, Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.jetFlame1 + jetPackState);
+                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 40) + new Vector2(0, Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.jetFlame1 + jetFlameState);
                     base.draw(sd);
                     break;
                 case PigStates.Falling:
                     sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
-                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 40) + new Vector2(0, Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.jetFlame1 + jetPackState);
+                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 40) + new Vector2(0, Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.jetFlame1 + jetFlameState);
                     base.draw(sd);
                     break;
                 case PigStates.Entering:

@@ -160,13 +160,16 @@ namespace GameStateManagement {
         /// Allows each screen to run logic.
         /// </summary>
         public override void Update(GameTime gameTime) {
-            foreach(GameScreen screen in toAddScreens)
-                AddScreenSync(screen);
-            foreach(GameScreen screen in toRemoveScreens)
-                RemoveScreenSync(screen);
-
-            toAddScreens.Clear();
-            toRemoveScreens.Clear();
+            lock(toAddScreens) {
+                foreach(GameScreen screen in toAddScreens)
+                    AddScreenSync(screen);
+                toAddScreens.Clear();
+            };
+            lock(toRemoveScreens) {
+                foreach(GameScreen screen in toRemoveScreens)
+                    RemoveScreenSync(screen);
+                toRemoveScreens.Clear();
+            };
 
             // Read the keyboard and gamepad.
             input.Update();
@@ -249,7 +252,9 @@ namespace GameStateManagement {
         /// Adds a new screen to the screen manager.
         /// </summary>
         public void AddScreen(GameScreen screen, PlayerIndex? controllingPlayer) {
-            toAddScreens.Add(screen);
+            lock(toAddScreens) {
+                toAddScreens.Add(screen);
+            };
         }
 
         private void AddScreenSync(GameScreen screen) {
@@ -276,7 +281,9 @@ namespace GameStateManagement {
         /// instantly removed.
         /// </summary>
         public void RemoveScreen(GameScreen screen) {
-            toRemoveScreens.Add(screen);
+            lock(toRemoveScreens) {
+                toRemoveScreens.Add(screen);
+            };
         }
 
         private void RemoveScreenSync(GameScreen screen) {

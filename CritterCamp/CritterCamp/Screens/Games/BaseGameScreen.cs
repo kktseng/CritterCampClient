@@ -97,11 +97,15 @@ namespace CritterCamp.Screens.Games {
 
         // Methods for managing actors
         public void addActor(IAnimatedObject actor) {
-            toAdd.Add(actor);
+            lock(toAdd) {
+                toAdd.Add(actor);
+            };
         }
 
         public void removeActor(IAnimatedObject actor) {
-            toRemove.Add(actor);
+            lock(toRemove) {
+                toRemove.Add(actor);
+            };
         }
 
         public void removeActor<T>(List<T> actorList) {
@@ -112,19 +116,20 @@ namespace CritterCamp.Screens.Games {
         }
 
         protected void UpdateActors(GameTime gameTime) {
-            int addLen = toAdd.Count; // Cache length of list so we can enumerate through in safety]
-            int remLen = toRemove.Count;
-            for(int i = addLen - 1; i >= 0; i--) {
-                actors.Add(toAdd[i]);
+            lock(toAdd) {
+                foreach(IAnimatedObject actor in toAdd)
+                    actors.Add(actor);
+                toAdd.Clear();
+            };
+            lock(toRemove) {
+                foreach(IAnimatedObject actor in toRemove)
+                    actors.Remove(actor);
+                toRemove.Clear();
             }
             toAdd.RemoveRange(0, addLen);
             foreach(IAnimatedObject actor in actors) {
                 actor.animate(gameTime.ElapsedGameTime);
             }
-            for(int i = remLen - 1; i >= 0; i--) {
-                actors.Remove(toRemove[i]);
-            }
-            toRemove.RemoveRange(0, remLen);
         }
 
         protected void DrawActors(SpriteDrawer sd) {

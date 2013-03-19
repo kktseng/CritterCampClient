@@ -9,6 +9,7 @@ namespace CritterCamp.Screens.Games.Lib {
         bool isVisible();
         void draw(SpriteDrawer sd);
         void animate(TimeSpan time);
+        Vector2 getCoord();
     }
     public abstract class AnimatedObject<T> : IAnimatedObject {
         public struct Frame {

@@ -8,7 +8,7 @@ namespace CritterCamp {
     public class Configuration {
         // Server
         public static uint MAX_BUFFER_SIZE = 2048; // The maximum size of the data buffer to use with the asynchronous socket methods
-        public static string HOSTNAME = "192.168.1.81";
+        public static string HOSTNAME = "192.168.12.38";
         //public static string HOSTNAME = "www.thepigmaster.com";
         public static int PORT = 8000;
     }

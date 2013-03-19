@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace CritterCamp.Screens.Games {
     class JetpackJamboreeScreen : BaseGameScreen {
         public static int PIG_DELAY = 2;
-        public static int MAX_PIG_COUNT = 6;
+        public static int MAX_PIG_COUNT = 10;
         public bool exploded = false;
 
         protected TileMap tileMap, doodadMap;
