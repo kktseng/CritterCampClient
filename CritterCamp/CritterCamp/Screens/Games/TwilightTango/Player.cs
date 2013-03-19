@@ -21,13 +21,15 @@ namespace CritterCamp.Screens.Games.TwilightTango {
         public int health;
         public List<Direction> input;
         public int rank;
+        public int color;
 
-        public Player(BaseGameScreen screen, Vector2 coord)
+        public Player(BaseGameScreen screen, Vector2 coord, int color)
             : base(screen, "pig", coord) {
             input = new List<Direction>();
             setState(PlayerDanceStates.Standing);
             health = 4;
             maxCycles = 1;
+            this.color = color;
         }
 
         protected override void setAnim() {
@@ -60,8 +62,9 @@ namespace CritterCamp.Screens.Games.TwilightTango {
         }
 
         public override void draw(SpriteDrawer sd) {
+            int len = Helpers.TextureLen(typeof(TextureData.PlayerStates));
             for(int i = 0; i < health; i++) {
-                sd.Draw(getImg(), getCoord() + new Vector2(100 * i, 0), getNum(), effect: getFrame().Value.effect);
+                sd.Draw(getImg(), getCoord() + new Vector2(100 * i, 0), getNum() + len * color, effect: getFrame().Value.effect);
             }
         }
 

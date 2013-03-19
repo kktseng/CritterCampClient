@@ -24,8 +24,19 @@ namespace CritterCamp.Screens {
             // Load relevant information
             JArray playerInfo = (JArray)CoreApplication.Properties["group_info"];
             JArray gameChoices = (JArray)CoreApplication.Properties["game_choices"];
+
+            // Parse color for duplicate skins
+            Dictionary<string, int> colorMap = new Dictionary<string, int>();
             foreach(JObject playerData in playerInfo) {
-                players.Add(new PlayerData((string)playerData["username"], (string)playerData["profile"], (int)playerData["level"]));
+                string profile = (string)playerData["profile"];
+                int color = 0;
+                if(colorMap.ContainsKey(profile)) {
+                    color = colorMap[profile];
+                    colorMap[profile]++;
+                } else {
+                    colorMap[profile] = 1;
+                }
+                players.Add(new PlayerData((string)playerData["username"], profile, (int)playerData["level"], color));
             }
             foreach (string game in gameChoices) {
                 games.Add(game);

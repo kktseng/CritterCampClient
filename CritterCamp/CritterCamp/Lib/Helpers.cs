@@ -35,6 +35,12 @@ namespace CritterCamp {
                 ((TCPConnection)CoreApplication.Properties["TCPSocket"]).SendMessage(syncPacket.ToString());
             }
         }
+
+        public static int TextureLen(Type enumType) {
+            int len = Enum.GetNames(enumType).Length;
+            int rounded = ((len - 1) / 10 * 10) + 10;
+            return rounded;
+        }
     }
 
     public static class LowMemoryHelper {

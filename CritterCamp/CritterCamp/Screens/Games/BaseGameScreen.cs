@@ -16,11 +16,13 @@ namespace CritterCamp.Screens.Games {
         public string username;
         public string profile;
         public int level;
+        public int color;
 
-        public PlayerData(string username, string profile, int level) {
+        public PlayerData(string username, string profile, int level, int color) {
             this.username = username;
             this.profile = profile;
             this.level = level;
+            this.color = color;
         }
     }
     public class BaseGameScreen : GameScreen {
