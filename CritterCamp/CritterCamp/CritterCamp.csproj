@@ -135,9 +135,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\blank.xnb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\Fonts\menufont.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -178,6 +175,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mapTextures.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Fonts\blueHighway28.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Fonts\buttonFont.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Fonts\boris48.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\AppManifest.xml" />

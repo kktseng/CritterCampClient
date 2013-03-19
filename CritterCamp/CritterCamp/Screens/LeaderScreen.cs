@@ -41,7 +41,7 @@ namespace CritterCamp.Screens {
             ScreenManager.SpriteBatch.Begin();
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
             for(int i = 0; i < leaders.Count; i++) {
-                sd.DrawString(ScreenManager.Font, (i + 1) + ". " + leaders[i], new Vector2(1000, 100 + 100 * i));
+                sd.DrawString(ScreenManager.Fonts["blueHighway28"], (i + 1) + ". " + leaders[i], new Vector2(1000, 100 + 100 * i));
             }
             ScreenManager.SpriteBatch.End();
         }

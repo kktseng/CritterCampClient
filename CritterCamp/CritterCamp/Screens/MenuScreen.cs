@@ -115,7 +115,6 @@ namespace CritterCamp.Screens {
         public override void Draw(GameTime gameTime) {
             GraphicsDevice graphics = ScreenManager.GraphicsDevice;
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-            SpriteFont font = ScreenManager.Font;
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
 
             sd.Begin();

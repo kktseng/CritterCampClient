@@ -129,7 +129,7 @@ namespace CritterCamp.Screens {
             base.Draw(gameTime);
             ScreenManager.SpriteBatch.Begin();
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
-            sd.DrawString(ScreenManager.Font, "Choose Game", new Vector2(Constants.BUFFER_WIDTH / 2, 200));
+            sd.DrawString(ScreenManager.Fonts["boris48"], "Choose Game", new Vector2(Constants.BUFFER_WIDTH / 2, 200));
 
             ScreenManager.SpriteBatch.End();
         }

@@ -95,7 +95,7 @@ namespace CritterCamp.Screens {
         public void Draw(GameScreen screen) {
             // Grab some common items from the ScreenManager
             SpriteBatch spriteBatch = screen.ScreenManager.SpriteBatch;
-            SpriteFont font = screen.ScreenManager.Font;
+            SpriteFont font = screen.ScreenManager.Fonts["buttonFont"];
             SpriteDrawer sd = (SpriteDrawer)screen.ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
 
             // Draw the button           

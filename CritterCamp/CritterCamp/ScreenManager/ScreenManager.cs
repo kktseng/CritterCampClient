@@ -30,7 +30,6 @@ namespace GameStateManagement {
     /// </summary>
     public class ScreenManager : DrawableGameComponent {
         #region Fields
-
         private const string StateFilename = "ScreenManagerState.xml";
 
         List<GameScreen> screens = new List<GameScreen>();
@@ -41,9 +40,9 @@ namespace GameStateManagement {
         InputState input = new InputState();
 
         SpriteBatch spriteBatch;
-        SpriteFont font;
-        Dictionary<string, Texture2D> textures = new Dictionary<string,Texture2D>();
-        Texture2D blankTexture;
+
+        Dictionary<string, SpriteFont> fonts = new Dictionary<string, SpriteFont>();
+        Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 
         bool isInitialized;
 
@@ -67,8 +66,8 @@ namespace GameStateManagement {
         /// A default font shared by all the screens. This saves
         /// each screen having to bother loading their own local copy.
         /// </summary>
-        public SpriteFont Font {
-            get { return font; }
+        public Dictionary<string, SpriteFont> Fonts {
+            get { return fonts; }
         }
 
 
@@ -80,14 +79,6 @@ namespace GameStateManagement {
         public bool TraceEnabled {
             get { return traceEnabled; }
             set { traceEnabled = value; }
-        }
-
-
-        /// <summary>
-        /// Gets a blank texture that can be used by the screens.
-        /// </summary>
-        public Texture2D BlankTexture {
-            get { return blankTexture; }
         }
 
         public Dictionary<string, Texture2D> Textures {
@@ -129,8 +120,10 @@ namespace GameStateManagement {
             ContentManager content = Game.Content;
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = content.Load<SpriteFont>("Fonts/matiz48");
-            blankTexture = content.Load<Texture2D>("blank");
+            string[] fontNames = new string[] { "matiz48", "buttonFont", "boris48", "blueHighway28" };
+            for(int i = 0; i < fontNames.Length; i++) {
+                fonts[fontNames[i]] = content.Load<SpriteFont>("Fonts/" + fontNames[i]);
+            }
             textures["paperBG"] = content.Load<Texture2D>("paperBG");
 
             // Tell each of the screens to load their content.
@@ -318,9 +311,7 @@ namespace GameStateManagement {
         /// screens in and out, and for darkening the background behind popups.
         /// </summary>
         public void FadeBackBufferToBlack(float alpha) {
-            spriteBatch.Begin();
-            spriteBatch.Draw(blankTexture, GraphicsDevice.Viewport.Bounds, Color.Black * alpha);
-            spriteBatch.End();
+            // Deprecated
         }
 
         /// <summary>

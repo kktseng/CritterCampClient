@@ -130,7 +130,7 @@ namespace CritterCamp.Screens {
             // to bother drawing the message.
             if(loadingIsSlow) {
                 SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-                SpriteFont font = ScreenManager.Font;
+                SpriteFont font = ScreenManager.Fonts["blueHighway28"];
 
                 const string message = "Loading...";
 
