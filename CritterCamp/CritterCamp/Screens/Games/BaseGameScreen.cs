@@ -126,7 +126,6 @@ namespace CritterCamp.Screens.Games {
                     actors.Remove(actor);
                 toRemove.Clear();
             }
-            toAdd.RemoveRange(0, addLen);
             foreach(IAnimatedObject actor in actors) {
                 actor.animate(gameTime.ElapsedGameTime);
             }
