@@ -127,11 +127,12 @@ namespace CritterCamp.Screens {
 
         public override void Draw(GameTime gameTime) {
             base.Draw(gameTime);
-            ScreenManager.SpriteBatch.Begin();
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+            sd.Begin();
+            
             sd.DrawString(ScreenManager.Fonts["boris48"], "Choose Game", new Vector2(Constants.BUFFER_WIDTH / 2, 200));
-
-            ScreenManager.SpriteBatch.End();
+            
+            sd.End();
         }
     }
 }
