@@ -19,6 +19,7 @@ namespace CritterCamp.Screens.Games {
 
         protected TileMap tileMap, doodadMap;
         protected TimeSpan timeSincePig;
+        protected TextBanner banner;
 
         protected Pig selectedPig;
         protected Vector2 old_pos;
@@ -183,7 +184,8 @@ namespace CritterCamp.Screens.Games {
                     }
                 }
             } else {
-
+                if(banner == null)
+                    banner = new TextBanner(this, "GAME OVER");
             }
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
@@ -204,6 +206,9 @@ namespace CritterCamp.Screens.Games {
 
             DrawActors(sd);
 
+            if(banner != null)
+                banner.Draw(new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2));
+
             sd.End();
             base.Draw(gameTime);
         }
@@ -214,9 +219,9 @@ namespace CritterCamp.Screens.Games {
             if((string)o["action"] == "game" && (string)o["name"] == "jetpack_jamboree") {
                 JObject data = (JObject)o["data"];
                 if((string)data["action"] == "add") {
-                    if(playerName != (string)data["source"]) {
+                    if(playerName != (string)data["source"] && !exploded) {
                         // Add new pigs flying in
-                        for(int i = 0; i < (int)(MAX_PIG_COUNT / (playerData.Count - 1)); i++) {
+                        for(int i = 0; i < (int)(MAX_PIG_COUNT / (playerData.Count - deadUsers.Count - 1)); i++) {
                             Pig p = new Pig(this, PigStates.Falling, rand);
                             p.color = (int)data["color"];
                             mainPigs.Add(p);

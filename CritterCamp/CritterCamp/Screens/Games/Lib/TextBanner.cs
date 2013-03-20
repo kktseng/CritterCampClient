@@ -10,15 +10,14 @@ namespace CritterCamp.Screens.Games.Lib {
     public class TextBanner {
         private string text;
         private BaseGameScreen screen;
-        private SpriteFont font;
 
-        public TextBanner(BaseGameScreen screen, string text, SpriteFont font) {
+        public TextBanner(BaseGameScreen screen, string text) {
             this.text = text;
             this.screen = screen;
-            this.font = font;
         }
 
         public void Draw(Vector2 coord) {
+            SpriteFont font = screen.ScreenManager.Fonts["buttonFont"];
             Vector2 size = font.MeasureString(text);
             // Resize coordinates to backbuffer
             SpriteDrawer sd = (SpriteDrawer)screen.ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));

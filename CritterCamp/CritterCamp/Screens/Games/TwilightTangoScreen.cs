@@ -61,9 +61,6 @@ namespace CritterCamp.Screens.Games {
         private TimeSpan start;
         private TimeSpan timer;
 
-        // temp until I can figure out how to deal with fonts
-        protected SpriteFont arial;
-
         public TwilightTangoScreen(List<PlayerData> playerData) : base(playerData) {
             currentRank = playerData.Count;
             for(int i = 0; i < playerData.Count; i++) {
@@ -81,7 +78,6 @@ namespace CritterCamp.Screens.Games {
             textureList["doodads"] = cm.Load<Texture2D>("doodads");
             textureList["effects"] = cm.Load<Texture2D>("effects");
             textureList["pig"] = cm.Load<Texture2D>("pig");
-            arial = cm.Load<SpriteFont>("Fonts/menufont");
             setMap();
         }
 
@@ -140,7 +136,7 @@ namespace CritterCamp.Screens.Games {
             } else if(phase == Phase.Sync) {
                 // Display banner before syncing
                 if(banner == null) {
-                    banner = new TextBanner(this, "WATCH THE STARS!", arial);
+                    banner = new TextBanner(this, "WATCH THE STARS!");
                 }
 
                 if((gameTime.TotalGameTime - start) > BANNER_TIME) {
@@ -193,7 +189,7 @@ namespace CritterCamp.Screens.Games {
                 timer = INPUT_TIME - gameTime.TotalGameTime + start;
                 timerBar = timer.TotalMilliseconds / INPUT_TIME.TotalMilliseconds;
                 if(banner == null && timer > (INPUT_TIME - BANNER_TIME)) {
-                    banner = new TextBanner(this, "SWIPE!", arial);
+                    banner = new TextBanner(this, "SWIPE!");
                 } else if(timer <= (INPUT_TIME - BANNER_TIME)) {
                     banner = null;
                 }
@@ -205,7 +201,7 @@ namespace CritterCamp.Screens.Games {
                 }
             } else if(phase == Phase.Timeup) {
                 if(banner == null) {
-                    banner = new TextBanner(this, "TIME'S UP!", arial);
+                    banner = new TextBanner(this, "TIME'S UP!");
                 }
 
                 // Switch to dancing phase when finished waiting for slow packets
@@ -290,7 +286,7 @@ namespace CritterCamp.Screens.Games {
                 }
             } else if(phase == Phase.GameOver) {
                 if(banner == null) {
-                    banner = new TextBanner(this, "GAME OVER", arial);
+                    banner = new TextBanner(this, "GAME OVER");
                 }
                 if((gameTime.TotalGameTime - start) > BANNER_TIME) {
                     // Sync scores
