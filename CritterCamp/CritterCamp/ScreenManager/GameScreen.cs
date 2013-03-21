@@ -12,6 +12,8 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
 using CritterCamp.Screens.Games.Lib;
+using CritterCamp;
+using Windows.ApplicationModel.Core;
 
 namespace GameStateManagement {
     /// <summary>
@@ -33,6 +35,27 @@ namespace GameStateManagement {
     /// as screens.
     /// </summary>
     public abstract class GameScreen {
+        protected TCPConnection conn;
+
+        public GameScreen() {}
+
+        protected virtual void MessageReceived(string message, bool error, TCPConnection connection) {}
+
+        public void setConn(TCPConnection conn) {
+            removeConn(); // remove the old connection first
+
+            if (conn != null) { // set the new conenction
+                this.conn = conn;
+                conn.pMessageReceivedEvent += MessageReceived;
+            }
+        }
+
+        public void removeConn() {
+            if (conn != null) {
+                conn.pMessageReceivedEvent -= MessageReceived; // remove the method from the old connection
+                conn = null;
+            }
+        }
 
         protected Vector2 coordScale, backBuffer;
         /// <summary>
@@ -211,7 +234,9 @@ namespace GameStateManagement {
         /// True if the game was preserved during deactivation, false if the screen is just being added or if the game was tombstoned.
         /// On Xbox and Windows this will always be false.
         /// </param>
-        public virtual void Activate(bool instancePreserved) { }
+        public virtual void Activate(bool instancePreserved) {
+            setConn((TCPConnection)CoreApplication.Properties["TCPSocket"]);
+        }
 
 
         /// <summary>
@@ -223,7 +248,9 @@ namespace GameStateManagement {
         /// <summary>
         /// Unload content for the screen. Called when the screen is removed from the screen manager.
         /// </summary>
-        public virtual void Unload() { }
+        public virtual void Unload() {
+            removeConn();
+        }
 
 
         /// <summary>

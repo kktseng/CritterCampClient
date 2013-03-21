@@ -30,7 +30,6 @@ namespace CritterCamp.Screens.Games {
         public Dictionary<string, SpriteFont> fontList = new Dictionary<string, SpriteFont>();
 
         protected ContentManager cm;
-        protected TCPConnection conn;
         protected int expGained;
 
         protected List<IAnimatedObject> actors = new List<IAnimatedObject>();
@@ -46,7 +45,7 @@ namespace CritterCamp.Screens.Games {
             this.playerData = playerData;
         }
 
-        protected virtual void MessageReceived(string message, bool error, TCPConnection connection) {
+        protected override void MessageReceived(string message, bool error, TCPConnection connection) {
             JObject o = JObject.Parse(message);
             // Check for final score
             if((string)o["action"] == "score") {
@@ -73,27 +72,11 @@ namespace CritterCamp.Screens.Games {
             }
         }
 
-        public void setConn(TCPConnection conn) {
-            removeConn(); // remove the old connection first
-
-            if(conn != null) { // set the new conenction
-                this.conn = conn;
-                conn.pMessageReceivedEvent += MessageReceived;
-            }
-        }
-
-        public void removeConn() {
-            if(conn != null) {
-                conn.pMessageReceivedEvent -= MessageReceived; // remove the method from the old connection
-                conn = null;
-            }
-        }
-
         public override void Activate(bool instancePreserved) {
+            base.Activate(instancePreserved);
             if(cm == null) {
                 cm = new ContentManager(ScreenManager.Game.Services, "Content");
             }
-            setConn((TCPConnection)CoreApplication.Properties["TCPSocket"]);
             base.Activate(instancePreserved);
         }
 
@@ -157,7 +140,6 @@ namespace CritterCamp.Screens.Games {
         }
 
         public override void Unload() {
-            removeConn();
             cm.Unload();
             base.Unload();
         }

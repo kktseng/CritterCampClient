@@ -21,6 +21,7 @@ namespace CritterCamp.Screens {
         public Vector2 size;
         public Vector2 Position;
         public ButtonArgs buttonArgs;
+        public bool highlight;
 
         public event EventHandler<ButtonArgs> Tapped;
 
@@ -28,13 +29,22 @@ namespace CritterCamp.Screens {
         /// Creates a new Button.
         /// </summary>
         /// <param name="text">The text to display in the button.</param>
-        public Button(GameScreen screen, string text) {
-            Text = text;
+        public Button(GameScreen screen) {
+            Text = "";
+            Caption = "";
             size = new Vector2(600, 160);
             image = "button";
             this.textureIndex = 0;
             Position = Vector2.Zero;
-            buttonArgs = new ButtonArgs();
+            buttonArgs = new ButtonArgs(this);
+        }
+
+        /// <summary>
+        /// Creates a new Button.
+        /// </summary>
+        /// <param name="text">The text to display in the button.</param>
+        public Button(GameScreen screen, string text) : this(screen) {
+            Text = text;
         }
 
         /// <summary>
@@ -42,12 +52,9 @@ namespace CritterCamp.Screens {
         /// </summary>
         /// <param name="image">The name of the texture to display in the button.</param>
         /// <param name="size">The size of the button.</param>
-        public Button(GameScreen screen, string image, Vector2 size) {
+        public Button(GameScreen screen, string image, Vector2 size) : this(screen) {
             this.image = image;
             this.size = size;
-            this.textureIndex = 0;
-            Position = Vector2.Zero;
-            buttonArgs = new ButtonArgs();
         }
 
         /// <summary>
@@ -55,12 +62,8 @@ namespace CritterCamp.Screens {
         /// </summary>
         /// <param name="image">The name of the texture to display in the button.</param>
         /// <param name="textureIndex">The index of the texture.</param>
-        public Button(GameScreen screen, string image, int textureIndex, Vector2 size) {
-            this.image = image;
-            this.size = size;
+        public Button(GameScreen screen, string image, int textureIndex, Vector2 size) : this(screen, image, size) {
             this.textureIndex = textureIndex;
-            Position = Vector2.Zero;
-            buttonArgs = new ButtonArgs();
         }
 
         /// <summary>
@@ -96,26 +99,30 @@ namespace CritterCamp.Screens {
             // Grab some common items from the ScreenManager
             SpriteBatch spriteBatch = screen.ScreenManager.SpriteBatch;
             SpriteFont font = screen.ScreenManager.Fonts["buttonFont"];
+            SpriteFont captionFont = screen.ScreenManager.Fonts["blueHighway28"];
             SpriteDrawer sd = (SpriteDrawer)screen.ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
 
-            // Draw the button           
+            // Draw the button       
+            if (highlight) {
+                // this button is highlighted. draw a green square behind the button
+                // TODO: get a green square texture
+                sd.Draw(screen.ScreenManager.Textures[image], Position, textureIndex, new Vector2(size.X + 15, size.Y + 15));
+            }
             sd.Draw(screen.ScreenManager.Textures[image], Position, textureIndex, size);
             sd.DrawString(font, Text, Position);
-            sd.DrawString(font, Caption, new Vector2(Position.X + size.X + 15, Position.Y - size.Y/2), Color.Black, false); 
+            sd.DrawString(captionFont, Caption, new Vector2(Position.X - size.X, Position.Y + size.Y + 15), Color.Black, false); 
         }
     }
 
     class ButtonArgs : EventArgs {
+        public Button button;
         public string arg;
+        public GameData gameData;
 
-        public ButtonArgs() 
-            : base() {
+        public ButtonArgs(Button b) {
+            button = b;
             arg = "";
-        }
-
-        public ButtonArgs(string arg)
-            : base() {
-            this.arg = arg;
+            gameData = null;
         }
     }
 }
