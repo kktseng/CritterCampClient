@@ -49,10 +49,10 @@ namespace CritterCamp.Screens.Games {
             JObject o = JObject.Parse(message);
             // Check for final score
             if((string)o["action"] == "score") {
-                Dictionary<string, int> scoreMap = new Dictionary<string, int>();
+                Dictionary<int, string> scoreMap = new Dictionary<int, string>();
                 JArray scores = (JArray)o["scores"];
                 foreach(JObject score in scores) {
-                    scoreMap.Add((string)score["username"], (int)score["score"]);
+                    scoreMap.Add((int)score["score"], (string)score["username"]);
                 }
                 CoreApplication.Properties["scores"] = scoreMap;
 

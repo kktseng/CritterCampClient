@@ -62,9 +62,9 @@ namespace CritterCamp.Screens {
         public override void Activate(bool instancePreserved) {
             // Load the button image if not loaded
             ContentManager cm = ScreenManager.Game.Content;
-            if(!ScreenManager.Textures.ContainsKey("button")) {
-                ScreenManager.Textures.Add("button", cm.Load<Texture2D>("button600"));
+            if(!ScreenManager.Textures.ContainsKey("buttonGreen")) {
                 ScreenManager.Textures.Add("backButton", cm.Load<Texture2D>("backButton"));
+                ScreenManager.Textures.Add("buttonGreen", cm.Load<Texture2D>("buttonGreen"));
             }
 
             if (!ScreenManager.Textures.ContainsKey(background)) {

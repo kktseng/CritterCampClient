@@ -250,7 +250,7 @@ namespace CritterCamp.Screens.Games {
                                 new JProperty("type", "report_score"),
                                 new JProperty("score", new JObject(
                                     from username in deadUsers
-                                    select new JProperty(username, deadUsers.IndexOf(username))
+                                    select new JProperty(username, deadUsers.IndexOf(username) + 1)
                                 ))
                             );
                             conn.SendMessage(packet.ToString());

@@ -124,7 +124,11 @@ namespace GameStateManagement {
             for(int i = 0; i < fontNames.Length; i++) {
                 fonts[fontNames[i]] = content.Load<SpriteFont>("Fonts/" + fontNames[i]);
             }
-            textures["paperBG"] = content.Load<Texture2D>("paperBG");
+            string[] textureNames = new string[] {"paperBG", "gameIcons", "scoreScreenIcons", "scorePanel" };
+            for(int i = 0; i < textureNames.Length; i++) {
+                textures[textureNames[i]] = content.Load<Texture2D>(textureNames[i]);
+            }
+
 
             // Tell each of the screens to load their content.
             foreach(GameScreen screen in screens) {
