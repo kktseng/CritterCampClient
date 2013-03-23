@@ -212,6 +212,16 @@ namespace CritterCamp.Screens.Games {
                     return;
                 }
             } else if(phase == Phase.Dancing) {
+                // Check for LMS
+                if(currentRank == 1) {
+                    foreach(Player p in players.Values) {
+                        if(p.health > 0)
+                            p.rank = 1;
+                    }
+                    phase = Phase.GameOver;
+                    return;
+                }
+
                 // Animate each character dance
                 if(currentMove == 0 || (gameTime.TotalGameTime - start) > MOVE_TIME) {
                     if(currentMove >= commandList.Count()) {

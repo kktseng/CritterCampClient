@@ -38,6 +38,11 @@ namespace CritterCamp.Screens {
                 ContentManager cm = ScreenManager.Game.Content;
                 ScreenManager.Textures.Add("gameIcons", cm.Load<Texture2D>("gameIcons"));
             }
+            // temporary pig drawing for profiles
+            if(!ScreenManager.Textures.ContainsKey("TEMPPIGS")) {
+                ContentManager cm = ScreenManager.Game.Content;
+                ScreenManager.Textures.Add("TEMPPIGS", cm.Load<Texture2D>("pig"));
+            }
 
             // Load relevant information
             JArray playerInfo = (JArray)CoreApplication.Properties["group_info"];
@@ -122,9 +127,15 @@ namespace CritterCamp.Screens {
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
             sd.Begin();
             
-            sd.DrawString(ScreenManager.Fonts["boris48"], "Choose Game", new Vector2(Constants.BUFFER_WIDTH / 2, 200));
+            sd.DrawString(ScreenManager.Fonts["boris48"], "Choose Game", new Vector2(Constants.BUFFER_WIDTH / 2, 150));
             sd.DrawString(ScreenManager.Fonts["blueHighway28"], message, new Vector2(middleIconX, iconStartY + iconSpace * 3), Color.Black);
             
+            // Draw player info
+            for(int i = 0; i < players.Count; i++) {
+                sd.Draw(ScreenManager.Textures["TEMPPIGS"], new Vector2(300, 300 + 200 * i), (int)TextureData.PlayerStates.standing + players[i].color * Helpers.TextureLen(typeof(TextureData.PlayerStates)), spriteScale: 2f);
+                sd.DrawString(ScreenManager.Fonts["blueHighway28"], players[i].username, new Vector2(450, 275 + 200 * i), Color.Black, false);
+            }
+
             sd.End();
         }
 
