@@ -122,31 +122,6 @@ namespace CritterCamp.Screens {
                 otherScreensAreGone = true;
             }
 
-            // The gameplay screen takes a while to load, so we display a loading
-            // message while that is going on, but the menus load very quickly, and
-            // it would look silly if we flashed this up for just a fraction of a
-            // second while returning from the game to the menus. This parameter
-            // tells us how long the loading is going to take, so we know whether
-            // to bother drawing the message.
-            if(loadingIsSlow) {
-                SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-                SpriteFont font = ScreenManager.Fonts["blueHighway28"];
-
-                const string message = "Loading...";
-
-                // Center the text in the viewport.
-                Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-                Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height);
-                Vector2 textSize = font.MeasureString(message);
-                Vector2 textPosition = (viewportSize - textSize) / 2;
-
-                Color color = Color.White * TransitionAlpha;
-
-                // Draw the text.
-                spriteBatch.Begin();
-                spriteBatch.DrawString(font, message, textPosition, color);
-                spriteBatch.End();
-            }
         }
 
 
