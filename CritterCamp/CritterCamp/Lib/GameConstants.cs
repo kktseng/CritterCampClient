@@ -7,24 +7,32 @@ using System.Threading.Tasks;
 
 namespace CritterCamp {
     class GameData {
+        static int CurrentGameIndex = 0;
+
         public string Name; // regular name i.e Twilight Tango
-        public string NameTwoLines; // name to display if its on two lines
+        public string NameLine1; // first line of name to display if its on two lines
+        public string NameLine2; // second line of name to display if its on two lines
         public string ServerName; // name from the server i.e. twilight_tango
         public Type ScreenType; // the screen class 
         public string GameIconTexture = "gameIcons";
+        public int GameIconIndex;
         public int GameIndex;
 
-        public GameData(string name, string serverName, Type screenType, int gameIndex) {
+        public GameData(string name, string serverName, Type screenType, int gameIconIndex) {
             Name = name;
             ServerName = serverName;
             ScreenType = screenType;
-            GameIndex = gameIndex;
+            GameIconIndex = gameIconIndex;
+            GameIndex = CurrentGameIndex;
+            CurrentGameIndex++;
 
             int space = Name.IndexOf(' '); // replace the space with a newline char
             if (Name.IndexOf(' ') != 0) {
-                NameTwoLines = Name.Substring(0, space) + '\n' + Name.Substring(space + 1);
+                NameLine1 = Name.Substring(0, space);
+                NameLine2 = Name.Substring(space + 1);
             } else {
-                NameTwoLines = Name;
+                NameLine1 = Name;
+                NameLine2 = "";
             }
         }
     }

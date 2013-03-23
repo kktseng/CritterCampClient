@@ -114,7 +114,7 @@ namespace CritterCamp.Screens.Games.Lib {
             }
         }
 
-        public void DrawString(SpriteFont font, string text, Vector2 coord, Color color, bool center) {
+        public void DrawString(SpriteFont font, string text, Vector2 coord, Color color, bool centerX, bool centerY) {
             SpriteBatch sb = sm.SpriteBatch;
             Vector2 size = font.MeasureString(text) * drawScale;
 
@@ -122,8 +122,11 @@ namespace CritterCamp.Screens.Games.Lib {
             coord += new Vector2(0, offset);
             coord /= coordScale;
 
-            if (center) { // move the coordinates if we want to center it
-                coord -= size / 2;
+            if (centerY) { // move the coordinates if we want to center it on the Y axis
+                coord -= new Vector2(0, size.Y/2);
+            }
+            if (centerX) { // move the coordinates if we want to center it on the X axis
+                coord -= new Vector2(size.X/2, 0);
             }
 
             if (Constants.ROTATION != 0)
@@ -134,7 +137,7 @@ namespace CritterCamp.Screens.Games.Lib {
 
         // draws the string with the string centered at the coordinates
         public void DrawString(SpriteFont font, string text, Vector2 coord, Color color) {
-            DrawString(font, text, coord, Color.Black, true);
+            DrawString(font, text, coord, Color.Black, true, true);
         }
 
         public void DrawString(SpriteFont font, string text, Vector2 coord) {

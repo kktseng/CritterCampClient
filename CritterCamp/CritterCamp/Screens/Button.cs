@@ -14,8 +14,9 @@ namespace CritterCamp.Screens {
     /// Represents a touchable button.
     /// </summary>
     class Button {
-        public string Text = ""; // test to display in the button
-        public string Caption = ""; // text to display on the right of the button
+        public string Text; // text to display in the button
+        public string Caption1; // text to display on the bottom of the button
+        public string Caption2; // text to display on the bottom of the button
         public string image;
         public int textureIndex;
         public Vector2 size;
@@ -31,7 +32,8 @@ namespace CritterCamp.Screens {
         /// <param name="text">The text to display in the button.</param>
         public Button(GameScreen screen) {
             Text = "";
-            Caption = "";
+            Caption1 = "";
+            Caption2 = "";
             size = new Vector2(290, 90);
             image = "buttonGreen";
             this.textureIndex = 0;
@@ -111,7 +113,8 @@ namespace CritterCamp.Screens {
                 sd.Draw(screen.ScreenManager.Textures[image], Position, (int)TextureData.games.glow, size);
             }
             sd.DrawString(font, Text, Position);
-            sd.DrawString(captionFont, Caption, new Vector2(Position.X - size.X, Position.Y + size.Y + 15), Color.Black, false); 
+            sd.DrawString(captionFont, Caption1, new Vector2(Position.X, Position.Y + size.Y + 15), Color.Black);
+            sd.DrawString(captionFont, Caption2, new Vector2(Position.X, Position.Y + size.Y + 65), Color.Black); 
         }
     }
 

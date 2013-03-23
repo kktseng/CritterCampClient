@@ -70,9 +70,10 @@ namespace CritterCamp.Screens {
             iconSizeVector = new Vector2(iconSize, iconSize);
             foreach (string game in gameChoices) {
                 GameData gd = GameConstants.GetGameData(game);
-                Button gameChoice = new Button(this, gd.GameIconTexture, gd.GameIndex, iconSizeVector);
+                Button gameChoice = new Button(this, gd.GameIconTexture, gd.GameIconIndex, iconSizeVector);
                 gameChoice.Position = new Vector2(iconX, iconStartY);
-                gameChoice.Caption = gd.NameTwoLines;
+                gameChoice.Caption1 = gd.NameLine1;
+                gameChoice.Caption2 = gd.NameLine2;
                 gameChoice.buttonArgs.gameData = gd;
                 gameChoice.Tapped += selectGame;
 
@@ -133,7 +134,7 @@ namespace CritterCamp.Screens {
             // Draw player info
             for(int i = 0; i < players.Count; i++) {
                 sd.Draw(ScreenManager.Textures["TEMPPIGS"], new Vector2(300, 300 + 200 * i), (int)TextureData.PlayerStates.standing + players[i].color * Helpers.TextureLen(typeof(TextureData.PlayerStates)), spriteScale: 2f);
-                sd.DrawString(ScreenManager.Fonts["blueHighway28"], players[i].username, new Vector2(450, 275 + 200 * i), Color.Black, false);
+                sd.DrawString(ScreenManager.Fonts["blueHighway28"], players[i].username, new Vector2(450, 300 + 200 * i), Color.Black, false, true);
             }
 
             sd.End();
