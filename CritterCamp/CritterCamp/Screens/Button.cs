@@ -103,12 +103,13 @@ namespace CritterCamp.Screens {
             SpriteDrawer sd = (SpriteDrawer)screen.ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
 
             // Draw the button       
-            if (highlight) {
-                // this button is highlighted. draw a green square behind the button
-                // TODO: get a green square texture
-                sd.Draw(screen.ScreenManager.Textures[image], Position, textureIndex, new Vector2(size.X + 15, size.Y + 15));
-            }
             sd.Draw(screen.ScreenManager.Textures[image], Position, textureIndex, size);
+            
+            // This is way too hacky. We need to either extend this class or just draw the glow on the votescreen class
+            if(highlight) {
+                // this button is highlighted. draw a green glow
+                sd.Draw(screen.ScreenManager.Textures[image], Position, (int)TextureData.games.glow, size);
+            }
             sd.DrawString(font, Text, Position);
             sd.DrawString(captionFont, Caption, new Vector2(Position.X - size.X, Position.Y + size.Y + 15), Color.Black, false); 
         }

@@ -21,7 +21,7 @@ namespace CritterCamp.Screens {
             play.Position = new Vector2(960, 300);
             play.Tapped += playButton_Tapped;
 
-            Button leader = new Button(this, "Leaderboards");
+            Button leader = new Button(this, "Leaders");
             leader.Position = new Vector2(960, 600);
             leader.Tapped += leaderButton_Tapped;
 

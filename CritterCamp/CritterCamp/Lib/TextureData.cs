@@ -69,7 +69,10 @@ namespace CritterCamp {
         }
 
         public enum games {
-            missleMadness, twilightTango, jetpackJamboree
+            glow,
+            twilightTango,
+            jetpackJamboree,
+            missileMadness,
         }
     }
 }
