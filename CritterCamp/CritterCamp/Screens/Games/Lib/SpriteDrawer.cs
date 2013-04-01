@@ -137,7 +137,7 @@ namespace CritterCamp.Screens.Games.Lib {
 
         // draws the string with the string centered at the coordinates
         public void DrawString(SpriteFont font, string text, Vector2 coord, Color color) {
-            DrawString(font, text, coord, Color.Black, true, true);
+            DrawString(font, text, coord, color, true, true);
         }
 
         public void DrawString(SpriteFont font, string text, Vector2 coord) {

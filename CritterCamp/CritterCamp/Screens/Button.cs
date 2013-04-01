@@ -127,7 +127,7 @@ namespace CritterCamp.Screens {
                 sd.Draw(screen.ScreenManager.Textures[image], Position, (int)TextureData.games.glow, size);
             }
 
-            sd.DrawString(font, Text, Position);
+            sd.DrawString(font, Text, Position, Color.White);
             sd.DrawString(captionFont, Caption1, new Vector2(Position.X, Position.Y + size.Y + 15), Color.Black);
             sd.DrawString(captionFont, Caption2, new Vector2(Position.X, Position.Y + size.Y + 65), Color.Black); 
         }
