@@ -36,7 +36,7 @@ namespace CritterCamp.Screens {
             Caption1 = "";
             Caption2 = "";
             size = new Vector2(290, 90);
-            image = "buttonGreen";
+            image = "buttonMint";
             this.textureIndex = 0;
             Position = Vector2.Zero;
             buttonArgs = new ButtonArgs(this);
