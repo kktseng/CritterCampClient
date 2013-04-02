@@ -11,35 +11,56 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Landscape" Orientation="Landscape"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="False">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="191*"/>
+            <RowDefinition Height="289*"/>
         </Grid.RowDefinitions>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Content/bgScreen.png"/>
+        </Grid.Background>
+
+        <Button x:Name="PlayButton" Click="Play_Click" HorizontalAlignment="Center" Visibility="Collapsed" Content="Tap to Start" Margin="-13,0,-12,-115" Grid.RowSpan="2" Width="825" UseLayoutRounding="True" FontSize="40" BorderThickness="0"/>
+        <Button x:Name="ResumeButton" Click="Play_Click" HorizontalAlignment="Center" Visibility="Collapsed" Content="Tap to Continue" Margin="-13,0,-12,-115" Grid.RowSpan="2" Width="825" UseLayoutRounding="True" FontSize="40" BorderThickness="0"/>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="Critter Camp" Style="{StaticResource PhoneTextNormalStyle}"/>
+        <StackPanel Grid.Row="0">
+            <Image Source="/Content/CritterCampLogoSlim.png" RenderTransformOrigin="0.505,0.773" Height="192"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here -->
-        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <StackPanel x:Name="UserInput">
-                <TextBlock>Username:</TextBlock>
-                <TextBox x:Name="Username"></TextBox>
-                <TextBlock>Password:</TextBlock>
-                <PasswordBox x:Name="PasswordBox"></PasswordBox>
-                <StackPanel Orientation="Horizontal">
-                    <Button Click="Register_Click">Register</Button>
-                    <Button Click="Login_Click">Login</Button>
+        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="72,0,96,0" HorizontalAlignment="Center" Width="632">
+            <StackPanel x:Name="UserInput" HorizontalAlignment="Center" Width="632" Height="232">
+                <StackPanel>
+                    <TextBlock Height="44" FontSize="24" FontFamily="Segoe WP Semibold" FontWeight="Bold" TextAlignment="Center" Text="Login with existing account or register a new one"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock FontSize="28" Margin="35,0,471,0">
+        				<Run Text="Username"/>
+                    </TextBlock>
+                    <TextBox x:Name="Username" Margin="161,-50,25,0" MaxLength="15"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock FontSize="28" RenderTransformOrigin="0.5,0.5" Margin="35,0,459,0">
+        				<Run Text="Password"/>
+                    </TextBlock>
+                    <PasswordBox x:Name="PasswordBox" FontFamily="Segoe WP" ScrollViewer.HorizontalScrollBarVisibility="Hidden" HorizontalAlignment="Center" Width="445" BorderThickness="3" MaxLength="15" Margin="162,-50,25,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="73" Margin="162,0,28,0">
+                    <Canvas Margin="0,-10,0,0">
+                        <Image Source="/Content/buttonMint.png" Canvas.Left="0" Canvas.Top="11" Height="70"/>
+                    </Canvas>
+                    <Button Click="Login_Click" Width="218" BorderBrush="{x:Null}" Content="Login" FontFamily="Segoe WP" FontSize="30" BorderThickness="0" Margin="0,-10,0,0" Padding="0"/>
+                    <Canvas Margin="0,-10,0,0">
+                        <Image Source="/Content/buttonGreen.png" Canvas.Left="0" Canvas.Top="11" Height="70"/>
+                    </Canvas>
+                    <Button Click="Register_Click" Width="222" BorderBrush="{x:Null}" Content="Register" FontFamily="Segoe WP" FontSize="30" BorderThickness="0" Margin="0,-10,0,0" Padding="0"/>
                 </StackPanel>
             </StackPanel>
-            <TextBlock x:Name="Status"></TextBlock>
-            <Button x:Name="PlayButton" Click="Play_Click" HorizontalAlignment="Center" Visibility="Collapsed">Play</Button>
-            <Button x:Name="ResumeButton" Click="Play_Click" HorizontalAlignment="Center" Visibility="Collapsed">Resume</Button>
+            <TextBlock x:Name="Status" Height="48" RenderTransformOrigin="0.5,0.5" Margin="36,0,0,0" FontSize="24" FontWeight="Bold"/>
         </StackPanel>
     </Grid>
 

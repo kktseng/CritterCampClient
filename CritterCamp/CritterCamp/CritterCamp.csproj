@@ -137,7 +137,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bgScreen.png" />
     <Content Include="Content\buttonMint.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\CritterCampLogoSlim.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Fonts\menufont.xnb">
