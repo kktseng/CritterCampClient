@@ -18,7 +18,7 @@ namespace CritterCamp.Screens {
     /// </summary>
     class MenuScreen : GameScreen {
         protected List<Button> menuButtons = new List<Button>();
-        private string background = "paperBG";
+        private string background = "bgScreen";
         private Type backScreen = null;
         Button selectedButton = null;
         Vector2 oldPos;
