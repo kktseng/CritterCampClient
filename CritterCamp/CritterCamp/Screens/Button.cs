@@ -23,6 +23,7 @@ namespace CritterCamp.Screens {
         public Vector2 Position;
         public ButtonArgs buttonArgs;
         public bool highlight;
+        private bool selected; // bool if the button is pressed down
 
         public event EventHandler<ButtonArgs> Tapped;
 
@@ -39,6 +40,8 @@ namespace CritterCamp.Screens {
             this.textureIndex = 0;
             Position = Vector2.Zero;
             buttonArgs = new ButtonArgs(this);
+            highlight = false;
+            selected = false;
         }
 
         /// <summary>
@@ -71,26 +74,31 @@ namespace CritterCamp.Screens {
         /// <summary>
         /// Invokes the Tapped event and allows subclasses to perform actions when tapped.
         /// </summary>
-        protected virtual void OnTapped() {
+        public void OnTapped() {
             if(Tapped != null)
                 Tapped(this, buttonArgs);
         }
 
         /// <summary>
-        /// Passes a tap location to the button for handling.
+        /// Passes a touch location to the button for handling.
         /// </summary>
-        /// <param name="tap">The location of the tap.</param>
-        /// <returns>True if the button was tapped, false otherwise.</returns>
-        public bool HandleTap(Vector2 tap) {
-            if(tap.X >= Position.X - size.X / 2 &&
-                tap.Y >= Position.Y - size.Y / 2 &&
-                tap.X <= Position.X + size.X / 2 &&
-                tap.Y <= Position.Y + size.Y / 2) {
-                OnTapped();
+        /// <param name="touch">The location of the touch.</param>
+        /// <returns>True if the button was touched, false otherwise.</returns>
+        public bool HandleTouch(Vector2 touch) {
+            if (touch.X >= Position.X - size.X / 2 &&
+                    touch.Y >= Position.Y - size.Y / 2 &&
+                    touch.X <= Position.X + size.X / 2 &&
+                    touch.Y <= Position.Y + size.Y / 2) {
+                selected = true;
                 return true;
             }
 
+            selected = false;
             return false;
+        }
+
+        public void ResetSelected() {
+            selected = false; // make this button not selected anymore
         }
 
         /// <summary>
@@ -104,14 +112,21 @@ namespace CritterCamp.Screens {
             SpriteFont captionFont = screen.ScreenManager.Fonts["blueHighway28"];
             SpriteDrawer sd = (SpriteDrawer)screen.ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
 
-            // Draw the button       
-            sd.Draw(screen.ScreenManager.Textures[image], Position, textureIndex, size);
+            // Draw the button
+            if(selected) {
+                // this is selected. draw a green overlay
+                sd.Draw(screen.ScreenManager.Textures[image], Position, textureIndex, size, new Rectangle(0, 0, (int)size.X, (int)size.Y), SpriteEffects.None, Color.Green);
+            } else {
+                // otherwise draw it normally
+                sd.Draw(screen.ScreenManager.Textures[image], Position, textureIndex, size);
+            }
             
             // This is way too hacky. We need to either extend this class or just draw the glow on the votescreen class
             if(highlight) {
                 // this button is highlighted. draw a green glow
                 sd.Draw(screen.ScreenManager.Textures[image], Position, (int)TextureData.games.glow, size);
             }
+
             sd.DrawString(font, Text, Position);
             sd.DrawString(captionFont, Caption1, new Vector2(Position.X, Position.Y + size.Y + 15), Color.Black);
             sd.DrawString(captionFont, Caption2, new Vector2(Position.X, Position.Y + size.Y + 65), Color.Black); 

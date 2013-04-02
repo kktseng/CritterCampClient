@@ -20,6 +20,9 @@ namespace CritterCamp.Screens {
         protected List<Button> menuButtons = new List<Button>();
         private string background = "paperBG";
         private Type backScreen = null;
+        Button selectedButton = null;
+        Vector2 oldPos;
+        Boolean firstPress = true;
 
         /// <summary>
         /// Gets the list of buttons, so derived classes can add or change the menu contents.
@@ -89,27 +92,45 @@ namespace CritterCamp.Screens {
         protected virtual void OnCancel() { }
 
         public override void HandleInput(GameTime gameTime, InputState input) {
-            // Read in our gestures
-            foreach(GestureSample gesture in input.Gestures) {
-                // If we have a tap
-                if(gesture.GestureType == GestureType.Tap) {
-                    Vector2 scaledPos = gesture.Position;
+            base.HandleInput(gameTime, input);
+
+            if (input.TouchState.Count == 0) { // released our finger
+                if (selectedButton != null) {
+                    if (selectedButton.HandleTouch(oldPos)) {
+                        // release our finger on the button
+                        selectedButton.OnTapped(); // this counts as a button press
+                    }
+                    selectedButton.ResetSelected(); // make the button not pressed down anymore
+                    selectedButton = null;
+                }
+            } else {
+                foreach (TouchLocation loc in input.TouchState) {
+                    Vector2 scaledPos = loc.Position;
 
                     // Flip coordinates to scale with input buffer
-                    if(Constants.ROTATION != 0) {
-                        scaledPos = new Vector2(gesture.Position.Y, Constants.INPUT_HEIGHT - gesture.Position.X);
+                    if (Constants.ROTATION != 0) {
+                        scaledPos = new Vector2(loc.Position.Y, Constants.INPUT_HEIGHT - loc.Position.X);
                     }
                     scaledPos *= Constants.INPUT_SCALE;
+                    oldPos = scaledPos;
 
-                    // Test the tap against the buttons until one of the buttons handles the tap
-                    foreach(Button b in menuButtons) {
-                        if(b.HandleTap(scaledPos))
-                            break;
+                    if (selectedButton == null) { // we havn't pressed down on a button yet. try to find one that we pressed
+                        if (loc.State.HasFlag(TouchLocationState.Pressed)) {
+                            // and this touch is the beginning of a touch
+                            foreach (Button b in menuButtons) {
+                                if (b.HandleTouch(scaledPos)) {
+                                    // found the button that we pressed
+                                    selectedButton = b;
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        // otherwise just pass the new coordinates to the button
+                        selectedButton.HandleTouch(scaledPos);
                     }
                 }
             }
-
-            base.HandleInput(gameTime, input);
         }
 
         public override void Draw(GameTime gameTime) {
