@@ -36,6 +36,9 @@ namespace CritterCamp.Screens.Games {
             for(int i = 0; i < 4; i++) {
                 pennedPigs.Add(new List<Pig>());
             }
+
+            // Fixes weird input bugs. I don't even
+            EnabledGestures = GestureType.Tap;
         }
 
         public override void Activate(bool instancePreserved) {
@@ -154,7 +157,38 @@ namespace CritterCamp.Screens.Games {
             conn.SendMessage(packet.ToString());
         }
 
+        public override void removePlayer(string user) {
+            if(!deadUsers.Contains(user)) {
+                deadUsers.Insert(0, user);
+                if(deadUsers.Count == playerData.Count - 1 && !deadUsers.Contains(playerName)) {
+                    deadUsers.Insert(0, playerName);
+                }
+                if(deadUsers.Count >= playerData.Count) {
+                    // Tell other players game is finished
+                    JObject packet = new JObject(
+                        new JProperty("action", "game"),
+                        new JProperty("name", "jetpack_jamboree"),
+                        new JProperty("data", new JObject(
+                            new JProperty("action", "exploded")
+                        ))
+                    );
+                    conn.SendMessage(packet.ToString());
+                    // Sync scores
+                    packet = new JObject(
+                        new JProperty("action", "group"),
+                        new JProperty("type", "report_score"),
+                        new JProperty("score", new JObject(
+                            from username in deadUsers
+                            select new JProperty(username, deadUsers.IndexOf(username) + 1)
+                        ))
+                    );
+                    conn.SendMessage(packet.ToString());
+                }
+            }
+        }
+
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
+            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
             if(!exploded) {
                 // Randomly bring in pigs
                 if((gameTime.TotalGameTime - timeSincePig).TotalSeconds > PIG_DELAY && rand.Next(1000) < gameTime.TotalGameTime.Seconds) {
@@ -187,7 +221,6 @@ namespace CritterCamp.Screens.Games {
                 if(banner == null)
                     banner = new TextBanner(this, "GAME OVER");
             }
-            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
         
@@ -229,33 +262,7 @@ namespace CritterCamp.Screens.Games {
                     }
                 } else if((string)data["action"] == "exploded") {
                     string exploded_user = (string)data["source"];
-                    if(!deadUsers.Contains(exploded_user)) {
-                        deadUsers.Insert(0, exploded_user);
-                        if(deadUsers.Count == playerData.Count - 1 && !deadUsers.Contains(playerName)) {
-                            deadUsers.Insert(0, playerName);
-                        }
-                        if(deadUsers.Count >= playerData.Count) {
-                            // Tell other players game is finished
-                            JObject packet = new JObject(
-                                new JProperty("action", "game"),
-                                new JProperty("name", "jetpack_jamboree"),
-                                new JProperty("data", new JObject(
-                                    new JProperty("action", "exploded")
-                                ))
-                            );
-                            conn.SendMessage(packet.ToString());
-                            // Sync scores
-                            packet = new JObject(
-                                new JProperty("action", "group"),
-                                new JProperty("type", "report_score"),
-                                new JProperty("score", new JObject(
-                                    from username in deadUsers
-                                    select new JProperty(username, deadUsers.IndexOf(username) + 1)
-                                ))
-                            );
-                            conn.SendMessage(packet.ToString());
-                        }
-                    }
+                    removePlayer(exploded_user);
                 }
             }
         }

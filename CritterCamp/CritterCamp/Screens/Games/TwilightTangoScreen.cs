@@ -20,12 +20,14 @@ namespace CritterCamp.Screens.Games {
     }
 
     class TwilightTangoScreen : BaseGameScreen {
-        public static int MAX_ROUNDS = 5;
-        public static int COMMAND_INCR = 2;
+        public static int MAX_ROUNDS = 10;
+        public static int COMMAND_INCR = 1;
         public static int COMMAND_INIT = 6;
 
-        public static TimeSpan COMMAND_TIME = new TimeSpan(0, 0, 3);
-        public static TimeSpan INPUT_TIME = new TimeSpan(0, 0, 5);
+        public static TimeSpan COMMAND_TIME = new TimeSpan(0, 0, 4);
+        public static TimeSpan COMMAND_TIME_INCR = new TimeSpan(0, 0, 1);
+        public static TimeSpan INPUT_TIME = new TimeSpan(0, 0, 4);
+        public static TimeSpan INPUT_INCR = new TimeSpan(0, 0, 1);
         public static TimeSpan TIMEOUT_TIME = new TimeSpan(0, 0, 1);
         public static TimeSpan MOVE_TIME = new TimeSpan(0, 0, 0, 0, 600);
         public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 0, 1, 500);
@@ -125,6 +127,10 @@ namespace CritterCamp.Screens.Games {
             base.HandleInput(gameTime, input);
         }
 
+        public override void removePlayer(string user) {
+            // Don't have to do anything special since game ends without input from others
+        }
+
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
@@ -168,8 +174,9 @@ namespace CritterCamp.Screens.Games {
             } else if(phase == Phase.Commands) {
                 syncing = false;
                 banner = null;
-                timer = COMMAND_TIME - gameTime.TotalGameTime + start;
-                timerBar = timer.TotalMilliseconds / COMMAND_TIME.TotalMilliseconds;
+                TimeSpan newTime = COMMAND_TIME + (new TimeSpan(0, 0, (int)COMMAND_TIME_INCR.TotalSeconds * rounds));
+                timer = newTime - gameTime.TotalGameTime + start;
+                timerBar = timer.TotalMilliseconds / newTime.TotalMilliseconds;
                 if(timer.TotalMilliseconds <= 0) {
                     foreach(Arrow a in commandList) {
                         a.setState(ArrowStates.FadeOut);
@@ -186,11 +193,12 @@ namespace CritterCamp.Screens.Games {
                     }
                 }
             } else if(phase == Phase.Input) {
-                timer = INPUT_TIME - gameTime.TotalGameTime + start;
-                timerBar = timer.TotalMilliseconds / INPUT_TIME.TotalMilliseconds;
-                if(banner == null && timer > (INPUT_TIME - BANNER_TIME)) {
+                TimeSpan newTime = INPUT_TIME + (new TimeSpan(0, 0, (int)INPUT_INCR.TotalSeconds * rounds));
+                timer = newTime - gameTime.TotalGameTime + start;
+                timerBar = timer.TotalMilliseconds / newTime.TotalMilliseconds;
+                if(banner == null && timer > (newTime - BANNER_TIME)) {
                     banner = new TextBanner(this, "SWIPE!");
-                } else if(timer <= (INPUT_TIME - BANNER_TIME)) {
+                } else if(timer <= (newTime - BANNER_TIME)) {
                     banner = null;
                 }
                 if(timer.TotalMilliseconds <= 0) {

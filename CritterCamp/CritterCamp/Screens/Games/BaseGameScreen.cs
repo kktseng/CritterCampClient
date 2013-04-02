@@ -25,7 +25,7 @@ namespace CritterCamp.Screens.Games {
             this.color = color;
         }
     }
-    public class BaseGameScreen : GameScreen {
+    public abstract class BaseGameScreen : GameScreen {
         public Dictionary<string, Texture2D> textureList = new Dictionary<string, Texture2D>();
         public Dictionary<string, SpriteFont> fontList = new Dictionary<string, SpriteFont>();
 
@@ -69,8 +69,26 @@ namespace CritterCamp.Screens.Games {
                     CoreApplication.Properties["myExpPercentage"] = (int)o["percentage"];
                 }
                 scoreReceived = true;
+            } else if((string)o["action"] == "group") {
+                if((string)o["type"] == "update") {
+                    // check if any users should be removed
+                    foreach(PlayerData pdata in playerData) {
+                        // Could use hashtable but this is fine for 4 users
+                        bool found = false;
+                        foreach(JToken name in (JArray)o["users"]) {
+                            if((string)name == pdata.username) {
+                                found = true;
+                            }
+                        }
+                        if(!found) {
+                            removePlayer(pdata.username);
+                        }
+                    }
+                }
             }
         }
+
+        public abstract void removePlayer(string user);
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
@@ -128,7 +146,7 @@ namespace CritterCamp.Screens.Games {
             // If the score has already been received, it's time to quit
             if(scoreReceived) {
                 ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
-                LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(typeof(ScoreScreen)));
+                LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(ScoreScreen)));
                 return;
             }
             UpdateActors(gameTime);

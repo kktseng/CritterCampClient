@@ -73,7 +73,9 @@ namespace CritterCamp.Screens.Games {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
-        
+        public override void removePlayer(string user) {
+
+        }
 
         public override void Draw(GameTime gameTime) {
             ScreenManager.SpriteBatch.Begin();
