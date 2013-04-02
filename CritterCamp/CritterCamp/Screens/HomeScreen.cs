@@ -22,11 +22,16 @@ namespace CritterCamp.Screens {
             play.Tapped += playButton_Tapped;
 
             Button leader = new Button(this, "Leaders");
-            leader.Position = new Vector2(960, 600);
+            leader.Position = new Vector2(960, 500);
             leader.Tapped += leaderButton_Tapped;
+
+            Button cancel = new Button(this, "Cancel");
+            cancel.Position = new Vector2(960, 700);
+            cancel.Tapped += cancelButton_Tapped;
 
             MenuButtons.Add(play);
             MenuButtons.Add(leader);
+            MenuButtons.Add(cancel);
         }
 
         void playButton_Tapped(object sender, EventArgs e) {
@@ -35,7 +40,6 @@ namespace CritterCamp.Screens {
 
                 // Start looking for a group
                 TCPConnection conn = (TCPConnection)CoreApplication.Properties["TCPSocket"];
-                conn.pMessageReceivedEvent += StartGame;
 
                 // Search for group
                 conn.SendMessage(@"{ ""action"": ""group"", ""type"": ""join"" }");
@@ -43,14 +47,30 @@ namespace CritterCamp.Screens {
         }
 
         void leaderButton_Tapped(object sender, EventArgs e) {
+            cancelSearch(); // cancel the current search
+
             ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
             LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(LeaderScreen)));
         }
 
-        protected virtual void StartGame(string message, bool error, TCPConnection connection) {
+        void cancelButton_Tapped(object sender, EventArgs e) {
+            cancelSearch();
+        }
+
+        void cancelSearch() {
+            if (looking) {
+                looking = false;
+
+                // cancel this search request
+                TCPConnection conn = (TCPConnection)CoreApplication.Properties["TCPSocket"];
+                conn.SendMessage(@"{ ""action"": ""group"", ""type"": ""cancel"" }");
+            }
+        }
+
+        protected override void MessageReceived(string message, bool error, TCPConnection connection) {
+            base.MessageReceived(message, error, connection);
             JObject o = JObject.Parse(message);
             if((string)o["action"] == "group" && (string)o["type"] == "ready") {
-                connection.pMessageReceivedEvent -= StartGame;
                 JArray playerInfo = (JArray)o["users"];
                 JArray gameChoices = (JArray)o["vote"];
                 CoreApplication.Properties["group_info"] = playerInfo;
