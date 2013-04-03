@@ -55,7 +55,6 @@ namespace CritterCamp.Screens {
             this.screensToLoad = screensToLoad;
 
             EnabledGestures = GestureType.Tap; // Monogame goes on an infinite loop if I don't do this..
-            TransitionOnTime = TimeSpan.FromSeconds(0.5);
         }
 
 
