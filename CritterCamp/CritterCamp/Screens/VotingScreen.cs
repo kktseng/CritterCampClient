@@ -25,6 +25,7 @@ namespace CritterCamp.Screens {
         string message;
         List<PlayerData> players;
         List<Button> buttons;
+        Button voteButton;
         GameData[] gamesToVote;
         GameData selectedGame = null;
         int timeLeft;
@@ -94,7 +95,7 @@ namespace CritterCamp.Screens {
             }
 
             // add the vote button
-            Button voteButton = new Button(this, "Vote");
+            voteButton = new Button(this, "Vote");
             voteButton.Position = new Vector2(middleIconX, (float)(iconStartY + iconSpace * 2.25));
             voteButton.Tapped += vote;
 
@@ -144,6 +145,7 @@ namespace CritterCamp.Screens {
                 return;
             }
             voted = true;
+            voteButton.disabled = true;
             message = "Waiting for the other players.";
 
             Helpers.Sync((JArray data) => {}, selectedGame.ServerName);

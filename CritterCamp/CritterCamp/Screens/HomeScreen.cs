@@ -14,20 +14,24 @@ namespace CritterCamp.Screens {
     class HomeScreen : MenuScreen {
         private bool looking = false;
         private bool startingGame = false;
+        Button play;
+        Button leader;
+        Button cancel;
 
         public HomeScreen()
             : base("Main Menu") {
-            Button play = new Button(this, "Play");
+            play = new Button(this, "Play");
             play.Position = new Vector2(960, 300);
             play.Tapped += playButton_Tapped;
 
-            Button leader = new Button(this, "Leaders");
+            leader = new Button(this, "Leaders");
             leader.Position = new Vector2(960, 500);
             leader.Tapped += leaderButton_Tapped;
 
-            Button cancel = new Button(this, "Cancel");
+            cancel = new Button(this, "Cancel");
             cancel.Position = new Vector2(960, 700);
             cancel.Tapped += cancelButton_Tapped;
+            cancel.visible = false;
 
             MenuButtons.Add(play);
             MenuButtons.Add(leader);
@@ -36,6 +40,8 @@ namespace CritterCamp.Screens {
 
         void playButton_Tapped(object sender, EventArgs e) {
             if(!looking) {
+                play.disabled = true;
+                cancel.visible = true;
                 looking = true;
 
                 // Start looking for a group
@@ -59,6 +65,8 @@ namespace CritterCamp.Screens {
 
         void cancelSearch() {
             if (looking) {
+                play.disabled = false;
+                cancel.visible = false;
                 looking = false;
 
                 // cancel this search request
