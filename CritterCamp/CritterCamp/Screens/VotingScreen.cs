@@ -10,12 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 
 namespace CritterCamp.Screens {
     class VotingScreen : MenuScreen {
-        int iconStartY = Constants.BUFFER_HEIGHT * 4/10 - 30;
+        int iconStartY = Constants.BUFFER_HEIGHT * 4/10 - 50;
         int iconSpace = 175;
         int iconSize = 128;
         int middleIconX = Constants.BUFFER_WIDTH * 3/4 - 75;
@@ -24,11 +25,17 @@ namespace CritterCamp.Screens {
         string message;
         List<PlayerData> players;
         List<Button> buttons;
+        GameData[] gamesToVote;
         GameData selectedGame = null;
+        int timeLeft;
+        Timer timeLeftTimer;
 
         public VotingScreen() : base("Voting", "paperBG") {
             // Allow the user to tap
             EnabledGestures = GestureType.Tap;
+            timeLeft = 10;
+            timeLeftTimer = new Timer(timeLeftTimerCallback, null, 1000, 1000);
+            gamesToVote = new GameData[3];
         }
 
         public override void Activate(bool instancePreserved) {
@@ -68,8 +75,11 @@ namespace CritterCamp.Screens {
             // add the buttons for the games            
             buttons = new List<Button>();
             iconSizeVector = new Vector2(iconSize, iconSize);
+            int index = 0;
             foreach (string game in gameChoices) {
                 GameData gd = GameConstants.GetGameData(game);
+                gamesToVote[index] = gd;
+                index++;
                 Button gameChoice = new Button(this, gd.GameIconTexture, gd.GameIconIndex, iconSizeVector);
                 gameChoice.Position = new Vector2(iconX, iconStartY);
                 gameChoice.Caption1 = gd.NameLine1;
@@ -93,8 +103,24 @@ namespace CritterCamp.Screens {
             message = "Select a game and click vote.";
         }
 
+        // Method callback for every second of the countdown timer
+        void timeLeftTimerCallback(object state) {
+            timeLeft--;
+            if (timeLeft == 3 && !voted) {
+                // if theres 3 seconds left and the user did not vote yet
+                // send a null vote to the server
+                Helpers.Sync((JArray data) => { }, null);
+                voted = true;
+            }
+            if (timeLeft == 0) {
+                // timeleft is 0 and we havn't moved screens yet
+                // dispose of the timer so we dont decrement anymore
+                timeLeftTimer.Dispose();
+            }
+        }
+
         // Method callback when we press on a game icon button to vote for
-        public void selectGame(object sender, EventArgs e) {
+        void selectGame(object sender, EventArgs e) {
             if (voted) {
                 // already pressed the vote button. dont do anything
                 return;
@@ -112,7 +138,7 @@ namespace CritterCamp.Screens {
         }
 
         // Method callback for the vote button
-        public void vote(object sender, EventArgs e) {
+        void vote(object sender, EventArgs e) {
             if (selectedGame == null) {
                 // haven't choosen a game yet
                 return;
@@ -127,8 +153,10 @@ namespace CritterCamp.Screens {
             base.Draw(gameTime);
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
             sd.Begin();
-            
+
             sd.DrawString(ScreenManager.Fonts["boris48"], "Choose Game", new Vector2(Constants.BUFFER_WIDTH / 2, 150));
+            sd.DrawString(ScreenManager.Fonts["blueHighway28"], "Time left: ", new Vector2(middleIconX - 15, iconStartY + iconSpace + 100), Color.Black);
+            sd.DrawString(ScreenManager.Fonts["blueHighway28"], timeLeft.ToString(), new Vector2(middleIconX + 95, iconStartY + iconSpace + 100), Color.Black, false, true);
             sd.DrawString(ScreenManager.Fonts["blueHighway28"], message, new Vector2(middleIconX, iconStartY + iconSpace * 3), Color.Black);
             
             // Draw player info
@@ -153,6 +181,9 @@ namespace CritterCamp.Screens {
 
                 // find the game that was voted the most. if tie, use the earlier appearing one
                 foreach (string game in data) {
+                    if (game == null) {
+                        continue; // received a null vote. that player didn't vote in time and should count as a random vote
+                    }
                     GameData gd = GameConstants.GetGameData(game);
                     votes[gd.GameIndex]++;
 
@@ -160,6 +191,17 @@ namespace CritterCamp.Screens {
                         maxVote = votes[gd.GameIndex];
                         gameToPlay = gd;
                     }
+                }
+
+                // dispose of the timer
+                timeLeftTimer.Dispose();
+
+                if (gameToPlay == null) {
+                    // all the votes were null. choose a random game based on the rand value in the message
+                    double rand = (double)o["rand"];
+
+                    int gameToPlayIndex = ((int)(rand * 3)) / 3;
+                    gameToPlay = gamesToVote[gameToPlayIndex];
                 }
 
                 // go to the tutorial screen
