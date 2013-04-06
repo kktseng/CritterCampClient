@@ -64,8 +64,13 @@ namespace CritterCamp {
             pinkL, pink_, pinkLCurve, pinkTCurve, pinkCross
         }
 
-        public enum SmallDoodads {
-            heart
+        public enum Fish {
+            small,
+            medium,
+            largeBlue1,
+            largeBlue2,
+            largeOrange1,
+            largeOrange2
         }
 
         public enum games {

@@ -82,7 +82,7 @@ namespace CritterCamp.Screens {
 
                     Helpers.Sync((JArray data) => {
                         ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));                 
-                        LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(game));
+                        LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(typeof(FishingFrenzyScreen)));
                     }, "tutorial");
                 }
             }

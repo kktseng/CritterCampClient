@@ -25,7 +25,6 @@
     <ValidateXaml>true</ValidateXaml>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
-    <ExpressionBlendVersion>5.0.30924.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -100,6 +99,9 @@
     <Compile Include="ScreenManager\ScreenManager.cs" />
     <Compile Include="Screens\Button.cs" />
     <Compile Include="Screens\Games\BaseGameScreen.cs" />
+    <Compile Include="Screens\Games\FishingFrenzyScreen.cs" />
+    <Compile Include="Screens\Games\FishingFrenzy\Fish.cs" />
+    <Compile Include="Screens\Games\FishingFrenzy\Hook.cs" />
     <Compile Include="Screens\Games\JetpackJamboreeScreen.cs" />
     <Compile Include="Screens\Games\JetpackJamboree\Explosion.cs" />
     <Compile Include="Screens\Games\JetpackJamboree\Pig.cs" />
@@ -137,11 +139,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bgScreen.png" />
-    <Content Include="Content\buttonMint.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\CritterCampLogoSlim.png">
+    <Content Include="Content\bgScreen.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Fonts\menufont.xnb">
@@ -151,9 +149,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\backButton.xnb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\loginScreen.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\twilightTextures.xnb">
@@ -172,9 +167,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Fonts\matiz48.xnb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\missileTextures.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\paperBG.xnb">
@@ -216,13 +208,16 @@
     <Content Include="Content\gameIcons.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\bgScreen.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\buttonDown.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\buttonMint.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\bgScreen.xnb">
+    <Content Include="Content\fish.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\AppManifest.xml" />
@@ -269,11 +264,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Screens\Games\MissileMadness\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\buttonGreen.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
