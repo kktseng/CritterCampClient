@@ -14,7 +14,7 @@ namespace CritterCamp.Screens.Games {
     class MissileMadnessScreen : BaseGameScreen {
         protected TileMap tileMap, doodadMap;
 
-        public MissileMadnessScreen(List<PlayerData> playerData)
+        public MissileMadnessScreen(Dictionary<string, PlayerData> playerData)
             : base(playerData) {
             EnabledGestures = GestureType.Tap;
         }

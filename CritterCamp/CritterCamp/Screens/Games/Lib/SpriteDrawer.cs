@@ -22,8 +22,8 @@ namespace CritterCamp.Screens.Games.Lib {
     public class SpriteDrawer {
         public Vector2 backBuffer, coordScale, drawScale;
         public Vector2 sprite_dim = new Vector2(Constants.SPRITE_DIM);
-        // public Matrix scale;
         public int offset = 0; // used to offset non 16:9 screens to the center
+        public Dictionary<Vector2, Vector2> cache = new Dictionary<Vector2, Vector2>();
 
         protected ScreenManager sm;
 
@@ -58,12 +58,34 @@ namespace CritterCamp.Screens.Games.Lib {
             sm.SpriteBatch.End();
         }
 
+        protected Vector2 CoordConverter(Vector2 coord) {
+            if(cache.ContainsKey(coord))
+                return cache[coord];
+            Vector2 temp;
+            if(coord.X <= 0 && coord.Y <= 0) {
+                // Scale coordinates back to backBuffer
+                coord += new Vector2(0, offset);
+                coord /= coordScale;
+                return new Vector2((float)Math.Floor(coord.X), (float)Math.Floor(coord.Y));
+            } else if(coord.X <= 0) {
+                temp = CoordConverter(new Vector2(coord.X, coord.Y - Constants.BUFFER_SPRITE_DIM));
+                temp += new Vector2(0, sprite_dim.Y) * drawScale;
+            } else if(coord.Y <= 0) {
+                temp = CoordConverter(new Vector2(coord.X - Constants.BUFFER_SPRITE_DIM, coord.Y));
+                temp += new Vector2(sprite_dim.X, 0) * drawScale;
+            } else {
+                temp = CoordConverter(new Vector2(coord.X - Constants.BUFFER_SPRITE_DIM, coord.Y - Constants.BUFFER_SPRITE_DIM));
+                temp += new Vector2(sprite_dim.X, sprite_dim.Y) * drawScale;
+            }
+            cache[coord] = temp;
+            return temp;
+        }
+
         public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect,  SpriteEffects effect, Color color, float spriteRotation = 0, float spriteScale = 1f) {
             SpriteBatch sb = sm.SpriteBatch;
-            
-            // Scale coordinates back to backBuffer
-            coord += new Vector2(0, offset);
-            coord /= coordScale;
+
+            coord = new Vector2((float)(Math.Floor(coord.X)), (float)(Math.Floor(coord.Y)));
+            coord = CoordConverter(coord);
 
             // Fix coordinates for landscape
             if(Constants.ROTATION != 0)

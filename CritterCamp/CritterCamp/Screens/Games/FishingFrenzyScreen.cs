@@ -43,7 +43,10 @@ namespace CritterCamp.Screens.Games {
             Fishing
         }
 
-        protected TileMap tileMap, doodadMap;
+        public Dictionary<string, Hook> hooked = new Dictionary<string, Hook>();
+        public List<Fish> fishies = new List<Fish>();
+
+        protected TileMap tileMap;
         protected Random rand = new Random();
         protected TextBanner banner;
 
@@ -55,7 +58,7 @@ namespace CritterCamp.Screens.Games {
         protected int round = 1;
         protected TimeSpan baseline;
 
-        public FishingFrenzyScreen(List<PlayerData> playerData)
+        public FishingFrenzyScreen(Dictionary<string, PlayerData> playerData)
             : base(playerData) {
             EnabledGestures = GestureType.Tap;
         }
@@ -63,51 +66,55 @@ namespace CritterCamp.Screens.Games {
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
             textureList["fish"] = cm.Load<Texture2D>("fish");
+            textureList["fishing"] = cm.Load<Texture2D>("fishingTextures");
             textureList["map"] = cm.Load<Texture2D>("mapTextures");
-            textureList["doodads"] = cm.Load<Texture2D>("doodads");
             textureList["pig"] = cm.Load<Texture2D>("pig");
+            textureList["doodads"] = cm.Load<Texture2D>("doodads");
             setMap();
         }
 
         public void setMap() {
             tileMap = new TileMap(textureList["map"]);
-            doodadMap = new TileMap(textureList["doodads"]);
             int[,] map = new int[,] {
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
-                {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 }
+                {  29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29 },
+                {  30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 },
+                {  31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31 },
+                {  32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32 },
+                {  22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22 },
+                {  22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22 },
+                {  22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22 },
+                {  22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22 },
+                {  22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22 },
+                {  22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22 },
+                {  23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23 },
+                {  26, 24, 25, 24, 25, 24, 26, 27, 24, 26, 24, 25, 24, 24, 26, 28, 24, 27, 26, 24 }
             };
             int[,] ddMap = new int[,] {
-                {  -1, -1, -1, -1, -1, 18, 21, 21, 23, -1, -1, 19, 21, 21, 22, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
-                {  21, 21, 21, 21, 21, 22, -1, -1, -1, -1, -1, -1, -1, -1, 18, 21, 21, 21, 21, 21 },
-                {  21, 21, 21, 21, 21, 22, -1, -1, -1, -1, -1, -1, -1, -1, 18, 21, 21, 21, 21, 21 },
-                {  -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, 11, 13, 16, 19, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, 12, 14, 17, 17, 17, 17, 17, -1, -1, -1, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, -1, 15, 18, 18, 18, 18, 18, -1, -1, -1, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 19, 21, 21, 21, 21, 21, 21, 21, 21, 23, -1, -1, -1, -1, -1 }
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }
             };
             tileMap.setMap(map);
-            doodadMap.setMap(ddMap);
         }
 
         public override void HandleInput(GameTime gameTime, InputState input) {
-            // Create a new hook
-
-
+            foreach(GestureSample gesture in input.Gestures) {
+                if(gesture.GestureType == GestureType.Tap) {
+                    if(!hooked.ContainsKey(playerName)) {
+                        // Create a new hook
+                        hooked[playerName] = new Hook(this, (int)gesture.Position.X, gameTime.TotalGameTime, playerData[playerName]);
+                    }
+                }
+            }
             base.HandleInput(gameTime, input);
         }
 
@@ -130,7 +137,7 @@ namespace CritterCamp.Screens.Games {
                     TimeSpan newFishTime = lastFish + new TimeSpan(0, 0, 0, 0, (int)(fishData[curFish].interval * 1000));
                     // time to add a fish
                     if(gameTime.TotalGameTime > newFishTime) {
-                        new Fish(this, (FishTypes)fishData[curFish].type, fishData[curFish].depth, fishData[curFish].dir, gameTime.TotalGameTime - newFishTime);
+                        fishies.Add(new Fish(this, (FishTypes)fishData[curFish].type, fishData[curFish].depth, fishData[curFish].dir, gameTime.TotalGameTime - newFishTime));
                         lastFish = newFishTime;
                         curFish++;
                     }
@@ -162,7 +169,7 @@ namespace CritterCamp.Screens.Games {
                 foreach(JToken tok in data) {
                     JArray array = JArray.Parse((string)tok);
                     for(int i = 0; i < array.Count; i += 4) {
-                        fishData.Add(new FishData((int)array[i], (int)array[i + 1], (int)array[i + 2], 0.5d * (double)array[i + 3]));
+                        fishData.Add(new FishData((int)array[i], (int)array[i + 1], (int)array[i + 2], 0.1d * (double)array[i + 3]));
                     }
                 }
                 phase = Phase.Base;
@@ -179,7 +186,44 @@ namespace CritterCamp.Screens.Games {
 
             // Draw the game map
             tileMap.draw(sd);
-            doodadMap.draw(sd);
+            
+            // Draw the boat
+            int offset = (int)(gameTime.TotalGameTime.TotalMilliseconds / 10) % 360;
+            offset = (int)(10 * Math.Sin(offset * Math.PI / 180));
+            offset += 10;
+
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 5.5f, (float)Constants.BUFFER_SPRITE_DIM * 1.5f + offset), (int)TextureData.fishingTextures.boat1);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 5.5f, (float)Constants.BUFFER_SPRITE_DIM * 2.5f + offset), (int)TextureData.fishingTextures.boat2);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 6.5f, (float)Constants.BUFFER_SPRITE_DIM * 1.5f + offset), (int)TextureData.fishingTextures.boat3);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 6.5f, (float)Constants.BUFFER_SPRITE_DIM * 2.5f + offset), (int)TextureData.fishingTextures.boat4);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 6.5f, (float)Constants.BUFFER_SPRITE_DIM * 3.5f + offset), (int)TextureData.fishingTextures.boat5);
+            for(int i = 0; i < 7; i++) {
+                if(i % 2 == 0) {
+                    sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (7.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 1.5f + offset), (int)TextureData.fishingTextures.boat6);
+                } else {
+                    sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (7.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 1.5f + offset), (int)TextureData.fishingTextures.boat9);
+                }
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (7.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 2.5f + offset), (int)TextureData.fishingTextures.boat7);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (7.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 3.5f + offset), (int)TextureData.fishingTextures.boat8);
+            }
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 15.5f, (float)Constants.BUFFER_SPRITE_DIM * 1.5f + offset), (int)TextureData.fishingTextures.boat1, SpriteEffects.FlipHorizontally);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 15.5f, (float)Constants.BUFFER_SPRITE_DIM * 2.5f + offset), (int)TextureData.fishingTextures.boat2, SpriteEffects.FlipHorizontally);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 14.5f, (float)Constants.BUFFER_SPRITE_DIM * 1.5f + offset), (int)TextureData.fishingTextures.boat3, SpriteEffects.FlipHorizontally);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 14.5f, (float)Constants.BUFFER_SPRITE_DIM * 2.5f + offset), (int)TextureData.fishingTextures.boat4, SpriteEffects.FlipHorizontally);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 14.5f, (float)Constants.BUFFER_SPRITE_DIM * 3.5f + offset), (int)TextureData.fishingTextures.boat5, SpriteEffects.FlipHorizontally);
+
+            // Draw the waves
+            offset = (int)(gameTime.TotalGameTime.TotalMilliseconds / 10) % (Constants.BUFFER_SPRITE_DIM * 4);
+            for(int i = -1; i < 6; i++) {
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f) + offset, (float)Constants.BUFFER_SPRITE_DIM * 2.5f), (int)TextureData.fishingTextures.wave1);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f) + offset, (float)Constants.BUFFER_SPRITE_DIM * 3.5f), (int)TextureData.fishingTextures.wave2);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 1) + offset, (float)Constants.BUFFER_SPRITE_DIM * 2.5f), (int)TextureData.fishingTextures.wave3);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 1) + offset, (float)Constants.BUFFER_SPRITE_DIM * 3.5f), (int)TextureData.fishingTextures.wave4);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 2) + offset, (float)Constants.BUFFER_SPRITE_DIM * 2.5f), (int)TextureData.fishingTextures.wave5);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 2) + offset, (float)Constants.BUFFER_SPRITE_DIM * 3.5f), (int)TextureData.fishingTextures.wave6);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 3) + offset, (float)Constants.BUFFER_SPRITE_DIM * 2.5f), (int)TextureData.fishingTextures.wave7);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 3) + offset, (float)Constants.BUFFER_SPRITE_DIM * 3.5f), (int)TextureData.fishingTextures.wave8);
+            }
 
             DrawActors(sd);
 

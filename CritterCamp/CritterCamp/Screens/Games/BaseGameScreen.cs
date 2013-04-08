@@ -37,11 +37,11 @@ namespace CritterCamp.Screens.Games {
         protected List<IAnimatedObject> toRemove = new List<IAnimatedObject>();
 
         protected string playerName = (string)CoreApplication.Properties["username"];
-        protected List<PlayerData> playerData;
+        protected Dictionary<string, PlayerData> playerData;
 
         protected bool scoreReceived = false; // We can't exit immediately due to race conditions
 
-        public BaseGameScreen(List<PlayerData> playerData) : base() {
+        public BaseGameScreen(Dictionary<string, PlayerData> playerData) : base() {
             this.playerData = playerData;
         }
 
@@ -72,7 +72,7 @@ namespace CritterCamp.Screens.Games {
             } else if((string)o["action"] == "group") {
                 if((string)o["type"] == "update") {
                     // check if any users should be removed
-                    foreach(PlayerData pdata in playerData) {
+                    foreach(PlayerData pdata in playerData.Values) {
                         // Could use hashtable but this is fine for 4 users
                         bool found = false;
                         foreach(JToken name in (JArray)o["users"]) {
@@ -130,7 +130,7 @@ namespace CritterCamp.Screens.Games {
                 toRemove.Clear();
             }
             foreach(IAnimatedObject actor in actors) {
-                actor.animate(gameTime.ElapsedGameTime);
+                actor.animate(gameTime);
             }
         }
 

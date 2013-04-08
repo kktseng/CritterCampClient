@@ -31,7 +31,7 @@ namespace CritterCamp.Screens.Games {
 
         protected Random rand = new Random();
 
-        public JetpackJamboreeScreen(List<PlayerData> playerData)
+        public JetpackJamboreeScreen(Dictionary<string, PlayerData> playerData)
             : base(playerData) {
             for(int i = 0; i < 4; i++) {
                 pennedPigs.Add(new List<Pig>());

@@ -23,7 +23,7 @@ namespace CritterCamp.Screens {
         Vector2 iconSizeVector;
         bool voted = false;
         string message;
-        List<PlayerData> players;
+        Dictionary<string, PlayerData> players;
         List<Button> buttons;
         Button voteButton;
         GameData[] gamesToVote;
@@ -56,7 +56,7 @@ namespace CritterCamp.Screens {
             JArray playerInfo = (JArray)CoreApplication.Properties["group_info"];
             JArray gameChoices = (JArray)CoreApplication.Properties["game_choices"];
 
-            players = new List<PlayerData>();
+            players = new Dictionary<string, PlayerData>();
             // Parse color for duplicate skins
             Dictionary<string, int> colorMap = new Dictionary<string, int>();
             foreach (JObject playerData in playerInfo) {
@@ -68,7 +68,7 @@ namespace CritterCamp.Screens {
                 } else {
                     colorMap[profile] = 1;
                 }
-                players.Add(new PlayerData((string)playerData["username"], profile, (int)playerData["level"], color));
+                players[(string)playerData["username"]] = new PlayerData((string)playerData["username"], profile, (int)playerData["level"], color);
             }
             CoreApplication.Properties["player_data"] = players;
 
@@ -162,9 +162,11 @@ namespace CritterCamp.Screens {
             sd.DrawString(ScreenManager.Fonts["blueHighway28"], message, new Vector2(middleIconX, iconStartY + iconSpace * 3), Color.Black);
             
             // Draw player info
-            for(int i = 0; i < players.Count; i++) {
-                sd.Draw(ScreenManager.Textures["TEMPPIGS"], new Vector2(300, 300 + 200 * i), (int)TextureData.PlayerStates.standing + players[i].color * Helpers.TextureLen(typeof(TextureData.PlayerStates)), spriteScale: 2f);
-                sd.DrawString(ScreenManager.Fonts["blueHighway28"], players[i].username, new Vector2(450, 300 + 200 * i), Color.Black, false, true);
+            int i = 0;
+            foreach(PlayerData data in players.Values) {
+                sd.Draw(ScreenManager.Textures["TEMPPIGS"], new Vector2(300, 300 + 200 * i), (int)TextureData.PlayerStates.standing + data.color * Helpers.TextureLen(typeof(TextureData.PlayerStates)), spriteScale: 2f);
+                sd.DrawString(ScreenManager.Fonts["blueHighway28"], data.username, new Vector2(450, 300 + 200 * i), Color.Black, false, true);
+                i++;
             }
 
             sd.End();

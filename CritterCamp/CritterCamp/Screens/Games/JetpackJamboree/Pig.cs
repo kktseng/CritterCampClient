@@ -95,7 +95,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
             });
         }
 
-        public override void animate(TimeSpan time) {
+        public override void animate(GameTime time) {
             if(selected) {
                 base.animate(time);
                 return;
@@ -103,11 +103,11 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
                 if(!timeLeft.HasValue) {
                     timeLeft = new TimeSpan(0, 0, 0, 0, FLY_TIME);
                 } else {
-                    if(timeLeft.Value < time) {
+                    if(timeLeft.Value < time.ElapsedGameTime) {
                         timeLeft = EXPLODE_TIME;
                         walk();
                     } else {
-                        timeLeft -= time;
+                        timeLeft -= time.ElapsedGameTime;
                         velocity = new Vector2(0, (float)timeLeft.Value.TotalMilliseconds);
                     }
                 }
@@ -115,16 +115,16 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
                 if(!timeLeft.HasValue) {
                     timeLeft = new TimeSpan(0, 0, 0, 0, ENTER_TIME);
                 } else {
-                    if(timeLeft.Value < time) {
+                    if(timeLeft.Value < time.ElapsedGameTime) {
                         timeLeft = EXPLODE_TIME;
                         walk();
                     } else {
-                        timeLeft -= time;
+                        timeLeft -= time.ElapsedGameTime;
                         velocity = new Vector2(0, ENTER_SPD);
                     }
                 }
             } else if(state == PigStates.WalkLeft || state == PigStates.WalkRight) {
-                timeLeft -= time;
+                timeLeft -= time.ElapsedGameTime;
                 if(curBounds == MAIN_BOUNDS) {
                     jetPackState = 3 - (int)((timeLeft.Value.TotalSeconds / EXPLODE_TIME.TotalSeconds) * 4);
                     // Explode
@@ -138,7 +138,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
                 } else {
                     jetPackState = 0;
                 }
-                checkBounds(curBounds, time);
+                checkBounds(curBounds, time.ElapsedGameTime);
             } else if(state == PigStates.Flying) {
                 if(coord.Y < -Constants.BUFFER_SPRITE_DIM) {
                     screen.removeActor(this);

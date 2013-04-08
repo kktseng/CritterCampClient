@@ -20,7 +20,10 @@ namespace CritterCamp {
             dirtB, dirtT, dirtR, dirtL, // 11
             dirt, // 15
             longGrassNight, longGrass1, // 16
-            tree, treeLeft, treeMiddle, treeRight // 18
+            tree, treeLeft, treeMiddle, treeRight, // 18
+            water, // 22
+            sandtop, sand1, sand2, sand3, sandstar, sandcrab, // 23
+            sunset1, sunset2, sunset3, sunset4 // 29
         }
 
         public enum PlayerStates {
@@ -62,6 +65,12 @@ namespace CritterCamp {
             greenL, green_, greenLCurve, greenTCurve, greenCross,
             blueL, blue_, blueLCurve, blueTCurve, blueCross,
             pinkL, pink_, pinkLCurve, pinkTCurve, pinkCross
+        }
+
+        public enum fishingTextures {
+            hook, sinker, line, bucket,
+            wave1, wave2, wave3, wave4, wave5, wave6, wave7, wave8,
+            boat1, boat2, boat3, boat4, boat5, boat6, boat7, boat8, boat9
         }
 
         public enum Fish {

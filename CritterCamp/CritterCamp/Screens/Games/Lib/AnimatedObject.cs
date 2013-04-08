@@ -8,7 +8,7 @@ namespace CritterCamp.Screens.Games.Lib {
     public interface IAnimatedObject {
         bool isVisible();
         void draw(SpriteDrawer sd);
-        void animate(TimeSpan time);
+        void animate(GameTime time);
         Vector2 getCoord();
     }
     public abstract class AnimatedObject<T> : IAnimatedObject {
@@ -120,12 +120,12 @@ namespace CritterCamp.Screens.Games.Lib {
             return visible;
         }
 
-        public virtual void animate(TimeSpan time) {
+        public virtual void animate(GameTime time) {
             if(!visible) {
                 return;
             }
             int temp = frame;
-            frame = (int)((frame + time.TotalMilliseconds) % maxFrame);
+            frame = (int)((frame + time.ElapsedGameTime.TotalMilliseconds) % maxFrame);
             if(frame < temp) {
                 numCycles++;
                 if(maxCycles > 0 && numCycles >= maxCycles) {
@@ -142,7 +142,7 @@ namespace CritterCamp.Screens.Games.Lib {
                     }
                 }
             }
-            coord += velocity * (float)time.TotalSeconds;
+            coord += velocity * (float)time.ElapsedGameTime.TotalSeconds;
         }
 
         public virtual void draw(SpriteDrawer sd) {
