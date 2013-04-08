@@ -96,8 +96,8 @@ namespace CritterCamp.Screens {
 
             sd.Draw(tutorial, new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 775));
             sd.DrawString(ScreenManager.Fonts["blueHighway28"], text, new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT - 150));
-            sd.DrawString(ScreenManager.Fonts["blueHighway28"], "Time left: ", new Vector2(Constants.BUFFER_WIDTH * 3 / 4 - 15, Constants.BUFFER_HEIGHT - 150), Color.Black);
-            sd.DrawString(ScreenManager.Fonts["blueHighway28"], timeLeft.ToString(), new Vector2(Constants.BUFFER_WIDTH * 3 / 4 + 95, Constants.BUFFER_HEIGHT - 150), Color.Black, false, true);
+            sd.DrawString(ScreenManager.Fonts["blueHighway28"], "Continuing in ", new Vector2(Constants.BUFFER_WIDTH / 2 - 30, Constants.BUFFER_HEIGHT - 225), Color.Black);
+            sd.DrawString(ScreenManager.Fonts["blueHighway28"], timeLeft.ToString(), new Vector2(Constants.BUFFER_WIDTH /2 + 130, Constants.BUFFER_HEIGHT - 225), Color.Black, false, true);
 
             sd.End();
         }
