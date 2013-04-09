@@ -19,6 +19,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
         public List<Fish> hookedFish = new List<Fish>();
         public PlayerData player;
         public TimeSpan start;
+        public float downTime = 0;
 
         public Hook(FishingFrenzyScreen screen, int x, TimeSpan start, PlayerData player)
             : base(screen, "fishing", new Vector2(x, 0)) {
@@ -37,8 +38,11 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
         }
 
         public override void animate(GameTime time) {
-            coord = new Vector2(coord.X, (float)((time.TotalGameTime - start).TotalSeconds * HOOK_SPD - HOOK_SPD));
-            
+            if(getState() == HookState.down) {
+                coord = new Vector2(coord.X, (float)((time.TotalGameTime - start).TotalSeconds * HOOK_SPD - HOOK_SPD));
+            } else {
+                coord = new Vector2(coord.X, downTime * 2 - (float)((time.TotalGameTime - start).TotalSeconds * HOOK_SPD - HOOK_SPD));
+            }
             // update coords for all hooked fish
             foreach(Fish fish in hookedFish) {
                 if(fish.type == FishTypes.small || fish.type == FishTypes.medium) {
@@ -50,17 +54,23 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
 
             // check for hooked fish
             foreach(Fish fish in ((FishingFrenzyScreen)screen).fishies) {
-                Rectangle fishRect;
-                Rectangle hookRect = new Rectangle((int)getCoord().X - Constants.BUFFER_SPRITE_DIM / 2, (int)getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, Constants.BUFFER_SPRITE_DIM, Constants.BUFFER_SPRITE_DIM);
-                if(fish.type == FishTypes.small || fish.type == FishTypes.medium) {
-                    fishRect = new Rectangle((int)fish.getCoord().X - Constants.BUFFER_SPRITE_DIM / 2, (int)fish.getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, Constants.BUFFER_SPRITE_DIM, Constants.BUFFER_SPRITE_DIM);
-                } else {
-                    fishRect = new Rectangle((int)fish.getCoord().X - Constants.BUFFER_SPRITE_DIM, (int)fish.getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, Constants.BUFFER_SPRITE_DIM * 2, Constants.BUFFER_SPRITE_DIM);
-                }
-                if(fishRect.Intersects(hookRect)) {
-                    // hook the fish
-                    hookedFish.Add(fish);
-                    fish.setState(FishStates.hooked);
+                if(fish.getState() != FishStates.hooked) {
+                    Rectangle fishRect;
+                    Rectangle hookRect = new Rectangle((int)getCoord().X - Constants.BUFFER_SPRITE_DIM / 2, (int)getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, Constants.BUFFER_SPRITE_DIM, Constants.BUFFER_SPRITE_DIM);
+                    if(fish.type == FishTypes.small || fish.type == FishTypes.medium) {
+                        fishRect = new Rectangle((int)fish.getCoord().X - Constants.BUFFER_SPRITE_DIM / 2, (int)fish.getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, Constants.BUFFER_SPRITE_DIM, Constants.BUFFER_SPRITE_DIM);
+                    } else {
+                        fishRect = new Rectangle((int)fish.getCoord().X - Constants.BUFFER_SPRITE_DIM, (int)fish.getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, Constants.BUFFER_SPRITE_DIM * 2, Constants.BUFFER_SPRITE_DIM);
+                    }
+                    if(fishRect.Intersects(hookRect)) {
+                        // hook the fish
+                        hookedFish.Add(fish);
+                        fish.setState(FishStates.hooked);
+                        setState(HookState.up);
+                        if(downTime == 0) {
+                            downTime = (float)((time.TotalGameTime - start).TotalSeconds * HOOK_SPD - HOOK_SPD);
+                        }
+                    }
                 }
             }
         }
