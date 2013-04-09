@@ -139,6 +139,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CritterCampLogo.png" />
+    <Content Include="pig600-01.png" />
+    <Content Include="SplashScreenImage.jpg" />
     <Content Include="Content\bgScreen.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

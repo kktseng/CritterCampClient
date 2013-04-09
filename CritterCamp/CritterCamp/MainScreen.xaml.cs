@@ -40,16 +40,16 @@ namespace CritterCamp {
             }
 
             // check and see if we have an error message to display
-            if(CoreApplication.Properties.ContainsKey("error")) {
+            if (CoreApplication.Properties.ContainsKey("error")) {
                 Status.Text = (string)CoreApplication.Properties["error"]; // show the error message
                 CoreApplication.Properties.Remove("error");
 
                 UserInput.Visibility = Visibility.Collapsed; // hide the input boxes
                 PlayButton.Visibility = Visibility.Collapsed; // hide the play button
                 ResumeButton.Visibility = Visibility.Visible; // show the resume button
-            } else
+            } else {
                 // get previous login information if it exists
-                if(IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("username", out username) &&
+                if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("username", out username) &&
                     IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("password", out password)) {
                     // login information is already in the app
 
@@ -61,6 +61,9 @@ namespace CritterCamp {
                     UserInput.Visibility = Visibility.Visible; // show the input boxes
                     PlayButton.Visibility = Visibility.Collapsed; // hide the play button
                 }
+            }
+
+            ContentPanel.Visibility = Visibility.Visible; // show everything
         }
 
         private void Register_Click(object sender, RoutedEventArgs e) {

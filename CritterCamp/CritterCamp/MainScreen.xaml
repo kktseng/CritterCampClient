@@ -32,7 +32,7 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here -->
-        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="72,0,96,0" HorizontalAlignment="Center" Width="632">
+        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="72,0,96,0" HorizontalAlignment="Center" Width="632" Visibility="Collapsed">
             <StackPanel x:Name="UserInput" HorizontalAlignment="Center" Width="632" Height="232">
                 <StackPanel>
                     <TextBlock Height="44" FontSize="24" FontFamily="Segoe WP Semibold" FontWeight="Bold" TextAlignment="Center" Text="Login with existing account or register a new one"/>
