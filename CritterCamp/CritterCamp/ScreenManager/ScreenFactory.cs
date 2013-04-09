@@ -22,7 +22,7 @@ namespace GameStateManagement {
     public class ScreenFactory : IScreenFactory {
         public GameScreen CreateScreen(Type screenType) {
             if(screenType == typeof(TutorialScreen)) {
-                Type currGame = (Type)CoreApplication.Properties["currentGame"];
+                GameData currGame = (GameData)CoreApplication.Properties["currentGameData"];
                 return new TutorialScreen(currGame);
             } else if(typeof(BaseGameScreen).IsAssignableFrom(screenType)) {
                 Dictionary<string, PlayerData> playerData = (Dictionary<string, PlayerData>)CoreApplication.Properties["player_data"];

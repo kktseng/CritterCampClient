@@ -217,7 +217,7 @@ namespace CritterCamp.Screens {
                 }
 
                 // go to the tutorial screen
-                CoreApplication.Properties["currentGame"] = gameToPlay.ScreenType;
+                CoreApplication.Properties["currentGameData"] = gameToPlay;
                 ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
                 LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(typeof(TutorialScreen)));
             }

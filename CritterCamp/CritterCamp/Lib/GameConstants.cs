@@ -13,14 +13,16 @@ namespace CritterCamp {
         public string NameLine1; // first line of name to display if its on two lines
         public string NameLine2; // second line of name to display if its on two lines
         public string ServerName; // name from the server i.e. twilight_tango
+        public string TutorialTexture; // name of the tutorial texture i.e. twilightTut
         public Type ScreenType; // the screen class 
         public string GameIconTexture = "gameIcons";
         public int GameIconIndex;
         public int GameIndex;
 
-        public GameData(string name, string serverName, Type screenType, int gameIconIndex) {
+        public GameData(string name, string serverName, string tutorialTexture, Type screenType, int gameIconIndex) {
             Name = name;
             ServerName = serverName;
+            TutorialTexture = "Tutorials/" + tutorialTexture;
             ScreenType = screenType;
             GameIconIndex = gameIconIndex;
             GameIndex = CurrentGameIndex;
@@ -38,10 +40,11 @@ namespace CritterCamp {
     }
 
     static class GameConstants {
-        public static GameData TWILIGHT_TANGO = new GameData("Twilight Tango", "twilight_tango", typeof(TwilightTangoScreen), (int)TextureData.games.twilightTango);
-        public static GameData JETPACK_JAMBOREE = new GameData("Jetpack Jamboree", "jetpack_jamboree", typeof(JetpackJamboreeScreen), (int)TextureData.games.jetpackJamboree);
-        public static GameData MISSILE_MADNESS = new GameData("Missile Madness", "missile_madness", typeof(MissileMadnessScreen), (int)TextureData.games.missileMadness);
-        public static GameData[] GAMES = { TWILIGHT_TANGO, JETPACK_JAMBOREE, MISSILE_MADNESS };
+        public static GameData TWILIGHT_TANGO = new GameData("Twilight Tango", "twilight_tango", "twilightTut", typeof(TwilightTangoScreen), (int)TextureData.games.twilightTango);
+        public static GameData JETPACK_JAMBOREE = new GameData("Jetpack Jamboree", "jetpack_jamboree", "jetpackTut", typeof(JetpackJamboreeScreen), (int)TextureData.games.jetpackJamboree);
+        public static GameData MISSILE_MADNESS = new GameData("Missile Madness", "missile_madness", "missileTut", typeof(MissileMadnessScreen), (int)TextureData.games.missileMadness);
+        public static GameData FISHING_FRENZY = new GameData("Fishing Frenzy", "fishing_frenzy", "missileTut", typeof(FishingFrenzyScreen), (int)TextureData.games.missileMadness);
+        public static GameData[] GAMES = { TWILIGHT_TANGO, JETPACK_JAMBOREE, MISSILE_MADNESS, FISHING_FRENZY };
 
         public static GameData GetGameData(string name) {
             name = name.ToLower();

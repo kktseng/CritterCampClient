@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace CritterCamp.Screens {
     class TutorialScreen : MenuScreen {
-        protected Type game;
+        protected GameData game;
         protected ContentManager cm;
         protected Texture2D tutorial;
         bool done;
@@ -23,7 +23,7 @@ namespace CritterCamp.Screens {
         int timeLeft;
         Timer timeLeftTimer;
 
-        public TutorialScreen(Type game) : base("Tutorial") {
+        public TutorialScreen(GameData game) : base("Tutorial") {
             this.game = game;
 
             // Allow the user to tap
@@ -34,13 +34,7 @@ namespace CritterCamp.Screens {
             if(cm == null) {
                 cm = new ContentManager(ScreenManager.Game.Services, "Content");
             }
-            if(game == typeof(TwilightTangoScreen)) {
-                tutorial = cm.Load<Texture2D>("Tutorials/twilightTut");
-            } else if(game == typeof(JetpackJamboreeScreen)) {
-                tutorial = cm.Load<Texture2D>("Tutorials/jetpackTut");
-            } else if(game == typeof(MissileMadnessScreen)) {
-                tutorial = cm.Load<Texture2D>("Tutorials/missileTut");
-            }
+            tutorial = cm.Load<Texture2D>(game.TutorialTexture);
 
             done = false;
             timeLeft = 10;
@@ -65,7 +59,7 @@ namespace CritterCamp.Screens {
 
                 Helpers.Sync((JArray data) => {
                     ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
-                    LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(game));
+                    LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(game.ScreenType));
                 }, "tutorial");
             }
 
@@ -85,8 +79,8 @@ namespace CritterCamp.Screens {
 
                     Helpers.Sync((JArray data) => {
                         timeLeftTimer.Dispose(); // dispose of the timer so we don't decrement the time anymore
-                        ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));                 
-                        LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(typeof(FishingFrenzyScreen)));
+                        ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
+                        LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(game.ScreenType));
                     }, "tutorial", 13); // give other players 13 seconds to continue
                 }
             }
