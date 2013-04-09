@@ -23,12 +23,16 @@ namespace CritterCamp {
         }
 
         public static void Sync(SyncDelegate sd, string data) {
-            if(!CoreApplication.Properties.ContainsKey("SyncDelegate")) {
+            Sync(sd, data, 10);
+        }
+
+        public static void Sync(SyncDelegate sd, string data, int timeout) {
+            if (!CoreApplication.Properties.ContainsKey("SyncDelegate")) {
                 // Send packet to trigger Sync
                 JObject syncPacket = new JObject(
                     new JProperty("action", "group"),
                     new JProperty("type", "sync"),
-                    new JProperty("timeout", 10),
+                    new JProperty("timeout", timeout),
                     new JProperty("data", data)
                 );
                 CoreApplication.Properties["SyncDelegate"] = sd;

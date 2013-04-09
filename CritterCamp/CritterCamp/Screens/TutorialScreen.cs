@@ -62,13 +62,17 @@ namespace CritterCamp.Screens {
                 // automatically tap it for the user
                 done = true;
                 text = "Waiting for other players...";
-                timeLeftTimer.Dispose(); // dispose of the timer so we don't decrement the time anymore
 
                 Helpers.Sync((JArray data) => {
                     ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
                     LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(game));
                 }, "tutorial");
+            }
 
+            if (timeLeft == 0) {
+                // timeleft is 0 and we havn't moved screens yet
+                // dispose of the timer so we dont decrement anymore
+                timeLeftTimer.Dispose();
             }
         }
 
@@ -78,12 +82,12 @@ namespace CritterCamp.Screens {
                 if (gesture.GestureType == GestureType.Tap && !done) {
                     done = true;
                     text = "Waiting for other players...";
-                    timeLeftTimer.Dispose(); // dispose of the timer so we don't decrement the time anymore
 
                     Helpers.Sync((JArray data) => {
+                        timeLeftTimer.Dispose(); // dispose of the timer so we don't decrement the time anymore
                         ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));                 
                         LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(typeof(FishingFrenzyScreen)));
-                    }, "tutorial");
+                    }, "tutorial", 13); // give other players 13 seconds to continue
                 }
             }
 

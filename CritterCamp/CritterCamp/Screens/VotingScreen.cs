@@ -98,6 +98,7 @@ namespace CritterCamp.Screens {
             voteButton = new Button(this, "Vote");
             voteButton.Position = new Vector2(middleIconX, (float)(iconStartY + iconSpace * 2.25));
             voteButton.Tapped += vote;
+            voteButton.disabled = true;
 
             menuButtons.Add(voteButton);
 
@@ -107,11 +108,17 @@ namespace CritterCamp.Screens {
         // Method callback for every second of the countdown timer
         void timeLeftTimerCallback(object state) {
             timeLeft--;
-            if (timeLeft == 3 && !voted) {
-                // if theres 3 seconds left and the user did not vote yet
-                // send a null vote to the server
-                Helpers.Sync((JArray data) => { }, null);
+            if (timeLeft == 0 && !voted) {
+                // if theres 0 seconds left and the user did not vote yet
+
+                if (selectedGame != null) {
+                    // user selected a game already
+                    Helpers.Sync((JArray data) => { }, selectedGame.ServerName, 10); // send that as the vote
+                } else {
+                    Helpers.Sync((JArray data) => { }, null); // send a null vote
+                }
                 voted = true;
+                voteButton.disabled = true;
             }
             if (timeLeft == 0) {
                 // timeleft is 0 and we havn't moved screens yet
@@ -136,6 +143,7 @@ namespace CritterCamp.Screens {
 
             bArgs.button.highlight = true; // highlight the button we pressed
             selectedGame = bArgs.gameData; // our selected game is the button we pressed
+            voteButton.disabled = false; // enable the vote button for people to vote
         }
 
         // Method callback for the vote button
@@ -148,7 +156,7 @@ namespace CritterCamp.Screens {
             voteButton.disabled = true;
             message = "Waiting for the other players.";
 
-            Helpers.Sync((JArray data) => {}, selectedGame.ServerName);
+            Helpers.Sync((JArray data) => { }, selectedGame.ServerName, 13);  // give other players 13 seconds to vote
         }
 
         public override void Draw(GameTime gameTime) {
