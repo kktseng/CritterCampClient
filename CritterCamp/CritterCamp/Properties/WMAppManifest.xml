@@ -19,8 +19,7 @@
           <SmallImageURI IsRelative="true" IsResource="false">pig600-01.png</SmallImageURI>
           <Count>0</Count>
           <BackgroundImageURI IsRelative="true" IsResource="false">pig600-01.png</BackgroundImageURI>
-          <Title>
-          </Title>
+          <Title>CritterCamp</Title>
           <BackContent>
           </BackContent>
           <BackBackgroundImageURI IsRelative="true" IsResource="false">
@@ -29,7 +28,7 @@
           </BackTitle>
           <DeviceLockImageURI IsRelative="true" IsResource="false">
           </DeviceLockImageURI>
-          <HasLarge>false</HasLarge>
+          <HasLarge>False</HasLarge>
         </TemplateFlip>
       </PrimaryToken>
     </Tokens>
