@@ -342,6 +342,7 @@ namespace GameStateManagement {
         /// and will give the screen a chance to gradually transition off.
         /// </summary>
         public void ExitScreen() {
+            screenState = ScreenState.Hidden;
             if(TransitionOffTime == TimeSpan.Zero) {
                 // If the screen has a zero transition time, remove it immediately.
                 ScreenManager.RemoveScreen(this);
