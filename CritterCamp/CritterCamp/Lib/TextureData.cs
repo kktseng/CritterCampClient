@@ -49,7 +49,9 @@ namespace CritterCamp {
             jetPack1, jetPack2, jetPack3, jetPack4,
             sideJet1, sideJet2, sideJet3, sideJet4,
             jetFlame1, jetFlame2,
-            fenceTopEnd, fenceBottomEnd, fenceTopLeft, fenceLeftEnd, fence3Way, fence2Way, fenceTopRight, fenceRightEnd
+            fenceTopEnd, fenceBottomEnd, fenceTopLeft, fenceLeftEnd, fence3Way, fence2Way, fenceTopRight, fenceRightEnd,
+            crosshair,
+            fishingPole1, fishingPole2
         }
 
         public enum twilightTexture {
