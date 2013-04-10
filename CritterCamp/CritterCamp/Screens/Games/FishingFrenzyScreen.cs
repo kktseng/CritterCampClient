@@ -198,13 +198,14 @@ namespace CritterCamp.Screens.Games {
             sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 5.5f, (float)Constants.BUFFER_SPRITE_DIM * 2.5f + offset), (int)TextureData.fishingTextures.boat4);
             sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 5.5f, (float)Constants.BUFFER_SPRITE_DIM * 3.5f + offset), (int)TextureData.fishingTextures.boat5);
             for(i = 0; i < 8; i++) {
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 2.5f + offset), (int)TextureData.fishingTextures.boat7);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 3.5f + offset), (int)TextureData.fishingTextures.boat8);
                 if((i < 4 && i % 2 == 0) || (i > 4 && i % 2 == 1)) {
                     sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 1.5f + offset), (int)TextureData.fishingTextures.boat6);
+                    sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 2.5f + offset - 40), (int)TextureData.fishingTextures.bucket);
                 } else {
                     sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 1.5f + offset), (int)TextureData.fishingTextures.boat9);
                 }
-                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 2.5f + offset), (int)TextureData.fishingTextures.boat7);
-                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 3.5f + offset), (int)TextureData.fishingTextures.boat8);
             }
             sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 15.5f, (float)Constants.BUFFER_SPRITE_DIM * 1.5f + offset), (int)TextureData.fishingTextures.boat1, SpriteEffects.FlipHorizontally);
             sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 15.5f, (float)Constants.BUFFER_SPRITE_DIM * 2.5f + offset), (int)TextureData.fishingTextures.boat2, SpriteEffects.FlipHorizontally);

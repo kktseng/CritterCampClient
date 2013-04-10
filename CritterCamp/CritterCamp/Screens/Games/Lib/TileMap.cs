@@ -45,7 +45,7 @@ namespace CritterCamp.Screens.Games.Lib {
                     int y = Constants.BUFFER_SPRITE_DIM * i + Constants.BUFFER_SPRITE_DIM / 2 - Constants.BUFFER_OFFSET + offset;
                     int spriteNum = map[i, j];
 
-                    sd.Draw(mapTextures, new Vector2(x, y), spriteNum);
+                    sd.Draw(mapTextures, new Vector2(x, y), spriteNum, cache: true);
                 }
             }
         }

@@ -23,7 +23,7 @@ namespace CritterCamp.Screens.Games.Lib {
         public Vector2 backBuffer, coordScale, drawScale;
         public Vector2 sprite_dim = new Vector2(Constants.SPRITE_DIM);
         public int offset = 0; // used to offset non 16:9 screens to the center
-        public Dictionary<Vector2, Vector2> cache = new Dictionary<Vector2, Vector2>();
+        public Dictionary<Vector2, Vector2> cachedConversions = new Dictionary<Vector2, Vector2>();
 
         protected ScreenManager sm;
 
@@ -58,9 +58,9 @@ namespace CritterCamp.Screens.Games.Lib {
             sm.SpriteBatch.End();
         }
 
-        protected Vector2 CoordConverter(Vector2 coord) {
-            if(cache.ContainsKey(coord))
-                return cache[coord];
+        protected Vector2 CoordConverter(Vector2 coord, bool cache) {
+            if(cachedConversions.ContainsKey(coord))
+                return cachedConversions[coord];
             Vector2 temp;
             if(coord.X <= 0 && coord.Y <= 0) {
                 // Scale coordinates back to backBuffer
@@ -68,31 +68,32 @@ namespace CritterCamp.Screens.Games.Lib {
                 coord /= coordScale;
                 return new Vector2((float)Math.Floor(coord.X), (float)Math.Floor(coord.Y));
             } else if(coord.X <= 0) {
-                temp = CoordConverter(new Vector2(coord.X, coord.Y - Constants.BUFFER_SPRITE_DIM));
+                temp = CoordConverter(new Vector2(coord.X, coord.Y - Constants.BUFFER_SPRITE_DIM), cache);
                 temp += new Vector2(0, sprite_dim.Y) * drawScale;
             } else if(coord.Y <= 0) {
-                temp = CoordConverter(new Vector2(coord.X - Constants.BUFFER_SPRITE_DIM, coord.Y));
+                temp = CoordConverter(new Vector2(coord.X - Constants.BUFFER_SPRITE_DIM, coord.Y), cache);
                 temp += new Vector2(sprite_dim.X, 0) * drawScale;
             } else {
-                temp = CoordConverter(new Vector2(coord.X - Constants.BUFFER_SPRITE_DIM, coord.Y - Constants.BUFFER_SPRITE_DIM));
+                temp = CoordConverter(new Vector2(coord.X - Constants.BUFFER_SPRITE_DIM, coord.Y - Constants.BUFFER_SPRITE_DIM), cache);
                 temp += new Vector2(sprite_dim.X, sprite_dim.Y) * drawScale;
             }
-            cache[coord] = temp;
+            if(cache)
+                cachedConversions[coord] = temp;
             return temp;
         }
 
-        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect,  SpriteEffects effect, Color color, float spriteRotation = 0, float spriteScale = 1f) {
-            SpriteBatch sb = sm.SpriteBatch;
-
-            coord = new Vector2((float)(Math.Floor(coord.X)), (float)(Math.Floor(coord.Y)));
-            coord = CoordConverter(coord);
-
-            // Fix coordinates for landscape
-            if(Constants.ROTATION != 0)
-                coord = new Vector2(backBuffer.X - coord.Y, coord.X);
-
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect, SpriteEffects effect, Color color, float spriteRotation = 0, float spriteScale = 1f, bool cache = false) {
             // Check to see if sprites are in bounds
-            if(coord.X >= -spriteDim.X && coord.X < backBuffer.X + spriteDim.X && coord.Y >= -spriteDim.Y && coord.Y < backBuffer.Y + spriteDim.Y) {
+            if(coord.X >= -spriteDim.X / drawScale.X && coord.X < Constants.BUFFER_WIDTH + spriteDim.X / drawScale.X && coord.Y >= -spriteDim.Y / drawScale.Y && coord.Y < Constants.BUFFER_HEIGHT + spriteDim.Y / drawScale.Y) {      
+                SpriteBatch sb = sm.SpriteBatch;
+
+                coord = new Vector2((float)(Math.Floor(coord.X)), (float)(Math.Floor(coord.Y)));
+                coord = CoordConverter(coord, cache);
+
+                // Fix coordinates for landscape
+                if(Constants.ROTATION != 0)
+                    coord = new Vector2(backBuffer.X - coord.Y, coord.X);
+
                 sb.Draw(texture, coord, new Rectangle(
                     (spriteNum % TextureData.spriteSheetWidth) * (int)(spriteDim.X + TextureData.spriteSheetGutter) + rect.Left,
                     (spriteNum / TextureData.spriteSheetWidth) * (int)(spriteDim.Y + TextureData.spriteSheetGutter) + rect.Top,
@@ -101,24 +102,24 @@ namespace CritterCamp.Screens.Games.Lib {
             }
         }
 
-        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect, SpriteEffects effect, float spriteRotation = 0, float spriteScale = 1f) {
-            Draw(texture, coord, spriteNum, spriteDim, rect, effect, Color.White, spriteRotation: spriteRotation, spriteScale: spriteScale);
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect, SpriteEffects effect, float spriteRotation = 0, float spriteScale = 1f, bool cache = false) {
+            Draw(texture, coord, spriteNum, spriteDim, rect, effect, Color.White, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache);
         }
 
-        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, float spriteRotation = 0, float spriteScale = 1f, SpriteEffects effect = SpriteEffects.None) {
-            Draw(texture, coord, spriteNum, spriteDim, new Rectangle(0, 0, (int)spriteDim.X, (int)spriteDim.Y), effect, spriteRotation: spriteRotation, spriteScale: spriteScale);
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, float spriteRotation = 0, float spriteScale = 1f, bool cache = false, SpriteEffects effect = SpriteEffects.None) {
+            Draw(texture, coord, spriteNum, spriteDim, new Rectangle(0, 0, (int)spriteDim.X, (int)spriteDim.Y), effect, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache);
         }
 
-        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Rectangle rect, float spriteRotation = 0, float spriteScale = 1f) {
-            Draw(texture, coord, spriteNum, sprite_dim, rect, SpriteEffects.None, spriteRotation: spriteRotation, spriteScale: spriteScale);
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Rectangle rect, float spriteRotation = 0, float spriteScale = 1f, bool cache = false) {
+            Draw(texture, coord, spriteNum, sprite_dim, rect, SpriteEffects.None, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache);
         }
 
-        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, SpriteEffects effect, float spriteRotation = 0, float spriteScale = 1f) {
-            Draw(texture, coord, spriteNum, sprite_dim, effect: effect, spriteRotation: spriteRotation, spriteScale: spriteScale);
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, SpriteEffects effect, float spriteRotation = 0, float spriteScale = 1f, bool cache = false) {
+            Draw(texture, coord, spriteNum, sprite_dim, effect: effect, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache);
         }
 
-        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, float spriteRotation = 0, float spriteScale = 1f) {
-            Draw(texture, coord, spriteNum, sprite_dim, spriteRotation: spriteRotation, spriteScale: spriteScale);
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, float spriteRotation = 0, float spriteScale = 1f, bool cache = false) {
+            Draw(texture, coord, spriteNum, sprite_dim, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache);
         }
 
         public void Draw2X(Texture2D texture, Vector2 coord, int spriteNum) {
