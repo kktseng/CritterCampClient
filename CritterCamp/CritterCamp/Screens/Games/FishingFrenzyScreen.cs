@@ -119,6 +119,19 @@ namespace CritterCamp.Screens.Games {
                     phase = Phase.Fishing;
                 }
             } else if(phase == Phase.Fishing) {
+                // remove fish that are out of bounds
+                List<Fish> toRem = new List<Fish>();
+                foreach(Fish f in fishies) {
+                    if(f.getCoord().X < -300 || f.getCoord().X > Constants.BUFFER_WIDTH + 300) {
+                        toRem.Add(f);
+                    }
+                }
+                foreach(Fish f in toRem) {
+                    fishies.Remove(f);
+                    removeActor(f);
+                }
+                
+                // add new fish
                 if(curFish < fishData.Count) {
                     TimeSpan newFishTime = lastFish + new TimeSpan(0, 0, 0, 0, (int)(fishData[curFish].interval * 1000));
                     // time to add a fish
