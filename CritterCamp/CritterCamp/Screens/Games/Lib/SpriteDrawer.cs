@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 
 namespace CritterCamp.Screens.Games.Lib {
     // Used to store constant information on a player's customized model
@@ -43,8 +44,10 @@ namespace CritterCamp.Screens.Games.Lib {
             if((int)(backBuffer.Y / (float)backBuffer.X * 1000) == (int)(Constants.RATIO_16_9 * 1000)) {
                // ratio = Constants.CONVERSION_15_9;
                 offset = Constants.OFFSET_16_9;
+                CoreApplication.Properties["ratio"] = Constants.RATIO_16_9;
             } else if((int)((float)backBuffer.Y / (float)backBuffer.X * 1000) == (int)(Constants.RATIO_15_9 * 1000)) {
                 offset = Constants.OFFSET_15_9;
+                CoreApplication.Properties["ratio"] = Constants.RATIO_15_9;
             }
             // scale = Matrix.CreateScale(1f / ratio, 1f, 1f);
 

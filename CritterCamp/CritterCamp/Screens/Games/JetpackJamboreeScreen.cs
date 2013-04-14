@@ -101,13 +101,7 @@ namespace CritterCamp.Screens.Games {
                 selectedPig = null;
             } else {
                 foreach(TouchLocation loc in input.TouchState) {
-                    Vector2 scaledPos = loc.Position;
-
-                    // Flip coordinates to scale with input buffer
-                    if(Constants.ROTATION != 0) {
-                        scaledPos = new Vector2(loc.Position.Y, Constants.INPUT_HEIGHT - loc.Position.X);
-                    }
-                    scaledPos *= Constants.INPUT_SCALE;
+                    Vector2 scaledPos = Helpers.ScaleInput(new Vector2(loc.Position.X, loc.Position.Y));
 
                     if(selectedPig == null) {
                         foreach(Pig p in mainPigs) {

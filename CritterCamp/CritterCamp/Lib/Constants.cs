@@ -15,8 +15,8 @@ namespace CritterCamp {
         public static int BUFFER_WIDTH = 1920;
         public static int BUFFER_HEIGHT = 1080;
 
-        public static int INPUT_WIDTH = 800;
-        public static int INPUT_HEIGHT = 480;
+        public static Vector2 INPUT_16_9 = new Vector2(853, 480);
+        public static Vector2 INPUT_15_9 = new Vector2(800, 480);
 
         public static float RATIO_16_9 = 16f / 9f;
         public static float RATIO_16_10 = 16f / 10f;
@@ -29,8 +29,6 @@ namespace CritterCamp {
 
         public static int OFFSET_15_9 = BUFFER_OFFSET;
         public static int OFFSET_16_9 = 0;
-
-        public static Vector2 INPUT_SCALE = new Vector2((float)BUFFER_WIDTH / (float)INPUT_WIDTH, (float)BUFFER_HEIGHT / (float)INPUT_HEIGHT);
 
         public static int BUFFER_SPRITE_DIM = 96;
 

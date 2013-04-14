@@ -102,13 +102,12 @@ namespace CritterCamp.Screens {
                 mainView.HandleTouch(new Vector2(), new TouchLocation(), input); // pass the released finger information to the view
             } else {
                 foreach (TouchLocation loc in input.TouchState) { // otherwise find the scaled position to pass to the view
-                    Vector2 scaledPos = loc.Position;
-
                     // Flip coordinates to scale with input buffer
-                    if (Constants.ROTATION != 0) {
-                        scaledPos = new Vector2(loc.Position.Y, Constants.INPUT_HEIGHT - loc.Position.X);
-                    }
-                    scaledPos *= Constants.INPUT_SCALE;
+                    //if (Constants.ROTATION != 0) {
+                    //    scaledPos = new Vector2(loc.Position.Y, Constants.INPUT_HEIGHT - loc.Position.X);
+                    //}
+                    //scaledPos *= Constants.INPUT_SCALE;
+                    Vector2 scaledPos = Helpers.ScaleInput(new Vector2(loc.Position.X, loc.Position.Y));
 
                     mainView.HandleTouch(scaledPos, loc, input);
                 }
@@ -126,13 +125,7 @@ namespace CritterCamp.Screens {
                 }
             } else {
                 foreach (TouchLocation loc in input.TouchState) {
-                    Vector2 scaledPos = loc.Position;
-
-                    // Flip coordinates to scale with input buffer
-                    if (Constants.ROTATION != 0) {
-                        scaledPos = new Vector2(loc.Position.Y, Constants.INPUT_HEIGHT - loc.Position.X);
-                    }
-                    scaledPos *= Constants.INPUT_SCALE;
+                    Vector2 scaledPos = Helpers.ScaleInput(new Vector2(loc.Position.X, loc.Position.Y));
                     oldPos = scaledPos;
 
                     if (selectedButton == null) { // we havn't pressed down on a button yet. try to find one that we pressed

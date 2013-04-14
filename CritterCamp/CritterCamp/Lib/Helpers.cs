@@ -1,4 +1,5 @@
 ﻿using Microsoft.Phone.Info;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,32 @@ namespace CritterCamp {
             int len = Enum.GetNames(enumType).Length;
             int rounded = ((len - 1) / 10 * 10) + 10;
             return rounded;
+        }
+
+        public static Vector2 ScaleInput(Vector2 input) {
+            if(!CoreApplication.Properties.ContainsKey("ratio"))
+                return Vector2.Zero;
+            float ratio = (float)CoreApplication.Properties["ratio"];
+            Vector2 inputScale = Vector2.One;
+            int offset = 0;
+            if(ratio == Constants.RATIO_16_9) {
+                if(Constants.ROTATION != 0) {
+                    input = new Vector2(input.Y, Constants.INPUT_16_9.Y - input.X);
+                }
+                inputScale = new Vector2(Constants.INPUT_16_9.X / Constants.BUFFER_WIDTH, Constants.INPUT_16_9.Y / Constants.BUFFER_HEIGHT);
+                offset = Constants.OFFSET_16_9;
+            } else if(ratio == Constants.RATIO_15_9) {
+                if(Constants.ROTATION != 0) {
+                    input = new Vector2(input.Y, Constants.INPUT_15_9.Y - input.X);
+                }
+                inputScale = new Vector2(Constants.INPUT_15_9.X / Constants.BUFFER_WIDTH, Constants.INPUT_15_9.Y / Constants.BUFFER_HEIGHT);
+                offset = Constants.OFFSET_15_9;
+            }
+            return input / inputScale + new Vector2(0, offset);
+        }
+
+        public static void calcRatio() {
+
         }
     }
 
