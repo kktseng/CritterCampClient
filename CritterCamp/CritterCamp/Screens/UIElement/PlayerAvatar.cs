@@ -17,7 +17,7 @@ namespace CritterCamp.Screens {
                 playerDataInfo = value;
                 Avatar.TextureIndex = (int)TextureData.PlayerStates.standing + value.color * Helpers.TextureLen(typeof(TextureData.PlayerStates));
 
-                FullProfileName.Text = value.profile;
+                FullProfileName.Text = value.username;
                 FullProfileLevel.Text = "Lv " + value.level.ToString();
                 //FullProfileMoney.Text = value.money;
             }

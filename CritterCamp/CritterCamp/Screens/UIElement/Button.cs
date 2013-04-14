@@ -125,6 +125,15 @@ namespace CritterCamp.Screens {
             }
         }
 
+        public override Vector2 Size {
+            get {
+                return base.Size * Scale + new Vector2(125, 50);
+            }
+            set {
+                base.Size = value;
+            }
+        }
+
         public override Vector2 Position {
             get {
                 return base.Position;

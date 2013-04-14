@@ -14,6 +14,7 @@ using CritterCamp.Screens;
 using System.IO.IsolatedStorage;
 using System.Threading.Tasks;
 using Windows.UI.Core;
+using CritterCamp.Screens.Games;
 
 namespace CritterCamp {
     public partial class MainScreen : PhoneApplicationPage {
@@ -195,8 +196,11 @@ namespace CritterCamp {
                      **/
                     // TODO: Retrieve and parse friend list data from HTTP response
                     // TODO: Retrieve and parse news information from HTTP response
-                    // TODO: Retrieve and parse profile information from HTTP response
                     // TODO: Retrieve money from SQLite
+
+
+                    PlayerData mydata = new PlayerData(username, "profile", response.lvl, 0);
+                    CoreApplication.Properties["myPlayerData"] = mydata;
 
                     // Create a TCP connection
                     TCPConnection conn = new TCPConnection();
@@ -274,10 +278,12 @@ namespace CritterCamp {
 
     class LoginResponse : Response {
         public string auth;
+        public int lvl;
 
         public LoginResponse(string response)
             : base(response) {
             auth = (string)responseJSON["auth"];
+            lvl = (int)responseJSON["level"];
         }
     }
 }

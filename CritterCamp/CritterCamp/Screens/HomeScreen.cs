@@ -36,8 +36,10 @@ namespace CritterCamp.Screens {
                 ScreenManager.Textures.Add("TEMPPIGS", cm.Load<Texture2D>("pig"));
             }
 
+            PlayerData myData = (PlayerData)CoreApplication.Properties["myPlayerData"];
+
             BorderedView myInfo = new BorderedView(new Vector2(1920/2-50, 300), new Vector2(1440, 150));
-            PlayerAvater me = new PlayerAvater(new PlayerData("EricShyonng", "profile", 20, 0), new Vector2(1150, 150));
+            PlayerAvater me = new PlayerAvater(myData, new Vector2(1150, 150));
             me.DrawFullProfileData = true;
             myInfo.addElement(me);
 
@@ -88,8 +90,6 @@ namespace CritterCamp.Screens {
             News.Font = "buttonFont";
             News.Disabled = false;
             News.Tapped += news_Tapped;
-            SelectedLabel = News;
-            News.OnTapped();
             Friends = new Label("Friends", new Vector2(480, 100));
             Friends.Font = "buttonFont";
             Friends.TextColor = InactiveColor;
@@ -117,13 +117,16 @@ namespace CritterCamp.Screens {
             mainView.addElement(menu);
             mainView.addElement(info);
 
+            News.OnTapped();
         }
 
         void news_Tapped(object sender, EventArgs e) {
             if (SelectedLabel == News) {
                 return;
             }
-            SelectedLabel.TextColor = InactiveColor;
+            if (SelectedLabel != null) {
+                SelectedLabel.TextColor = InactiveColor;
+            }
             SelectedLabel = News;
             News.TextColor = Color.Black;
             InfoListView.Text = "No new news to display.";
