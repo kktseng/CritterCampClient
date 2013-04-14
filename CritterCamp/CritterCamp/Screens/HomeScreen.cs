@@ -1,6 +1,9 @@
-﻿using CritterCamp.Screens.Games.Lib;
+﻿using CritterCamp.Screens.Games;
+using CritterCamp.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using Newtonsoft.Json.Linq;
 using System;
@@ -14,34 +17,142 @@ namespace CritterCamp.Screens {
     class HomeScreen : MenuScreen {
         private bool looking = false;
         private bool startingGame = false;
-        Button play;
-        Button leader;
-        Button cancel;
+        View PlayButtons;
+        View SearchingButtons;
+        List<Image> AnimatedPigs;
+        Label SelectedLabel;
+        Label News, Friends, Party;
+        Label InfoListView; // change this to a list view when its implemented
+        Color InactiveColor = new Color(119, 95, 77);
 
-        public HomeScreen()
-            : base("Main Menu") {
-            play = new Button(this, "Play");
-            play.Position = new Vector2(960, 300);
+        public HomeScreen() : base("Main Menu") {}
+
+        public override void Activate(bool instancePreserved) {
+            base.Activate(instancePreserved);
+
+            // temporary pig drawing for profiles
+            if (!ScreenManager.Textures.ContainsKey("TEMPPIGS")) {
+                ContentManager cm = ScreenManager.Game.Content;
+                ScreenManager.Textures.Add("TEMPPIGS", cm.Load<Texture2D>("pig"));
+            }
+
+            BorderedView myInfo = new BorderedView(new Vector2(1920/2-50, 300), new Vector2(1440, 150));
+            PlayerAvater me = new PlayerAvater(new PlayerData("EricShyonng", "profile", 20, 0), new Vector2(1150, 150));
+            me.DrawFullProfileData = true;
+            myInfo.addElement(me);
+
+            BorderedView menu = new BorderedView(new Vector2(1920/2-50, 600), new Vector2(1440, 625));
+            PlayButtons = new View(new Vector2(1920 / 2 - 50, 600), new Vector2(1440, 625));
+            PlayButtons.Disabled = false;
+            SearchingButtons = new View(new Vector2(1920 / 2 - 50, 600), new Vector2(1440, 625));
+            SearchingButtons.Disabled = false;
+            SearchingButtons.Visible = false;
+            menu.addElement(PlayButtons);
+            menu.addElement(SearchingButtons);
+            menu.Disabled = false;
+
+            Button1 play = new Button1("Play");
+            play.Position = new Vector2(1440, 450);
             play.Tapped += playButton_Tapped;
-
-            leader = new Button(this, "Leaders");
-            leader.Position = new Vector2(960, 500);
+            Button1 leader = new Button1("Leaders");
+            leader.Position = new Vector2(1440, 650);
             leader.Tapped += leaderButton_Tapped;
+            Button1 about = new Button1("About");
+            about.Position = new Vector2(1440, 800);
+            PlayButtons.addElement(play);
+            PlayButtons.addElement(leader);
+            PlayButtons.addElement(about);
 
-            cancel = new Button(this, "Cancel");
-            cancel.Position = new Vector2(960, 700);
+            Label searchingText = new Label("Searching for players", new Vector2(1440, 450));
+            searchingText.Font = "buttonFont";
+            searchingText.Scale = 0.8f;
+            AnimatedPigs = new List<Image>();
+            int size = 100;
+            Vector2 StartingPosition = new Vector2(1440-size*3, 600);
+            for (int i = 0; i < 7; i++) {
+                Image PigImage = new Image("TEMPPIGS", i);
+                PigImage.Position = StartingPosition + new Vector2(size * i, 0);
+                SearchingButtons.addElement(PigImage);
+                AnimatedPigs.Add(PigImage);
+            }
+            Button1 cancel = new Button1("Cancel");
+            cancel.Position = new Vector2(1440, 800);
             cancel.Tapped += cancelButton_Tapped;
-            cancel.visible = false;
 
-            MenuButtons.Add(play);
-            MenuButtons.Add(leader);
-            MenuButtons.Add(cancel);
+            SearchingButtons.addElement(searchingText);
+            SearchingButtons.addElement(cancel);
+
+            BorderedView info  = new BorderedView(new Vector2(1920/2-50, 925), new Vector2(480, 465));
+            info.Disabled = false;
+            News = new Label("News", new Vector2(180, 100));
+            News.Font = "buttonFont";
+            News.Disabled = false;
+            News.Tapped += news_Tapped;
+            SelectedLabel = News;
+            News.OnTapped();
+            Friends = new Label("Friends", new Vector2(480, 100));
+            Friends.Font = "buttonFont";
+            Friends.TextColor = InactiveColor;
+            Friends.Disabled = false;
+            Friends.Tapped += friends_Tapped;
+            Party = new Label("Party", new Vector2(770, 100));
+            Party.Font = "buttonFont";
+            Party.TextColor = InactiveColor;
+            Party.Disabled = false;
+            Party.Tapped += party_Tapped;
+
+            InfoListView = new Label();
+            InfoListView.Position = new Vector2(75, 180);
+            InfoListView.CenterX = false;
+            InfoListView.CenterY = false;
+            InfoListView.Text = ("Test");
+
+            info.addElement(News);
+            info.addElement(Friends);
+            info.addElement(Party);
+            info.addElement(InfoListView);
+
+
+            mainView.addElement(myInfo);
+            mainView.addElement(menu);
+            mainView.addElement(info);
+
+        }
+
+        void news_Tapped(object sender, EventArgs e) {
+            if (SelectedLabel == News) {
+                return;
+            }
+            SelectedLabel.TextColor = InactiveColor;
+            SelectedLabel = News;
+            News.TextColor = Color.Black;
+            InfoListView.Text = "No new news to display.";
+        }
+
+        void friends_Tapped(object sender, EventArgs e) {
+            if (SelectedLabel == Friends) {
+                return;
+            }
+            SelectedLabel.TextColor = InactiveColor;
+            SelectedLabel = Friends;
+            Friends.TextColor = Color.Black;
+            InfoListView.Text = "You have no friends :(";
+        }
+
+        void party_Tapped(object sender, EventArgs e) {
+            if (SelectedLabel == Party) {
+                return;
+            }
+            SelectedLabel.TextColor = InactiveColor;
+            SelectedLabel = Party;
+            Party.TextColor = Color.Black;
+            InfoListView.Text = "You have no one in your party :(";
         }
 
         void playButton_Tapped(object sender, EventArgs e) {
             if(!looking) {
-                play.disabled = true;
-                cancel.visible = true;
+                PlayButtons.Visible = false;
+                SearchingButtons.Visible = true;
                 looking = true;
 
                 // Start looking for a group
@@ -65,8 +176,8 @@ namespace CritterCamp.Screens {
 
         void cancelSearch() {
             if (looking) {
-                play.disabled = false;
-                cancel.visible = false;
+                PlayButtons.Visible = true;
+                SearchingButtons.Visible = false;
                 looking = false;
 
                 // cancel this search request
@@ -92,6 +203,15 @@ namespace CritterCamp.Screens {
                 ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
                 LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(VotingScreen)));
             }
+            if (looking) {
+                // change the texture index of the pigs
+                int totalTextures = Enum.GetNames(typeof(TextureData.PlayerStates)).Length - 1;
+                int startindex = (int)(gameTime.TotalGameTime.TotalMilliseconds / 100) % totalTextures;
+                foreach(Image p in AnimatedPigs) {
+                    p.TextureIndex = startindex;
+                    startindex = (startindex + 1) % totalTextures;
+                }
+            }
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
@@ -99,10 +219,11 @@ namespace CritterCamp.Screens {
             base.Draw(gameTime);
             ScreenManager.SpriteBatch.Begin();
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
-            if (looking && gameTime.TotalGameTime.TotalMilliseconds % 1000 < 600) {
-                sd.DrawString(ScreenManager.Fonts["blueHighway28"], "Searching for players...", new Vector2(1000, 900));
-            }
+
+            //DrawGrid(sd);
+
             ScreenManager.SpriteBatch.End();
+
         }
     }
 }

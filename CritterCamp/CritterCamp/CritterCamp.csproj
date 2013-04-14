@@ -122,6 +122,13 @@
     <Compile Include="Screens\TutorialScreen.cs" />
     <Compile Include="Lib\TCPConnection.cs" />
     <Compile Include="Lib\TextureData.cs" />
+    <Compile Include="Screens\UIElement\Button.cs" />
+    <Compile Include="Screens\UIElement\BorderedView.cs" />
+    <Compile Include="Screens\UIElement\PlayerAvatar.cs" />
+    <Compile Include="Screens\UIElement\View.cs" />
+    <Compile Include="Screens\UIElement\Image.cs" />
+    <Compile Include="Screens\UIElement\Label.cs" />
+    <Compile Include="Screens\UIElement\UIElement.cs" />
     <Compile Include="Screens\VotingScreen.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +242,7 @@
     <Content Include="Content\doodads.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>

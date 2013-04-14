@@ -46,11 +46,6 @@ namespace CritterCamp.Screens {
                 ContentManager cm = ScreenManager.Game.Content;
                 ScreenManager.Textures.Add("gameIcons", cm.Load<Texture2D>("gameIcons"));
             }
-            // temporary pig drawing for profiles
-            if(!ScreenManager.Textures.ContainsKey("TEMPPIGS")) {
-                ContentManager cm = ScreenManager.Game.Content;
-                ScreenManager.Textures.Add("TEMPPIGS", cm.Load<Texture2D>("pig"));
-            }
 
             // Load relevant information
             JArray playerInfo = (JArray)CoreApplication.Properties["group_info"];

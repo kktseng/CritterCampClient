@@ -37,5 +37,8 @@ namespace CritterCamp {
         // All constants under here vary with platform
         public static float ROTATION = ROTATE_90;
         public static int SPRITE_DIM = 64;
+
+        public static Color DarkBrown = new Color(84, 50, 0);
+        public static Color LightBrown = new Color(234, 199, 157);
     }
 }

@@ -22,7 +22,7 @@ namespace CritterCamp.Screens {
         public Vector2 size;
         public Vector2 Position;
         public ButtonArgs buttonArgs;
-        public bool highlight;
+        public bool highlight; // bool if this button is highlighted
         public bool visible; // bool if this button is visible (if not visible button is not pressable)
         public bool disabled; // bool if the button is disabled (visible, but not pressable. has a gray overlay)
         private bool selected; // bool if the button is pressed down (has a green overlay)

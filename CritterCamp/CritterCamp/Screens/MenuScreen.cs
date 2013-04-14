@@ -14,10 +14,11 @@ using System.Windows.Controls;
 
 namespace CritterCamp.Screens {
     /// <summary>
-    /// Provides a basic base screen for menus on Windows Phone leveraging the Button class.
+    /// Provides a basic base screen for menus containing UIElements;
     /// </summary>
     class MenuScreen : GameScreen {
         protected List<Button> menuButtons = new List<Button>();
+        protected View mainView;
         private string background = "bgScreen";
         private Type backScreen = null;
         Button selectedButton = null;
@@ -78,6 +79,9 @@ namespace CritterCamp.Screens {
             // our buttons on the screen
             float center = ScreenManager.GraphicsDevice.Viewport.Bounds.Center.X;
 
+            mainView = new View(new Vector2(1920, 1080), new Vector2(1920/2, 1080/2));
+            mainView.Disabled = false; // allow this view to handle inputs
+
             base.Activate(instancePreserved);
         }
 
@@ -93,6 +97,23 @@ namespace CritterCamp.Screens {
 
         public override void HandleInput(GameTime gameTime, InputState input) {
             base.HandleInput(gameTime, input);
+
+            if (input.TouchState.Count == 0) { // released our finger
+                mainView.HandleTouch(new Vector2(), new TouchLocation(), input); // pass the released finger information to the view
+            } else {
+                foreach (TouchLocation loc in input.TouchState) { // otherwise find the scaled position to pass to the view
+                    Vector2 scaledPos = loc.Position;
+
+                    // Flip coordinates to scale with input buffer
+                    if (Constants.ROTATION != 0) {
+                        scaledPos = new Vector2(loc.Position.Y, Constants.INPUT_HEIGHT - loc.Position.X);
+                    }
+                    scaledPos *= Constants.INPUT_SCALE;
+
+                    mainView.HandleTouch(scaledPos, loc, input);
+                }
+            }
+            
 
             if (input.TouchState.Count == 0) { // released our finger
                 if (selectedButton != null) {
@@ -141,6 +162,9 @@ namespace CritterCamp.Screens {
             sd.Begin();
             sd.Draw(ScreenManager.Textures[background], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 775));
 
+            // Draw all of the UIElements
+            mainView.Draw(this, gameTime, spriteBatch, sd);
+
             // Draw all of the buttons
             foreach(Button b in menuButtons) {
                 b.Draw(this);
@@ -165,6 +189,14 @@ namespace CritterCamp.Screens {
             sd.End();
 
             base.Draw(gameTime);
+        }
+
+        protected void DrawGrid(SpriteDrawer sd) {
+            sd.FillRectangle(new Rectangle(1920 * 3 / 4 - 10, 0, 20, 1080), Color.Red);
+            sd.FillRectangle(new Rectangle(1920 * 2 / 4 - 10, 0, 20, 1080), Color.Red);
+            sd.FillRectangle(new Rectangle(1920 * 1 / 4 - 10, 0, 20, 1080), Color.Red);
+
+            sd.FillRectangle(new Rectangle(0, 1080 / 2 - 10, 1920, 20), Color.Red);
         }
     }
 }

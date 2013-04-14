@@ -120,7 +120,7 @@ namespace GameStateManagement {
             ContentManager content = Game.Content;
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            string[] fontNames = new string[] { "matiz48", "buttonFont", "boris48", "blueHighway28" };
+            string[] fontNames = new string[] { "matiz48", "buttonFont", "boris48", "blueHighway28", "menufont" };
             for(int i = 0; i < fontNames.Length; i++) {
                 fonts[fontNames[i]] = content.Load<SpriteFont>("Fonts/" + fontNames[i]);
             }

@@ -25,6 +25,12 @@ namespace CritterCamp.Screens.Games.Lib {
         public int offset = 0; // used to offset non 16:9 screens to the center
         public Dictionary<Vector2, Vector2> cachedConversions = new Dictionary<Vector2, Vector2>();
 
+        /// 
+        /// The texture used when drawing rectangles, lines and other 
+        /// primitives. This is a 1x1 white texture created at runtime.
+        /// 
+        public Texture2D WhiteTexture { get; protected set; }
+
         protected ScreenManager sm;
 
         public SpriteDrawer(ScreenManager sm) {
@@ -46,6 +52,9 @@ namespace CritterCamp.Screens.Games.Lib {
             coordScale = new Vector2(Constants.BUFFER_WIDTH / backBuffer.Y);
 
             drawScale = new Vector2(backBuffer.Y / (Constants.SPRITE_DIM * Constants.MAP_WIDTH));
+
+            WhiteTexture = new Texture2D(sm.SpriteBatch.GraphicsDevice, 1, 1);
+            WhiteTexture.SetData(new Color[] { Color.White });
 
         }
 
@@ -80,6 +89,28 @@ namespace CritterCamp.Screens.Games.Lib {
             if(cache)
                 cachedConversions[coord] = temp;
             return temp;
+        }
+
+        /// 
+        /// Fill a rectangle.
+        /// 
+        /// <param name="color" />The fill color.
+        public void FillRectangle(Rectangle rectangle, Color color) {
+            //Draw(WhiteTexture, new Vector2(rectangle.X, rectangle.Y), 0, Vector2.One, new Rectangle(0, 0, rectangle.Width, rectangle.Height), SpriteEffects.None, color);
+            
+            SpriteBatch sb = sm.SpriteBatch;
+
+            Vector2 coord = new Vector2(rectangle.X, rectangle.Y);
+            coord = new Vector2((float)(Math.Floor(coord.X)), (float)(Math.Floor(coord.Y)));
+            coord += new Vector2(0, offset);
+            coord /= coordScale;
+
+            // Fix coordinates for landscape
+            if (Constants.ROTATION != 0)
+                coord = new Vector2(backBuffer.X - coord.Y, coord.X);
+
+            sb.Draw(WhiteTexture, new Rectangle((int)coord.X, (int)coord.Y, (int)(rectangle.Width / coordScale.X), (int)(rectangle.Height / coordScale.Y)), null, color, Constants.ROTATION, Vector2.Zero, SpriteEffects.None, 0f);
+             
         }
 
         public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect, SpriteEffects effect, Color color, float spriteRotation = 0, float spriteScale = 1f, bool cache = false) {
@@ -137,9 +168,9 @@ namespace CritterCamp.Screens.Games.Lib {
             }
         }
 
-        public void DrawString(SpriteFont font, string text, Vector2 coord, Color color, bool centerX, bool centerY) {
+        public void DrawString(SpriteFont font, string text, Vector2 coord, Color color, bool centerX = true, bool centerY = true, float spriteScale = 1f) {
             SpriteBatch sb = sm.SpriteBatch;
-            Vector2 size = font.MeasureString(text) * drawScale;
+            Vector2 size = font.MeasureString(text) * drawScale * spriteScale;
 
             // Scale coordinates back to backBuffer
             coord += new Vector2(0, offset);
@@ -155,7 +186,7 @@ namespace CritterCamp.Screens.Games.Lib {
             if (Constants.ROTATION != 0)
                 coord = new Vector2(backBuffer.X - coord.Y, coord.X);
 
-            sb.DrawString(font, text, coord, color, Constants.ROTATION, new Vector2(0, 0), drawScale, SpriteEffects.None, 0f);
+            sb.DrawString(font, text, coord, color, Constants.ROTATION, new Vector2(0, 0), drawScale * spriteScale, SpriteEffects.None, 0f);
         }
 
         // draws the string with the string centered at the coordinates
