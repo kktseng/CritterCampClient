@@ -28,20 +28,22 @@ namespace CritterCamp.Screens.Games {
     }
     class FishingFrenzyScreen : BaseGameScreen {
         protected static double[][,] roundData = new double[][,] {
-            new double[,] {{ 0.3, 200, 700 }, { 0.3, 400, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }},
-            new double[,] {{ 0.3, 200, 700 }, { 0.3, 400, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }},
-            new double[,] {{ 0.3, 200, 700 }, { 0.3, 400, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }},
-            new double[,] {{ 0.3, 200, 700 }, { 0.3, 400, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }}
+            new double[,] {{ 0.3, 350, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }},
+            new double[,] {{ 0.3, 350, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }},
+            new double[,] {{ 0.3, 350, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }},
+            new double[,] {{ 0.3, 350, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }}
         };
 
-        public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 4);
+        public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 2);
         public float BUCKET_Y = (float)Constants.BUFFER_SPRITE_DIM * 2.5f - 40;
 
         protected enum Phase {
             Limbo,
             Base,
             Banner,
-            Fishing
+            Fishing,
+            End,
+            Sleep
         }
         public Random rand = new Random();
         public int waveOffset;
@@ -101,7 +103,7 @@ namespace CritterCamp.Screens.Games {
         public override void HandleInput(GameTime gameTime, InputState input) {
             foreach(GestureSample gesture in input.Gestures) {
                 if(gesture.GestureType == GestureType.Tap) {
-                    if(!hooked.ContainsKey(playerName)) {
+                    if(!hooked.ContainsKey(playerName) && phase == Phase.Fishing) {
                         // Create a new hook
                         Vector2 scaledPos = Helpers.ScaleInput(new Vector2(gesture.Position.X, gesture.Position.Y));
                         hooked[playerName] = new Hook(this, (int)scaledPos.X, gameTime.TotalGameTime - baseline, playerData[playerName]);
@@ -125,6 +127,13 @@ namespace CritterCamp.Screens.Games {
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             if(phase == Phase.Limbo) {
+                if(round >= roundData.Length) {
+                    // End game when rounds are over
+                    baseline = gameTime.TotalGameTime;
+                    banner = new TextBanner(this, "GAME OVER");
+                    phase = Phase.End;
+                    return;
+                }
                 phaseFish(roundData[round]);
             } else if(phase == Phase.Base) {
                 baseline = gameTime.TotalGameTime;
@@ -159,6 +168,39 @@ namespace CritterCamp.Screens.Games {
                         lastFish = newFishTime;
                         curFish++;
                     }
+                }
+
+                // check if round is done
+                if(curFish >= fishData.Count) {
+                    if(fishies.Count == 0) {
+                        hooked.Clear();
+                        round++;
+                        phase = Phase.Limbo;
+                    }
+                }
+            } else if(phase == Phase.End) {
+                if(gameTime.TotalGameTime - baseline > BANNER_TIME) {
+                    // send scores
+                    Dictionary<string, int> ranks = new Dictionary<string, int>();
+                    foreach(string name in playerData.Keys) {
+                        int rank = 1;
+                        foreach(int score in scores.Values) {
+                            if(score > scores[name])
+                                rank++;
+                        }
+                        ranks.Add(name, rank);
+                    }
+                    JObject packet = new JObject(
+                        new JProperty("action", "group"),
+                        new JProperty("type", "report_score"),
+                        new JProperty("score", new JObject(
+                            from username in new List<string>(ranks.Keys)
+                            select new JProperty(username, ranks[username])
+                        ))
+                    );
+                    conn.SendMessage(packet.ToString());
+                    expGained = (5 - ranks[playerName]) * 100;
+                    phase = Phase.Sleep;
                 }
             }
 
