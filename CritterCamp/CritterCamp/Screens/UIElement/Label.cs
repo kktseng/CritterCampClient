@@ -13,10 +13,12 @@ namespace CritterCamp.Screens {
 
         public override Vector2 Size {
             get {
-                return MyScreenManager.Fonts[Font].MeasureString(Text) * Scale + new Vector2(50, 30);
+                return MyScreenManager.Fonts[Font].MeasureString(Text) * Scale;
             }
-            set {
-                base.Size = value;
+        }
+        public override Vector2 PaddedSize {
+            get {
+                return Size + new Vector2(25, 10);
             }
         }
 

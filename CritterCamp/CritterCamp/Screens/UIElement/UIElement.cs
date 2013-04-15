@@ -16,10 +16,15 @@ namespace CritterCamp.Screens {
 
         public virtual Vector2 Size {  // size of this element
             get {
-                return size;
+                return size * scale;
             }
             set {
                 size = value;
+            }
+        }
+        public virtual Vector2 PaddedSize { // returns a padded size used for calculating hit boxes
+            get {
+                return Size + new Vector2(25);
             }
         }
         public virtual Vector2 Position { // position of this element
@@ -100,6 +105,7 @@ namespace CritterCamp.Screens {
             Disabled = true; // default to not tappable
             Selected = false;
             Scale = 1f;
+            TappedArgs = new UIElementTappedArgs(this);
         }
 
         /// <summary>
@@ -122,10 +128,10 @@ namespace CritterCamp.Screens {
                 return false;
             }
 
-            if (scaledLoc.X >= Position.X - Size.X / 2 &&
-                    scaledLoc.Y >= Position.Y - Size.Y / 2 &&
-                    scaledLoc.X <= Position.X + Size.X / 2 &&
-                    scaledLoc.Y <= Position.Y + Size.Y / 2) {
+            if (scaledLoc.X >= Position.X - PaddedSize.X / 2 &&
+                    scaledLoc.Y >= Position.Y - PaddedSize.Y / 2 &&
+                    scaledLoc.X <= Position.X + PaddedSize.X / 2 &&
+                    scaledLoc.Y <= Position.Y + PaddedSize.Y / 2) {
                 Selected = true;
                 return true;
             }
@@ -168,10 +174,12 @@ namespace CritterCamp.Screens {
     class UIElementTappedArgs : EventArgs {
         public UIElement Element;
         public string Arg;
+        public Object ObjectArg;
 
         public UIElementTappedArgs(UIElement u) {
             Element = u;
             Arg = "";
+            ObjectArg = null;
         }
     }
 }

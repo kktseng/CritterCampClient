@@ -9,7 +9,7 @@ namespace CritterCamp.Screens {
     /// </summary>
     class Button1 : UIElement{
         private static string defaultButtonTexture = "buttonMint";
-        private static string defaultButtonHighlightTexture = "buttonMint";
+        private static string defaultButtonHighlightTexture = "gameIcons";
 
         // private UI elements for this button
         private Label TextLabel = new Label();
@@ -83,9 +83,7 @@ namespace CritterCamp.Screens {
             }
             set {
                 highlight = value;
-                if (highlight) { // need to set the highlight overlay to visible
-                    ButtonHighlightTexture.Visible = true;
-                }
+                ButtonHighlightTexture.Visible = value; // set whether or not to show the highlight texture
             }
         }
         public override bool Disabled {
@@ -126,11 +124,15 @@ namespace CritterCamp.Screens {
         }
 
         public override Vector2 Size {
-            get {
-                return base.Size * Scale + new Vector2(125, 50);
-            }
             set {
                 base.Size = value;
+                ButtonTexture.Size = value;
+                ButtonHighlightTexture.Size = value;
+            }
+        }
+        public override Vector2 PaddedSize {
+            get {
+                return Size + new Vector2(100, 25);
             }
         }
 
@@ -142,8 +144,8 @@ namespace CritterCamp.Screens {
                 base.Position = value;
                 // need to update all our UIelements with the new position
                 TextLabel.Position = value;
-                Caption1Label.Position = value + new Vector2(0, 15);
-                Caption2Label.Position = value + new Vector2(0, 65);
+                Caption1Label.Position = value + new Vector2(0, 135);
+                Caption2Label.Position = value + new Vector2(0, 185);
                 ButtonTexture.Position = value;
                 ButtonHighlightTexture.Position = value;
             }

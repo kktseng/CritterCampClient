@@ -19,6 +19,8 @@ namespace CritterCamp.Screens {
 
                 FullProfileName.Text = value.username;
                 FullProfileLevel.Text = "Lv " + value.level.ToString();
+                ProfileName.Text = value.username;
+                ProfileLevel.Text = "Lv " + value.level.ToString();
                 //FullProfileMoney.Text = value.money;
             }
         }
@@ -36,6 +38,9 @@ namespace CritterCamp.Screens {
                 FullProfileName.Position = value + new Vector2(130, -60);
                 FullProfileLevel.Position = value + new Vector2(130, 25);
                 FullProfileMoney.Position = value + new Vector2(130, 80);
+
+                ProfileName.Position = value + new Vector2(130, -25);
+                ProfileLevel.Position = value + new Vector2(130, 25);
             }
         }
 
@@ -43,6 +48,8 @@ namespace CritterCamp.Screens {
         private Label FullProfileName = new Label();
         private Label FullProfileLevel = new Label();
         private Label FullProfileMoney = new Label("$250");
+        private Label ProfileName = new Label();
+        private Label ProfileLevel = new Label();
         
         /// <summary>
         /// Creates a new player with the given PlayerData
@@ -52,6 +59,7 @@ namespace CritterCamp.Screens {
             PlayerDataInfo = Data;
 
             Avatar.Scale = 2f;
+
             FullProfileName.CenterX = false;
             FullProfileLevel.CenterX = false;
             FullProfileMoney.CenterX = false;
@@ -65,6 +73,11 @@ namespace CritterCamp.Screens {
 
             FullProfileLevel.Scale = 0.6f;
             FullProfileMoney.Scale = 0.5f;
+
+            ProfileName.CenterX = false;
+            ProfileLevel.CenterX = false;
+            ProfileLevel.Scale = 0.8f;
+
         }
 
         /// <summary>
@@ -77,6 +90,9 @@ namespace CritterCamp.Screens {
                 FullProfileName.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
                 FullProfileLevel.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
                 FullProfileMoney.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
+            } else if (DrawProfileData) {
+                ProfileName.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
+                ProfileLevel.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
             }
         }
     }

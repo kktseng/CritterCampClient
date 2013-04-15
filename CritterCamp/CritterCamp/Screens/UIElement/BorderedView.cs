@@ -12,6 +12,8 @@ namespace CritterCamp.Screens {
         public Color BorderColor = Constants.DarkBrown;
         public Color FillColor = Constants.LightBrown;
 
+        public bool DrawFill;
+
         private Rectangle BorderRect;
         private Rectangle FillRect;
 
@@ -46,6 +48,7 @@ namespace CritterCamp.Screens {
         /// </summary>
         public BorderedView(Vector2 size, Vector2 position) : base(size, position) {
             UpdateRectangles();
+            DrawFill = true;
         }
 
         private void UpdateRectangles() { 
@@ -60,7 +63,9 @@ namespace CritterCamp.Screens {
         protected override void DrawThis() {
             // draw a border and 
             MySpriteDrawer.FillRectangle(BorderRect, BorderColor);
-            MySpriteDrawer.FillRectangle(FillRect, FillColor);
+            if (DrawFill) {
+                MySpriteDrawer.FillRectangle(FillRect, FillColor);
+            }
 
             base.DrawThis();
         }

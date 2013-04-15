@@ -24,6 +24,8 @@ namespace CritterCamp.Screens {
         Button selectedButton = null;
         Vector2 oldPos;
         Boolean firstPress = true;
+        Vector2 rawInput = Vector2.Zero;
+        Vector2 scaledInput = Vector2.Zero;
 
         /// <summary>
         /// Gets the list of buttons, so derived classes can add or change the menu contents.
@@ -108,6 +110,8 @@ namespace CritterCamp.Screens {
                     //}
                     //scaledPos *= Constants.INPUT_SCALE;
                     Vector2 scaledPos = Helpers.ScaleInput(new Vector2(loc.Position.X, loc.Position.Y));
+                    rawInput = new Vector2(loc.Position.X, loc.Position.Y);
+                    scaledInput = scaledPos;
 
                     mainView.HandleTouch(scaledPos, loc, input);
                 }
@@ -179,8 +183,8 @@ namespace CritterCamp.Screens {
             //spriteBatch.DrawString(font, menuTitle, titlePosition, titleColor, 0,
                                    //titleOrigin, titleScale, SpriteEffects.None, 0);
 
+            DrawCoordinates(sd);
             sd.End();
-
             base.Draw(gameTime);
         }
 
@@ -190,6 +194,11 @@ namespace CritterCamp.Screens {
             sd.FillRectangle(new Rectangle(1920 * 1 / 4 - 10, 0, 20, 1080), Color.Red);
 
             sd.FillRectangle(new Rectangle(0, 1080 / 2 - 10, 1920, 20), Color.Red);
+        }
+
+        protected void DrawCoordinates(SpriteDrawer sd) {
+            sd.DrawString(ScreenManager.Fonts["blueHighway28"], "raw: X " + rawInput.X + " Y: " + rawInput.Y, new Vector2(0, 1000), Color.Red, centerX: false, spriteScale: 0.8f);
+            sd.DrawString(ScreenManager.Fonts["blueHighway28"], "scaled: X " + scaledInput.X + " Y: " + scaledInput.Y, new Vector2(0, 1050), Color.Red, centerX: false, spriteScale: 0.8f);
         }
     }
 }

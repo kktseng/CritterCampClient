@@ -218,15 +218,5 @@ namespace CritterCamp.Screens {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
-        public override void Draw(GameTime gameTime) {
-            base.Draw(gameTime);
-            ScreenManager.SpriteBatch.Begin();
-            SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
-
-            //DrawGrid(sd);
-
-            ScreenManager.SpriteBatch.End();
-
-        }
     }
 }
