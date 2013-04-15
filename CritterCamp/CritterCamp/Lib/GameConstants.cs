@@ -42,9 +42,8 @@ namespace CritterCamp {
     static class GameConstants {
         public static GameData TWILIGHT_TANGO = new GameData("Twilight Tango", "twilight_tango", "twilightTut", typeof(TwilightTangoScreen), (int)TextureData.games.twilightTango);
         public static GameData JETPACK_JAMBOREE = new GameData("Jetpack Jamboree", "jetpack_jamboree", "jetpackTut", typeof(JetpackJamboreeScreen), (int)TextureData.games.jetpackJamboree);
-        public static GameData MISSILE_MADNESS = new GameData("Missile Madness", "missile_madness", "missileTut", typeof(MissileMadnessScreen), (int)TextureData.games.missileMadness);
-        public static GameData FISHING_FRENZY = new GameData("Fishing Frenzy", "fishing_frenzy", "missileTut", typeof(FishingFrenzyScreen), (int)TextureData.games.missileMadness);
-        public static GameData[] GAMES = { TWILIGHT_TANGO, JETPACK_JAMBOREE, MISSILE_MADNESS, FISHING_FRENZY };
+        public static GameData FISHING_FRENZY = new GameData("Fishing Frenzy", "fishing_frenzy", "fishingTut", typeof(FishingFrenzyScreen), (int)TextureData.games.fishingFrenzy);
+        public static GameData[] GAMES = { TWILIGHT_TANGO, JETPACK_JAMBOREE, FISHING_FRENZY };
 
         public static GameData GetGameData(string name) {
             name = name.ToLower();

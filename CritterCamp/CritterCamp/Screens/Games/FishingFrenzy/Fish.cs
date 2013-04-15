@@ -18,12 +18,18 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
     public enum FishStates {
         swimRight,
         swimLeft,
-        hooked
+        hooked,
+        falling
     }
 
     class Fish : AnimatedObject<FishStates> {
+        public static int FALLING_SPD = 400;
+
         public FishTypes type;
+        public bool halved = false; // for when large fish fall into the bucket
         public int textureNum;
+        public int score;
+        public string caughtBy;
 
         public Fish(FishingFrenzyScreen screen, FishTypes type, int depth, int dir, TimeSpan timePassed)
             : base(screen, "fish", Vector2.Zero) {
@@ -32,12 +38,16 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             // set the appropriate image
             if(type == FishTypes.small) {
                 textureNum = (int)TextureData.Fish.small;
+                score = 10;
             } else if(type == FishTypes.medium) {
                 textureNum = (int)TextureData.Fish.medium;
+                score = 20;
             } else if(type == FishTypes.largeBlue) {
                 textureNum = (int)TextureData.Fish.largeBlue1;
+                score = 30;
             } else if(type == FishTypes.largeOrange) {
                 textureNum = (int)TextureData.Fish.largeOrange1;
+                score = 40;
             }
 
             // reset animation for new texture
@@ -59,9 +69,32 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             animation.Add(FishStates.hooked, new List<Frame>() {
                 new Frame(textureNum, 100)
             });
+            animation.Add(FishStates.falling, new List<Frame>() {
+                new Frame(textureNum, 100)
+            });
         }
 
         public override void animate(GameTime time) {
+            if(state == FishStates.falling) {
+                velocity = new Vector2(0, FALLING_SPD);
+                float bucket_y = ((FishingFrenzyScreen)screen).BUCKET_Y + ((FishingFrenzyScreen)screen).waveOffset;
+                if(type == FishTypes.small || type == FishTypes.medium) {
+                    if(coord.Y + velocity.Y * time.ElapsedGameTime.TotalSeconds > bucket_y) {
+                        screen.removeActor(this);
+                        ((FishingFrenzyScreen)screen).fishies.Remove(this);
+                        ((FishingFrenzyScreen)screen).scores[caughtBy] += score;
+                    }
+                } else {
+                    if(coord.Y + velocity.Y * time.ElapsedGameTime.TotalSeconds + Constants.BUFFER_SPRITE_DIM > bucket_y) {
+                        halved = true;
+                    }
+                    if(coord.Y + velocity.Y * time.ElapsedGameTime.TotalSeconds > bucket_y) {
+                        screen.removeActor(this);
+                        ((FishingFrenzyScreen)screen).fishies.Remove(this);
+                        ((FishingFrenzyScreen)screen).scores[caughtBy] += score;
+                    }
+                }
+            }
             if(state != FishStates.hooked) {
                 base.animate(time);
             }
@@ -72,8 +105,16 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
                 if(type == FishTypes.small || type == FishTypes.medium) {
                     sd.Draw(getImg(), getCoord(), getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
                 } else {
-                    sd.Draw(getImg(), getCoord() - new Vector2(0, Constants.BUFFER_SPRITE_DIM / 2), getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
-                    sd.Draw(getImg(), getCoord() + new Vector2(0, Constants.BUFFER_SPRITE_DIM / 2), getNum() + 1, getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
+                    sd.Draw(getImg(), getCoord() - new Vector2(0, Constants.BUFFER_SPRITE_DIM), getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
+                    sd.Draw(getImg(), getCoord(), getNum() + 1, getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
+                }
+            } else if(state == FishStates.falling) {
+                if(type == FishTypes.small || type == FishTypes.medium) {
+                    sd.Draw(getImg(), getCoord(), getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
+                } else {
+                    if(!halved)
+                        sd.Draw(getImg(), getCoord() + new Vector2(0, Constants.BUFFER_SPRITE_DIM), getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
+                    sd.Draw(getImg(), getCoord(), getNum() + 1, getFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
                 }
             } else {
                 if(type == FishTypes.small || type == FishTypes.medium) {

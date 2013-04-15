@@ -16,6 +16,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
 
     class Hook : AnimatedObject<HookState> {
         public static int HOOK_SPD = 400;
+        public static int MAX_DEPTH = 900;
         public List<Fish> hookedFish = new List<Fish>();
         public PlayerData player;
         public TimeSpan start;
@@ -38,10 +39,38 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
         }
 
         public override void animate(GameTime time) {
+            // check if hook has been reeled
+            if(getState() == HookState.up && coord.Y < -250) {
+                foreach(Fish f in hookedFish) {
+                    f.setState(FishStates.falling);
+                    int i = 0;
+                    foreach(string username in ((FishingFrenzyScreen)screen).scores.Keys) {
+                        if(username == player.username) {
+                            f.setCoord(new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), -((FishingFrenzyScreen)screen).rand.Next(150, 500)));
+                            break;
+                        }
+                        if(i == 2)
+                            i++;
+                        i += 2;
+                    }
+                }
+                ((FishingFrenzyScreen)screen).hooked.Remove(player.username);
+                screen.removeActor(this);
+                return;
+            }
+
             if(getState() == HookState.down) {
                 coord = new Vector2(coord.X, (float)((time.TotalGameTime - start).TotalSeconds * HOOK_SPD - HOOK_SPD));
             } else {
                 coord = new Vector2(coord.X, downTime * 2 - (float)((time.TotalGameTime - start).TotalSeconds * HOOK_SPD - HOOK_SPD));
+            }
+
+            // check for max depth
+            if(coord.Y > MAX_DEPTH) {
+                setState(HookState.up);
+                if(downTime == 0) {
+                    downTime = (float)((time.TotalGameTime - start).TotalSeconds * HOOK_SPD - HOOK_SPD);
+                }
             }
             // update coords for all hooked fish
             foreach(Fish fish in hookedFish) {
@@ -54,7 +83,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
 
             // check for hooked fish
             foreach(Fish fish in ((FishingFrenzyScreen)screen).fishies) {
-                if(fish.getState() != FishStates.hooked) {
+                if(fish.getState() != FishStates.hooked && fish.getState() != FishStates.falling) {
                     Rectangle fishRect;
                     Rectangle hookRect = new Rectangle((int)getCoord().X - Constants.BUFFER_SPRITE_DIM / 2, (int)getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, Constants.BUFFER_SPRITE_DIM, Constants.BUFFER_SPRITE_DIM);
                     if(fish.type == FishTypes.small || fish.type == FishTypes.medium) {
@@ -66,6 +95,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
                         // hook the fish
                         hookedFish.Add(fish);
                         fish.setState(FishStates.hooked);
+                        fish.caughtBy = player.username;
                         setState(HookState.up);
                         if(downTime == 0) {
                             downTime = (float)((time.TotalGameTime - start).TotalSeconds * HOOK_SPD - HOOK_SPD);

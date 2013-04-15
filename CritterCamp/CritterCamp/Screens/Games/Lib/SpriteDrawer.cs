@@ -192,13 +192,8 @@ namespace CritterCamp.Screens.Games.Lib {
             sb.DrawString(font, text, coord, color, Constants.ROTATION, new Vector2(0, 0), drawScale * spriteScale, SpriteEffects.None, 0f);
         }
 
-        // draws the string with the string centered at the coordinates
-        public void DrawString(SpriteFont font, string text, Vector2 coord, Color color) {
-            DrawString(font, text, coord, color, true, true);
-        }
-
-        public void DrawString(SpriteFont font, string text, Vector2 coord) {
-            DrawString(font, text, coord, Color.Black);
+        public void DrawString(SpriteFont font, string text, Vector2 coord, float spriteScale = 1f) {
+            DrawString(font, text, coord, Color.Black, spriteScale: spriteScale);
         }
     }
 }

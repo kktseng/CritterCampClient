@@ -66,11 +66,7 @@ namespace CritterCamp {
                 inputScale = new Vector2(Constants.INPUT_15_9.X / Constants.BUFFER_WIDTH, Constants.INPUT_15_9.Y / Constants.BUFFER_HEIGHT);
                 offset = Constants.OFFSET_15_9;
             }
-            return input / inputScale + new Vector2(0, offset);
-        }
-
-        public static void calcRatio() {
-
+            return input / inputScale + new Vector2(0, Constants.BUFFER_OFFSET - offset);
         }
     }
 
