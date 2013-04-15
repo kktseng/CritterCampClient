@@ -282,8 +282,10 @@ namespace CritterCamp {
 
         public LoginResponse(string response)
             : base(response) {
-            auth = (string)responseJSON["auth"];
-            lvl = (int)responseJSON["level"];
+                if(responseJSON["auth"] != null) {
+                    auth = (string)responseJSON["auth"];
+                    lvl = (int)responseJSON["level"];
+                }
         }
     }
 }

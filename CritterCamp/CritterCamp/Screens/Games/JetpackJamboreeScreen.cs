@@ -177,6 +177,7 @@ namespace CritterCamp.Screens.Games {
                         ))
                     );
                     conn.SendMessage(packet.ToString());
+                    expGained = (5 - deadUsers.IndexOf(playerName) + 1) * 100;
                 }
             }
         }

@@ -28,10 +28,10 @@ namespace CritterCamp.Screens.Games {
     }
     class FishingFrenzyScreen : BaseGameScreen {
         protected static double[][,] roundData = new double[][,] {
-            new double[,] {{ 0.3, 350, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }},
-            new double[,] {{ 0.3, 350, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }},
-            new double[,] {{ 0.3, 350, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }},
-            new double[,] {{ 0.3, 350, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }}
+            new double[,] {{ 0.3, 450, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }},
+            new double[,] {{ 0.3, 450, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }},
+            new double[,] {{ 0.3, 450, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }},
+            new double[,] {{ 0.3, 450, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }}
         };
 
         public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 2);
@@ -138,7 +138,7 @@ namespace CritterCamp.Screens.Games {
             } else if(phase == Phase.Base) {
                 baseline = gameTime.TotalGameTime;
                 banner = new TextBanner(this, "Round " + round);
-                lastFish = baseline + new TimeSpan(0, 0, 10);
+                lastFish = baseline + BANNER_TIME + new TimeSpan(0, 0, 1);
                 curFish = 0;
                 phase = Phase.Banner;
             } else if(phase == Phase.Banner) {

@@ -52,7 +52,11 @@ namespace CritterCamp.Screens.Games {
                 Dictionary<int, string> scoreMap = new Dictionary<int, string>();
                 JArray scores = (JArray)o["scores"];
                 foreach(JObject score in scores) {
+                    if(scoreMap.ContainsKey((int)score["score"])) {
+                        scoreMap.Add((int)score["score"] + 1, (string)score["username"]);
+                    } else
                     scoreMap.Add((int)score["score"], (string)score["username"]);
+                    // TODO: handle ties
                 }
                 CoreApplication.Properties["scores"] = scoreMap;
 
