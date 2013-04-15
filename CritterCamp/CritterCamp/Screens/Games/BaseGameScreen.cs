@@ -17,12 +17,14 @@ namespace CritterCamp.Screens.Games {
         public string profile;
         public int level;
         public int color;
+        public int score;
 
         public PlayerData(string username, string profile, int level, int color) {
             this.username = username;
             this.profile = profile;
             this.level = level;
             this.color = color;
+            this.score = 0;
         }
     }
     public abstract class BaseGameScreen : GameScreen {
@@ -49,16 +51,30 @@ namespace CritterCamp.Screens.Games {
             JObject o = JObject.Parse(message);
             // Check for final score
             if((string)o["action"] == "score") {
-                Dictionary<int, string> scoreMap = new Dictionary<int, string>();
+                List<PlayerData> sortedScoreData = new List<PlayerData>();
+                Dictionary<string, PlayerData> playerData = (Dictionary<string, PlayerData>)CoreApplication.Properties["player_data"];
                 JArray scores = (JArray)o["scores"];
                 foreach(JObject score in scores) {
-                    if(scoreMap.ContainsKey((int)score["score"])) {
-                        scoreMap.Add((int)score["score"] + 1, (string)score["username"]);
-                    } else
-                    scoreMap.Add((int)score["score"], (string)score["username"]);
-                    // TODO: handle ties
+                    PlayerData player = playerData[(string)score["username"]];
+                    player.score = (int)score["score"];
+                    // add it to the correct place on the list
+                    if (sortedScoreData.Count == 0) { // no one in the list yet. just add it 
+                        sortedScoreData.Add(player);
+                    } else {
+                        bool inserted = false;
+                        for (int i = 0; i < sortedScoreData.Count; i++) {
+                            if (sortedScoreData[i].score > player.score) { // this player is a higher score than our current
+                                sortedScoreData.Insert(i, player);
+                                inserted = true;
+                                break;
+                            }
+                        }
+                        if (!inserted) { // everyone in the list has a smaller score
+                            sortedScoreData.Add(player); // insert this player to the end of the list
+                        }
+                    }
                 }
-                CoreApplication.Properties["scores"] = scoreMap;
+                CoreApplication.Properties["scores"] = sortedScoreData;
 
                 JObject packet = new JObject(
                     new JProperty("action", "rank"),

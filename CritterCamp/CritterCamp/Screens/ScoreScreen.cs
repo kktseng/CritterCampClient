@@ -43,21 +43,21 @@ namespace CritterCamp.Screens {
                 levelGained = true;
             }
 
-            Dictionary<int, string> scoreMap = (Dictionary<int, string>)CoreApplication.Properties["scores"];
-            for (int i = 1; i <= scoreMap.Keys.Count; i++) {
-                PlayerData player = playerData[scoreMap[i]];
-                BorderedView playerView = new BorderedView(new Vector2(410, 525), new Vector2(312 + 424 * (i - 1), 425));
+            List<PlayerData> sortedScoreData = (List<PlayerData>)CoreApplication.Properties["scores"];
+            for (int i = 0; i < sortedScoreData.Count; i++) {
+                PlayerData player = sortedScoreData[i];
+                BorderedView playerView = new BorderedView(new Vector2(410, 525), new Vector2(312 + 424 * i, 425));
                 if (player.username == myData.username) {
                     // displaying ourself. draw a yellow background instead of the default light brown
                     playerView.FillColor = new Color(247, 215, 137);
                 }
 
-                PlayerAvater playerAvatar = new PlayerAvater(player, new Vector2(312 + 424 * (i - 1), 400));
-                Label playerName = new Label(player.username, new Vector2(312 + 424 * (i - 1), 575));
-                Label playerLevel = new Label("Level " + player.level.ToString(), new Vector2(312 + 424 * (i - 1), 625));
+                PlayerAvater playerAvatar = new PlayerAvater(player, new Vector2(312 + 424 * i, 400));
+                Label playerName = new Label(player.username, new Vector2(312 + 424 * i, 575));
+                Label playerLevel = new Label("Level " + player.level.ToString(), new Vector2(312 + 424 * i, 625));
                 playerLevel.Scale = 0.8f;
 
-                Image badge = new Image("scoreScreenIcons", i - 1, new Vector2(192, 192), new Vector2(312 + 424 * (i - 1), 150 + 20 * (i - 1)));
+                Image badge = new Image("scoreScreenIcons", player.score - 1, new Vector2(192, 192), new Vector2(312 + 424 * i, 150 + 20 * (player.score - 1)));
 
                 playerView.addElement(playerAvatar);
                 playerView.addElement(playerName);
