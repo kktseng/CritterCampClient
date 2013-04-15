@@ -124,6 +124,7 @@
     <Compile Include="Lib\TextureData.cs" />
     <Compile Include="Screens\UIElement\Button.cs" />
     <Compile Include="Screens\UIElement\BorderedView.cs" />
+    <Compile Include="Screens\UIElement\FilledRectangle.cs" />
     <Compile Include="Screens\UIElement\PlayerAvatar.cs" />
     <Compile Include="Screens\UIElement\View.cs" />
     <Compile Include="Screens\UIElement\Image.cs" />

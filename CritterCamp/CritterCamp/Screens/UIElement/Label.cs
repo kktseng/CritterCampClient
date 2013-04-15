@@ -25,7 +25,7 @@ namespace CritterCamp.Screens {
         /// <summary>
         /// Creates a new Label with the defaults
         /// </summary>
-        public Label() {
+        public Label() : base() {
             initialize("");
         }
 

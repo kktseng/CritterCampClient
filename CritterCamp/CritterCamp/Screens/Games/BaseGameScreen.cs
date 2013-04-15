@@ -66,7 +66,10 @@ namespace CritterCamp.Screens.Games {
             } else if((string)o["action"] == "rank") {
                 if((string)o["type"] == "submit") {
                     CoreApplication.Properties["myLevel"] = (int)o["level"];
-                    CoreApplication.Properties["myExpPercentage"] = (int)o["percentage"];
+                    CoreApplication.Properties["curr_lvl_exp"] = (int)o["curr_lvl_exp"];
+                    CoreApplication.Properties["next_lvl_exp"] = (int)o["next_lvl_exp"];
+                    CoreApplication.Properties["exp"] = (int)o["exp"];
+                    CoreApplication.Properties["exp_gained"] = expGained;
                 }
                 scoreReceived = true;
             } else if((string)o["action"] == "group") {
