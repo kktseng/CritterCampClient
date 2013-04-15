@@ -16,7 +16,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
 
     class Hook : AnimatedObject<HookState> {
         public static int HOOK_SPD = 400;
-        public static int MAX_DEPTH = 900;
+        public static int MAX_DEPTH = 1000;
         public List<Fish> hookedFish = new List<Fish>();
         public PlayerData player;
         public TimeSpan start;
@@ -60,16 +60,16 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             }
 
             if(getState() == HookState.down) {
-                coord = new Vector2(coord.X, (float)((time.TotalGameTime - start).TotalSeconds * HOOK_SPD - HOOK_SPD));
+                coord = new Vector2(coord.X, (float)((time.TotalGameTime - start - ((FishingFrenzyScreen)screen).baseline).TotalSeconds * HOOK_SPD - HOOK_SPD));
             } else {
-                coord = new Vector2(coord.X, downTime * 2 - (float)((time.TotalGameTime - start).TotalSeconds * HOOK_SPD - HOOK_SPD));
+                coord = new Vector2(coord.X, downTime * 2 - (float)((time.TotalGameTime - start - ((FishingFrenzyScreen)screen).baseline).TotalSeconds * HOOK_SPD - HOOK_SPD));
             }
 
             // check for max depth
             if(coord.Y > MAX_DEPTH) {
                 setState(HookState.up);
                 if(downTime == 0) {
-                    downTime = (float)((time.TotalGameTime - start).TotalSeconds * HOOK_SPD - HOOK_SPD);
+                    downTime = (float)((time.TotalGameTime - start - ((FishingFrenzyScreen)screen).baseline).TotalSeconds * HOOK_SPD - HOOK_SPD);
                 }
             }
             // update coords for all hooked fish
@@ -98,7 +98,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
                         fish.caughtBy = player.username;
                         setState(HookState.up);
                         if(downTime == 0) {
-                            downTime = (float)((time.TotalGameTime - start).TotalSeconds * HOOK_SPD - HOOK_SPD);
+                            downTime = (float)((time.TotalGameTime - start - ((FishingFrenzyScreen)screen).baseline).TotalSeconds * HOOK_SPD - HOOK_SPD);
                         }
                     }
                 }
@@ -111,7 +111,14 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
                 sd.Draw(getImg(), new Vector2(coord.X, i), (int)TextureData.fishingTextures.line);
             }
             sd.Draw(getImg(), new Vector2(coord.X, coord.Y - 10 - Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.fishingTextures.line);
+            
             // draw sinker
+            sd.Draw(getImg(), new Vector2(coord.X, coord.Y - Constants.BUFFER_SPRITE_DIM), (int)TextureData.fishingTextures.sinker);
+            sd.Draw(screen.textureList["pig"], 
+                new Vector2(coord.X, coord.Y - Constants.BUFFER_SPRITE_DIM), 
+                (int)TextureData.PlayerStates.standing + Helpers.TextureLen(typeof(TextureData.PlayerStates)) * player.color,
+                spriteScale: 0.5f
+            );
 
             // draw hook
             base.draw(sd);

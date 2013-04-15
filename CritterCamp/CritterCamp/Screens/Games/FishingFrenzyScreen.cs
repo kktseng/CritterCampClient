@@ -45,6 +45,7 @@ namespace CritterCamp.Screens.Games {
         }
         public Random rand = new Random();
         public int waveOffset;
+        public TimeSpan baseline;
 
         public Dictionary<string, Hook> hooked = new Dictionary<string, Hook>();
         public Dictionary<string, int> scores = new Dictionary<string, int>();
@@ -59,7 +60,6 @@ namespace CritterCamp.Screens.Games {
 
         protected Phase phase = Phase.Limbo;
         protected int round = 1;
-        protected TimeSpan baseline;
 
         public FishingFrenzyScreen(Dictionary<string, PlayerData> playerData)
             : base(playerData) {
@@ -104,7 +104,19 @@ namespace CritterCamp.Screens.Games {
                     if(!hooked.ContainsKey(playerName)) {
                         // Create a new hook
                         Vector2 scaledPos = Helpers.ScaleInput(new Vector2(gesture.Position.X, gesture.Position.Y));
-                        hooked[playerName] = new Hook(this, (int)scaledPos.X, gameTime.TotalGameTime, playerData[playerName]);
+                        hooked[playerName] = new Hook(this, (int)scaledPos.X, gameTime.TotalGameTime - baseline, playerData[playerName]);
+
+                        // Inform others about hook
+                        JObject packet = new JObject(
+                            new JProperty("action", "game"),
+                            new JProperty("name", "fishing_frenzy"),
+                            new JProperty("data", new JObject(
+                                new JProperty("action", "hook"),
+                                new JProperty("pos", (int)scaledPos.X),
+                                new JProperty("time", (gameTime.TotalGameTime - baseline).Ticks)
+                            ))
+                        );
+                        conn.SendMessage(packet.ToString());
                     }
                 }
             }
@@ -290,8 +302,10 @@ namespace CritterCamp.Screens.Games {
             JObject o = JObject.Parse(message);
             if((string)o["action"] == "game" && (string)o["name"] == "fishing_frenzy") {
                 JObject data = (JObject)o["data"];
-                if((string)data["action"] == "add") {
-                    // TODO
+                if((string)data["action"] == "hook") {
+                    if((string)data["source"] != playerName) {
+                        hooked[(string)data["source"]] = new Hook(this, (int)data["pos"], new TimeSpan((long)data["time"]), playerData[(string)data["source"]]);
+                    }
                 }
             }
         }
