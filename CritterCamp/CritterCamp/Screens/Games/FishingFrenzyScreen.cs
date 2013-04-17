@@ -105,22 +105,24 @@ namespace CritterCamp.Screens.Games {
         public override void HandleInput(GameTime gameTime, InputState input) {
             foreach(GestureSample gesture in input.Gestures) {
                 if(gesture.GestureType == GestureType.Tap) {
-                    if(!hooked.ContainsKey(playerName) && phase == Phase.Fishing) {
-                        // Create a new hook
-                        Vector2 scaledPos = Helpers.ScaleInput(new Vector2(gesture.Position.X, gesture.Position.Y));
-                        hooked[playerName] = new Hook(this, (int)scaledPos.X, gameTime.TotalGameTime - baseline, playerData[playerName]);
+                    lock(hooked) {
+                        if(!hooked.ContainsKey(playerName) && phase == Phase.Fishing) {
+                            // Create a new hook
+                            Vector2 scaledPos = Helpers.ScaleInput(new Vector2(gesture.Position.X, gesture.Position.Y));
+                            hooked[playerName] = new Hook(this, (int)scaledPos.X, gameTime.TotalGameTime - baseline, playerData[playerName]);
 
-                        // Inform others about hook
-                        JObject packet = new JObject(
-                            new JProperty("action", "game"),
-                            new JProperty("name", "fishing_frenzy"),
-                            new JProperty("data", new JObject(
-                                new JProperty("action", "hook"),
-                                new JProperty("pos", (int)scaledPos.X),
-                                new JProperty("time", (gameTime.TotalGameTime - baseline).Ticks)
-                            ))
-                        );
-                        conn.SendMessage(packet.ToString());
+                            // Inform others about hook
+                            JObject packet = new JObject(
+                                new JProperty("action", "game"),
+                                new JProperty("name", "fishing_frenzy"),
+                                new JProperty("data", new JObject(
+                                    new JProperty("action", "hook"),
+                                    new JProperty("pos", (int)scaledPos.X),
+                                    new JProperty("time", (gameTime.TotalGameTime - baseline).Ticks)
+                                ))
+                            );
+                            conn.SendMessage(packet.ToString());
+                        }
                     }
                 }
             }
@@ -163,14 +165,18 @@ namespace CritterCamp.Screens.Games {
 
                 // swap backup hooks in
                 List<string> backupRemoval = new List<string>();
-                foreach(string s in backupHooked.Keys) {
-                    if(!hooked.ContainsKey(s)) {
-                        hooked[s] = backupHooked[s];
-                        backupRemoval.Add(s);
+                lock(backupHooked) {
+                    lock(hooked) {
+                        foreach(string s in backupHooked.Keys) {
+                            if(!hooked.ContainsKey(s)) {
+                                hooked[s] = backupHooked[s];
+                                backupRemoval.Add(s);
+                            }
+                        }
+                        foreach(String s in backupRemoval) {
+                            backupHooked.Remove(s);
+                        }
                     }
-                }
-                foreach(String s in backupRemoval) {
-                    backupHooked.Remove(s);
                 }
                 
                 // add new fish
@@ -187,7 +193,9 @@ namespace CritterCamp.Screens.Games {
                 // check if round is done
                 if(curFish >= fishData.Count) {
                     if(fishies.Count == 0) {
-                        hooked.Clear();
+                        lock(hooked) {
+                            hooked.Clear();
+                        }
                         round++;
                         phase = Phase.Limbo;
                     }
@@ -222,15 +230,17 @@ namespace CritterCamp.Screens.Games {
 
             // Check for hooked fish in order
             List<Hook> temp = new List<Hook>();
-            foreach(Hook hook in hooked.Values) {
-                int index = 0;
-                while(index < temp.Count && temp[index].start < hook.start) {
-                    index++;
+            lock(hooked) {
+                foreach(Hook hook in hooked.Values) {
+                    int index = 0;
+                    while(index < temp.Count && temp[index].start < hook.start) {
+                        index++;
+                    }
+                    temp.Insert(index, hook);
                 }
-                temp.Insert(index, hook);
-            }
-            foreach(Hook hook in temp) {
-                hook.checkHooked(gameTime);
+                foreach(Hook hook in temp) {
+                    hook.checkHooked(gameTime);
+                }
             }
         }
 
@@ -351,8 +361,10 @@ namespace CritterCamp.Screens.Games {
             }
 
             // Draw hooks and hooked fish
-            foreach(Hook h in hooked.Values) {
-                h.draw(sd);
+            lock(hooked) {
+                foreach(Hook h in hooked.Values) {
+                    h.draw(sd);
+                }
             }
             foreach(Fish f in fishies) {
                 if(f.getState() == FishStates.hooked) {
@@ -375,10 +387,15 @@ namespace CritterCamp.Screens.Games {
                 JObject data = (JObject)o["data"];
                 if((string)data["action"] == "hook") {
                     if((string)data["source"] != playerName && phase == Phase.Fishing) {
-                        if(!hooked.ContainsKey((string)data["source"])) {
-                            hooked[(string)data["source"]] = new Hook(this, (int)data["pos"], new TimeSpan((long)data["time"]), playerData[(string)data["source"]]);
-                        } else {
-                            backupHooked[(string)data["source"]] = new Hook(this, (int)data["pos"], new TimeSpan((long)data["time"]), playerData[(string)data["source"]]);
+                        // enforce locks to prevent race conditions
+                        lock(hooked) {
+                            lock(backupHooked) {
+                                if(!hooked.ContainsKey((string)data["source"])) {
+                                    hooked[(string)data["source"]] = new Hook(this, (int)data["pos"], new TimeSpan((long)data["time"]), playerData[(string)data["source"]]);
+                                } else {
+                                    backupHooked[(string)data["source"]] = new Hook(this, (int)data["pos"], new TimeSpan((long)data["time"]), playerData[(string)data["source"]]);
+                                }
+                            }
                         }
                     }
                 }
