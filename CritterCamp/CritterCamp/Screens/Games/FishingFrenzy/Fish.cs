@@ -23,7 +23,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
     }
 
     class Fish : AnimatedObject<FishStates> {
-        public static int FALLING_SPD = 400;
+        public static int FALLING_SPD = 700;
 
         public FishTypes type;
         public bool halved = false; // for when large fish fall into the bucket
@@ -34,29 +34,40 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
         public Fish(FishingFrenzyScreen screen, FishTypes type, int depth, int dir, TimeSpan timePassed)
             : base(screen, "fish", Vector2.Zero) {
             this.type = type;
-
-            // set the appropriate image
+            
+            int speed = 0;
+            // set the appropriate image and speed
             if(type == FishTypes.small) {
                 textureNum = (int)TextureData.Fish.small;
                 score = 10;
+                speed = 200;
             } else if(type == FishTypes.medium) {
                 textureNum = (int)TextureData.Fish.medium;
                 score = 20;
+                speed = 150;
             } else if(type == FishTypes.largeBlue) {
                 textureNum = (int)TextureData.Fish.largeBlue1;
                 score = 30;
+                speed = 300;
             } else if(type == FishTypes.largeOrange) {
                 textureNum = (int)TextureData.Fish.largeOrange1;
                 score = 40;
+                speed = 100;
             }
 
             // reset animation for new texture
             animation.Clear();
             setAnim();
 
-            coord = new Vector2((float)(timePassed.TotalSeconds * 200 - 300), depth);
-            velocity = new Vector2(200, 0);
-            setState(FishStates.swimRight);
+            if(dir == 0) {
+                setState(FishStates.swimRight);
+                velocity = new Vector2(speed, 0);
+                coord = new Vector2((float)(timePassed.TotalSeconds * 200 - 300), depth);
+            } else {
+                setState(FishStates.swimLeft);
+                velocity = new Vector2(-speed, 0);
+                coord = new Vector2((float)(2200 - timePassed.TotalSeconds * 200), depth);
+            }
         }
 
         protected override void setAnim() {

@@ -15,15 +15,16 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
     }
 
     class Hook : AnimatedObject<HookState> {
-        public static int HOOK_SPD = 400;
-        public static int MAX_DEPTH = 1000;
+        public static int HOOK_SPD = 700;
+        public static int PARABOLA_SIZE = 150;
+        public static int MAX_DEPTH = 1020 - PARABOLA_SIZE;
         public List<Fish> hookedFish = new List<Fish>();
         public PlayerData player;
         public TimeSpan start;
-        public float downTime = 0;
+        public TimeSpan downTime = TimeSpan.Zero;
 
         public Hook(FishingFrenzyScreen screen, int x, TimeSpan start, PlayerData player)
-            : base(screen, "fishing", new Vector2(x, 0)) {
+            : base(screen, "fishing", new Vector2(x, -Constants.BUFFER_SPRITE_DIM)) {
                 setState(HookState.down);
                 this.start = start;
                 this.player = player;
@@ -59,17 +60,24 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
                 return;
             }
 
+            TimeSpan hookAge = time.TotalGameTime - start - ((FishingFrenzyScreen)screen).baseline;
             if(getState() == HookState.down) {
-                coord = new Vector2(coord.X, (float)((time.TotalGameTime - start - ((FishingFrenzyScreen)screen).baseline).TotalSeconds * HOOK_SPD - HOOK_SPD));
+                coord = new Vector2(coord.X, (float)(hookAge.TotalSeconds * HOOK_SPD - HOOK_SPD));
             } else {
-                coord = new Vector2(coord.X, downTime * 2 - (float)((time.TotalGameTime - start - ((FishingFrenzyScreen)screen).baseline).TotalSeconds * HOOK_SPD - HOOK_SPD));
+                if(hookAge - downTime > new TimeSpan(0, 0, 1)) {
+                    coord = new Vector2(coord.X, (float)(downTime + downTime - hookAge + new TimeSpan(0, 0, 1)).TotalSeconds * HOOK_SPD - HOOK_SPD);
+                } else { // create the parabola effect
+                    TimeSpan parabolaTime = hookAge - downTime;
+                    float parabolaOffset = PARABOLA_SIZE - (float)Math.Pow(parabolaTime.TotalMilliseconds - 500, 2) / (250000f / PARABOLA_SIZE);
+                    coord = new Vector2(coord.X, (float)(downTime.TotalSeconds * HOOK_SPD - HOOK_SPD) + parabolaOffset);
+                }
             }
 
             // check for max depth
             if(coord.Y > MAX_DEPTH) {
                 setState(HookState.up);
-                if(downTime == 0) {
-                    downTime = (float)((time.TotalGameTime - start - ((FishingFrenzyScreen)screen).baseline).TotalSeconds * HOOK_SPD - HOOK_SPD);
+                if(downTime == TimeSpan.Zero) {
+                    downTime = time.TotalGameTime - start - ((FishingFrenzyScreen)screen).baseline;
                 }
             }
             // update coords for all hooked fish
@@ -80,12 +88,14 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
                     fish.setCoord(coord + new Vector2(0, 30 + Constants.BUFFER_SPRITE_DIM));
                 }
             }
+        }
 
+        public void checkHooked(GameTime time) {
             // check for hooked fish
             foreach(Fish fish in ((FishingFrenzyScreen)screen).fishies) {
                 if(fish.getState() != FishStates.hooked && fish.getState() != FishStates.falling) {
                     Rectangle fishRect;
-                    Rectangle hookRect = new Rectangle((int)getCoord().X - Constants.BUFFER_SPRITE_DIM / 2, (int)getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, Constants.BUFFER_SPRITE_DIM, Constants.BUFFER_SPRITE_DIM);
+                    Rectangle hookRect = new Rectangle((int)getCoord().X - Constants.BUFFER_SPRITE_DIM / 2 + 13, (int)getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, 70, Constants.BUFFER_SPRITE_DIM / 2);
                     if(fish.type == FishTypes.small || fish.type == FishTypes.medium) {
                         fishRect = new Rectangle((int)fish.getCoord().X - Constants.BUFFER_SPRITE_DIM / 2, (int)fish.getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, Constants.BUFFER_SPRITE_DIM, Constants.BUFFER_SPRITE_DIM);
                     } else {
@@ -97,8 +107,8 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
                         fish.setState(FishStates.hooked);
                         fish.caughtBy = player.username;
                         setState(HookState.up);
-                        if(downTime == 0) {
-                            downTime = (float)((time.TotalGameTime - start - ((FishingFrenzyScreen)screen).baseline).TotalSeconds * HOOK_SPD - HOOK_SPD);
+                        if(downTime == TimeSpan.Zero) {
+                            downTime = time.TotalGameTime - start - ((FishingFrenzyScreen)screen).baseline;
                         }
                     }
                 }
