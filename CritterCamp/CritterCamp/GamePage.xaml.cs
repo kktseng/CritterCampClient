@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Media;
 using MonoGame.Framework.WindowsPhone;
 using CritterCamp.Resources;
 using System.IO.IsolatedStorage;
@@ -20,7 +21,7 @@ namespace CritterCamp {
         public GamePage() {
             InitializeComponent();
 
-            _game = XamlGame<CritterCampGame>.Create("", XnaSurface);
+            _game = XamlGame<CritterCampGame>.Create("", this);
 
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();

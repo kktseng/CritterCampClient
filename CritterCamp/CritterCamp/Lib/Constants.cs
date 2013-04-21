@@ -15,7 +15,7 @@ namespace CritterCamp {
         public static int BUFFER_WIDTH = 1920;
         public static int BUFFER_HEIGHT = 1080;
 
-        public static Vector2 INPUT_16_9 = new Vector2(853, 480);
+        public static Vector2 INPUT_16_9 = new Vector2(1280, 720);
         public static Vector2 INPUT_15_9 = new Vector2(800, 480);
 
         public static float RATIO_16_9 = 16f / 9f;
