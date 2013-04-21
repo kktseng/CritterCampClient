@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace CritterCamp.Screens.Games {
     class JetpackJamboreeScreen : BaseGameScreen {
         public static int PIG_DELAY = 2;
-        public static int MAX_PIG_COUNT = 3;
+        public static int MAX_PIG_COUNT = 8;
         public bool exploded = false;
 
         protected TileMap tileMap, doodadMap;
@@ -41,7 +41,7 @@ namespace CritterCamp.Screens.Games {
             }
             for(int i = 0; i < playerData.Keys.Count; i++) {
                 string username = playerData.Keys.ElementAt(i);
-                avatars[username] = new Avatar(this, new Vector2(650 + 200 * i, 1025), playerData[username].color);
+                avatars[username] = new Avatar(this, new Vector2(((float)Constants.BUFFER_SPRITE_DIM * 6.5f) + 200 * i, ((float)Constants.BUFFER_SPRITE_DIM * 10.5f)), playerData[username].color);
             }
             updateTimer = new Timer(updateTimerCallback, null, 1000, 2000);
 
@@ -103,7 +103,7 @@ namespace CritterCamp.Screens.Games {
                 {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, 18, 21, 21, 21, 21, 21, 21, 21, 21, 22, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, 18, -1, -1, -1, -1, -1, -1, -1, -1, 22, -1, -1, -1, -1, -1 },
-                {  21, 21, 21, 21, 21, 21, -1, -1, -1, -1, -1, -1, -1, -1, 21, 21, 21, 21, 21, 21 },
+                {  21, 21, 21, 21, 21, 18, -1, -1, -1, -1, -1, -1, -1, -1, 22, 21, 21, 21, 21, 21 },
             };
             tileMap.setMap(map);
             doodadMap.setMap(ddMap);
@@ -260,10 +260,10 @@ namespace CritterCamp.Screens.Games {
             for(int i = 0; i < avatars.Keys.Count; i++) {
                 string username = avatars.Keys.ElementAt(i);
                 if(deadUsers.Contains(username)) {
-                    sd.Draw(textureList["doodads"], new Vector2(750 + 200 * i, 1025), (int)TextureData.Doodads.fence2Way);
+                    sd.Draw(textureList["doodads"], new Vector2(((float)Constants.BUFFER_SPRITE_DIM * 7.5f) + 200 * i, ((float)Constants.BUFFER_SPRITE_DIM * 10.5f)), (int)TextureData.Doodads.fence2Way);
                 } else {
-                    sd.Draw(textureList["doodads"], new Vector2(750 + 200 * i, 1025), (int)TextureData.Doodads.smallSign);
-                    sd.DrawString(ScreenManager.Fonts["boris48"], avatars[username].count.ToString(), new Vector2(750 + 200 * i, 1025), spriteScale: 0.5f);
+                    sd.Draw(textureList["doodads"], new Vector2(((float)Constants.BUFFER_SPRITE_DIM * 7.5f) + 200 * i, ((float)Constants.BUFFER_SPRITE_DIM * 10.5f)), (int)TextureData.Doodads.smallSign);
+                    sd.DrawString(ScreenManager.Fonts["boris48"], avatars[username].count.ToString(), new Vector2(((float)Constants.BUFFER_SPRITE_DIM * 7.5f) + 200 * i, ((float)Constants.BUFFER_SPRITE_DIM * 10.5f)), spriteScale: 0.5f);
                 }
             }
 
@@ -348,6 +348,11 @@ namespace CritterCamp.Screens.Games {
             sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 1.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5, SpriteEffects.FlipVertically);
             sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 2.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeTCurve + color * 5, spriteRotation: Constants.ROTATE_90 * 2);
             sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 3.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically);
+        }
+
+        public override void Unload() {
+            updateTimer.Dispose();
+            base.Unload();
         }
     }
 }
