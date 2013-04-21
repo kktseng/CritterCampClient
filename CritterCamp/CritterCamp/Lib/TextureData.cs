@@ -32,7 +32,8 @@ namespace CritterCamp {
             pickup1, pickup2, pickup3,
             walkRight1, walkRight2, walkRight3, walkRight4,
             punchRight1, punchRight2, punchRight3,
-            walkDown1, walkDown2
+            walkDown1, walkDown2,
+            holdUp1, holdUp2
         }
         public static int playerStateCount = (Enum.GetNames(typeof(PlayerStates)).Length + spriteSheetWidth - 1) / spriteSheetWidth * spriteSheetWidth;
 
@@ -51,7 +52,10 @@ namespace CritterCamp {
             jetFlame1, jetFlame2,
             fenceTopEnd, fenceBottomEnd, fenceTopLeft, fenceLeftEnd, fence3Way, fence2Way, fenceTopRight, fenceRightEnd,
             crosshair,
-            fishingPole1, fishingPole2
+            fishingPole1, fishingPole2,
+            smallSign,
+            flag,
+            greenBaton1, redBaton1, redBaton2
         }
 
         public enum twilightTexture {

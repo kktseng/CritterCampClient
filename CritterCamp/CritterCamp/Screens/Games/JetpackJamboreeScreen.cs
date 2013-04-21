@@ -9,17 +9,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CritterCamp.Screens.Games {
     class JetpackJamboreeScreen : BaseGameScreen {
         public static int PIG_DELAY = 2;
-        public static int MAX_PIG_COUNT = 10;
+        public static int MAX_PIG_COUNT = 3;
         public bool exploded = false;
 
         protected TileMap tileMap, doodadMap;
         protected TimeSpan timeSincePig;
         protected TextBanner banner;
+        protected Timer updateTimer;
 
         protected Pig selectedPig;
         protected Vector2 old_pos;
@@ -28,6 +30,7 @@ namespace CritterCamp.Screens.Games {
         protected List<List<Pig>> pennedPigs = new List<List<Pig>>();
 
         protected List<string> deadUsers = new List<string>(); // keeps track of who lost
+        protected Dictionary<string, Avatar> avatars = new Dictionary<string, Avatar>(); // keeps track of baton waving
 
         protected Random rand = new Random();
 
@@ -36,9 +39,27 @@ namespace CritterCamp.Screens.Games {
             for(int i = 0; i < 4; i++) {
                 pennedPigs.Add(new List<Pig>());
             }
+            for(int i = 0; i < playerData.Keys.Count; i++) {
+                string username = playerData.Keys.ElementAt(i);
+                avatars[username] = new Avatar(this, new Vector2(650 + 200 * i, 1025), playerData[username].color);
+            }
+            updateTimer = new Timer(updateTimerCallback, null, 1000, 2000);
 
             // Fixes weird input bugs. I don't even
             EnabledGestures = GestureType.Tap;
+        }
+
+        void updateTimerCallback(object state) {
+            // send out info on # of pigs in main pen
+            JObject packet = new JObject(
+                new JProperty("action", "game"),
+                new JProperty("name", "jetpack_jamboree"),
+                new JProperty("data", new JObject(
+                    new JProperty("action", "update"),
+                    new JProperty("count", mainPigs.Count)
+                ))
+            );
+            conn.SendMessage(packet.ToString());
         }
 
         public override void Activate(bool instancePreserved) {
@@ -80,9 +101,9 @@ namespace CritterCamp.Screens.Games {
                 {  -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 18, 21, 21, 22, -1, -1, 18, 21, 21, 22, -1, -1, -1, -1, -1 },
-                {  21, 21, 21, 21, 21, 21, -1, -1, 16, -1, -1, 16, -1, -1, 21, 21, 21, 21, 21, 21 },
+                {  -1, -1, -1, -1, -1, 18, 21, 21, 21, 21, 21, 21, 21, 21, 22, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, 18, -1, -1, -1, -1, -1, -1, -1, -1, 22, -1, -1, -1, -1, -1 },
+                {  21, 21, 21, 21, 21, 21, -1, -1, -1, -1, -1, -1, -1, -1, 21, 21, 21, 21, 21, 21 },
             };
             tileMap.setMap(map);
             doodadMap.setMap(ddMap);
@@ -212,6 +233,7 @@ namespace CritterCamp.Screens.Games {
                         conn.SendMessage(packet.ToString());
                     }
                 }
+                avatars[playerName].count = mainPigs.Count;
             } else {
                 if(banner == null)
                     banner = new TextBanner(this, "GAME OVER");
@@ -234,6 +256,17 @@ namespace CritterCamp.Screens.Games {
 
             DrawActors(sd);
 
+            // Draw player count info
+            for(int i = 0; i < avatars.Keys.Count; i++) {
+                string username = avatars.Keys.ElementAt(i);
+                if(deadUsers.Contains(username)) {
+                    sd.Draw(textureList["doodads"], new Vector2(750 + 200 * i, 1025), (int)TextureData.Doodads.fence2Way);
+                } else {
+                    sd.Draw(textureList["doodads"], new Vector2(750 + 200 * i, 1025), (int)TextureData.Doodads.smallSign);
+                    sd.DrawString(ScreenManager.Fonts["boris48"], avatars[username].count.ToString(), new Vector2(750 + 200 * i, 1025), spriteScale: 0.5f);
+                }
+            }
+
             if(banner != null)
                 banner.Draw(new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2));
 
@@ -254,10 +287,15 @@ namespace CritterCamp.Screens.Games {
                             p.color = (int)data["color"];
                             mainPigs.Add(p);
                         }
+                        avatars[(string)data["source"]].setState(true);
                     }
                 } else if((string)data["action"] == "exploded") {
                     string exploded_user = (string)data["source"];
                     removePlayer(exploded_user);
+                } else if((string)data["action"] == "update") {
+                    if(playerName != (string)data["source"]) {
+                        avatars[(string)data["source"]].count = (int)data["count"];
+                    }
                 }
             }
         }

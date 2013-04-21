@@ -103,6 +103,7 @@
     <Compile Include="Screens\Games\FishingFrenzy\Fish.cs" />
     <Compile Include="Screens\Games\FishingFrenzy\Hook.cs" />
     <Compile Include="Screens\Games\JetpackJamboreeScreen.cs" />
+    <Compile Include="Screens\Games\JetpackJamboree\Avatar.cs" />
     <Compile Include="Screens\Games\JetpackJamboree\Explosion.cs" />
     <Compile Include="Screens\Games\JetpackJamboree\Pig.cs" />
     <Compile Include="Screens\Games\Lib\AnimatedObject.cs" />
@@ -147,6 +148,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Sounds\adventuremp3.mp3" />
     <Content Include="CritterCampLogo.png" />
     <Content Include="pig600-01.png" />
     <Content Include="SplashScreenImage.jpg" />
@@ -175,9 +177,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\jetpackTextures.xnb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\pig.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\explosion.xnb">
@@ -241,6 +240,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Tutorials\fishingTut.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\pig.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sounds\adventure.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sounds\menutheme.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\AppManifest.xml" />

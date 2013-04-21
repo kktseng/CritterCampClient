@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
+using Microsoft.Xna.Framework.Media;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -24,17 +25,26 @@ namespace CritterCamp.Screens {
         Label News, Friends, Party;
         Label InfoListView; // change this to a list view when its implemented
         Color InactiveColor = new Color(119, 95, 77);
+        //public Song backMusic;
 
         public HomeScreen() : base("Main Menu") {}
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
+            ContentManager cm = ScreenManager.Game.Content;
 
             // temporary pig drawing for profiles
             if (!ScreenManager.Textures.ContainsKey("TEMPPIGS")) {
-                ContentManager cm = ScreenManager.Game.Content;
+
                 ScreenManager.Textures.Add("TEMPPIGS", cm.Load<Texture2D>("pig"));
             }
+
+            // load the files
+            //backMusic = cm.Load<Song>("Sounds/,"); // *.mp3
+
+            // play files
+            //MediaPlayer.Volume = 1.0f;
+            //MediaPlayer.Play(backMusic);
 
             PlayerData myData = (PlayerData)CoreApplication.Properties["myPlayerData"];
 

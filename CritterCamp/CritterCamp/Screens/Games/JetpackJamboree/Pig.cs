@@ -37,7 +37,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
             MIN_FLY_ENTER,
             (int)(Constants.BUFFER_SPRITE_DIM),
             MAX_FLY_ENTER - MIN_FLY_ENTER,
-            (int)(Constants.BUFFER_HEIGHT - Constants.BUFFER_SPRITE_DIM * 2.5f)
+            (int)(Constants.BUFFER_HEIGHT - Constants.BUFFER_SPRITE_DIM * 3.5f)
         );
 
         private static Rectangle[] areas = new Rectangle[] {

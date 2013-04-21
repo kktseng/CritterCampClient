@@ -20,14 +20,14 @@ namespace CritterCamp.Screens.Games {
     }
 
     class TwilightTangoScreen : BaseGameScreen {
-        public static int MAX_ROUNDS = 10;
-        public static int COMMAND_INCR = 1;
-        public static int COMMAND_INIT = 6;
+        public static int MAX_ROUNDS = 6;
+        public static int COMMAND_INCR = 2;
+        public static int COMMAND_INIT = 4;
 
         public static TimeSpan COMMAND_TIME = new TimeSpan(0, 0, 4);
-        public static TimeSpan COMMAND_TIME_INCR = new TimeSpan(0, 0, 1);
-        public static TimeSpan INPUT_TIME = new TimeSpan(0, 0, 4);
-        public static TimeSpan INPUT_INCR = new TimeSpan(0, 0, 1);
+        public static TimeSpan COMMAND_TIME_INCR = new TimeSpan(0, 0, 2);
+        public static TimeSpan INPUT_TIME = new TimeSpan(0, 0, 3);
+        public static TimeSpan INPUT_INCR = new TimeSpan(0, 0, 2);
         public static TimeSpan TIMEOUT_TIME = new TimeSpan(0, 0, 1);
         public static TimeSpan MOVE_TIME = new TimeSpan(0, 0, 0, 0, 600);
         public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 0, 1, 500);
