@@ -31,6 +31,8 @@ namespace CritterCamp.Screens {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
+            GamePage gamePage = (GamePage)CoreApplication.Properties["GamePage"];
+            gamePage.showAdduplux();
             ContentManager cm = ScreenManager.Game.Content;
 
             // temporary pig drawing for profiles
@@ -209,6 +211,11 @@ namespace CritterCamp.Screens {
                 CoreApplication.Properties["game_choices"] = gameChoices;
                 startingGame = true;
             }
+        }
+
+        public override void Unload() {
+            GamePage gamePage = (GamePage)CoreApplication.Properties["GamePage"];
+            gamePage.hideAdduplux();
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {

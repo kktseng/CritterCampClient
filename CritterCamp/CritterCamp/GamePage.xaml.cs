@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 using MonoGame.Framework.WindowsPhone;
 using CritterCamp.Resources;
 using System.IO.IsolatedStorage;
+using Windows.ApplicationModel.Core;
 
 namespace CritterCamp {
     public partial class GamePage : PhoneApplicationPage {
@@ -22,9 +23,24 @@ namespace CritterCamp {
             InitializeComponent();
 
             _game = XamlGame<CritterCampGame>.Create("", this);
+            CoreApplication.Properties["GamePage"] = this;
+            //adDuplexAd.IsTest = true; // use this line to display our own ad for testing
 
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
+        }
+
+        public void hideAdduplux() {
+            Dispatcher.BeginInvoke(() =>
+            {
+                adDuplexAd.Visibility = Visibility.Collapsed;
+            });
+        }
+
+        public void showAdduplux() {
+            Dispatcher.BeginInvoke(() => {
+                adDuplexAd.Visibility = Visibility.Visible;
+            });
         }
 
         // Sample code for building a localized ApplicationBar
