@@ -1,6 +1,7 @@
 ﻿using CritterCamp.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
@@ -30,6 +31,7 @@ namespace CritterCamp.Screens.Games {
     public abstract class BaseGameScreen : GameScreen {
         public Dictionary<string, Texture2D> textureList = new Dictionary<string, Texture2D>();
         public Dictionary<string, SpriteFont> fontList = new Dictionary<string, SpriteFont>();
+        public Dictionary<string, SoundEffect> soundList = new Dictionary<string, SoundEffect>();
 
         protected ContentManager cm;
         protected int expGained;

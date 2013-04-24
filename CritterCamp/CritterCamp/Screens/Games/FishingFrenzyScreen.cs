@@ -2,6 +2,7 @@
 using CritterCamp.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using Newtonsoft.Json;
@@ -80,6 +81,11 @@ namespace CritterCamp.Screens.Games {
             textureList["map"] = cm.Load<Texture2D>("mapTextures");
             textureList["pig"] = cm.Load<Texture2D>("pig");
             textureList["doodads"] = cm.Load<Texture2D>("doodads");
+            soundList["swoosh"] = cm.Load<SoundEffect>("Sounds/swoosh");
+            soundList["splash"] = cm.Load<SoundEffect>("Sounds/Splash");
+            soundList["reelingIn"] = cm.Load<SoundEffect>("Sounds/reelingIn");
+            soundList["bucket"] = cm.Load<SoundEffect>("Sounds/bucket");
+            soundList["ding"] = cm.Load<SoundEffect>("Sounds/ding2");
             setMap();
         }
 
@@ -110,6 +116,9 @@ namespace CritterCamp.Screens.Games {
                             // Create a new hook
                             Vector2 scaledPos = Helpers.ScaleInput(new Vector2(gesture.Position.X, gesture.Position.Y));
                             hooked[playerName] = new Hook(this, (int)scaledPos.X, gameTime.TotalGameTime - baseline, playerData[playerName]);
+
+                            // Play sound
+                            soundList["swoosh"].Play();
 
                             // Inform others about hook
                             JObject packet = new JObject(
@@ -387,6 +396,9 @@ namespace CritterCamp.Screens.Games {
                 JObject data = (JObject)o["data"];
                 if((string)data["action"] == "hook") {
                     if((string)data["source"] != playerName && phase == Phase.Fishing) {
+                        // Play swoosh
+                        soundList["swoosh"].Play();
+
                         // enforce locks to prevent race conditions
                         lock(hooked) {
                             lock(backupHooked) {

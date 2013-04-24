@@ -18,6 +18,7 @@ namespace CritterCamp.Screens.Games.TwilightTango {
     public class Arrow : AnimatedObject<ArrowStates> {
         public Direction dir;
         public float scale;
+        bool soundPlayed = false;
 
         public Arrow(BaseGameScreen screen, Direction dir, Texture2D img, Vector2 coord, float scale)
             : base(screen, "twilight", coord) {
@@ -48,6 +49,10 @@ namespace CritterCamp.Screens.Games.TwilightTango {
             base.animate(time);
             if(numCycles == 1 && state == ArrowStates.FadeOut) {
                 visible = false;
+            }
+            if(!soundPlayed && getState() == ArrowStates.FadeIn) {
+                screen.soundList["sparkle"].Play();
+                soundPlayed = true;
             }
         }
 

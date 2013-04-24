@@ -26,10 +26,12 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
         public static int FALLING_SPD = 700;
 
         public FishTypes type;
-        public bool halved = false; // for when large fish fall into the bucket
         public int textureNum;
         public int score;
         public string caughtBy;
+
+        protected bool halved = false;
+        protected bool bucketSound = false; // for when large fish fall into the bucket
 
         public Fish(FishingFrenzyScreen screen, FishTypes type, int depth, int dir, TimeSpan timePassed)
             : base(screen, "fish", Vector2.Zero) {
@@ -89,21 +91,19 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             if(state == FishStates.falling) {
                 velocity = new Vector2(0, FALLING_SPD);
                 float bucket_y = ((FishingFrenzyScreen)screen).BUCKET_Y + ((FishingFrenzyScreen)screen).waveOffset;
-                if(type == FishTypes.small || type == FishTypes.medium) {
-                    if(coord.Y + velocity.Y * time.ElapsedGameTime.TotalSeconds > bucket_y) {
-                        screen.removeActor(this);
-                        ((FishingFrenzyScreen)screen).fishies.Remove(this);
-                        ((FishingFrenzyScreen)screen).scores[caughtBy] += score;
-                    }
-                } else {
-                    if(coord.Y + velocity.Y * time.ElapsedGameTime.TotalSeconds + Constants.BUFFER_SPRITE_DIM > bucket_y) {
+                if(type != FishTypes.small && type != FishTypes.medium) {
+                    if(coord.Y + velocity.Y * time.ElapsedGameTime.TotalSeconds + Constants.BUFFER_SPRITE_DIM > bucket_y)
                         halved = true;
-                    }
-                    if(coord.Y + velocity.Y * time.ElapsedGameTime.TotalSeconds > bucket_y) {
-                        screen.removeActor(this);
-                        ((FishingFrenzyScreen)screen).fishies.Remove(this);
-                        ((FishingFrenzyScreen)screen).scores[caughtBy] += score;
-                    }
+                }
+                // preemptively play bucket noise
+                if(!bucketSound && coord.Y + velocity.Y * time.ElapsedGameTime.TotalSeconds > bucket_y - 125) {
+                    screen.soundList["bucket"].Play();
+                    bucketSound = true;
+                }
+                if(coord.Y + velocity.Y * time.ElapsedGameTime.TotalSeconds > bucket_y) {
+                    screen.removeActor(this);
+                    ((FishingFrenzyScreen)screen).fishies.Remove(this);
+                    ((FishingFrenzyScreen)screen).scores[caughtBy] += score;
                 }
             }
             if(state != FishStates.hooked) {

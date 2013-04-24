@@ -2,6 +2,7 @@
 using CritterCamp.Screens.Games.TwilightTango;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
@@ -83,6 +84,7 @@ namespace CritterCamp.Screens.Games {
             textureList["doodads"] = cm.Load<Texture2D>("doodads");
             textureList["effects"] = cm.Load<Texture2D>("effects");
             textureList["pig"] = cm.Load<Texture2D>("pig");
+            soundList["sparkle"] = cm.Load<SoundEffect>("Sounds/Sparkle");
             setMap();
         }
 

@@ -1,5 +1,6 @@
 ﻿using CritterCamp.Screens.Games.Lib;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -22,12 +23,18 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
         public PlayerData player;
         public TimeSpan start;
         public TimeSpan downTime = TimeSpan.Zero;
+        public int splashCount = 0;
+
+        protected SoundEffectInstance reelingIn;
 
         public Hook(FishingFrenzyScreen screen, int x, TimeSpan start, PlayerData player)
-            : base(screen, "fishing", new Vector2(x, -Constants.BUFFER_SPRITE_DIM)) {
-                setState(HookState.down);
-                this.start = start;
-                this.player = player;
+                : base(screen, "fishing", new Vector2(x, -Constants.BUFFER_SPRITE_DIM)) {
+            setState(HookState.down);
+            this.start = start;
+            this.player = player;
+            reelingIn = screen.soundList["reelingIn"].CreateInstance();
+            reelingIn.IsLooped = true;
+            reelingIn.Play();
         }
 
         protected override void setAnim() {
@@ -55,6 +62,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
                         i += 2;
                     }
                 }
+                reelingIn.Stop();
                 ((FishingFrenzyScreen)screen).hooked.Remove(player.username);
                 screen.removeActor(this);
                 return;
@@ -80,6 +88,13 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
                     downTime = time.TotalGameTime - start - ((FishingFrenzyScreen)screen).baseline;
                 }
             }
+
+            // check for splashes
+            if((splashCount == 0 && coord.Y > 75) || (splashCount == 1 && coord.Y < 425 && getState() == HookState.up)) {
+                screen.soundList["splash"].Play();
+                splashCount++;
+            }
+
             // update coords for all hooked fish
             foreach(Fish fish in hookedFish) {
                 if(fish.type == FishTypes.small || fish.type == FishTypes.medium) {
@@ -103,6 +118,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
                     }
                     if(fishRect.Intersects(hookRect)) {
                         // hook the fish
+                        screen.soundList["ding2"].Play();
                         hookedFish.Add(fish);
                         fish.setState(FishStates.hooked);
                         fish.caughtBy = player.username;
