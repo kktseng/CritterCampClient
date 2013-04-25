@@ -27,12 +27,13 @@ namespace CritterCamp.Screens.Games {
             this.interval = interval;
         }
     }
+
     class FishingFrenzyScreen : BaseGameScreen {
         protected static double[][,] roundData = new double[][,] {
-            new double[,] {{ 0.3, 450, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }},
-            new double[,] {{ 0.3, 450, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }},
-            new double[,] {{ 0.3, 450, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }},
-            new double[,] {{ 0.3, 450, 700 }, { 0.3, 450, 850 }, { 0.2, 650, 900 }, { 0.2, 650, 900 }}
+            new double[,] {{ 0.3, 450, 700 }, { 0.2, 450, 850 }, { 0.2, 650, 900 }, { 0.1, 650, 900 }, { 0.2, 650, 900 }},
+            new double[,] {{ 0.3, 450, 700 }, { 0.2, 450, 850 }, { 0.2, 650, 900 }, { 0.1, 650, 900 }, { 0.2, 650, 900 }},
+            new double[,] {{ 0.3, 450, 700 }, { 0.2, 450, 850 }, { 0.2, 650, 900 }, { 0.1, 650, 900 }, { 0.2, 650, 900 }},
+            new double[,] {{ 0.3, 450, 700 }, { 0.2, 450, 850 }, { 0.2, 650, 900 }, { 0.1, 650, 900 }, { 0.2, 650, 900 }}
         };
 
         public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 2);
@@ -54,6 +55,7 @@ namespace CritterCamp.Screens.Games {
         public Dictionary<string, Hook> hooked = new Dictionary<string, Hook>();
         public Dictionary<string, Hook> backupHooked = new Dictionary<string, Hook>(); // two hooks may exist at same time depending on packet lag
         public Dictionary<string, int> scores = new Dictionary<string, int>();
+        public Dictionary<string, int> displayScore = new Dictionary<string, int>(); // used to gradually increase score
         public List<Fish> fishies = new List<Fish>();
 
         protected TileMap tileMap;
@@ -70,6 +72,7 @@ namespace CritterCamp.Screens.Games {
             : base(playerData) {
             foreach(PlayerData pd in playerData.Values) {
                 scores.Add(pd.username, 0);
+                displayScore.Add(pd.username, 0);
             }
             EnabledGestures = GestureType.Tap;
         }
@@ -85,7 +88,7 @@ namespace CritterCamp.Screens.Games {
             soundList["splash"] = cm.Load<SoundEffect>("Sounds/Splash");
             soundList["reelingIn"] = cm.Load<SoundEffect>("Sounds/reelingIn");
             soundList["bucket"] = cm.Load<SoundEffect>("Sounds/bucket");
-            soundList["ding"] = cm.Load<SoundEffect>("Sounds/ding2");
+            soundList["blop"] = cm.Load<SoundEffect>("Sounds/blop");
             setMap();
         }
 
@@ -139,6 +142,10 @@ namespace CritterCamp.Screens.Games {
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
+            // randomly add shadows
+            if(rand.Next(0, 1000) < 3) {
+                new Shadow(this, (rand.Next(0, 2) == 0), rand.Next(450, 800), rand.Next(0, 2));
+            }
             if(phase == Phase.Limbo) {
                 if(round >= roundData.Length) {
                     // End game when rounds are over
@@ -288,10 +295,15 @@ namespace CritterCamp.Screens.Games {
 
         public void DrawBuckets(SpriteDrawer sd) {
             int i = 0;
-            foreach(int score in scores.Values) {
+            foreach(string user in scores.Keys) {
+                float scale = 0.5f;
+                if(scores[user] > displayScore[user]) {
+                    scale += (float)(Math.Sqrt(scores[user] - displayScore[user])) / 40f;
+                    displayScore[user] += 2;
+                }
                 sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6f + i), BUCKET_Y + waveOffset), (int)TextureData.fishingTextures.bucket);
                 sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (7f + i), BUCKET_Y + waveOffset), (int)TextureData.fishingTextures.bucket, SpriteEffects.FlipHorizontally);
-                sd.DrawString(ScreenManager.Fonts["boris48"], score.ToString(), new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 2.5f + waveOffset - 35), spriteScale: 0.5f);
+                sd.DrawString(ScreenManager.Fonts["boris48"], displayScore[user].ToString(), new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 2.5f + waveOffset - 35), spriteScale: scale);
                 if(i == 2)
                     i++;
                 i += 2;
@@ -324,6 +336,9 @@ namespace CritterCamp.Screens.Games {
                     sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i + 45, 110 + waveOffset - Constants.BUFFER_SPRITE_DIM * 2), (int)TextureData.Doodads.fishingPole2);
                 }
             }
+
+            // Draw non important actors
+            DrawActors(sd);
 
             // Draw the boat
             sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 4.5f, (float)Constants.BUFFER_SPRITE_DIM * 1.5f + waveOffset), (int)TextureData.fishingTextures.boat1);

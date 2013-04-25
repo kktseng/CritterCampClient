@@ -77,16 +77,17 @@ namespace CritterCamp {
             hook, sinker, line,
             bucket,
             wave1, wave2, wave3, wave4, wave5, wave6, wave7, wave8,
-            boat1, boat2, boat3, boat4, boat5, boat6, boat7, boat8, boat9
+            boat1, boat2, boat3, boat4, boat5, boat6, boat7, boat8, boat9,
+            shark1, shark2, shark3, shark4, shark5, shark6,
+            whale1, whale2, whale3, whale4, whale5, whale6, whale7, whale8
         }
 
         public enum Fish {
             small,
             medium,
-            largeBlue1,
-            largeBlue2,
-            largeOrange1,
-            largeOrange2
+            largeBlue1, largeBlue2,
+            largeOrange1, largeOrange2,
+            shiny1, shiny2, shiny3
         }
 
         public enum games {

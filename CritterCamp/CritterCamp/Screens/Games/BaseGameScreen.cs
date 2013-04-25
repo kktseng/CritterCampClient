@@ -161,7 +161,7 @@ namespace CritterCamp.Screens.Games {
 
         protected void DrawActors(SpriteDrawer sd) {
             foreach(IAnimatedObject actor in actors) {
-                if(actor.isVisible()) {
+                if(actor.isVisible() && actor.DrawAutomatically()) {
                     actor.draw(sd);
                 }
             }

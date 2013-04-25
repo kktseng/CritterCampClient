@@ -29,6 +29,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
 
         public Hook(FishingFrenzyScreen screen, int x, TimeSpan start, PlayerData player)
                 : base(screen, "fishing", new Vector2(x, -Constants.BUFFER_SPRITE_DIM)) {
+            autoDraw = false;
             setState(HookState.down);
             this.start = start;
             this.player = player;
@@ -97,7 +98,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
 
             // update coords for all hooked fish
             foreach(Fish fish in hookedFish) {
-                if(fish.type == FishTypes.small || fish.type == FishTypes.medium) {
+                if(fish.type == FishTypes.small || fish.type == FishTypes.medium || fish.type == FishTypes.shiny) {
                     fish.setCoord(coord + new Vector2(0, 30));
                 } else {
                     fish.setCoord(coord + new Vector2(0, 30 + Constants.BUFFER_SPRITE_DIM));
@@ -111,14 +112,14 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
                 if(fish.getState() != FishStates.hooked && fish.getState() != FishStates.falling) {
                     Rectangle fishRect;
                     Rectangle hookRect = new Rectangle((int)getCoord().X - Constants.BUFFER_SPRITE_DIM / 2 + 13, (int)getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, 70, Constants.BUFFER_SPRITE_DIM / 2);
-                    if(fish.type == FishTypes.small || fish.type == FishTypes.medium) {
+                    if(fish.type == FishTypes.small || fish.type == FishTypes.medium || fish.type == FishTypes.shiny) {
                         fishRect = new Rectangle((int)fish.getCoord().X - Constants.BUFFER_SPRITE_DIM / 2, (int)fish.getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, Constants.BUFFER_SPRITE_DIM, Constants.BUFFER_SPRITE_DIM);
                     } else {
                         fishRect = new Rectangle((int)fish.getCoord().X - Constants.BUFFER_SPRITE_DIM, (int)fish.getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, Constants.BUFFER_SPRITE_DIM * 2, Constants.BUFFER_SPRITE_DIM);
                     }
                     if(fishRect.Intersects(hookRect)) {
                         // hook the fish
-                        screen.soundList["ding2"].Play();
+                        screen.soundList["blop"].Play();
                         hookedFish.Add(fish);
                         fish.setState(FishStates.hooked);
                         fish.caughtBy = player.username;

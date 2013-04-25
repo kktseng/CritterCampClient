@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 namespace CritterCamp.Screens.Games.Lib {
     public interface IAnimatedObject {
+        bool DrawAutomatically();
         bool isVisible();
         void draw(SpriteDrawer sd);
         void animate(GameTime time);
@@ -28,6 +29,8 @@ namespace CritterCamp.Screens.Games.Lib {
             }
 
         };
+        public bool autoDraw = true;
+
         protected BaseGameScreen screen;
 
         protected string imgName;
@@ -63,6 +66,10 @@ namespace CritterCamp.Screens.Games.Lib {
             this.defaultState = defaultState;
             state = defaultState;
             hasDefaultState = true;
+        }
+
+        public bool DrawAutomatically() {
+            return autoDraw;
         }
 
         public Texture2D getImg() {

@@ -102,6 +102,7 @@
     <Compile Include="Screens\Games\FishingFrenzyScreen.cs" />
     <Compile Include="Screens\Games\FishingFrenzy\Fish.cs" />
     <Compile Include="Screens\Games\FishingFrenzy\Hook.cs" />
+    <Compile Include="Screens\Games\FishingFrenzy\Shadow.cs" />
     <Compile Include="Screens\Games\JetpackJamboreeScreen.cs" />
     <Compile Include="Screens\Games\JetpackJamboree\Avatar.cs" />
     <Compile Include="Screens\Games\JetpackJamboree\Explosion.cs" />
@@ -275,6 +276,9 @@
     <Content Include="Content\Sounds\ding2.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Sounds\blop.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
@@ -309,6 +313,9 @@
   </ItemGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Reference Include="AdDuplex.WindowsPhone">
+      <HintPath>..\packages\AdDuplexWP8.2.8.0.3\lib\wp8\AdDuplex.WindowsPhone.dll</HintPath>
+    </Reference>
     <Reference Include="MonoGame.Framework, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsPhone\x86\MonoGame.Framework.dll</HintPath>
