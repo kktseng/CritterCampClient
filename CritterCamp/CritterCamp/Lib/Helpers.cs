@@ -86,6 +86,14 @@ namespace CritterCamp {
         public static SpriteDrawer GetSpriteDrawer(ScreenManager sm) {
             return (SpriteDrawer)sm.Game.Services.GetService(typeof(SpriteDrawer));
         }
+
+        public static ScreenFactory GetScreenFactory(GameScreen screen) {
+            return GetScreenFactory(screen.ScreenManager);
+        }
+
+        public static ScreenFactory GetScreenFactory(ScreenManager sm) {
+            return (ScreenFactory)sm.Game.Services.GetService(typeof(IScreenFactory));
+        }
     }
 
     public static class LowMemoryHelper {

@@ -63,9 +63,7 @@ namespace CritterCamp.Screens {
             if (PopupExit()) {
                 return;
             }
-
-            ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
-            LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(backScreen));
+            LoadingScreen.Load(ScreenManager, false, null, Helpers.GetScreenFactory(this).CreateScreen(backScreen));
         }
 
         public override void Activate(bool instancePreserved) {

@@ -31,9 +31,9 @@ namespace CritterCamp.Screens.Games {
     class FishingFrenzyScreen : BaseGameScreen {
         protected static double[][,] roundData = new double[][,] {
             new double[,] {{ 0.3, 450, 700 }, { 0.2, 450, 850 }, { 0.2, 650, 900 }, { 0.1, 650, 900 }, { 0.2, 650, 900 }},
-            new double[,] {{ 0.3, 450, 700 }, { 0.2, 450, 850 }, { 0.2, 650, 900 }, { 0.1, 650, 900 }, { 0.2, 650, 900 }},
-            new double[,] {{ 0.3, 450, 700 }, { 0.2, 450, 850 }, { 0.2, 650, 900 }, { 0.1, 650, 900 }, { 0.2, 650, 900 }},
-            new double[,] {{ 0.3, 450, 700 }, { 0.2, 450, 850 }, { 0.2, 650, 900 }, { 0.1, 650, 900 }, { 0.2, 650, 900 }}
+            //new double[,] {{ 0.3, 450, 700 }, { 0.2, 450, 850 }, { 0.2, 650, 900 }, { 0.1, 650, 900 }, { 0.2, 650, 900 }},
+            //new double[,] {{ 0.3, 450, 700 }, { 0.2, 450, 850 }, { 0.2, 650, 900 }, { 0.1, 650, 900 }, { 0.2, 650, 900 }},
+            //new double[,] {{ 0.3, 450, 700 }, { 0.2, 450, 850 }, { 0.2, 650, 900 }, { 0.1, 650, 900 }, { 0.2, 650, 900 }}
         };
 
         public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 2);
@@ -213,6 +213,8 @@ namespace CritterCamp.Screens.Games {
                             hooked.Clear();
                         }
                         round++;
+                        // remove all looped sounds before continuing
+                        Helpers.GetSoundLibrary(this).StopAllSounds();
                         phase = Phase.Limbo;
                     }
                 }
