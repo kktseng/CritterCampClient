@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameStateManagement;
 using Microsoft.Xna.Framework.Input.Touch;
+using CritterCamp.Screens.Games.Lib;
 
 #endregion
 
@@ -50,7 +51,7 @@ namespace CritterCamp.Screens {
         /// be activated via the static Load method instead.
         /// </summary>
         private LoadingScreen(ScreenManager screenManager, bool loadingIsSlow,
-                              GameScreen[] screensToLoad) {
+                              GameScreen[] screensToLoad) : base(false) {
             this.loadingIsSlow = loadingIsSlow;
             this.screensToLoad = screensToLoad;
 
@@ -111,6 +112,13 @@ namespace CritterCamp.Screens {
         /// Draws the loading screen.
         /// </summary>
         public override void Draw(GameTime gameTime) {
+            // Draw the standard backgroun
+            SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+
+            sd.Begin();
+            sd.Draw(ScreenManager.Textures["bgScreen"], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 775));
+            sd.End();
+
             // If we are the only active screen, that means all the previous screens
             // must have finished transitioning off. We check for this in the Draw
             // method, rather than in Update, because it isn't enough just for the

@@ -8,7 +8,7 @@ namespace CritterCamp.Screens {
     /// <summary>
     /// Represents a view element with a border and fill color
     /// </summary>
-    class BorderedView : View{
+    class BorderedView : View {
         public Color BorderColor = Constants.DarkBrown;
         public Color FillColor = Constants.LightBrown;
 

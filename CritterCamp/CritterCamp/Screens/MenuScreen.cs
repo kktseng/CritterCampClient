@@ -23,7 +23,6 @@ namespace CritterCamp.Screens {
         private Type backScreen = null;
         Button selectedButton = null;
         Vector2 oldPos;
-        Boolean firstPress = true;
         Vector2 rawInput = Vector2.Zero;
         Vector2 scaledInput = Vector2.Zero;
 
@@ -38,7 +37,7 @@ namespace CritterCamp.Screens {
         /// Creates the PhoneMenuScreen with a particular title.
         /// </summary>
         /// <param name="title">The title of the screen</param>
-        public MenuScreen(string title) {
+        public MenuScreen(string title) : base(true) {
             // We need tap gestures to hit the buttons
             EnabledGestures = GestureType.Tap;
         }
@@ -66,17 +65,6 @@ namespace CritterCamp.Screens {
         }
 
         public override void Activate(bool instancePreserved) {
-            // Load the button image if not loaded
-            ContentManager cm = ScreenManager.Game.Content;
-            if(!ScreenManager.Textures.ContainsKey("buttonMint")) {
-                ScreenManager.Textures.Add("backButton", cm.Load<Texture2D>("backButton"));
-                ScreenManager.Textures.Add("buttonMint", cm.Load<Texture2D>("buttonMint"));
-            }
-
-            if (!ScreenManager.Textures.ContainsKey(background)) {
-                ScreenManager.Textures.Add(background, cm.Load<Texture2D>(background));
-            }
-
             // When the screen is activated, we have a valid ScreenManager so we can arrange
             // our buttons on the screen
             float center = ScreenManager.GraphicsDevice.Viewport.Bounds.Center.X;
@@ -157,6 +145,7 @@ namespace CritterCamp.Screens {
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
 
             sd.Begin();
+            
             sd.Draw(ScreenManager.Textures[background], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 775));
 
             // Draw all of the UIElements
@@ -166,22 +155,6 @@ namespace CritterCamp.Screens {
             foreach(Button b in menuButtons) {
                 b.Draw(this);
             }
-
-            // Make the menu slide into place during transitions, using a
-            // power curve to make things look more interesting (this makes
-            // the movement slow down as it nears the end).
-            float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
-
-            // Draw the menu title centered on the screen
-            Vector2 titlePosition = new Vector2(graphics.Viewport.Width / 2, 80);
-            //Vector2 titleOrigin = font.MeasureString(menuTitle) / 2;
-            Color titleColor = new Color(192, 192, 192) * TransitionAlpha;
-            float titleScale = 1.25f;
-
-            titlePosition.Y -= transitionOffset * 100;
-
-            //spriteBatch.DrawString(font, menuTitle, titlePosition, titleColor, 0,
-                                   //titleOrigin, titleScale, SpriteEffects.None, 0);
 
             DrawCoordinates(sd);
             sd.End();

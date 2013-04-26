@@ -36,8 +36,11 @@ namespace GameStateManagement {
     /// </summary>
     public abstract class GameScreen {
         protected TCPConnection conn;
+        protected bool online;
 
-        public GameScreen() {}
+        public GameScreen(bool online) {
+            this.online = online;
+        }
 
         protected virtual void MessageReceived(string message, bool error, TCPConnection connection) {}
 
@@ -235,7 +238,8 @@ namespace GameStateManagement {
         /// On Xbox and Windows this will always be false.
         /// </param>
         public virtual void Activate(bool instancePreserved) {
-            setConn((TCPConnection)CoreApplication.Properties["TCPSocket"]);
+            if(online)
+                setConn((TCPConnection)CoreApplication.Properties["TCPSocket"]);
         }
 
 

@@ -25,13 +25,6 @@ namespace CritterCamp.Screens.Games.Lib {
         public Vector2 sprite_dim = new Vector2(Constants.SPRITE_DIM);
         public int offset = 0; // used to offset non 16:9 screens to the center
         public Dictionary<Vector2, Vector2> cachedConversions = new Dictionary<Vector2, Vector2>();
-
-        /// 
-        /// The texture used when drawing rectangles, lines and other 
-        /// primitives. This is a 1x1 white texture created at runtime.
-        /// 
-        public Texture2D WhiteTexture { get; protected set; }
-
         protected ScreenManager sm;
 
         public SpriteDrawer(ScreenManager sm) {
@@ -55,10 +48,6 @@ namespace CritterCamp.Screens.Games.Lib {
             coordScale = new Vector2(Constants.BUFFER_WIDTH / backBuffer.Y);
 
             drawScale = new Vector2(backBuffer.Y / (Constants.SPRITE_DIM * Constants.MAP_WIDTH));
-
-            WhiteTexture = new Texture2D(sm.SpriteBatch.GraphicsDevice, 1, 1);
-            WhiteTexture.SetData(new Color[] { Color.White });
-
         }
 
         public void Begin() {
@@ -112,7 +101,8 @@ namespace CritterCamp.Screens.Games.Lib {
             if (Constants.ROTATION != 0)
                 coord = new Vector2(backBuffer.X - coord.Y, coord.X);
 
-            sb.Draw(WhiteTexture, new Rectangle((int)coord.X, (int)coord.Y, (int)(rectangle.Width / coordScale.X), (int)(rectangle.Height / coordScale.Y)), null, color, Constants.ROTATION, Vector2.Zero, SpriteEffects.None, 0f);
+            Texture2D whiteTex = sm.Textures["whiteTex"];
+            sb.Draw(whiteTex, new Rectangle((int)coord.X, (int)coord.Y, (int)(rectangle.Width / coordScale.X), (int)(rectangle.Height / coordScale.Y)), null, color, Constants.ROTATION, Vector2.Zero, SpriteEffects.None, 0f);
              
         }
 

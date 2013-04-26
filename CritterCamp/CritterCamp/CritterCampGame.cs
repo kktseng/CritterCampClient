@@ -1,18 +1,21 @@
 using CritterCamp.Screens;
 using CritterCamp.Screens.Games.Lib;
 using GameStateManagement;
+using Microsoft.Phone.Shell;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Windows.Threading;
+using Windows.ApplicationModel.Core;
 
 namespace CritterCamp {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
     public class CritterCampGame : Game {
-        GraphicsDeviceManager graphics;
-        ScreenManager screenManager;
-        ScreenFactory screenFactory;
+        public GraphicsDeviceManager graphics;
+        public ScreenManager screenManager;
+        public ScreenFactory screenFactory;
 
         /// <summary>
         /// The main game constructor.
@@ -22,7 +25,6 @@ namespace CritterCamp {
 
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = true;
-
             //graphics.SynchronizeWithVerticalRetrace = false;
 
             // Frame rate is 30 fps by default for Windows Phone.
@@ -32,16 +34,27 @@ namespace CritterCamp {
             screenFactory = new ScreenFactory();
             Services.AddService(typeof(IScreenFactory), screenFactory);
 
+            // Add event handlers for tombstoning
+            PhoneApplicationService.Current.Deactivated += Deactivation;
+
             // Create a new instance of the Screen Manager
             screenManager = new ScreenManager(this);
             Components.Add(screenManager);
 
             // Create a Sprite Drawer
+            Services.RemoveService(typeof(SpriteDrawer));
             SpriteDrawer spriteDrawer = new SpriteDrawer(screenManager);
             Services.AddService(typeof(SpriteDrawer), spriteDrawer);
 
             // Add new screens
-            screenManager.AddScreen(new HomeScreen(), null);
+            screenManager.AddScreen(new OfflineScreen(), null);
+        }
+
+        private void Deactivation(object sender, DeactivatedEventArgs e) {
+            ScreenFactory sf = (ScreenFactory)screenManager.Game.Services.GetService(typeof(IScreenFactory));
+            LoadingScreen.Load(screenManager, false, null, sf.CreateScreen(typeof(OfflineScreen)));
+            ((GamePage)CoreApplication.Properties["GamePage"]).LayoutRoot.Visibility = System.Windows.Visibility.Visible;
+            ((GamePage)CoreApplication.Properties["GamePage"]).onLoaded(null, null);
         }
     }
 }

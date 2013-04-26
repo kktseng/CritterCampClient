@@ -7,6 +7,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using CritterCamp.Resources;
+using System.Windows.Threading;
 
 namespace CritterCamp {
     public partial class App : Application {
@@ -61,11 +62,15 @@ namespace CritterCamp {
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e) {
+            (Application.Current.RootVisual as PhoneApplicationFrame).Dispatcher.BeginInvoke(() => {
+             //   (Application.Current.RootVisual as PhoneApplicationFrame).Navigate(new Uri("/MainScreen.xaml", UriKind.Relative));
+            });
         }
 
         // Code to execute when the application is deactivated (sent to background)
         // This code will not execute when the application is closing
         private void Application_Deactivated(object sender, DeactivatedEventArgs e) {
+
         }
 
         // Code to execute when the application is closing (eg, user hit Back)

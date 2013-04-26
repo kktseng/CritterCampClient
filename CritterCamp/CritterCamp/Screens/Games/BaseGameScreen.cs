@@ -45,7 +45,7 @@ namespace CritterCamp.Screens.Games {
 
         protected bool scoreReceived = false; // We can't exit immediately due to race conditions
 
-        public BaseGameScreen(Dictionary<string, PlayerData> playerData) : base() {
+        public BaseGameScreen(Dictionary<string, PlayerData> playerData) : base(true) {
             this.playerData = playerData;
         }
 

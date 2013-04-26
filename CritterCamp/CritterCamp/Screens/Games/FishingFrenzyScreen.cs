@@ -143,7 +143,7 @@ namespace CritterCamp.Screens.Games {
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             // randomly add shadows
-            if(rand.Next(0, 1000) < 3) {
+            if(rand.Next(0, 1000) < 1) {
                 new Shadow(this, (rand.Next(0, 2) == 0), rand.Next(450, 800), rand.Next(0, 2));
             }
             if(phase == Phase.Limbo) {
