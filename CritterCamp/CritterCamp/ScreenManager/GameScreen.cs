@@ -68,7 +68,7 @@ namespace GameStateManagement {
         /// popup, in which case screens underneath it do not need to bother
         /// transitioning off.
         /// </summary>
-        public bool IsPopup {
+        public virtual bool IsPopup {
             get { return isPopup; }
             protected set { isPopup = value; }
         }

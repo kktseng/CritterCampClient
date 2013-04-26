@@ -38,8 +38,12 @@ namespace CritterCamp.Screens {
 
             // temporary pig drawing for profiles
             if (!ScreenManager.Textures.ContainsKey("TEMPPIGS")) {
-
                 ScreenManager.Textures.Add("TEMPPIGS", cm.Load<Texture2D>("pig"));
+            }
+            
+            if (!ScreenManager.Textures.ContainsKey("fbIcon")) {
+                ScreenManager.Textures.Add("fbIcon", cm.Load<Texture2D>("fbIcon"));
+                ScreenManager.Textures.Add("twitterIcon", cm.Load<Texture2D>("twitterIcon"));
             }
 
             // load the files
@@ -74,6 +78,7 @@ namespace CritterCamp.Screens {
             leader.Tapped += leaderButton_Tapped;
             Button1 about = new Button1("About");
             about.Position = new Vector2(1440, 800);
+            about.Tapped += aboutButton_Tapped;
             PlayButtons.addElement(play);
             PlayButtons.addElement(leader);
             PlayButtons.addElement(about);
@@ -186,6 +191,11 @@ namespace CritterCamp.Screens {
             LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(LeaderScreen)));
         }
 
+        void aboutButton_Tapped(object sender, EventArgs e) {
+            ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
+            ScreenManager.AddScreen(new AboutScreen(), null);
+        }
+
         void cancelButton_Tapped(object sender, EventArgs e) {
             cancelSearch();
         }
@@ -236,5 +246,63 @@ namespace CritterCamp.Screens {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
+    }
+
+    class AboutScreen : MenuScreen {
+        BorderedView aboutPage;
+
+        public AboutScreen() : base("About Screen") { }
+
+        public override void Activate(bool instancePreserved) {
+            base.Activate(instancePreserved);
+            IsPopup = true;
+
+            aboutPage = new BorderedView(new Vector2(1150, 900), new Vector2(1920 / 2, 1080 / 2 - 75));
+            aboutPage.Disabled = false;
+
+            int startX = 445;
+            int startY = 120;
+            Label about = new Label("About", new Vector2(startX, startY));
+            about.CenterX = false;
+            about.Font = "buttonFont";
+            Label version = new Label("Version 1.0", new Vector2(startX, startY+70));
+            version.CenterX = false;
+            version.Scale = 0.8f;
+
+            Label email1 = new Label("Email any issues to: ", new Vector2(startX + 670, startY - 20));
+            email1.CenterX = false;
+            email1.Scale = 0.8f;
+            Label email2 = new Label("CritterCampGame@gmail.com", new Vector2(startX + 340, startY + 30));
+            email2.CenterX = false;
+
+            Button1 rate = new Button1("Rate Us");
+            rate.Position = new Vector2(startX + 200, startY + 177);
+
+            Image fbIcon = new Image("fbIcon", 0, new Vector2(100, 100), new Vector2(startX+75, startY+350));
+            Label fb = new Label("fb.me/CritterCampGame", new Vector2(startX + 180, startY + 350));
+            fb.CenterX = false;
+            Image twIcon = new Image("twitterIcon", 0, new Vector2(100, 100), new Vector2(startX+75, startY+515));
+            Label tw = new Label("@CritterCampGame", new Vector2(startX + 180, startY + 515));
+            tw.CenterX = false;
+
+            Label music1 = new Label("Music", new Vector2(startX, startY + 655));
+            music1.CenterX = false;
+            music1.Scale = 0.8f;
+            Label music2 = new Label("Call to Adventure by Kevin Macleod", new Vector2(startX, startY + 715));
+            music2.CenterX = false;
+
+            aboutPage.addElement(about);
+            aboutPage.addElement(version);
+            aboutPage.addElement(email1);
+            aboutPage.addElement(email2);
+            aboutPage.addElement(rate);
+            aboutPage.addElement(fbIcon);
+            aboutPage.addElement(fb);
+            aboutPage.addElement(twIcon);
+            aboutPage.addElement(tw);
+            aboutPage.addElement(music1);
+            aboutPage.addElement(music2);
+            mainView.addElement(aboutPage);
+        }
     }
 }

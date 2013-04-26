@@ -60,6 +60,10 @@ namespace CritterCamp.Screens {
         }
 
         protected void goBack(object sender, EventArgs e) {
+            if (PopupExit()) {
+                return;
+            }
+
             ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
             LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(backScreen));
         }
@@ -85,11 +89,48 @@ namespace CritterCamp.Screens {
         /// </summary>
         protected virtual void OnCancel() { }
 
+        public override bool IsPopup {
+            protected set {
+                base.IsPopup = value;
+                if (value) {
+                    FilledRectangle backOverlayRect = new FilledRectangle(new Rectangle(-100, -100, 2500, 1500));
+                    backOverlayRect.Position = new Vector2(1920 / 2, 1080 / 2);
+                    backOverlayRect.Size = new Vector2(1920, 1080);
+                    Color blackOverlay = new Color(Color.Black, 0.5f);
+                    backOverlayRect.RectangleColor = blackOverlay;
+                    backOverlayRect.Disabled = false;
+                    backOverlayRect.Tapped += PopupExitTap;
+
+                    mainView.addElement(backOverlayRect);
+                }
+            }
+            get {
+                return base.IsPopup;
+            }
+        }
+
+        /// <summary>
+        /// An overrideable method called whenever this screen is a popup, and we touched outside the popup
+        /// </summary>
+        protected virtual void PopupExitTap(object sender, EventArgs e) {
+            PopupExit();
+        }
+
+        protected virtual bool PopupExit() {
+            if (IsPopup) {
+                ExitScreen();
+                return true;
+            }
+
+            return false;
+        }
+
         public override void HandleInput(GameTime gameTime, InputState input) {
             base.HandleInput(gameTime, input);
+            bool handled = true;
 
             if (input.TouchState.Count == 0) { // released our finger
-                mainView.HandleTouch(new Vector2(), new TouchLocation(), input); // pass the released finger information to the view
+                handled = mainView.HandleTouch(new Vector2(), new TouchLocation(), input); // pass the released finger information to the view
             } else {
                 foreach (TouchLocation loc in input.TouchState) { // otherwise find the scaled position to pass to the view
                     // Flip coordinates to scale with input buffer
@@ -101,10 +142,9 @@ namespace CritterCamp.Screens {
                     rawInput = new Vector2(loc.Position.X, loc.Position.Y);
                     scaledInput = scaledPos;
 
-                    mainView.HandleTouch(scaledPos, loc, input);
+                    handled = mainView.HandleTouch(scaledPos, loc, input);
                 }
             }
-            
 
             if (input.TouchState.Count == 0) { // released our finger
                 if (selectedButton != null) {
@@ -145,8 +185,10 @@ namespace CritterCamp.Screens {
             SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
 
             sd.Begin();
-            
-            sd.Draw(ScreenManager.Textures[background], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 775));
+
+            if (!IsPopup) {
+                sd.Draw(ScreenManager.Textures[background], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 775));
+            }
 
             // Draw all of the UIElements
             mainView.Draw(this, gameTime, spriteBatch, sd);
