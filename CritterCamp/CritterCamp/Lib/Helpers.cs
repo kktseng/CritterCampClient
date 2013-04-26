@@ -1,4 +1,6 @@
-﻿using Microsoft.Phone.Info;
+﻿using CritterCamp.Screens.Games.Lib;
+using GameStateManagement;
+using Microsoft.Phone.Info;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json.Linq;
 using System;
@@ -24,7 +26,7 @@ namespace CritterCamp {
         }
 
         public static void Sync(SyncDelegate sd, string data) {
-            Sync(sd, data, 10);
+            Sync(sd, data, 3);
         }
 
         public static void Sync(SyncDelegate sd, string data, int timeout) {
@@ -67,6 +69,22 @@ namespace CritterCamp {
                 offset = Constants.OFFSET_15_9;
             }
             return input / inputScale + new Vector2(0, Constants.BUFFER_OFFSET - offset);
+        }
+
+        public static SoundLibrary GetSoundLibrary(GameScreen screen) {
+            return GetSoundLibrary(screen.ScreenManager);
+        }
+
+        public static SoundLibrary GetSoundLibrary(ScreenManager sm) {
+            return (SoundLibrary)sm.Game.Services.GetService(typeof(SoundLibrary));
+        }
+
+        public static SpriteDrawer GetSpriteDrawer(GameScreen screen) {
+            return GetSpriteDrawer(screen.ScreenManager);
+        }
+
+        public static SpriteDrawer GetSpriteDrawer(ScreenManager sm) {
+            return (SpriteDrawer)sm.Game.Services.GetService(typeof(SpriteDrawer));
         }
     }
 

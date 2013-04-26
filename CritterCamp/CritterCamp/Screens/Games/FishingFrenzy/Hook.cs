@@ -34,8 +34,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             this.start = start;
             this.player = player;
             reelingIn = screen.soundList["reelingIn"].CreateInstance();
-            reelingIn.IsLooped = true;
-            reelingIn.Play();
+            Helpers.GetSoundLibrary(screen).LoopSound(reelingIn);
         }
 
         protected override void setAnim() {

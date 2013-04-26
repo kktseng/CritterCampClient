@@ -19,8 +19,9 @@ namespace CritterCamp.Screens {
             if(!ScreenManager.Textures.ContainsKey("buttonMint")) {
                 ScreenManager.Textures.Add("backButton", cm.Load<Texture2D>("backButton"));
                 ScreenManager.Textures.Add("buttonMint", cm.Load<Texture2D>("buttonMint"));
-                ScreenManager.Textures.Add("whiteTex", cm.Load<Texture2D>("buttonMint"));
+                ScreenManager.Textures.Add("whiteTex", cm.Load<Texture2D>("whitePixel"));
                 ScreenManager.Textures.Add("bgScreen", cm.Load<Texture2D>("bgScreen"));
+                ScreenManager.Textures.Add("paperBg", cm.Load<Texture2D>("paperBg"));
             }
             base.Activate(instancePreserved);
         }

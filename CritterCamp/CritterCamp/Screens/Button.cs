@@ -126,7 +126,7 @@ namespace CritterCamp.Screens {
             SpriteBatch spriteBatch = screen.ScreenManager.SpriteBatch;
             SpriteFont font = screen.ScreenManager.Fonts["buttonFont"];
             SpriteFont captionFont = screen.ScreenManager.Fonts["blueHighway28"];
-            SpriteDrawer sd = (SpriteDrawer)screen.ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+            SpriteDrawer sd = Helpers.GetSpriteDrawer(screen);
             Color buttonFontColor = Color.White;
 
             // Draw the button

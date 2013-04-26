@@ -19,6 +19,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Xml.Linq;
 using CritterCamp.Screens.Games.Lib;
+using CritterCamp;
 #endregion
 
 namespace GameStateManagement {
@@ -107,7 +108,7 @@ namespace GameStateManagement {
         /// </summary>
         public override void Initialize() {
             base.Initialize();
-            ((SpriteDrawer)Game.Services.GetService(typeof(SpriteDrawer))).Initialize();
+            Helpers.GetSpriteDrawer(this).Initialize();
             isInitialized = true;
         }
 

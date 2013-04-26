@@ -150,7 +150,7 @@ namespace CritterCamp.Screens {
                     // user selected a game already
                     Helpers.Sync((JArray data) => { }, selectedGame.ServerName, 10); // send that as the vote
                 } else {
-                    Helpers.Sync((JArray data) => { }, null); // send a null vote
+                    Helpers.Sync((JArray data) => { }, null, 10); // send a null vote
                 }
                 voted = true;
                 voteButton.Disabled = true;

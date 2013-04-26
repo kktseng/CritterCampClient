@@ -16,6 +16,7 @@ namespace CritterCamp {
         public GraphicsDeviceManager graphics;
         public ScreenManager screenManager;
         public ScreenFactory screenFactory;
+        public SoundLibrary soundLibrary;
 
         /// <summary>
         /// The main game constructor.
@@ -40,6 +41,10 @@ namespace CritterCamp {
             // Create a new instance of the Screen Manager
             screenManager = new ScreenManager(this);
             Components.Add(screenManager);
+
+            // Create a Sound Library
+            soundLibrary = new SoundLibrary();
+            Services.AddService(typeof(SoundLibrary), soundLibrary);
 
             // Create a Sprite Drawer
             Services.RemoveService(typeof(SpriteDrawer));

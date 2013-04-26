@@ -69,6 +69,9 @@ namespace CritterCamp.Screens {
             foreach(GameScreen screen in screenManager.GetScreens())
                 screen.ExitScreen();
 
+            // Remove any existing looping sounds
+            Helpers.GetSoundLibrary(screenManager).StopAllSounds();
+
             // Create and activate the loading screen.
             LoadingScreen loadingScreen = new LoadingScreen(screenManager,
                                                             loadingIsSlow,
@@ -113,8 +116,7 @@ namespace CritterCamp.Screens {
         /// </summary>
         public override void Draw(GameTime gameTime) {
             // Draw the standard backgroun
-            SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
-
+            SpriteDrawer sd = Helpers.GetSpriteDrawer(this);
             sd.Begin();
             sd.Draw(ScreenManager.Textures["bgScreen"], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 775));
             sd.End();

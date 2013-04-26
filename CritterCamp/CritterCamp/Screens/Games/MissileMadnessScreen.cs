@@ -79,7 +79,7 @@ namespace CritterCamp.Screens.Games {
 
         public override void Draw(GameTime gameTime) {
             ScreenManager.SpriteBatch.Begin();
-            SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+            SpriteDrawer sd = Helpers.GetSpriteDrawer(this);
 
             // Draw the game map
             tileMap.draw(sd);

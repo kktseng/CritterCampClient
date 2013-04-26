@@ -334,7 +334,7 @@ namespace GameStateManagement {
         /// This is called when the screen should draw itself.
         /// </summary>
         public virtual void Draw(GameTime gameTime) {
-            SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+            SpriteDrawer sd = Helpers.GetSpriteDrawer(this);
             coordScale = sd.coordScale;
             backBuffer = sd.backBuffer;
         }

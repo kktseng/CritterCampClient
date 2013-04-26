@@ -105,6 +105,7 @@
     <Compile Include="Screens\Games\JetpackJamboree\Explosion.cs" />
     <Compile Include="Screens\Games\JetpackJamboree\Pig.cs" />
     <Compile Include="Screens\Games\Lib\AnimatedObject.cs" />
+    <Compile Include="Screens\Games\Lib\SoundLibrary.cs" />
     <Compile Include="Screens\Games\Lib\SpriteDrawer.cs" />
     <Compile Include="Screens\Games\Lib\TextBanner.cs" />
     <Compile Include="Screens\Games\Lib\TileMap.cs" />
@@ -279,6 +280,9 @@
     <None Include="Content\twitterIcon.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\whitePixel.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>

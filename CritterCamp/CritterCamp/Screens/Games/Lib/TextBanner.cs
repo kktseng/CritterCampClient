@@ -20,7 +20,7 @@ namespace CritterCamp.Screens.Games.Lib {
             SpriteFont font = screen.ScreenManager.Fonts["buttonFont"];
             Vector2 size = font.MeasureString(text);
             // Resize coordinates to backbuffer
-            SpriteDrawer sd = (SpriteDrawer)screen.ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+            SpriteDrawer sd = Helpers.GetSpriteDrawer(screen);
             size *= sd.coordScale;
 
             // Calculate number of tiles in the middle

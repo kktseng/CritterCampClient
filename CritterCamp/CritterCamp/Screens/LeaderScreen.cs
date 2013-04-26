@@ -39,7 +39,7 @@ namespace CritterCamp.Screens {
         public override void Draw(GameTime gameTime) {
             base.Draw(gameTime);
             ScreenManager.SpriteBatch.Begin();
-            SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+            SpriteDrawer sd = Helpers.GetSpriteDrawer(this);
             for(int i = 0; i < leaders.Count; i++) {
                 sd.DrawString(ScreenManager.Fonts["blueHighway28"], (i + 1) + ". " + leaders[i], new Vector2(1000, 100 + 100 * i));
             }

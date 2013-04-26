@@ -60,7 +60,7 @@ namespace CritterCamp.Screens {
                 Helpers.Sync((JArray data) => {
                     ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
                     LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(game.ScreenType));
-                }, "tutorial");
+                }, "tutorial", 10);
             }
 
             if (timeLeft == 0) {
@@ -89,7 +89,7 @@ namespace CritterCamp.Screens {
         }
 
         public override void Draw(GameTime gameTime) {
-            SpriteDrawer sd = (SpriteDrawer)ScreenManager.Game.Services.GetService(typeof(SpriteDrawer));
+            SpriteDrawer sd = Helpers.GetSpriteDrawer(this);
             sd.Begin();
 
             sd.Draw(tutorial, new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 775));
