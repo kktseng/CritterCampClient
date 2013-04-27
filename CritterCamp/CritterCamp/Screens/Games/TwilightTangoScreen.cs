@@ -322,7 +322,6 @@ namespace CritterCamp.Screens.Games {
                         ))
                     );
                     conn.SendMessage(packet.ToString());
-                    expGained = (5 - players[playerName].rank) * 100;
                     phase = Phase.Sleep;
                 }
             } else if(phase == Phase.Sleep) {

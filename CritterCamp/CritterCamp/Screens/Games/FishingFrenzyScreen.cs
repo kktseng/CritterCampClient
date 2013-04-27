@@ -156,7 +156,15 @@ namespace CritterCamp.Screens.Games {
                 if(round > roundData.Length) {
                     // End game when rounds are over
                     baseline = gameTime.TotalGameTime;
-                    banner = new TextBanner(this, "GAME OVER");
+
+                    // Check if player has won to display appropriate banner
+                    string text = "YOU WIN!";
+                    foreach(int score in scores.Values) {
+                        if(score > scores[playerName]) {
+                            text = "GAME OVER";
+                        }
+                    }
+                    banner = new TextBanner(this, text);
                     phase = Phase.End;
                     return;
                 }
@@ -249,7 +257,6 @@ namespace CritterCamp.Screens.Games {
                         ))
                     );
                     conn.SendMessage(packet.ToString());
-                    expGained = (5 - ranks[playerName]) * 100;
                     phase = Phase.Sleep;
                 }
             }

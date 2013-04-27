@@ -34,7 +34,7 @@ namespace CritterCamp.Screens.Games {
         public Dictionary<string, SoundEffect> soundList = new Dictionary<string, SoundEffect>();
 
         protected ContentManager cm;
-        protected int expGained;
+        protected int expGained = 0;
 
         protected List<IAnimatedObject> actors = new List<IAnimatedObject>();
         protected List<IAnimatedObject> toAdd = new List<IAnimatedObject>();
@@ -54,7 +54,6 @@ namespace CritterCamp.Screens.Games {
             // Check for final score
             if((string)o["action"] == "score") {
                 List<PlayerData> sortedScoreData = new List<PlayerData>();
-                Dictionary<string, PlayerData> playerData = (Dictionary<string, PlayerData>)CoreApplication.Properties["player_data"];
                 JArray scores = (JArray)o["scores"];
                 foreach(JObject score in scores) {
                     PlayerData player = playerData[(string)score["username"]];
@@ -77,6 +76,13 @@ namespace CritterCamp.Screens.Games {
                     }
                 }
                 CoreApplication.Properties["scores"] = sortedScoreData;
+
+                // calculate exp
+                for(int i = 0; i < sortedScoreData.Count; i++) {
+                    if(sortedScoreData[i].username == playerName) {
+                        expGained = (4 - i) * 100;
+                    }
+                }
 
                 JObject packet = new JObject(
                     new JProperty("action", "rank"),

@@ -15,13 +15,21 @@ using System.Threading.Tasks;
 
 namespace CritterCamp.Screens.Games {
     class JetpackJamboreeScreen : BaseGameScreen {
-        public static int PIG_DELAY = 1;
+        public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 2);
+        public static TimeSpan PIG_DELAY = new TimeSpan(0, 0, 0, 1, 500);
         public static int MAX_PIG_COUNT = 8;
         public bool exploded = false;
-        public bool synced = false, begin = false; // takes care of initial syncing
+
+        protected enum Phase {
+            Sync,
+            Limbo,
+            Begin,
+            GameOver
+        }
+        protected Phase phase = Phase.Sync;
 
         protected TileMap tileMap, doodadMap;
-        protected TimeSpan timeSincePig;
+        protected TimeSpan timeSincePig, bannerStart;
         protected TextBanner banner;
         protected Timer updateTimer;
 
@@ -180,9 +188,6 @@ namespace CritterCamp.Screens.Games {
             if(!deadUsers.Contains(user)) {
                 deadUsers.Insert(0, user);
                 if(deadUsers.Count == playerData.Count - 1 && !deadUsers.Contains(playerName)) {
-                    deadUsers.Insert(0, playerName);
-                }
-                if(deadUsers.Count >= playerData.Count) {
                     // Tell other players game is finished
                     JObject packet = new JObject(
                         new JProperty("action", "game"),
@@ -192,26 +197,16 @@ namespace CritterCamp.Screens.Games {
                         ))
                     );
                     conn.SendMessage(packet.ToString());
-                    // Sync scores
-                    packet = new JObject(
-                        new JProperty("action", "group"),
-                        new JProperty("type", "report_score"),
-                        new JProperty("score", new JObject(
-                            from username in deadUsers
-                            select new JProperty(username, deadUsers.IndexOf(username) + 1)
-                        ))
-                    );
-                    conn.SendMessage(packet.ToString());
-                    expGained = (5 - deadUsers.IndexOf(playerName) + 1) * 100;
+                } else if(deadUsers.Count >= playerData.Count) {
+                    phase = Phase.GameOver;
                 }
             }
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
-            // sync with all users before starting
-            if(!synced) {
-                synced = true;
+            if(phase == Phase.Sync) {
+                // sync with all users before starting
                 Helpers.Sync((JArray data) => {
                     foreach(string name in playerData.Keys) {
                         bool found = false;
@@ -221,40 +216,62 @@ namespace CritterCamp.Screens.Games {
                         }
                         if(!found)
                             removePlayer(name);
-                   }
-                    begin = true;
-                }, playerName);
-            }
-            if(!exploded && begin) {
-                // Randomly bring in pigs
-                if((gameTime.TotalGameTime - timeSincePig).TotalSeconds > PIG_DELAY && rand.Next(1000) < gameTime.TotalGameTime.Seconds) {
-                    mainPigs.Add(new Pig(this, PigStates.Entering, rand));
-                    timeSincePig = gameTime.TotalGameTime;
-                }
-
-                // Check if any sections are filled
-                for(int i = 0; i < pennedPigs.Count; i++) {
-                    if(pennedPigs[i].Count >= MAX_PIG_COUNT) {
-                        foreach(Pig p in pennedPigs[i]) {
-                            p.setState(PigStates.Flying);
-                        }
-                        pennedPigs[i].Clear();
-                        // Send packet to send pigs to other players
-                        JObject packet = new JObject(
-                            new JProperty("action", "game"),
-                            new JProperty("name", "jetpack_jamboree"),
-                            new JProperty("data", new JObject(
-                                new JProperty("action", "fly"),
-                                new JProperty("color", i)
-                            ))
-                        );
-                        conn.SendMessage(packet.ToString());
                     }
+                    phase = Phase.Begin;
+                }, playerName);
+                phase = Phase.Limbo;
+            } else if(phase == Phase.Limbo) {
+                // do nothing while we wait for sync
+            } else if(phase == Phase.Begin) {
+                if(!exploded) {
+                    // Randomly bring in pigs
+                    if((gameTime.TotalGameTime - timeSincePig) > PIG_DELAY && rand.Next(1000) < gameTime.TotalGameTime.Seconds) {
+                        mainPigs.Add(new Pig(this, PigStates.Entering, rand));
+                        timeSincePig = gameTime.TotalGameTime;
+                    }
+
+                    // Check if any sections are filled
+                    for(int i = 0; i < pennedPigs.Count; i++) {
+                        if(pennedPigs[i].Count >= MAX_PIG_COUNT) {
+                            foreach(Pig p in pennedPigs[i]) {
+                                p.setState(PigStates.Flying);
+                            }
+                            pennedPigs[i].Clear();
+                            // Send packet to send pigs to other players
+                            JObject packet = new JObject(
+                                new JProperty("action", "game"),
+                                new JProperty("name", "jetpack_jamboree"),
+                                new JProperty("data", new JObject(
+                                    new JProperty("action", "fly"),
+                                    new JProperty("color", i)
+                                ))
+                            );
+                            conn.SendMessage(packet.ToString());
+                        }
+                    }
+                    avatars[playerName].count = mainPigs.Count;
+                } else {
+                    if(banner == null)
+                        banner = new TextBanner(this, "GAME OVER");
                 }
-                avatars[playerName].count = mainPigs.Count;
-            } else if(exploded) {
+                // Keep track of when the game switches to game over
+                bannerStart = gameTime.TotalGameTime;
+            } else if(phase == Phase.GameOver) {
                 if(banner == null)
-                    banner = new TextBanner(this, "GAME OVER");
+                    banner = new TextBanner(this, "YOU WIN!");
+                if(gameTime.TotalGameTime - bannerStart > BANNER_TIME) {
+                    // Sync scores
+                    JObject packet = new JObject(
+                        new JProperty("action", "group"),
+                        new JProperty("type", "report_score"),
+                        new JProperty("score", new JObject(
+                            from username in deadUsers
+                            select new JProperty(username, deadUsers.IndexOf(username) + 1)
+                        ))
+                    );
+                    conn.SendMessage(packet.ToString());
+                    phase = Phase.Limbo;
+                }               
             }
         }
 
@@ -290,32 +307,6 @@ namespace CritterCamp.Screens.Games {
 
             sd.End();
             base.Draw(gameTime);
-        }
-
-        protected override void MessageReceived(string message, bool error, TCPConnection connection) {
-            base.MessageReceived(message, error, connection);
-            JObject o = JObject.Parse(message);
-            if((string)o["action"] == "game" && (string)o["name"] == "jetpack_jamboree") {
-                JObject data = (JObject)o["data"];
-                if((string)data["action"] == "add") {
-                    if(playerName != (string)data["source"] && !exploded) {
-                        // Add new pigs flying in
-                        for(int i = 0; i < (int)(MAX_PIG_COUNT / (playerData.Count - deadUsers.Count - 1)); i++) {
-                            Pig p = new Pig(this, PigStates.Falling, rand);
-                            p.color = (int)data["color"];
-                            mainPigs.Add(p);
-                        }
-                        avatars[(string)data["source"]].setState(true);
-                    }
-                } else if((string)data["action"] == "exploded") {
-                    string exploded_user = (string)data["source"];
-                    removePlayer(exploded_user);
-                } else if((string)data["action"] == "update") {
-                    if(playerName != (string)data["source"]) {
-                        avatars[(string)data["source"]].count = (int)data["count"];
-                    }
-                }
-            }
         }
 
         protected void DrawLaunchpad(SpriteDrawer sd, Vector2 coord, int color) {
@@ -366,6 +357,32 @@ namespace CritterCamp.Screens.Games {
             sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 1.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5, SpriteEffects.FlipVertically);
             sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 2.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeTCurve + color * 5, spriteRotation: Constants.ROTATE_90 * 2);
             sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 3.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically);
+        }
+
+        protected override void MessageReceived(string message, bool error, TCPConnection connection) {
+            base.MessageReceived(message, error, connection);
+            JObject o = JObject.Parse(message);
+            if((string)o["action"] == "game" && (string)o["name"] == "jetpack_jamboree") {
+                JObject data = (JObject)o["data"];
+                if((string)data["action"] == "add") {
+                    if(playerName != (string)data["source"] && !exploded) {
+                        // Add new pigs flying in
+                        for(int i = 0; i < (int)(MAX_PIG_COUNT / (playerData.Count - deadUsers.Count - 1)); i++) {
+                            Pig p = new Pig(this, PigStates.Falling, rand);
+                            p.color = (int)data["color"];
+                            mainPigs.Add(p);
+                        }
+                        avatars[(string)data["source"]].setState(true);
+                    }
+                } else if((string)data["action"] == "exploded") {
+                    string exploded_user = (string)data["source"];
+                    removePlayer(exploded_user);
+                } else if((string)data["action"] == "update") {
+                    if(playerName != (string)data["source"]) {
+                        avatars[(string)data["source"]].count = (int)data["count"];
+                    }
+                }
+            }
         }
 
         public override void Unload() {
