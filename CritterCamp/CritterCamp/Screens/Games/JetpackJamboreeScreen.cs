@@ -4,6 +4,7 @@ using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,10 @@ using System.Threading.Tasks;
 
 namespace CritterCamp.Screens.Games {
     class JetpackJamboreeScreen : BaseGameScreen {
-        public static int PIG_DELAY = 2;
+        public static int PIG_DELAY = 1;
         public static int MAX_PIG_COUNT = 8;
         public bool exploded = false;
+        public bool synced = false, begin = false; // takes care of initial syncing
 
         protected TileMap tileMap, doodadMap;
         protected TimeSpan timeSincePig;
@@ -92,7 +94,7 @@ namespace CritterCamp.Screens.Games {
             };
             int[,] ddMap = new int[,] {
                 {  21, 21, 21, 21, 21, 22, -1, -1, 16, -1, -1, 16, -1, -1, 18, 21, 21, 21, 21, 21 },
-                {  -1, -1, -1, -1, -1, 16, -1, -1, 18, 21, 21, 22, -1, -1, 16, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, 16, -1, -1, 17, -1, -1, 17, -1, -1, 16, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
@@ -156,10 +158,12 @@ namespace CritterCamp.Screens.Games {
             for(int i = 0; i < 4; i++) {
                 foreach(Pig p in pennedPigs[i]) {
                     p.setState(PigStates.Standing);
+                    p.setVelocity(Vector2.Zero);
                 }
             }
             foreach(Pig p in mainPigs) {
                 p.setState(PigStates.Standing);
+                p.setVelocity(Vector2.Zero);
             }
             // Inform other players of explosion
             JObject packet = new JObject(
@@ -205,7 +209,23 @@ namespace CritterCamp.Screens.Games {
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
-            if(!exploded) {
+            // sync with all users before starting
+            if(!synced) {
+                synced = true;
+                Helpers.Sync((JArray data) => {
+                    foreach(string name in playerData.Keys) {
+                        bool found = false;
+                        foreach(JToken tok in data) {
+                            if((string)tok == name)
+                                found = true;
+                        }
+                        if(!found)
+                            removePlayer(name);
+                   }
+                    begin = true;
+                }, playerName);
+            }
+            if(!exploded && begin) {
                 // Randomly bring in pigs
                 if((gameTime.TotalGameTime - timeSincePig).TotalSeconds > PIG_DELAY && rand.Next(1000) < gameTime.TotalGameTime.Seconds) {
                     mainPigs.Add(new Pig(this, PigStates.Entering, rand));
@@ -232,7 +252,7 @@ namespace CritterCamp.Screens.Games {
                     }
                 }
                 avatars[playerName].count = mainPigs.Count;
-            } else {
+            } else if(exploded) {
                 if(banner == null)
                     banner = new TextBanner(this, "GAME OVER");
             }

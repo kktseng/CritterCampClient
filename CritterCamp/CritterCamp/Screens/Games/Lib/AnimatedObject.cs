@@ -96,6 +96,14 @@ namespace CritterCamp.Screens.Games.Lib {
             return coord + getFrame().Value.offset;
         }
 
+        public Vector2 getVelocity() {
+            return velocity;
+        }
+
+        public void setVelocity(Vector2 velocity) {
+            this.velocity = velocity;
+        }
+
         public void move(Vector2 offset) {
             coord += offset;
         }

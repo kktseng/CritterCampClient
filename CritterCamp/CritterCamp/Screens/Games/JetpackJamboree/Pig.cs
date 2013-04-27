@@ -22,8 +22,8 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
         public static TimeSpan EXPLODE_TIME = new TimeSpan(0, 0, 10);
 
         private static int MIN_FLY_ENTER = 600;
-        private static int MAX_FLY_ENTER = 1250;
-        private static int[] WALK_IN_ENTER = new int[] { 672, 1248 };
+        private static int MAX_FLY_ENTER = 1320;
+        private static int[] WALK_IN_ENTER = new int[] { 672, 960, 1248 };
 
         private static int FLY_TIME = 1350;
         private static int ENTER_TIME = 1000;
@@ -60,7 +60,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
             if(startingState == PigStates.Falling) {
                 coord = new Vector2(rand.Next(MIN_FLY_ENTER, MAX_FLY_ENTER), rand.Next((int)(-FLY_TIME * 0.6), -Constants.BUFFER_SPRITE_DIM / 2));
             } else if(startingState == PigStates.Entering) {
-                coord = new Vector2(WALK_IN_ENTER[rand.Next(0, 2)], -Constants.BUFFER_SPRITE_DIM / 2);
+                coord = new Vector2(WALK_IN_ENTER[rand.Next(0, 3)], -Constants.BUFFER_SPRITE_DIM / 2);
             }
             setState(startingState);
             this.rand = rand;
