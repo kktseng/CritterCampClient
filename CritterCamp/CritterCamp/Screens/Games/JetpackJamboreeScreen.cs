@@ -92,7 +92,7 @@ namespace CritterCamp.Screens.Games {
             };
             int[,] ddMap = new int[,] {
                 {  21, 21, 21, 21, 21, 22, -1, -1, 16, -1, -1, 16, -1, -1, 18, 21, 21, 21, 21, 21 },
-                {  -1, -1, -1, -1, -1, 18, -1, -1, 22, 21, 21, 18, -1, -1, 22, -1, -1, -1, -1, -1 },
+                {  -1, -1, -1, -1, -1, 16, -1, -1, 18, 21, 21, 22, -1, -1, 16, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
@@ -208,9 +208,7 @@ namespace CritterCamp.Screens.Games {
             if(!exploded) {
                 // Randomly bring in pigs
                 if((gameTime.TotalGameTime - timeSincePig).TotalSeconds > PIG_DELAY && rand.Next(1000) < gameTime.TotalGameTime.Seconds) {
-                    if(rand.Next(0, 1) == 0) {
-                        mainPigs.Add(new Pig(this, PigStates.Entering, rand));
-                    }
+                    mainPigs.Add(new Pig(this, PigStates.Entering, rand));
                     timeSincePig = gameTime.TotalGameTime;
                 }
 

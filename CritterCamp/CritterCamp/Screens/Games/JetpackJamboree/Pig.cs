@@ -23,9 +23,9 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
 
         private static int MIN_FLY_ENTER = 600;
         private static int MAX_FLY_ENTER = 1250;
-        private static int WALK_IN_ENTER = 960;
+        private static int[] WALK_IN_ENTER = new int[] { 672, 1248 };
 
-        private static int FLY_TIME = 1450;
+        private static int FLY_TIME = 1350;
         private static int ENTER_TIME = 1000;
         private static int ENTER_SPD = 200;
         private static int FLY_SPD = 800;
@@ -60,7 +60,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
             if(startingState == PigStates.Falling) {
                 coord = new Vector2(rand.Next(MIN_FLY_ENTER, MAX_FLY_ENTER), rand.Next((int)(-FLY_TIME * 0.6), -Constants.BUFFER_SPRITE_DIM / 2));
             } else if(startingState == PigStates.Entering) {
-                coord = new Vector2(WALK_IN_ENTER, -Constants.BUFFER_SPRITE_DIM / 2);
+                coord = new Vector2(WALK_IN_ENTER[rand.Next(0, 2)], -Constants.BUFFER_SPRITE_DIM / 2);
             }
             setState(startingState);
             this.rand = rand;
@@ -96,56 +96,55 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
         }
 
         public override void animate(GameTime time) {
-            if(selected) {
-                base.animate(time);
-                return;
-            } else if(state == PigStates.Falling) {
-                if(!timeLeft.HasValue) {
-                    timeLeft = new TimeSpan(0, 0, 0, 0, FLY_TIME);
-                } else {
-                    if(timeLeft.Value < time.ElapsedGameTime) {
-                        timeLeft = EXPLODE_TIME;
-                        walk();
+            if(!selected && !((JetpackJamboreeScreen)screen).exploded) {
+                if(state == PigStates.Falling) {
+                    if(!timeLeft.HasValue) {
+                        timeLeft = new TimeSpan(0, 0, 0, 0, FLY_TIME);
                     } else {
-                        timeLeft -= time.ElapsedGameTime;
-                        velocity = new Vector2(0, (float)timeLeft.Value.TotalMilliseconds);
-                    }
-                }
-            } else if(state == PigStates.Entering) {
-                if(!timeLeft.HasValue) {
-                    timeLeft = new TimeSpan(0, 0, 0, 0, ENTER_TIME);
-                } else {
-                    if(timeLeft.Value < time.ElapsedGameTime) {
-                        timeLeft = EXPLODE_TIME;
-                        walk();
-                    } else {
-                        timeLeft -= time.ElapsedGameTime;
-                        velocity = new Vector2(0, ENTER_SPD);
-                    }
-                }
-            } else if(state == PigStates.WalkLeft || state == PigStates.WalkRight) {
-                timeLeft -= time.ElapsedGameTime;
-                if(curBounds == MAIN_BOUNDS) {
-                    jetPackState = 3 - (int)((timeLeft.Value.TotalSeconds / EXPLODE_TIME.TotalSeconds) * 4);
-                    // Explode
-                    if(jetPackState > 3) {
-                        if(!((JetpackJamboreeScreen)screen).exploded) {
-                            new Explosion(screen, coord - new Vector2(0, 32));
-                            ((JetpackJamboreeScreen)screen).Explode();
-                            screen.removeActor(this);
+                        if(timeLeft.Value < time.ElapsedGameTime) {
+                            timeLeft = EXPLODE_TIME;
+                            walk();
+                        } else {
+                            timeLeft -= time.ElapsedGameTime;
+                            velocity = new Vector2(0, (float)timeLeft.Value.TotalMilliseconds);
                         }
                     }
-                } else {
-                    jetPackState = 0;
+                } else if(state == PigStates.Entering) {
+                    if(!timeLeft.HasValue) {
+                        timeLeft = new TimeSpan(0, 0, 0, 0, ENTER_TIME);
+                    } else {
+                        if(timeLeft.Value < time.ElapsedGameTime) {
+                            timeLeft = EXPLODE_TIME;
+                            walk();
+                        } else {
+                            timeLeft -= time.ElapsedGameTime;
+                            velocity = new Vector2(0, ENTER_SPD);
+                        }
+                    }
+                } else if(state == PigStates.WalkLeft || state == PigStates.WalkRight) {
+                    timeLeft -= time.ElapsedGameTime;
+                    if(curBounds == MAIN_BOUNDS) {
+                        jetPackState = 3 - (int)((timeLeft.Value.TotalSeconds / EXPLODE_TIME.TotalSeconds) * 4);
+                        // Explode
+                        if(jetPackState > 3) {
+                            if(!((JetpackJamboreeScreen)screen).exploded) {
+                                new Explosion(screen, coord - new Vector2(0, 32));
+                                ((JetpackJamboreeScreen)screen).Explode();
+                                screen.removeActor(this);
+                            }
+                        }
+                    } else {
+                        jetPackState = 0;
+                    }
+                    checkBounds(curBounds, time.ElapsedGameTime);
+                } else if(state == PigStates.Flying) {
+                    if(coord.Y < -Constants.BUFFER_SPRITE_DIM) {
+                        screen.removeActor(this);
+                    }
+                    velocity = new Vector2(0, -FLY_SPD);
+                } else if(state == PigStates.Standing) {
+                    velocity = Vector2.Zero;
                 }
-                checkBounds(curBounds, time.ElapsedGameTime);
-            } else if(state == PigStates.Flying) {
-                if(coord.Y < -Constants.BUFFER_SPRITE_DIM) {
-                    screen.removeActor(this);
-                }
-                velocity = new Vector2(0, -FLY_SPD);
-            } else if(state == PigStates.Standing) {
-                velocity = Vector2.Zero;
             }
             base.animate(time);
         }

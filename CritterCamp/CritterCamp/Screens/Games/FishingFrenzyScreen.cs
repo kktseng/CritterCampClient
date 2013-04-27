@@ -39,8 +39,10 @@ namespace CritterCamp.Screens.Games {
         public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 2);
         public float BUCKET_Y = (float)Constants.BUFFER_SPRITE_DIM * 2.5f - 40;
         public static double FISH_SPACING = 0.2d;
+        public static TimeSpan SHADOW_INTERVAL = new TimeSpan(0, 0, 45);
 
         protected enum Phase {
+            Begin,
             Limbo,
             Base,
             Banner,
@@ -63,9 +65,10 @@ namespace CritterCamp.Screens.Games {
 
         protected List<FishData> fishData;
         protected TimeSpan lastFish;
+        protected TimeSpan lastShadow = new TimeSpan(0, 0, 0);
         protected int curFish;
 
-        protected Phase phase = Phase.Limbo;
+        protected Phase phase = Phase.Begin;
         protected int round = 1;
 
         public FishingFrenzyScreen(Dictionary<string, PlayerData> playerData)
@@ -144,9 +147,12 @@ namespace CritterCamp.Screens.Games {
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             // randomly add shadows
             if(rand.Next(0, 1000) < 1) {
-                new Shadow(this, (rand.Next(0, 2) == 0), rand.Next(450, 800), rand.Next(0, 2));
+                if(gameTime.TotalGameTime - lastShadow > SHADOW_INTERVAL) {
+                    new Shadow(this, (rand.Next(0, 2) == 0), rand.Next(450, 800), rand.Next(0, 2));
+                    lastShadow = gameTime.TotalGameTime;
+                }
             }
-            if(phase == Phase.Limbo) {
+            if(phase == Phase.Begin) {
                 if(round > roundData.Length) {
                     // End game when rounds are over
                     baseline = gameTime.TotalGameTime;
@@ -155,6 +161,10 @@ namespace CritterCamp.Screens.Games {
                     return;
                 }
                 phaseFish(roundData[round - 1]);
+                phase = Phase.Limbo;
+            }
+            if(phase == Phase.Limbo) {
+                // Do nothing and wait for the sync to finish
             } else if(phase == Phase.Base) {
                 baseline = gameTime.TotalGameTime;
                 banner = new TextBanner(this, "Round " + round);
@@ -215,7 +225,7 @@ namespace CritterCamp.Screens.Games {
                         round++;
                         // remove all looped sounds before continuing
                         Helpers.GetSoundLibrary(this).StopAllSounds();
-                        phase = Phase.Limbo;
+                        phase = Phase.Begin;
                     }
                 }
             } else if(phase == Phase.End) {
