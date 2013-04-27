@@ -47,7 +47,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
 
         public override void animate(GameTime time) {
             base.animate(time);
-            if(getCoord().X > 2200 || getCoord().X < -150) {
+            if(getCoord().X > 2400 || getCoord().X < -350) {
                 screen.removeActor(this);
             }
         }

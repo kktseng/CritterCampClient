@@ -288,6 +288,7 @@ namespace CritterCamp {
                 LayoutRoot.Visibility = Visibility.Visible;
                 ScreenFactory sf = (ScreenFactory)_game.screenManager.Game.Services.GetService(typeof(IScreenFactory));
                 LoadingScreen.Load(_game.screenManager, false, null, sf.CreateScreen(typeof(OfflineScreen)));
+                Helpers.ResetState();
             });
         }
     }

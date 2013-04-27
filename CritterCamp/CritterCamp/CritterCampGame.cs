@@ -28,9 +28,6 @@ namespace CritterCamp {
             graphics.IsFullScreen = true;
             //graphics.SynchronizeWithVerticalRetrace = false;
 
-            // Frame rate is 30 fps by default for Windows Phone.
-            TargetElapsedTime = TimeSpan.FromTicks(333333);
-
             // Create the screen factory and add it to the Services
             screenFactory = new ScreenFactory();
             Services.AddService(typeof(IScreenFactory), screenFactory);
@@ -56,10 +53,10 @@ namespace CritterCamp {
         }
 
         private void Deactivation(object sender, DeactivatedEventArgs e) {
-            ScreenFactory sf = (ScreenFactory)screenManager.Game.Services.GetService(typeof(IScreenFactory));
-            LoadingScreen.Load(screenManager, false, null, sf.CreateScreen(typeof(OfflineScreen)));
-            ((GamePage)CoreApplication.Properties["GamePage"]).LayoutRoot.Visibility = System.Windows.Visibility.Visible;
-            ((GamePage)CoreApplication.Properties["GamePage"]).onLoaded(null, null);
+            LoadingScreen.Load(screenManager, false, null, Helpers.GetScreenFactory(screenManager).CreateScreen(typeof(OfflineScreen)));
+            GamePage myGamePage = (GamePage)CoreApplication.Properties["GamePage"];
+            myGamePage.LayoutRoot.Visibility = System.Windows.Visibility.Visible;
+            myGamePage.onLoaded(null, null);
         }
     }
 }

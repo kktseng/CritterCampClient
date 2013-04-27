@@ -71,6 +71,20 @@ namespace CritterCamp {
             return input / inputScale + new Vector2(0, Constants.BUFFER_OFFSET - offset);
         }
 
+        public static void ResetState() {
+            // save important values
+            GamePage gp = (GamePage)CoreApplication.Properties["GamePage"];
+            float ratio = (float)CoreApplication.Properties["ratio"];
+
+            // reset CoreApplication.Properties
+            CoreApplication.Properties.Clear();
+            CoreApplication.Properties["GamePage"] = gp;
+            CoreApplication.Properties["ratio"] = ratio;
+        }
+
+        /***
+         * Service Getter Methods
+         ***/
         public static SoundLibrary GetSoundLibrary(GameScreen screen) {
             return GetSoundLibrary(screen.ScreenManager);
         }
@@ -87,11 +101,11 @@ namespace CritterCamp {
             return (SpriteDrawer)sm.Game.Services.GetService(typeof(SpriteDrawer));
         }
 
-        public static ScreenFactory GetScreenFactory(GameScreen screen) {
+        public static IScreenFactory GetScreenFactory(GameScreen screen) {
             return GetScreenFactory(screen.ScreenManager);
         }
 
-        public static ScreenFactory GetScreenFactory(ScreenManager sm) {
+        public static IScreenFactory GetScreenFactory(ScreenManager sm) {
             return (ScreenFactory)sm.Game.Services.GetService(typeof(IScreenFactory));
         }
     }

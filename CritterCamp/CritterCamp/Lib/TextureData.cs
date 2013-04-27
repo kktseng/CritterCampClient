@@ -46,16 +46,16 @@ namespace CritterCamp {
         }
 
         public enum Doodads {
-            signTopLeft, signTopMid, signTopRight, signBtmLeft, signBtmMid, signBtmRight,
-            jetPack1, jetPack2, jetPack3, jetPack4,
-            sideJet1, sideJet2, sideJet3, sideJet4,
-            jetFlame1, jetFlame2,
-            fenceTopEnd, fenceBottomEnd, fenceTopLeft, fenceLeftEnd, fence3Way, fence2Way, fenceTopRight, fenceRightEnd,
-            crosshair,
-            fishingPole1, fishingPole2,
-            smallSign,
-            flag,
-            greenBaton1, redBaton1, redBaton2
+            signTopLeft, signTopMid, signTopRight, signBtmLeft, signBtmMid, signBtmRight, // 0
+            jetPack1, jetPack2, jetPack3, jetPack4, // 6
+            sideJet1, sideJet2, sideJet3, sideJet4, // 10
+            jetFlame1, jetFlame2, // 14
+            fenceTopEnd, fenceBottomEnd, fenceTopLeft, fenceLeftEnd, fence3Way, fence2Way, fenceTopRight, fenceRightEnd, // 16
+            crosshair, // 24
+            fishingPole1, fishingPole2, // 25
+            smallSign, // 26
+            flag, // 27
+            greenBaton1, redBaton1, redBaton2 // 30
         }
 
         public enum twilightTexture {

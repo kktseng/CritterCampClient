@@ -147,14 +147,14 @@ namespace CritterCamp.Screens.Games {
                 new Shadow(this, (rand.Next(0, 2) == 0), rand.Next(450, 800), rand.Next(0, 2));
             }
             if(phase == Phase.Limbo) {
-                if(round >= roundData.Length) {
+                if(round > roundData.Length) {
                     // End game when rounds are over
                     baseline = gameTime.TotalGameTime;
                     banner = new TextBanner(this, "GAME OVER");
                     phase = Phase.End;
                     return;
                 }
-                phaseFish(roundData[round]);
+                phaseFish(roundData[round - 1]);
             } else if(phase == Phase.Base) {
                 baseline = gameTime.TotalGameTime;
                 banner = new TextBanner(this, "Round " + round);
