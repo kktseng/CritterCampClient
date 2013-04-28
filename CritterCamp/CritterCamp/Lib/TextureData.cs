@@ -51,11 +51,11 @@ namespace CritterCamp {
             sideJet1, sideJet2, sideJet3, sideJet4, // 10
             jetFlame1, jetFlame2, // 14
             fenceTopEnd, fenceBottomEnd, fenceTopLeft, fenceLeftEnd, fence3Way, fence2Way, fenceTopRight, fenceRightEnd, // 16
-            crosshair, // 24
-            fishingPole1, fishingPole2, // 25
+            fishingPole1, fishingPole2, // 24
             smallSign, // 26
             flag, // 27
-            greenBaton1, redBaton1, redBaton2 // 30
+            greenBaton1, redBaton1, redBaton2, // 28
+            skull
         }
 
         public enum twilightTexture {

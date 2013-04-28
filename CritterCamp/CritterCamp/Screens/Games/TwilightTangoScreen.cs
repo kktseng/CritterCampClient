@@ -252,6 +252,7 @@ namespace CritterCamp.Screens.Games {
                         phase = Phase.Close;
                         return;
                     }
+                    List<Player> tieCheck = new List<Player>();
                     foreach(string s in new List<string>(players.Keys)) {
                         Player p = players[s];
                         bool error = false;
@@ -273,6 +274,10 @@ namespace CritterCamp.Screens.Games {
                             p.health--;
                             if(p.health <= 0) {
                                 p.rank = currentRank;
+                                foreach(Player tiedPlayer in tieCheck) {
+                                    tiedPlayer.rank--;
+                                }
+                                tieCheck.Add(p);
                                 if(--currentRank <= 0) {
                                     phase = Phase.GameOver;
                                 }
@@ -309,7 +314,8 @@ namespace CritterCamp.Screens.Games {
                 }
             } else if(phase == Phase.GameOver) {
                 if(banner == null) {
-                    banner = new TextBanner(this, "GAME OVER");
+                    string bannerText = (players[playerName].rank == 1) ? "YOU WIN!" : "GAME OVER";
+                    banner = new TextBanner(this, bannerText);
                 }
                 if((gameTime.TotalGameTime - start) > BANNER_TIME) {
                     // Sync scores

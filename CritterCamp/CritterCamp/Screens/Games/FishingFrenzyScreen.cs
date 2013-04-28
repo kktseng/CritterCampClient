@@ -429,19 +429,23 @@ namespace CritterCamp.Screens.Games {
             if((string)o["action"] == "game" && (string)o["name"] == "fishing_frenzy") {
                 JObject data = (JObject)o["data"];
                 if((string)data["action"] == "hook") {
-                    if((string)data["source"] != playerName && phase == Phase.Fishing) {
-                        // Play swoosh
-                        soundList["swoosh"].Play();
+                    if((string)data["source"] != playerName) {
+                        if(phase == Phase.Fishing) {
+                            // Play swoosh
+                            soundList["swoosh"].Play();
 
-                        // enforce locks to prevent race conditions
-                        lock(hooked) {
-                            lock(backupHooked) {
-                                if(!hooked.ContainsKey((string)data["source"])) {
-                                    hooked[(string)data["source"]] = new Hook(this, (int)data["pos"], new TimeSpan((long)data["time"]), playerData[(string)data["source"]]);
-                                } else {
-                                    backupHooked[(string)data["source"]] = new Hook(this, (int)data["pos"], new TimeSpan((long)data["time"]), playerData[(string)data["source"]]);
+                            // enforce locks to prevent race conditions
+                            lock(hooked) {
+                                lock(backupHooked) {
+                                    if(!hooked.ContainsKey((string)data["source"])) {
+                                        hooked[(string)data["source"]] = new Hook(this, (int)data["pos"], new TimeSpan((long)data["time"]), playerData[(string)data["source"]]);
+                                    } else {
+                                        backupHooked[(string)data["source"]] = new Hook(this, (int)data["pos"], new TimeSpan((long)data["time"]), playerData[(string)data["source"]]);
+                                    }
                                 }
                             }
+                        } else {
+                            backupHooked[(string)data["source"]] = new Hook(this, (int)data["pos"], new TimeSpan((long)data["time"]), playerData[(string)data["source"]]);
                         }
                     }
                 }
