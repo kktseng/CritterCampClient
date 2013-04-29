@@ -58,16 +58,22 @@ namespace CritterCamp {
         }
 
         public void onLoaded(object sender, RoutedEventArgs e) {
-            Status.Text = ""; // clear any messages
-
             // check and see if we have a tcp connection already
             if(CoreApplication.Properties.ContainsKey("TCPSocket")) {
                 ((TCPConnection)CoreApplication.Properties["TCPSocket"]).Disconnect(); // disconnect the exisiting connection
                 CoreApplication.Properties.Remove("TCPSocket");
+            } else {
+                // Disconnecting the TCPSocket will reset the screen for you
+                ResetScreen();
             }
+        }
+
+        public void ResetScreen() {
+            Status.Text = ""; // clear any messages
+            ContentPanel.Visibility = Visibility.Visible; // show everything
 
             // check and see if we have an error message to display
-            if (CoreApplication.Properties.ContainsKey("error")) {
+            if(CoreApplication.Properties.ContainsKey("error")) {
                 Status.Text = (string)CoreApplication.Properties["error"]; // show the error message
                 CoreApplication.Properties.Remove("error");
 
@@ -76,21 +82,21 @@ namespace CritterCamp {
                 ResumeButton.Visibility = Visibility.Visible; // show the resume button
             } else {
                 // get previous login information if it exists
-                if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("username", out username) &&
+                if(IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("username", out username) &&
                     IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("password", out password)) {
                     // login information is already in the app
 
                     UserInput.Visibility = Visibility.Collapsed; // hide the input 
                     PlayButton.Visibility = Visibility.Visible; // show the play button
+                    ResumeButton.Visibility = Visibility.Collapsed; // hide the resume button
                     Status.Text += "Welcome back " + username + "!";
                 } else {
                     // no previous login information. ask the user for their information
                     UserInput.Visibility = Visibility.Visible; // show the input boxes
                     PlayButton.Visibility = Visibility.Collapsed; // hide the play button
+                    ResumeButton.Visibility = Visibility.Visible; // show the resume button
                 }
             }
-
-            ContentPanel.Visibility = Visibility.Visible; // show everything
         }
 
         private void Register_Click(object sender, RoutedEventArgs e) {
@@ -280,15 +286,13 @@ namespace CritterCamp {
         }
 
         void TCPConnectionClosed(bool error, TCPConnection connection) {
-            if(error) {
-                // connection timeout out
-                CoreApplication.Properties["error"] = "Lost connection to server.";
-            }
             Dispatcher.BeginInvoke(() => {
                 LayoutRoot.Visibility = Visibility.Visible;
                 ScreenFactory sf = (ScreenFactory)_game.screenManager.Game.Services.GetService(typeof(IScreenFactory));
                 LoadingScreen.Load(_game.screenManager, false, null, sf.CreateScreen(typeof(OfflineScreen)));
                 Helpers.ResetState();
+                CoreApplication.Properties["error"] = "Lost connection to server.";
+                ResetScreen();
             });
         }
     }

@@ -2,6 +2,7 @@
 using CritterCamp.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using Newtonsoft.Json;
@@ -74,11 +75,8 @@ namespace CritterCamp.Screens.Games {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            textureList["jetpack"] = cm.Load<Texture2D>("jetpackTextures");
-            textureList["map"] = cm.Load<Texture2D>("mapTextures");
-            textureList["doodads"] = cm.Load<Texture2D>("doodads");
-            textureList["pig"] = cm.Load<Texture2D>("pig");
-            textureList["explosion"] = cm.Load<Texture2D>("explosion");
+            addTextures("jetpack", "map", "doodads", "pig", "explosion");
+            addSounds("blop", "blop2", "bomb", "landing", "launching");
             setMap();
         }
 
@@ -127,6 +125,7 @@ namespace CritterCamp.Screens.Games {
                         pennedPigs[selectedPig.color].Add(selectedPig);
                         mainPigs.Remove(selectedPig);
                     }
+                    soundList["blop"].Play();
                     selectedPig.selected = false;
                 }
                 selectedPig = null;
@@ -142,6 +141,7 @@ namespace CritterCamp.Screens.Games {
                             Rectangle pig = new Rectangle((int)p.getCoord().X - 75, (int)p.getCoord().Y - 75, 150, 150);
                             if(pig.Contains(new Point((int)scaledPos.X, (int)scaledPos.Y))) {
                                 selectedPig = p;
+                                soundList["blop2"].Play();
                                 p.selected = true;
                                 old_pos = selectedPig.getCoord();
 
@@ -163,6 +163,7 @@ namespace CritterCamp.Screens.Games {
 
         public void Explode() {
             exploded = true;
+            soundList["bomb"].Play();
             for(int i = 0; i < 4; i++) {
                 foreach(Pig p in pennedPigs[i]) {
                     p.setState(PigStates.Standing);
@@ -236,6 +237,7 @@ namespace CritterCamp.Screens.Games {
                             foreach(Pig p in pennedPigs[i]) {
                                 p.setState(PigStates.Flying);
                             }
+                            soundList["launching"].Play();
                             pennedPigs[i].Clear();
                             // Send packet to send pigs to other players
                             JObject packet = new JObject(
@@ -372,6 +374,7 @@ namespace CritterCamp.Screens.Games {
                             p.color = (int)data["color"];
                             mainPigs.Add(p);
                         }
+                        soundList["landing"].Play();
                         avatars[(string)data["source"]].setState(true);
                     }
                 } else if((string)data["action"] == "exploded") {

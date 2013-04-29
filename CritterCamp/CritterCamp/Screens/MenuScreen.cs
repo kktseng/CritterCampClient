@@ -131,11 +131,6 @@ namespace CritterCamp.Screens {
                 handled = mainView.HandleTouch(new Vector2(), new TouchLocation(), input); // pass the released finger information to the view
             } else {
                 foreach (TouchLocation loc in input.TouchState) { // otherwise find the scaled position to pass to the view
-                    // Flip coordinates to scale with input buffer
-                    //if (Constants.ROTATION != 0) {
-                    //    scaledPos = new Vector2(loc.Position.Y, Constants.INPUT_HEIGHT - loc.Position.X);
-                    //}
-                    //scaledPos *= Constants.INPUT_SCALE;
                     Vector2 scaledPos = Helpers.ScaleInput(new Vector2(loc.Position.X, loc.Position.Y));
                     rawInput = new Vector2(loc.Position.X, loc.Position.Y);
                     scaledInput = scaledPos;

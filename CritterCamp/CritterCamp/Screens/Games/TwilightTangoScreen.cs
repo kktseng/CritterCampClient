@@ -79,12 +79,8 @@ namespace CritterCamp.Screens.Games {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            textureList["twilight"] = cm.Load<Texture2D>("twilightTextures");
-            textureList["map"] = cm.Load<Texture2D>("mapTextures");
-            textureList["doodads"] = cm.Load<Texture2D>("doodads");
-            textureList["effects"] = cm.Load<Texture2D>("effects");
-            textureList["pig"] = cm.Load<Texture2D>("pig");
-            soundList["sparkle"] = cm.Load<SoundEffect>("Sounds/Sparkle");
+            addTextures("twilight", "map", "doodads", "effects", "pig");
+            addSounds("sparkle");
             setMap();
         }
 
@@ -385,7 +381,7 @@ namespace CritterCamp.Screens.Games {
         }
 
         protected void processCommand(Direction command) {
-            if(phase == Phase.Input) {
+            if(phase == Phase.Input && players[playerName].health > 0) {
                 // Only add commands if player hasn't exceeded the number of commands
                 int numArrows = players[playerName].input.Count();
                 if(numArrows < commandNum) {

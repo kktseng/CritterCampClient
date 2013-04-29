@@ -173,6 +173,18 @@ namespace CritterCamp.Screens.Games {
             }
         }
 
+        protected void addTextures(params string[] names) {
+            for(int i = 0; i < names.Length; i++) {
+                textureList[names[i]] = cm.Load<Texture2D>(names[i]);
+            }
+        }
+
+        protected void addSounds(params string[] names) {
+            for(int i = 0; i < names.Length; i++) {
+                soundList[names[i]] = cm.Load<SoundEffect>("Sounds/" + names[i]);
+            }
+        }
+
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             // If the score has already been received, it's time to quit
             if(scoreReceived) {

@@ -82,16 +82,8 @@ namespace CritterCamp.Screens.Games {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            textureList["fish"] = cm.Load<Texture2D>("fish");
-            textureList["fishing"] = cm.Load<Texture2D>("fishingTextures");
-            textureList["map"] = cm.Load<Texture2D>("mapTextures");
-            textureList["pig"] = cm.Load<Texture2D>("pig");
-            textureList["doodads"] = cm.Load<Texture2D>("doodads");
-            soundList["swoosh"] = cm.Load<SoundEffect>("Sounds/swoosh");
-            soundList["splash"] = cm.Load<SoundEffect>("Sounds/Splash");
-            soundList["reelingIn"] = cm.Load<SoundEffect>("Sounds/reelingIn");
-            soundList["bucket"] = cm.Load<SoundEffect>("Sounds/bucket");
-            soundList["blop"] = cm.Load<SoundEffect>("Sounds/blop");
+            addTextures("fish", "fishing", "map", "pig", "doodads");
+            addSounds("swoosh", "splash", "reelingIn", "bucket", "blop");
             setMap();
         }
 
