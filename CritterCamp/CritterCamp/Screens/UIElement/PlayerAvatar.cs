@@ -8,7 +8,7 @@ namespace CritterCamp.Screens {
     /// <summary>
     /// Represents an player to draw
     /// </summary>
-    class PlayerAvater : UIElement{
+    class PlayerAvatar : UIElement{
         private PlayerData playerDataInfo;
         public PlayerData PlayerDataInfo {
             get {
@@ -54,7 +54,7 @@ namespace CritterCamp.Screens {
         /// <summary>
         /// Creates a new player with the given PlayerData
         /// </summary>
-        public PlayerAvater(PlayerData Data, Vector2 Position) : base() {
+        public PlayerAvatar(PlayerData Data, Vector2 Position) : base() {
             this.Position = Position;
             PlayerDataInfo = Data;
 

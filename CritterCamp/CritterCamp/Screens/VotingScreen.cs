@@ -121,7 +121,7 @@ namespace CritterCamp.Screens {
             float spacing = (875 - 50) / 4;
             PlayerData myData = (PlayerData)CoreApplication.Properties["myPlayerData"];
             foreach (PlayerData p in players.Values) {
-                PlayerAvater playerAvatar = new PlayerAvater(p, new Vector2(playersX, playersY));
+                PlayerAvatar playerAvatar = new PlayerAvatar(p, new Vector2(playersX, playersY));
                 playerAvatar.DrawProfileData = true;
                 if (myData.username == p.username) {
                     // drawing our own avatar. put it in a view so we can highlight it yellow

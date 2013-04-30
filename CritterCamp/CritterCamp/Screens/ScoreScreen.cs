@@ -52,7 +52,7 @@ namespace CritterCamp.Screens {
                     playerView.FillColor = new Color(247, 215, 137);
                 }
 
-                PlayerAvater playerAvatar = new PlayerAvater(player, new Vector2(312 + 424 * i, 400));
+                PlayerAvatar playerAvatar = new PlayerAvatar(player, new Vector2(312 + 424 * i, 400));
                 Label playerName = new Label(player.username, new Vector2(312 + 424 * i, 575));
                 Label playerLevel = new Label("Level " + player.level.ToString(), new Vector2(312 + 424 * i, 625));
                 playerLevel.Scale = 0.8f;

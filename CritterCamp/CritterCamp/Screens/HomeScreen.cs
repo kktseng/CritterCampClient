@@ -56,7 +56,7 @@ namespace CritterCamp.Screens {
             PlayerData myData = (PlayerData)CoreApplication.Properties["myPlayerData"];
 
             BorderedView myInfo = new BorderedView(new Vector2(1920/2-50, 300), new Vector2(1440, 150));
-            PlayerAvater me = new PlayerAvater(myData, new Vector2(1150, 150));
+            PlayerAvatar me = new PlayerAvatar(myData, new Vector2(1150, 150));
             me.DrawFullProfileData = true;
             myInfo.addElement(me);
 
