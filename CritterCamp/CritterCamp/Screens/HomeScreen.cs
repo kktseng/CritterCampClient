@@ -370,7 +370,7 @@ namespace CritterCamp.Screens {
                 JArray leaderArr = (JArray)o["leaders"];
 
                 PlayerData myData = (PlayerData)CoreApplication.Properties["myPlayerData"];
-                leaderPage.removeElement(retreiving);
+                retreiving.Visible = false;
                 int rank = 1;
 
                 foreach (JObject name in leaderArr) {
