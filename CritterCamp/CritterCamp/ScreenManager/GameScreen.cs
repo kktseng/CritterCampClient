@@ -15,6 +15,8 @@ using CritterCamp.Screens.Games.Lib;
 using CritterCamp;
 using Windows.ApplicationModel.Core;
 using Newtonsoft.Json.Linq;
+using Microsoft.Xna.Framework.Input;
+using CritterCamp.Screens;
 
 namespace GameStateManagement {
     /// <summary>
@@ -336,8 +338,17 @@ namespace GameStateManagement {
         /// is only called when the screen is active, and not when some other
         /// screen has taken the focus.
         /// </summary>
-        public virtual void HandleInput(GameTime gameTime, InputState input) { }
+        public virtual void HandleInput(GameTime gameTime, InputState input) {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed) {
+                OnBackPressed();
+            }
+        }
 
+        public virtual void OnBackPressed() {
+            // open up the exit popup
+            ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
+            ScreenManager.AddScreen(new ExitPopupScreen(), null);
+        }
 
         /// <summary>
         /// This is called when the screen should draw itself.

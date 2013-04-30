@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Windows.ApplicationModel.Core;
 
 namespace CritterCamp.Screens {
@@ -73,6 +74,7 @@ namespace CritterCamp.Screens {
             Button1 play = new Button1("Play");
             play.Position = new Vector2(1440, 450);
             play.Tapped += playButton_Tapped;
+            play.ButtonImage = "buttonGreen";
             Button1 leader = new Button1("Leaders");
             leader.Position = new Vector2(1440, 650);
             leader.Tapped += leaderButton_Tapped;
@@ -210,6 +212,15 @@ namespace CritterCamp.Screens {
                 TCPConnection conn = (TCPConnection)CoreApplication.Properties["TCPSocket"];
                 conn.SendMessage(@"{ ""action"": ""group"", ""type"": ""cancel"" }");
             }
+        }
+
+        public override void OnBackPressed() {
+            if (looking) {
+                cancelSearch();
+                return;
+            }
+
+            base.OnBackPressed();
         }
 
         protected override void MessageReceived(string message, bool error, TCPConnection connection) {
@@ -398,6 +409,43 @@ namespace CritterCamp.Screens {
                     }
                 }
             }
+        }
+    }
+
+    class ExitPopupScreen : MenuScreen {
+        BorderedView exitPage;
+
+        public ExitPopupScreen() : base("About Screen") {}
+
+        public override void Activate(bool instancePreserved) {
+            base.Activate(instancePreserved);
+            IsPopup = true;
+
+            exitPage = new BorderedView(new Vector2(875, 600), new Vector2(1920 / 2, 1080 / 2 - 75));
+            exitPage.Disabled = false;
+
+            int startX = 1920 / 2;
+            int startY = 270;
+            Label text = new Label("Are you sure you want to exit?", new Vector2(startX, startY));
+
+            Button1 keepPlaying = new Button1("Keep Playing");
+            keepPlaying.Position = new Vector2(startX, startY + 150);
+            keepPlaying.TextScale = 0.7f;
+            keepPlaying.Tapped += PopupExitTap;
+            keepPlaying.ButtonImage = "buttonGreen";
+
+            Button1 exitButton = new Button1("Exit");
+            exitButton.Position = new Vector2(startX, startY + 350);
+            exitButton.TextScale = 0.7f;
+            exitButton.Tapped += (s, e) => {
+                ScreenManager.Deactivate();
+                Application.Current.Terminate();
+            };
+
+            exitPage.addElement(text);
+            exitPage.addElement(keepPlaying);
+            exitPage.addElement(exitButton);
+            mainView.addElement(exitPage);
         }
     }
 }

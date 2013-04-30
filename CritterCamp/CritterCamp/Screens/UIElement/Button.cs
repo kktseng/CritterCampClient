@@ -26,6 +26,14 @@ namespace CritterCamp.Screens {
                 TextLabel.Text = value;
             }
         }
+        public float TextScale {
+            get {
+                return TextLabel.Scale;
+            }
+            set {
+                TextLabel.Scale = value;
+            }
+        }
         public string Caption1  { // text to display on the bottom of the button
             get {
                 return Caption1Label.Text;

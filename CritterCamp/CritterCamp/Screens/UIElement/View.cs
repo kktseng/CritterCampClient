@@ -72,7 +72,8 @@ namespace CritterCamp.Screens {
                 if (SelectedUIElement == null) { // we havn't selected an element yet, try to find one that we can select
                     if (rawLocation.State.HasFlag(TouchLocationState.Pressed)) {
                         // and this touch is the beginning of a touch
-                        foreach (UIElement uie in UIElements) {
+                        for (int i = 0; i < UIElements.Count; i++) {
+                            UIElement uie = UIElements[UIElements.Count-i - 1];
                             if (uie.HandleTouch(scaledLoc, rawLocation, input)) {
                                 // found the uielement that we pressed down on
                                 OnElement = true;

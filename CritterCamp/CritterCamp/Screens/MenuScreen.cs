@@ -20,7 +20,6 @@ namespace CritterCamp.Screens {
         protected List<Button> menuButtons = new List<Button>();
         protected View mainView;
         private string background = "bgScreen";
-        private Type backScreen = null;
         Button selectedButton = null;
         Vector2 oldPos;
         Vector2 rawInput = Vector2.Zero;
@@ -49,21 +48,6 @@ namespace CritterCamp.Screens {
         /// <param name="background">The texture to display as the background</param>
         public MenuScreen(string title, string background) : this(title) {
             this.background = background;
-        }
-
-        public void setBack(Type backScreen) {
-            this.backScreen = backScreen;
-            Button back = new Button(this, "backButton", new Vector2(160, 160));
-            back.Position = new Vector2(200, 200);
-            back.Tapped += goBack;
-            menuButtons.Add(back);
-        }
-
-        protected void goBack(object sender, EventArgs e) {
-            if (PopupExit()) {
-                return;
-            }
-            LoadingScreen.Load(ScreenManager, false, null, Helpers.GetScreenFactory(this).CreateScreen(backScreen));
         }
 
         public override void Activate(bool instancePreserved) {
@@ -112,6 +96,14 @@ namespace CritterCamp.Screens {
         /// </summary>
         protected virtual void PopupExitTap(object sender, EventArgs e) {
             PopupExit();
+        }
+
+        public override void OnBackPressed() {
+            if (PopupExit()) {
+                return;
+            }
+
+            base.OnBackPressed();
         }
 
         protected virtual bool PopupExit() {
