@@ -3,6 +3,7 @@ using CritterCamp.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Phone.Shell;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Windows.Threading;
@@ -23,6 +24,8 @@ namespace CritterCamp {
         /// </summary>
         public CritterCampGame() {
             Content.RootDirectory = "Content";
+            ContentManager cm = new ContentManager(Services, "Content");
+            //CoreApplication.Properties["TempContentManager"] = cm;
 
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = true;

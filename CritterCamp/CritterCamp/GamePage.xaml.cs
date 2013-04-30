@@ -244,11 +244,6 @@ namespace CritterCamp {
                          * Party updates
                          * Store transactions
                          **/
-                        if((string)o["action"] == "group" && (string)o["type"] == "synced") {
-                            Helpers.SyncDelegate sd = (Helpers.SyncDelegate)CoreApplication.Properties["SyncDelegate"];
-                            sd((JArray)o["data"]);
-                            CoreApplication.Properties.Remove("SyncDelegate");
-                        }
                         if(o["conn_id"] != null) {
                             // authorize the connection using auth key recieved from http login
                             conn.SendMessage("{\"auth\": \"" + response.auth + "\"}");
@@ -261,7 +256,7 @@ namespace CritterCamp {
                                 // Reload home page and hide grid
                                 LayoutRoot.Visibility = Visibility.Collapsed;
                                 ScreenFactory sf = (ScreenFactory)_game.screenManager.Game.Services.GetService(typeof(IScreenFactory));
-                                LoadingScreen.Load(_game.screenManager, false, null, sf.CreateScreen(typeof(HomeScreen)));
+                                LoadingScreen.Load(_game.screenManager, true, null, sf.CreateScreen(typeof(HomeScreen)));
                             });
                         }
                     };

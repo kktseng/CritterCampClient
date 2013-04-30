@@ -19,28 +19,24 @@ namespace CritterCamp {
             JetpackJamboree,
             MissileMadness
         }
-        public delegate void SyncDelegate(JArray data);
 
-        public static void Sync(SyncDelegate sd) {
-            Sync(sd, "");
+        public static void Sync() {
+            Sync("");
         }
 
-        public static void Sync(SyncDelegate sd, string data) {
-            Sync(sd, data, 3);
+        public static void Sync(string data) {
+            Sync(data, 3);
         }
 
-        public static void Sync(SyncDelegate sd, string data, int timeout) {
-            if (!CoreApplication.Properties.ContainsKey("SyncDelegate")) {
-                // Send packet to trigger Sync
-                JObject syncPacket = new JObject(
-                    new JProperty("action", "group"),
-                    new JProperty("type", "sync"),
-                    new JProperty("timeout", timeout),
-                    new JProperty("data", data)
-                );
-                CoreApplication.Properties["SyncDelegate"] = sd;
-                ((TCPConnection)CoreApplication.Properties["TCPSocket"]).SendMessage(syncPacket.ToString());
-            }
+        public static void Sync(string data, int timeout) {
+            // Send packet to trigger Sync
+            JObject syncPacket = new JObject(
+                new JProperty("action", "group"),
+                new JProperty("type", "sync"),
+                new JProperty("timeout", timeout),
+                new JProperty("data", data)
+            );
+            ((TCPConnection)CoreApplication.Properties["TCPSocket"]).SendMessage(syncPacket.ToString());
         }
 
         public static int TextureLen(Type enumType) {

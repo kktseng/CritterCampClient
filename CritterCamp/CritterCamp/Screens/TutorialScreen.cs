@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 
 namespace CritterCamp.Screens {
     class TutorialScreen : MenuScreen {
@@ -33,6 +34,7 @@ namespace CritterCamp.Screens {
         public override void Activate(bool instancePreserved) {
             if(cm == null) {
                 cm = new ContentManager(ScreenManager.Game.Services, "Content");
+                //cm = (ContentManager)CoreApplication.Properties["TempContentManager"];
             }
             tutorial = cm.Load<Texture2D>(game.TutorialTexture);
 
@@ -57,9 +59,10 @@ namespace CritterCamp.Screens {
                 done = true;
                 text = "Waiting for other players...";
 
-                Helpers.Sync((JArray data) => {
+                syncAction = (JArray data) => {
                     LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(game.ScreenType));
-                }, "tutorial", 10);
+                };
+                Helpers.Sync("tutorial", 10);
             }
 
             if (timeLeft == 0) {
@@ -76,10 +79,11 @@ namespace CritterCamp.Screens {
                     done = true;
                     text = "Waiting for other players...";
 
-                    Helpers.Sync((JArray data) => {
+                    syncAction = (JArray data) => {
                         timeLeftTimer.Dispose(); // dispose of the timer so we don't decrement the time anymore
                         LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(game.ScreenType));
-                    }, "tutorial", 13); // give other players 13 seconds to continue
+                    };
+                    Helpers.Sync("tutorial", 13); // give other players 13 seconds to continue
                 }
             }
 

@@ -50,6 +50,7 @@ namespace CritterCamp.Screens.Games {
         }
 
         protected override void MessageReceived(string message, bool error, TCPConnection connection) {
+            base.MessageReceived(message, error, connection);
             JObject o = JObject.Parse(message);
             // Check for final score
             if((string)o["action"] == "score") {
@@ -75,7 +76,7 @@ namespace CritterCamp.Screens.Games {
                         }
                     }
                 }
-                CoreApplication.Properties["scores"] = sortedScoreData;
+                CoreApplication.Properties["scores"] = new List<PlayerData>(sortedScoreData);
 
                 // calculate exp
                 for(int i = 0; i < sortedScoreData.Count; i++) {
@@ -125,8 +126,8 @@ namespace CritterCamp.Screens.Games {
             base.Activate(instancePreserved);
             if(cm == null) {
                 cm = new ContentManager(ScreenManager.Game.Services, "Content");
+                //cm = (ContentManager)CoreApplication.Properties["TempContentManager"];
             }
-            base.Activate(instancePreserved);
         }
 
         // Methods for managing actors
@@ -202,6 +203,7 @@ namespace CritterCamp.Screens.Games {
 
         public override void Unload() {
             cm.Unload();
+            GC.Collect();
             base.Unload();
         }
     }

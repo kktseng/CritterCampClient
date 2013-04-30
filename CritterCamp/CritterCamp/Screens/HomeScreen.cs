@@ -227,6 +227,7 @@ namespace CritterCamp.Screens {
         public override void Unload() {
             GamePage gamePage = (GamePage)CoreApplication.Properties["GamePage"];
             gamePage.hideAdduplux();
+            base.Unload();
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {

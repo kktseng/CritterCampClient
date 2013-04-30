@@ -148,9 +148,11 @@ namespace CritterCamp.Screens {
 
                 if (selectedGame != null) {
                     // user selected a game already
-                    Helpers.Sync((JArray data) => { }, selectedGame.ServerName, 10); // send that as the vote
+                    syncAction = (JArray data) => { };
+                    Helpers.Sync(selectedGame.ServerName, 10); // send that as the vote
                 } else {
-                    Helpers.Sync((JArray data) => { }, null, 10); // send a null vote
+                    syncAction = (JArray data) => { };
+                    Helpers.Sync(null, 10); // send a null vote
                 }
                 voted = true;
                 voteButton.Disabled = true;
@@ -189,7 +191,8 @@ namespace CritterCamp.Screens {
             voteButton.Disabled = true;
             messageLabel.Text = "Waiting for the other players.";
 
-            Helpers.Sync((JArray data) => { }, selectedGame.ServerName, 13);  // give other players 13 seconds to vote
+            syncAction = (JArray data) => { };
+            Helpers.Sync(selectedGame.ServerName, 13);  // give other players 13 seconds to vote
         }
 
         protected override void MessageReceived(string message, bool error, TCPConnection connection) {

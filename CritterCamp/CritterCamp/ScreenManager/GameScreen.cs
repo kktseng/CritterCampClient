@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using CritterCamp.Screens.Games.Lib;
 using CritterCamp;
 using Windows.ApplicationModel.Core;
+using Newtonsoft.Json.Linq;
 
 namespace GameStateManagement {
     /// <summary>
@@ -26,6 +27,7 @@ namespace GameStateManagement {
         Hidden,
     }
 
+    public delegate void SyncAction(JArray data); 
 
     /// <summary>
     /// A screen is a single layer that has update and draw logic, and which
@@ -42,7 +44,14 @@ namespace GameStateManagement {
             this.online = online;
         }
 
-        protected virtual void MessageReceived(string message, bool error, TCPConnection connection) {}
+        protected SyncAction syncAction;
+
+        protected virtual void MessageReceived(string message, bool error, TCPConnection connection) {
+            JObject o = JObject.Parse(message);
+            if((string)o["action"] == "group" && (string)o["type"] == "synced") {
+                syncAction((JArray)o["data"]);
+            }
+        }
 
         public void setConn(TCPConnection conn) {
             removeConn(); // remove the old connection first

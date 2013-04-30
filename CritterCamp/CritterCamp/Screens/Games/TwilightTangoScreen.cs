@@ -155,7 +155,7 @@ namespace CritterCamp.Screens.Games {
                             commands.Add(rand.Next(0, 4));
                         }
                         // Send ready packet to sync before starting
-                        Helpers.Sync((JArray data) => {
+                        syncAction = (JArray data) => {
                             removeActor(commandList);
                             //foreach(JToken commandArray in data) {
                             JToken commandArray = data[0]; // Temporary hack
@@ -168,7 +168,8 @@ namespace CritterCamp.Screens.Games {
                             // }
                             start = gameTime.TotalGameTime;
                             phase = Phase.Commands;
-                        }, JsonConvert.SerializeObject(commands));
+                        };
+                        Helpers.Sync(JsonConvert.SerializeObject(commands));
                         syncing = true;
                     }
                 }

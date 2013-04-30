@@ -115,11 +115,13 @@ namespace CritterCamp.Screens {
         /// Draws the loading screen.
         /// </summary>
         public override void Draw(GameTime gameTime) {
-            // Draw the standard backgroun
-            SpriteDrawer sd = Helpers.GetSpriteDrawer(this);
-            sd.Begin();
-            sd.Draw(ScreenManager.Textures["bgScreen"], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 775));
-            sd.End();
+            // Draw the standard background
+            if(loadingIsSlow) {
+                SpriteDrawer sd = Helpers.GetSpriteDrawer(this);
+                sd.Begin();
+                sd.Draw(ScreenManager.Textures["bgScreen"], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 775));
+                sd.End();
+            }
 
             // If we are the only active screen, that means all the previous screens
             // must have finished transitioning off. We check for this in the Draw
