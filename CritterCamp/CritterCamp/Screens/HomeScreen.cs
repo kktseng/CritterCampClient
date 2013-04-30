@@ -188,7 +188,7 @@ namespace CritterCamp.Screens {
             cancelSearch(); // cancel the current search
 
             ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
-            LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(LeaderScreen)));
+            ScreenManager.AddScreen(new LeaderScreen(), null);
         }
 
         void aboutButton_Tapped(object sender, EventArgs e) {
@@ -257,7 +257,7 @@ namespace CritterCamp.Screens {
             base.Activate(instancePreserved);
             IsPopup = true;
 
-            aboutPage = new BorderedView(new Vector2(1150, 900), new Vector2(1920 / 2, 1080 / 2 - 75));
+            aboutPage = new BorderedView(new Vector2(1150, 902), new Vector2(1920 / 2, 1080 / 2 - 75));
             aboutPage.Disabled = false;
 
             int startX = 445;
@@ -303,6 +303,100 @@ namespace CritterCamp.Screens {
             aboutPage.addElement(music1);
             aboutPage.addElement(music2);
             mainView.addElement(aboutPage);
+        }
+    }
+
+    class LeaderScreen : MenuScreen {
+        BorderedView leaderPage;
+        Label retreiving;
+        List<BorderedView> playerRows;
+        int startX = 525;
+        int startY = 90;
+
+        public LeaderScreen() : base("Leader Screen") { }
+
+        public override void Activate(bool instancePreserved) {
+            base.Activate(instancePreserved);
+            IsPopup = true;
+
+            // Request the leaderboards
+            TCPConnection conn = (TCPConnection)CoreApplication.Properties["TCPSocket"];
+            JObject packet = new JObject(
+                new JProperty("action", "rank"),
+                new JProperty("type", "leader")
+            );
+            conn.pMessageReceivedEvent += handleLeaders;
+            conn.SendMessage(packet.ToString());
+
+            leaderPage = new BorderedView(new Vector2(1150, 890), new Vector2(1920 / 2, 1080 / 2 - 75));
+            leaderPage.Disabled = false;
+
+            Label rank = new Label("Rank", new Vector2(startX, startY));
+            Label player = new Label("Player", new Vector2(startX + 125, startY));
+            player.CenterX = false;
+            Label level = new Label("Level", new Vector2(startX + 850, startY));
+
+            Label top10 = new Label("Top 10", new Vector2(1920/2, startY));
+            top10.Font = "buttonFont";
+            top10.Scale = 0.75f;
+
+            playerRows = new List<BorderedView>();
+            for (int i = 0; i < 11; i++) {
+                BorderedView row = new BorderedView(new Vector2(1100, 70), new Vector2(1920/2, startY + (i+1) * 70));
+                if (i % 2 == 0) {
+                    row.BorderColor = new Color(239, 208, 175);
+                } else {
+                    row.BorderColor = Constants.LightBrown;
+                }
+                row.DrawFill = false;
+                leaderPage.addElement(row);
+                playerRows.Add(row);
+            }
+            retreiving = new Label("Retreiving the top players", new Vector2(startX, startY+70));
+            retreiving.CenterX = false;
+
+            leaderPage.addElement(rank);
+            leaderPage.addElement(player);
+            leaderPage.addElement(level);
+            leaderPage.addElement(top10);
+            leaderPage.addElement(retreiving);
+            mainView.addElement(leaderPage);
+        }
+
+        protected void handleLeaders(string message, bool error, TCPConnection connection) {
+            JObject o = JObject.Parse(message);
+            if ((string)o["action"] == "rank" && (string)o["type"] == "leader") {
+                connection.pMessageReceivedEvent -= handleLeaders;
+                JArray leaderArr = (JArray)o["leaders"];
+
+                PlayerData myData = (PlayerData)CoreApplication.Properties["myPlayerData"];
+                leaderPage.removeElement(retreiving);
+                int rank = 1;
+
+                foreach (JObject name in leaderArr) {
+                    BorderedView row = playerRows.ElementAt(rank-1);
+                    string username = (string)name["username"];
+
+                    Label rankLabel = new Label(rank.ToString(), new Vector2(startX, startY + rank*70));
+                    Label player = new Label(username, new Vector2(startX + 125, startY + rank * 70));
+                    player.CenterX = false;
+                    Label level = new Label(((int)name["level"]).ToString(), new Vector2(startX + 850, startY + rank * 70));
+
+                    row.addElement(rankLabel);
+                    row.addElement(player);
+                    row.addElement(level);
+
+                    if (myData.username == username) {
+                        row.BorderColor = new Color(247, 215, 137);
+                    }
+
+                    rank++;
+
+                    if (rank > 11) {
+                        break;
+                    }
+                }
+            }
         }
     }
 }
