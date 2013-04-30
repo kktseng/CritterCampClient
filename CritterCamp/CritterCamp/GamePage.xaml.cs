@@ -94,7 +94,7 @@ namespace CritterCamp {
                     // no previous login information. ask the user for their information
                     UserInput.Visibility = Visibility.Visible; // show the input boxes
                     PlayButton.Visibility = Visibility.Collapsed; // hide the play button
-                    ResumeButton.Visibility = Visibility.Visible; // show the resume button
+                    ResumeButton.Visibility = Visibility.Collapsed; // show the resume button
                 }
             }
         }
