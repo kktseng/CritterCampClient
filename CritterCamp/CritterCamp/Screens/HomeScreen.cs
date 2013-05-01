@@ -420,6 +420,7 @@ namespace CritterCamp.Screens {
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
             IsPopup = true;
+            removeConn(); // dont need our page to be handling any connections 
 
             exitPage = new BorderedView(new Vector2(875, 600), new Vector2(1920 / 2, 1080 / 2 - 75));
             exitPage.Disabled = false;
