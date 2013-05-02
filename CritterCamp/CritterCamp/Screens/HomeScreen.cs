@@ -383,31 +383,54 @@ namespace CritterCamp.Screens {
 
                 PlayerData myData = (PlayerData)CoreApplication.Properties["myPlayerData"];
                 retreiving.Visible = false;
-                int rank = 1;
+                int index = 1;
+                int rank = 0;
+                int prevLvl = -1;
 
                 foreach (JObject name in leaderArr) {
-                    BorderedView row = playerRows.ElementAt(rank-1);
+                    BorderedView row = playerRows.ElementAt(index-1);
                     string username = (string)name["username"];
+                    int level = (int)name["level"];
 
-                    Label rankLabel = new Label(rank.ToString(), new Vector2(startX, startY + rank*70));
-                    Label player = new Label(username, new Vector2(startX + 125, startY + rank * 70));
+                    if (prevLvl != level) {
+                        // the levels are different. this player is not a tie. set the rank equal to the current index
+                        rank = index;
+                        prevLvl = level;
+                    } // otherwise display the same rank as before
+
+                    Label rankLabel = new Label(rank.ToString(), new Vector2(startX, startY + index * 70));
+                    Label player = new Label(username, new Vector2(startX + 125, startY + index * 70));
                     player.CenterX = false;
-                    Label level = new Label(((int)name["level"]).ToString(), new Vector2(startX + 850, startY + rank * 70));
+                    Label levelLabel = new Label(level.ToString(), new Vector2(startX + 850, startY + index * 70));
 
                     row.addElement(rankLabel);
                     row.addElement(player);
-                    row.addElement(level);
+                    row.addElement(levelLabel);
 
                     if (myData.username == username) {
                         row.BorderColor = new Color(247, 215, 137);
                     }
 
-                    rank++;
+                    index++;
 
-                    if (rank > 11) {
+                    if (index > 10) {
                         break;
                     }
                 }
+
+                int myRank = (int)((JObject)o["rank"])["rank"];
+
+                BorderedView myRow = playerRows.ElementAt(10);
+
+                Label myRankLabel = new Label(myRank.ToString(), new Vector2(startX, startY + 11 * 70));
+                Label myPlayer = new Label(myData.username, new Vector2(startX + 125, startY + 11 * 70));
+                myPlayer.CenterX = false;
+                Label myLevel = new Label(myData.level.ToString(), new Vector2(startX + 850, startY + 11 * 70));
+
+                myRow.addElement(myRankLabel);
+                myRow.addElement(myPlayer);
+                myRow.addElement(myLevel);
+                myRow.BorderColor = new Color(247, 215, 137);
             }
         }
     }
