@@ -48,6 +48,12 @@ namespace CritterCamp {
 
         public void TryMediaPlay() {
             if(MediaPlayer.GameHasControl) {
+                string isOn;
+                if(IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("volume", out isOn)) {
+                    if(!Boolean.Parse(isOn)) {
+                        MediaElement.IsMuted = true;
+                    }
+                }
                 MediaElement.Stop();
                 MediaElement.MediaOpened += LoadMedia;
                 MediaElement.Source = new System.Uri("Content/Sounds/adventure.mp3", UriKind.Relative);
@@ -64,14 +70,13 @@ namespace CritterCamp {
             MediaElement.Play();
         }
 
-        public void hideAdduplux() {
-            Dispatcher.BeginInvoke(() =>
-            {
+        public void hideAdDuplex() {
+            Dispatcher.BeginInvoke(() => {
                 adDuplexAd.Visibility = Visibility.Collapsed;
             });
         }
 
-        public void showAdduplux() {
+        public void showAdDuplex() {
             Dispatcher.BeginInvoke(() => {
                 adDuplexAd.Visibility = Visibility.Visible;
             });

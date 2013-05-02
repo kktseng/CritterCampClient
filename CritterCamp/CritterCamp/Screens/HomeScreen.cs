@@ -10,10 +10,12 @@ using Microsoft.Xna.Framework.Media;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using Windows.ApplicationModel.Core;
 
 namespace CritterCamp.Screens {
@@ -34,7 +36,7 @@ namespace CritterCamp.Screens {
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
             GamePage gamePage = (GamePage)CoreApplication.Properties["GamePage"];
-            gamePage.showAdduplux();
+            gamePage.showAdDuplex();
             ContentManager cm = ScreenManager.Game.Content;
 
             // temporary pig drawing for profiles
@@ -104,6 +106,20 @@ namespace CritterCamp.Screens {
             SearchingButtons.addElement(searchingText);
             SearchingButtons.addElement(cancel);
 
+            Button1 volume = new Button1("");
+            volume.Position = new Vector2(1720, 1005);
+            volume.ButtonImage = "buttonSoundOn";
+            volume.HighlightImage = "buttonSoundOff";
+            volume.Tapped += volumeButton_Tapped;
+            volume.Size = new Vector2(100, 100);
+
+            string volumeOn;
+            if(IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("volume", out volumeOn)) {
+                if(!Boolean.Parse(volumeOn)) {
+                    volumeButton_Tapped(volume, null);
+                }
+            }
+
             BorderedView info  = new BorderedView(new Vector2(1920/2-50, 925), new Vector2(480, 465));
             info.Disabled = false;
             News = new Label("News", new Vector2(180, 100));
@@ -136,6 +152,7 @@ namespace CritterCamp.Screens {
             mainView.addElement(myInfo);
             mainView.addElement(menu);
             mainView.addElement(info);
+            mainView.addElement(volume);
 
             News.OnTapped();
         }
@@ -198,6 +215,17 @@ namespace CritterCamp.Screens {
             ScreenManager.AddScreen(new AboutScreen(), null);
         }
 
+        void volumeButton_Tapped(object sender, EventArgs e) {
+            bool volumeOn = ((Button1)sender).Highlight;
+            ((Button1)sender).Highlight = !volumeOn;
+            GamePage gp = (GamePage)CoreApplication.Properties["GamePage"];
+            gp.Dispatcher.BeginInvoke(() => {
+                MediaPlayer.IsMuted = !volumeOn;
+            });
+            SoundEffect.MasterVolume = volumeOn ? 1 : 0;
+            IsolatedStorageSettings.ApplicationSettings["volume"] = volumeOn.ToString();
+        }
+
         void cancelButton_Tapped(object sender, EventArgs e) {
             cancelSearch();
         }
@@ -237,7 +265,7 @@ namespace CritterCamp.Screens {
 
         public override void Unload() {
             GamePage gamePage = (GamePage)CoreApplication.Properties["GamePage"];
-            gamePage.hideAdduplux();
+            gamePage.hideAdDuplex();
             base.Unload();
         }
 

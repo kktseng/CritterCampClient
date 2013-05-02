@@ -266,6 +266,12 @@
     <Content Include="Content\Sounds\blop.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\buttonSoundOff.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\buttonSoundOn.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Content\fbIcon.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

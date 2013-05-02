@@ -28,6 +28,8 @@ namespace CritterCamp.Screens {
                 ScreenManager.Textures.Add("whiteTex", cm.Load<Texture2D>("whitePixel"));
                 ScreenManager.Textures.Add("bgScreen", cm.Load<Texture2D>("bgScreen"));
                 ScreenManager.Textures.Add("paperBg", cm.Load<Texture2D>("paperBg"));
+                ScreenManager.Textures.Add("buttonSoundOn", cm.Load<Texture2D>("buttonSoundOn"));
+                ScreenManager.Textures.Add("buttonSoundOff", cm.Load<Texture2D>("buttonSoundOff"));
             }
             base.Activate(instancePreserved);
         }
