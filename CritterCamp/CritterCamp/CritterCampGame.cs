@@ -5,7 +5,10 @@ using Microsoft.Phone.Shell;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using System;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
 using Windows.ApplicationModel.Core;
 
@@ -36,6 +39,7 @@ namespace CritterCamp {
             Services.AddService(typeof(IScreenFactory), screenFactory);
 
             // Add event handlers for tombstoning
+            PhoneApplicationService.Current.Activated += Activation;
             PhoneApplicationService.Current.Deactivated += Deactivation;
 
             // Create a new instance of the Screen Manager
@@ -53,6 +57,31 @@ namespace CritterCamp {
 
             // Add new screens
             screenManager.AddScreen(new OfflineScreen(), null);
+        }
+
+        private void Activation(object sender, ActivatedEventArgs e) {
+            TryMediaPlay();
+        }
+
+        public void TryMediaPlay() {
+            MediaElement me = (MediaElement)CoreApplication.Properties["MediaElement"];
+            if(MediaPlayer.GameHasControl) {
+                me.Stop();
+                me.MediaOpened += LoadMedia;
+                me.Source = new System.Uri("Content/Sounds/adventure.mp3", UriKind.Relative);
+                me.MediaEnded += EndMedia;
+            }
+        }
+
+        private void EndMedia(object sender, RoutedEventArgs e) {
+            MediaElement me = (MediaElement)CoreApplication.Properties["MediaElement"];
+            if(me.CurrentState != System.Windows.Media.MediaElementState.Playing)
+                me.Play();
+        }
+
+        private void LoadMedia(object sender, RoutedEventArgs e) {
+            MediaElement me = (MediaElement)CoreApplication.Properties["MediaElement"];
+            me.Play();
         }
 
         private void Deactivation(object sender, DeactivatedEventArgs e) {

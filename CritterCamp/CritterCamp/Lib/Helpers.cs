@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Windows.ApplicationModel.Core;
 
 namespace CritterCamp {
@@ -71,11 +72,13 @@ namespace CritterCamp {
             // save important values
             GamePage gp = (GamePage)CoreApplication.Properties["GamePage"];
             float ratio = (float)CoreApplication.Properties["ratio"];
+            MediaElement me = (MediaElement)CoreApplication.Properties["MediaElement"];
 
             // reset CoreApplication.Properties
             CoreApplication.Properties.Clear();
             CoreApplication.Properties["GamePage"] = gp;
             CoreApplication.Properties["ratio"] = ratio;
+            CoreApplication.Properties["MediaElement"] = me;
         }
 
         /***

@@ -80,7 +80,7 @@ namespace CritterCamp.Screens.Games {
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
             addTextures("twilight", "map", "doodads", "effects", "pig");
-            addSounds("sparkle");
+            addSounds("ding", "dong", "chime1", "chime2", "chime3", "chime4", "puff");
             setMap();
         }
 
@@ -257,9 +257,11 @@ namespace CritterCamp.Screens.Games {
                             if(p.input[currentMove] != commandList[currentMove].dir) {
                                 error = true;
                                 if(s == playerName) {
+                                    soundList["dong"].Play();
                                     inputArrows.ElementAt(currentMove).setState(ArrowStates.Red);
                                 }
                             } else if(s == playerName) {
+                                soundList["ding"].Play();
                                 inputArrows.ElementAt(currentMove).setState(ArrowStates.Green);
                             }
                             p.setState(PlayerDanceStates.DanceLeft + (int)p.input[currentMove]);
@@ -279,6 +281,7 @@ namespace CritterCamp.Screens.Games {
                                     phase = Phase.GameOver;
                                 }
                             }
+                            soundList["puff"].Play();
                             new Smoke(this, p.getCoord() + new Vector2(100 * p.health, 0));
                         }
 

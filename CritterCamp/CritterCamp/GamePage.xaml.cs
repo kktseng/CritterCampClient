@@ -38,10 +38,30 @@ namespace CritterCamp {
             CoreApplication.Properties["GamePage"] = this;
 
             this.Loaded += new RoutedEventHandler(onLoaded);
+            CoreApplication.Properties["MediaElement"] = MediaElement;
+            TryMediaPlay();
             //adDuplexAd.IsTest = true; // use this line to display our own ad for testing
 
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
+        }
+
+        public void TryMediaPlay() {
+            if(MediaPlayer.GameHasControl) {
+                MediaElement.Stop();
+                MediaElement.MediaOpened += LoadMedia;
+                MediaElement.Source = new System.Uri("Content/Sounds/adventure.mp3", UriKind.Relative);
+                MediaElement.MediaEnded += EndMedia;
+            }
+        }
+
+        private void EndMedia(object sender, RoutedEventArgs e) {
+            if(MediaElement.CurrentState != System.Windows.Media.MediaElementState.Playing)
+                MediaElement.Play();
+        }
+
+        private void LoadMedia(object sender, RoutedEventArgs e) {
+            MediaElement.Play();
         }
 
         public void hideAdduplux() {

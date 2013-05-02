@@ -15,7 +15,7 @@
     shell:SystemTray.IsVisible="False">
 
     <DrawingSurfaceBackgroundGrid x:Name="XnaSurface" Background="Transparent">
-        <MediaElement Source="Content/Sounds/adventuremp3.mp3"/>
+        <MediaElement x:Name="MediaElement"/>
         <adduplex:AdControl x:Name="adDuplexAd" 
             AppId="39335" VerticalAlignment="Bottom" Grid.Row="2"
          />
