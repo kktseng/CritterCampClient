@@ -305,6 +305,10 @@
     <Content Include="Content\Sounds\buttonSound.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Content\Sounds\fbIcon.xnb" />
+    <None Include="Content\Sounds\twitterIcon.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\twitterIcon.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

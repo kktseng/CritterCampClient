@@ -155,14 +155,15 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
 
         public override void draw(SpriteDrawer sd) {
             int jetFlameState = rand.Next(0, 1);
+            float scale = selected ? 1.2f : 1;
             switch(state) {
                 case PigStates.WalkLeft:
-                    base.draw(sd);
-                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(-30, 10), (int)TextureData.Doodads.sideJet1 + jetPackState, SpriteEffects.FlipHorizontally);
+                    sd.Draw(getImg(), getCoord(), getNum(), getFrame().Value.effect, spriteScale: scale);
+                    sd.Draw(screen.textureList["doodads"], coord - (new Vector2(-30, 10) * scale), (int)TextureData.Doodads.sideJet1 + jetPackState, SpriteEffects.FlipHorizontally, spriteScale: scale);
                     break;
                 case PigStates.WalkRight:
-                    base.draw(sd);
-                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(30, 10), (int)TextureData.Doodads.sideJet1 + jetPackState);
+                    sd.Draw(getImg(), getCoord(), getNum(), getFrame().Value.effect, spriteScale: scale);
+                    sd.Draw(screen.textureList["doodads"], coord - (new Vector2(30, 10) * scale), (int)TextureData.Doodads.sideJet1 + jetPackState, spriteScale: scale);
                     break;
                 case PigStates.Flying:
                     sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
@@ -175,8 +176,8 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
                     base.draw(sd);
                     break;
                 case PigStates.Entering:
-                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
-                    base.draw(sd);
+                    sd.Draw(screen.textureList["doodads"], coord - (new Vector2(0, 20) * scale), (int)TextureData.Doodads.jetPack1, spriteScale: scale);
+                    sd.Draw(getImg(), getCoord(), getNum(), getFrame().Value.effect, spriteScale: scale);
                     break;
                 case PigStates.Standing:
                     sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
