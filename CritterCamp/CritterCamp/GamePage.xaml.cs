@@ -46,6 +46,12 @@ namespace CritterCamp {
             //BuildLocalizedApplicationBar();
         }
 
+        protected override void OnOrientationChanged(OrientationChangedEventArgs e) {
+            if(e.Orientation == PageOrientation.LandscapeLeft) {
+                base.OnOrientationChanged(e);
+            }
+        }
+
         public void TryMediaPlay() {
             if(MediaPlayer.GameHasControl) {
                 string isOn;
