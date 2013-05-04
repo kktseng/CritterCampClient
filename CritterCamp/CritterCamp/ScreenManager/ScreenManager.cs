@@ -20,6 +20,7 @@ using System.IO.IsolatedStorage;
 using System.Xml.Linq;
 using CritterCamp.Screens.Games.Lib;
 using CritterCamp;
+using Microsoft.Xna.Framework.Audio;
 #endregion
 
 namespace GameStateManagement {
@@ -44,6 +45,7 @@ namespace GameStateManagement {
 
         Dictionary<string, SpriteFont> fonts = new Dictionary<string, SpriteFont>();
         Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
+        Dictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
 
         bool isInitialized;
 
@@ -86,6 +88,10 @@ namespace GameStateManagement {
             get { return textures; }
         }
 
+        public Dictionary<string, SoundEffect> Sounds {
+            get { return sounds; }
+        }
+
 
         #endregion
 
@@ -125,11 +131,18 @@ namespace GameStateManagement {
             for(int i = 0; i < fontNames.Length; i++) {
                 fonts[fontNames[i]] = content.Load<SpriteFont>("Fonts/" + fontNames[i]);
             }
-            string[] textureNames = new string[] {"paperBG", "gameIcons", "scoreScreenIcons", "scorePanel" };
+            string[] textureNames = new string[] {
+                "paperBG", "bgScreen",
+                "gameIcons", "scoreScreenIcons", "scorePanel",
+                "backButton", "buttonMint",  "buttonGreen", "buttonSoundOn", "buttonSoundOff",
+                "whitePixel" };
             for(int i = 0; i < textureNames.Length; i++) {
                 textures[textureNames[i]] = content.Load<Texture2D>(textureNames[i]);
             }
-
+            string[] soundNames = new string[] { "buttonSound" };
+            for(int i = 0; i < soundNames.Length; i++) {
+                sounds[soundNames[i]] = content.Load<SoundEffect>("Sounds/" + soundNames[i]);
+            }
 
             // Tell each of the screens to load their content.
             foreach(GameScreen screen in screens) {

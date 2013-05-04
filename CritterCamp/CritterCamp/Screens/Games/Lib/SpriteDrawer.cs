@@ -101,7 +101,7 @@ namespace CritterCamp.Screens.Games.Lib {
             if (Constants.ROTATION != 0)
                 coord = new Vector2(backBuffer.X - coord.Y, coord.X);
 
-            Texture2D whiteTex = sm.Textures["whiteTex"];
+            Texture2D whiteTex = sm.Textures["whitePixel"];
             sb.Draw(whiteTex, new Rectangle((int)coord.X, (int)coord.Y, (int)(rectangle.Width / coordScale.X), (int)(rectangle.Height / coordScale.Y)), null, color, Constants.ROTATION, Vector2.Zero, SpriteEffects.None, 0f);
              
         }

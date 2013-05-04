@@ -10,6 +10,7 @@ namespace CritterCamp.Screens {
     class Button1 : UIElement{
         private static string defaultButtonTexture = "buttonMint";
         private static string defaultButtonHighlightTexture = "gameIcons";
+        private static string defaultButtonSound = "buttonSound";
 
         // private UI elements for this button
         private Label TextLabel = new Label();
@@ -17,6 +18,7 @@ namespace CritterCamp.Screens {
         private Label Caption2Label = new Label();
         private Image ButtonTexture = new Image(defaultButtonTexture, 0, new Vector2(290, 90), new Vector2());
         private Image ButtonHighlightTexture = new Image(defaultButtonHighlightTexture, (int)TextureData.games.glow, new Vector2(290, 90), new Vector2());
+        private string ButtonSound = defaultButtonSound;
 
         public string Text { // text to display in the button
             get {
@@ -83,7 +85,14 @@ namespace CritterCamp.Screens {
                 ButtonHighlightTexture.TextureIndex = value;
             }
         }
-
+        public string Sound {
+            get {
+                return ButtonSound;
+            }
+            set {
+                ButtonSound = value;
+            }
+        }
         private bool highlight;
         public bool Highlight { // bool if this button is highlighted
             get {
@@ -180,8 +189,13 @@ namespace CritterCamp.Screens {
             TextLabel.Font = "buttonFont";
             TextLabel.TextColor = Color.White;
             Disabled = false; // make the button tappable
+            Tapped += OnTap;
 
             ButtonHighlightTexture.Visible = false;
+        }
+
+        private void OnTap(object sender, UIElementTappedArgs e) {
+            MyScreenManager.Sounds[ButtonSound].Play();
         }
 
         /// <summary>
