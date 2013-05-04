@@ -44,22 +44,22 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             if(type == FishTypes.small) {
                 textureNum = (int)TextureData.Fish.small;
                 score = 10;
-                speed = 200;
+                speed = 150;
             } else if(type == FishTypes.medium) {
                 textureNum = (int)TextureData.Fish.medium;
                 score = 20;
-                speed = 150;
+                speed = 200;
             } else if(type == FishTypes.largeBlue) {
                 textureNum = (int)TextureData.Fish.largeBlue1;
                 score = 30;
-                speed = 300;
+                speed = 100;
             } else if(type == FishTypes.largeOrange) {
                 textureNum = (int)TextureData.Fish.largeOrange1;
                 score = 40;
-                speed = 100;
+                speed = 300;
             } else if(type == FishTypes.shiny) {
                 score = 100;
-                speed = 200;
+                speed = 400;
             }
 
             // reset animation for new texture

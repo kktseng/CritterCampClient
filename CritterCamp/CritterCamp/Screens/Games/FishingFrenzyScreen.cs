@@ -30,10 +30,9 @@ namespace CritterCamp.Screens.Games {
 
     class FishingFrenzyScreen : BaseGameScreen {
         protected static double[][,] roundData = new double[][,] {
-            new double[,] {{ 0.3, 450, 700 }, { 0.2, 450, 850 }, { 0.2, 650, 900 }, { 0.1, 650, 900 }, { 0.2, 650, 900 }},
-            //new double[,] {{ 0.3, 450, 700 }, { 0.2, 450, 850 }, { 0.2, 650, 900 }, { 0.1, 650, 900 }, { 0.2, 650, 900 }},
-            //new double[,] {{ 0.3, 450, 700 }, { 0.2, 450, 850 }, { 0.2, 650, 900 }, { 0.1, 650, 900 }, { 0.2, 650, 900 }},
-            //new double[,] {{ 0.3, 450, 700 }, { 0.2, 450, 850 }, { 0.2, 650, 900 }, { 0.1, 650, 900 }, { 0.2, 650, 900 }}
+            new double[,] {{ 0.4, 450, 700 }, { 0.3, 450, 850 }, { 0.18, 550, 900 }, { 0.1, 650, 900 }, { 0.02, 750, 900 }},
+            new double[,] {{ 0.3, 450, 700 }, { 0.3, 450, 800 }, { 0.21, 525, 900 }, { 0.15, 600, 900 }, { 0.04, 700, 900 }},
+            new double[,] {{ 0.2, 450, 700 }, { 0.3, 450, 750 }, { 0.24, 500, 900 }, { 0.2, 550, 900 }, { 0.06, 650, 900 }},
         };
 
         public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 2);
@@ -167,7 +166,11 @@ namespace CritterCamp.Screens.Games {
                 // Do nothing and wait for the sync to finish
             } else if(phase == Phase.Base) {
                 baseline = gameTime.TotalGameTime;
-                banner = new TextBanner(this, "Round " + round);
+                if(round == roundData.Length) {
+                    banner = new TextBanner(this, "FINAL ROUND!");
+                } else {
+                    banner = new TextBanner(this, "Round " + round);
+                }
                 lastFish = baseline + BANNER_TIME + new TimeSpan(0, 0, 1);
                 curFish = 0;
                 phase = Phase.Banner;

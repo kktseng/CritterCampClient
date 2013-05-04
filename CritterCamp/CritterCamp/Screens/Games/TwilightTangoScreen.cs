@@ -21,14 +21,14 @@ namespace CritterCamp.Screens.Games {
     }
 
     class TwilightTangoScreen : BaseGameScreen {
-        public static int MAX_ROUNDS = 6;
-        public static int COMMAND_INCR = 2;
+        public static int MAX_ROUNDS = 10;
+        public static int COMMAND_INCR = 1;
         public static int COMMAND_INIT = 4;
 
         public static TimeSpan COMMAND_TIME = new TimeSpan(0, 0, 4);
-        public static TimeSpan COMMAND_TIME_INCR = new TimeSpan(0, 0, 2);
+        public static TimeSpan COMMAND_TIME_INCR = new TimeSpan(0, 0, 1);
         public static TimeSpan INPUT_TIME = new TimeSpan(0, 0, 3);
-        public static TimeSpan INPUT_INCR = new TimeSpan(0, 0, 2);
+        public static TimeSpan INPUT_INCR = new TimeSpan(0, 0, 1);
         public static TimeSpan TIMEOUT_TIME = new TimeSpan(0, 0, 1);
         public static TimeSpan MOVE_TIME = new TimeSpan(0, 0, 0, 0, 600);
         public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 0, 1, 500);
@@ -69,7 +69,7 @@ namespace CritterCamp.Screens.Games {
             currentRank = playerData.Count;
             int i = 0;
             foreach(PlayerData data in playerData.Values) {
-                players[data.username] = new Player(this, new Vector2(100 + 450 * i, 800), data.color);
+                players[data.username] = new Player(this, new Vector2(150 + 450 * i, 800), data.color);
                 i++;
             }
 
@@ -187,8 +187,8 @@ namespace CritterCamp.Screens.Games {
                     phase = Phase.Input;
                     return;
                 } else {
-                    // Draw commands every 300ms
-                    for(int i = 0; i < (gameTime.TotalGameTime - start).TotalMilliseconds / 300; i++) {
+                    // Draw commands every 500ms
+                    for(int i = 0; i < (gameTime.TotalGameTime - start).TotalMilliseconds / 500; i++) {
                         if(i < commandList.Count) {
                             commandList[i].setVisibility(true);
                         }
