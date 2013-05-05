@@ -99,8 +99,8 @@ namespace CritterCamp {
             }
         }
 
-        public void ResetScreen() {
-            Status.Text = ""; // clear any messages
+        public void ResetScreen(string message = "") {
+            Status.Text = message;
             ContentPanel.Visibility = Visibility.Visible; // show everything
 
             // check and see if we have an error message to display
@@ -236,14 +236,14 @@ namespace CritterCamp {
                 LoginResponse response = new LoginResponse(loginResult.message);
                 Status.Text = response.message;
 
-                if(response.success) { // login was sucessful
+                if (response.success) { // login was sucessful
                     // save the username and password in local settings so that it can load it later
-                    if(IsolatedStorageSettings.ApplicationSettings.Contains("username")) {
+                    if (IsolatedStorageSettings.ApplicationSettings.Contains("username")) {
                         IsolatedStorageSettings.ApplicationSettings["username"] = username;
                     } else {
                         IsolatedStorageSettings.ApplicationSettings.Add("username", username);
                     }
-                    if(IsolatedStorageSettings.ApplicationSettings.Contains("password")) {
+                    if (IsolatedStorageSettings.ApplicationSettings.Contains("password")) {
                         IsolatedStorageSettings.ApplicationSettings["password"] = password;
                     } else {
                         IsolatedStorageSettings.ApplicationSettings.Add("password", password);
@@ -275,7 +275,7 @@ namespace CritterCamp {
                          * Party updates
                          * Store transactions
                          **/
-                        if(o["conn_id"] != null) {
+                        if (o["conn_id"] != null) {
                             // authorize the connection using auth key recieved from http login
                             conn.SendMessage("{\"auth\": \"" + response.auth + "\"}");
                             CoreApplication.Properties["TCPSocket"] = conn;
@@ -292,10 +292,14 @@ namespace CritterCamp {
                         }
                     };
                     conn.pConnectionClosedEvent += TCPConnectionClosed;
-                    if(!conn.Connect()) {
+                    if (!conn.Connect()) {
                         System.Diagnostics.Debug.WriteLine("Error connecting to TCP server");
                         Status.Text = "Error connecting to server. Please try again.";
                     }
+                } else { // could not log in with the creditions. invalid username and password
+                    IsolatedStorageSettings.ApplicationSettings.Remove("username"); // remove any stored username and passwords
+                    IsolatedStorageSettings.ApplicationSettings.Remove("password");
+                    ResetScreen(response.message); // reset the screen
                 }
 
             } else {
