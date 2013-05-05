@@ -1,6 +1,7 @@
 ﻿using CritterCamp.Screens.Games;
 using CritterCamp.Screens.Games.Lib;
 using GameStateManagement;
+using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -317,6 +318,7 @@ namespace CritterCamp.Screens {
 
             Button1 rate = new Button1("Rate Us");
             rate.Position = new Vector2(startX + 200, startY + 177);
+            rate.Tapped += rateButton_Tapped;
 
             Image fbIcon = new Image("fbIcon", 0, new Vector2(100, 100), new Vector2(startX+75, startY+350));
             Label fb = new Label("fb.me/CritterCampGame", new Vector2(startX + 180, startY + 350));
@@ -343,6 +345,12 @@ namespace CritterCamp.Screens {
             aboutPage.addElement(music1);
             aboutPage.addElement(music2);
             mainView.addElement(aboutPage);
+        }
+
+        private void rateButton_Tapped(object sender, UIElementTappedArgs e) {
+            MarketplaceDetailTask marketplaceDetailTask = new MarketplaceDetailTask();
+            marketplaceDetailTask.ContentType = MarketplaceContentType.Applications;
+            marketplaceDetailTask.Show();
         }
     }
 
