@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{f13744ce-a3b0-426b-8a4a-cf6f482b80cd}" Title="CritterCamp" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="CritterCamp author" Description="Sample description" Publisher="CritterCamp" PublisherID="{0df4bf76-7146-42eb-ba7c-83daa7249a23}">
-    <IconPath IsRelative="true" IsResource="false">pig600-01.png</IconPath>
+  <App xmlns="" ProductID="{f13744ce-a3b0-426b-8a4a-cf6f482b80cd}" Title="Critter Camp" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="CritterCamp author" Description="Sample description" Publisher="CritterCamp" PublisherID="{0df4bf76-7146-42eb-ba7c-83daa7249a23}">
+    <IconPath IsRelative="true" IsResource="false">pigIcon300.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
       <Capability Name="ID_CAP_MEDIALIB_AUDIO" />
@@ -16,10 +16,10 @@
     <Tokens>
       <PrimaryToken TokenID="CritterCampToken" TaskName="_default">
         <TemplateFlip>
-          <SmallImageURI IsRelative="true" IsResource="false">pig600-01.png</SmallImageURI>
+          <SmallImageURI IsRelative="true" IsResource="false">pigIconS.png</SmallImageURI>
           <Count>0</Count>
-          <BackgroundImageURI IsRelative="true" IsResource="false">pig600-01.png</BackgroundImageURI>
-          <Title>CritterCamp</Title>
+          <BackgroundImageURI IsRelative="true" IsResource="false">pigIconM.png</BackgroundImageURI>
+          <Title>Critter Camp</Title>
           <BackContent>
           </BackContent>
           <BackBackgroundImageURI IsRelative="true" IsResource="false">
@@ -28,7 +28,7 @@
           </BackTitle>
           <DeviceLockImageURI IsRelative="true" IsResource="false">
           </DeviceLockImageURI>
-          <HasLarge>False</HasLarge>
+          <HasLarge>false</HasLarge>
         </TemplateFlip>
       </PrimaryToken>
     </Tokens>

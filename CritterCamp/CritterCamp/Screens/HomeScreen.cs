@@ -177,7 +177,6 @@ namespace CritterCamp.Screens {
             info.addElement(FriendsView);
             info.addElement(PartyView);
 
-
             mainView.addElement(myInfo);
             mainView.addElement(menu);
             mainView.addElement(info);

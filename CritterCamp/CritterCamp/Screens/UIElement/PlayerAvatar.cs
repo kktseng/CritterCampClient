@@ -89,7 +89,7 @@ namespace CritterCamp.Screens {
             if (DrawFullProfileData) {
                 FullProfileName.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
                 FullProfileLevel.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
-                FullProfileMoney.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
+                //FullProfileMoney.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
             } else if (DrawProfileData) {
                 ProfileName.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
                 ProfileLevel.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
