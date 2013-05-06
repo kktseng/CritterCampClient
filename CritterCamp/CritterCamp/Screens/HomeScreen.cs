@@ -499,6 +499,7 @@ namespace CritterCamp.Screens {
             exitButton.TextScale = 0.7f;
             exitButton.Tapped += (s, e) => {
                 ScreenManager.Deactivate();
+                IsolatedStorageSettings.ApplicationSettings.Save();
                 Application.Current.Terminate();
             };
 
