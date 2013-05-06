@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
@@ -28,7 +29,7 @@ namespace CritterCamp.Screens {
         List<Image> AnimatedPigs;
         Label SelectedLabel;
         Label News, Friends, Party;
-        Label InfoListView; // change this to a list view when its implemented
+        View SelectedView, NewsView, FriendsView, PartyView;
         Color InactiveColor = new Color(119, 95, 77);
         //public Song backMusic;
 
@@ -138,36 +139,62 @@ namespace CritterCamp.Screens {
             Party.Disabled = false;
             Party.Tapped += party_Tapped;
 
-            InfoListView = new Label();
-            InfoListView.Position = new Vector2(75, 180);
-            InfoListView.CenterX = false;
-            InfoListView.CenterY = false;
-            InfoListView.Text = ("Test");
+            NewsView = new View(new Vector2(1920 / 2 - 50, 875), new Vector2(480, 495));
+            List<NewsPost> news = (List<NewsPost>)CoreApplication.Properties["news"];
+            NewsPost firstNews = news.ElementAt(0);
+            Label newsDate = new Label(firstNews.TimeStamp.ToString("M", new CultureInfo("en-US")), new Vector2(75, 180));
+            newsDate.CenterX = false;
+            newsDate.CenterY = false;
+            newsDate.TextColor = Constants.DarkBrown;
+            String lineBreaksPost = NewsPost.insertLineBreaks(firstNews.Post, 835, ScreenManager);
+            Label newsPostLabel = new Label(lineBreaksPost, new Vector2(75, 250));
+            newsPostLabel.CenterX = false;
+            newsPostLabel.CenterY = false;
+            NewsView.addElement(newsDate);
+            NewsView.addElement(newsPostLabel);
+
+            FriendsView = new View(new Vector2(1920 / 2 - 50, 875), new Vector2(480, 495));
+            Label friendsLabel = new Label("You have no friends. :(", new Vector2(75, 180));
+            friendsLabel.CenterX = false;
+            friendsLabel.CenterY = false;
+            FriendsView.addElement(friendsLabel);
+
+            PartyView = new View(new Vector2(1920 / 2 - 50, 875), new Vector2(480, 495));
+            Label partyLabel = new Label("You have no one in your party. :(", new Vector2(75, 180));
+            partyLabel.CenterX = false;
+            partyLabel.CenterY = false;
+            PartyView.addElement(partyLabel);
+
+            SelectedLabel = News;
+            SelectedView = NewsView;
+            FriendsView.Visible = false;
+            PartyView.Visible = false;
 
             info.addElement(News);
             info.addElement(Friends);
             info.addElement(Party);
-            info.addElement(InfoListView);
+            info.addElement(NewsView);
+            info.addElement(FriendsView);
+            info.addElement(PartyView);
 
 
             mainView.addElement(myInfo);
             mainView.addElement(menu);
             mainView.addElement(info);
             mainView.addElement(volume);
-
-            News.OnTapped();
         }
 
         void news_Tapped(object sender, EventArgs e) {
             if (SelectedLabel == News) {
                 return;
             }
-            if (SelectedLabel != null) {
-                SelectedLabel.TextColor = InactiveColor;
-            }
+            SelectedLabel.TextColor = InactiveColor;
             SelectedLabel = News;
             News.TextColor = Color.Black;
-            InfoListView.Text = "No new news to display.";
+
+            SelectedView.Visible = false;
+            SelectedView = NewsView;
+            SelectedView.Visible = true;
         }
 
         void friends_Tapped(object sender, EventArgs e) {
@@ -177,7 +204,10 @@ namespace CritterCamp.Screens {
             SelectedLabel.TextColor = InactiveColor;
             SelectedLabel = Friends;
             Friends.TextColor = Color.Black;
-            InfoListView.Text = "You have no friends :(";
+
+            SelectedView.Visible = false;
+            SelectedView = FriendsView;
+            SelectedView.Visible = true;
         }
 
         void party_Tapped(object sender, EventArgs e) {
@@ -187,7 +217,11 @@ namespace CritterCamp.Screens {
             SelectedLabel.TextColor = InactiveColor;
             SelectedLabel = Party;
             Party.TextColor = Color.Black;
-            InfoListView.Text = "You have no one in your party :(";
+
+
+            SelectedView.Visible = false;
+            SelectedView = PartyView;
+            SelectedView.Visible = true;
         }
 
         void playButton_Tapped(object sender, EventArgs e) {
@@ -507,6 +541,62 @@ namespace CritterCamp.Screens {
             exitPage.addElement(keepPlaying);
             exitPage.addElement(exitButton);
             mainView.addElement(exitPage);
+        }
+    }
+
+    class NewsPost {
+        public DateTime TimeStamp;
+        public string Post;
+        public string Id;
+
+        NewsPost(DateTime timeStamp, string post, string id) {
+            TimeStamp = timeStamp;
+            Post = post;
+            Id = id;
+        }
+
+        public static NewsPost createFromJObject(JObject newsPost) {
+            if (newsPost["_id"] == null || newsPost["post"] == null || newsPost["date"] == null) {
+                return null;
+            }
+
+            string id = (string)newsPost["_id"];
+            string post = (string)newsPost["post"];
+            DateTime timeStamp = (DateTime)newsPost["date"];
+
+            return new NewsPost(timeStamp, post, id);
+        }
+
+        public static string insertLineBreaks(string post, float maxSize, ScreenManager MyScreenManager) {
+            float maxSizeScaled = maxSize * SpriteDrawer.drawScale.X;
+            string result = "";
+            string wordToAdd = "";
+            string tryAdd;
+            foreach (char c in post) {
+                if (c == ' ') {
+                    // this char is a white space. word to add contains the next word to add 
+                    tryAdd = result + (result == "" ? "" : " ") + wordToAdd;
+                    if (MyScreenManager.Fonts["blueHighway28"].MeasureString(tryAdd).X < maxSizeScaled) {
+                        result = tryAdd;
+                    } else {
+                        result += "\n" + wordToAdd;
+                    }
+                    wordToAdd = "";
+                } else {
+                    // keep building our word
+                    wordToAdd += c;
+                }
+            }
+
+            // add the last word
+            tryAdd = result + (result == "" ? "" : " ") + wordToAdd;
+            if (MyScreenManager.Fonts["blueHighway28"].MeasureString(tryAdd).X < maxSizeScaled) {
+                result = tryAdd;
+            } else {
+                result += "\n" + wordToAdd;
+            }
+
+            return result;
         }
     }
 }

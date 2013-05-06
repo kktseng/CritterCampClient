@@ -21,7 +21,8 @@ namespace CritterCamp.Screens.Games.Lib {
     }
 
     public class SpriteDrawer {
-        public Vector2 backBuffer, coordScale, drawScale;
+        public static Vector2 drawScale;
+        public Vector2 backBuffer, coordScale;
         public Vector2 sprite_dim = new Vector2(Constants.SPRITE_DIM);
         public int offset = 0; // used to offset non 16:9 screens to the center
         public Dictionary<Vector2, Vector2> cachedConversions = new Dictionary<Vector2, Vector2>();

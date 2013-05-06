@@ -261,6 +261,7 @@ namespace CritterCamp {
                     // TODO: Retrieve and parse news information from HTTP response
                     // TODO: Retrieve money from SQLite
 
+                    CoreApplication.Properties["news"] = response.news;
 
                     PlayerData mydata = new PlayerData(username, "profile", response.lvl, 0);
                     CoreApplication.Properties["myPlayerData"] = mydata;
@@ -344,12 +345,19 @@ namespace CritterCamp {
     class LoginResponse : Response {
         public string auth;
         public int lvl;
+        public List<NewsPost> news;
 
         public LoginResponse(string response)
             : base(response) {
                 if(responseJSON["auth"] != null) {
                     auth = (string)responseJSON["auth"];
                     lvl = (int)responseJSON["level"];
+
+                    news = new List<NewsPost>();
+                    JArray newsJson = (JArray)responseJSON["news"];
+                    foreach (JObject n in newsJson) {
+                        news.Add(NewsPost.createFromJObject(n));
+                    }
                 }
         }
     }

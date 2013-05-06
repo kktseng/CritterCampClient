@@ -22,7 +22,7 @@ namespace CritterCamp.Screens.Games.Lib {
 
             // Resize coordinates to backbuffer
             SpriteDrawer sd = Helpers.GetSpriteDrawer(screen);
-            size /= sd.drawScale;
+            size /= SpriteDrawer.drawScale;
 
             // Calculate number of tiles in the middle
             int numTiles = (int)(size.X / Constants.BUFFER_SPRITE_DIM);
