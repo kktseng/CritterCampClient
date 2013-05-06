@@ -171,11 +171,11 @@ namespace CritterCamp.Screens {
             PartyView.Visible = false;
 
             info.addElement(News);
-            info.addElement(Friends);
-            info.addElement(Party);
+            //info.addElement(Friends);
+            //info.addElement(Party);
             info.addElement(NewsView);
-            info.addElement(FriendsView);
-            info.addElement(PartyView);
+            //info.addElement(FriendsView);
+            //info.addElement(PartyView);
 
             mainView.addElement(myInfo);
             mainView.addElement(menu);
@@ -531,8 +531,7 @@ namespace CritterCamp.Screens {
             exitButton.Position = new Vector2(startX, startY + 350);
             exitButton.TextScale = 0.7f;
             exitButton.Tapped += (s, e) => {
-                ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
-                LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(OfflineScreen)));
+                LoadingScreen.Load(ScreenManager, false, null, Helpers.GetScreenFactory(this).CreateScreen(typeof(OfflineScreen)));
             };
 
             exitPage.addElement(text);

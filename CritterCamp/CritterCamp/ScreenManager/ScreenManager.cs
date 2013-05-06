@@ -36,8 +36,6 @@ namespace GameStateManagement {
 
         List<GameScreen> screens = new List<GameScreen>();
         List<GameScreen> tempScreensList = new List<GameScreen>();
-        List<GameScreen> toAddScreens = new List<GameScreen>();
-        List<GameScreen> toRemoveScreens = new List<GameScreen>();
 
         InputState input = new InputState();
 
@@ -156,8 +154,10 @@ namespace GameStateManagement {
         /// </summary>
         protected override void UnloadContent() {
             // Tell each of the screens to unload their content.
-            foreach(GameScreen screen in screens) {
-                screen.Unload();
+            lock(screens) {
+                foreach(GameScreen screen in screens) {
+                    screen.Unload();
+                }
             }
         }
 
@@ -171,17 +171,6 @@ namespace GameStateManagement {
         /// Allows each screen to run logic.
         /// </summary>
         public override void Update(GameTime gameTime) {
-            lock(toAddScreens) {
-                foreach(GameScreen screen in toAddScreens)
-                    AddScreenSync(screen);
-                toAddScreens.Clear();
-            };
-            lock(toRemoveScreens) {
-                foreach(GameScreen screen in toRemoveScreens)
-                    RemoveScreenSync(screen);
-                toRemoveScreens.Clear();
-            };
-
             // Read the keyboard and gamepad.
             input.Update();
 
@@ -189,8 +178,10 @@ namespace GameStateManagement {
             // the process of updating one screen adds or removes others.
             tempScreensList.Clear();
 
-            foreach(GameScreen screen in screens)
-                tempScreensList.Add(screen);
+            lock(screens) {
+                foreach(GameScreen screen in screens)
+                    tempScreensList.Add(screen);
+            }
 
             bool otherScreenHasFocus = !Game.IsActive;
             bool coveredByOtherScreen = false;
@@ -234,8 +225,10 @@ namespace GameStateManagement {
         void TraceScreens() {
             List<string> screenNames = new List<string>();
 
-            foreach(GameScreen screen in screens)
-                screenNames.Add(screen.GetType().Name);
+            lock(screens) {
+                foreach(GameScreen screen in screens)
+                    screenNames.Add(screen.GetType().Name);
+            }
 
             Debug.WriteLine(string.Join(", ", screenNames.ToArray()));
         }
@@ -245,11 +238,13 @@ namespace GameStateManagement {
         /// Tells each screen to draw itself.
         /// </summary>
         public override void Draw(GameTime gameTime) {
-            foreach(GameScreen screen in screens) {
-                if(screen.ScreenState == ScreenState.Hidden)
-                    continue;
+            lock(screens) {
+                foreach(GameScreen screen in screens) {
+                    if(screen.ScreenState == ScreenState.Hidden)
+                        continue;
 
-                screen.Draw(gameTime);
+                    screen.Draw(gameTime);
+                }
             }
         }
 
@@ -263,12 +258,6 @@ namespace GameStateManagement {
         /// Adds a new screen to the screen manager.
         /// </summary>
         public void AddScreen(GameScreen screen, PlayerIndex? controllingPlayer) {
-            lock(toAddScreens) {
-                toAddScreens.Add(screen);
-            };
-        }
-
-        private void AddScreenSync(GameScreen screen) {
             //screen.ControllingPlayer = controllingPlayer;
             screen.ScreenManager = this;
             screen.IsExiting = false;
@@ -278,12 +267,13 @@ namespace GameStateManagement {
                 screen.Activate(false);
             }
 
-            screens.Add(screen);
+            lock(screens) {
+                screens.Add(screen);
+            }
 
             // update the TouchPanel to respond to gestures this screen is interested in
             TouchPanel.EnabledGestures = screen.EnabledGestures;
         }
-
 
         /// <summary>
         /// Removes a screen from the screen manager. You should normally
@@ -292,24 +282,19 @@ namespace GameStateManagement {
         /// instantly removed.
         /// </summary>
         public void RemoveScreen(GameScreen screen) {
-            lock(toRemoveScreens) {
-                toRemoveScreens.Add(screen);
-            };
-        }
-
-        private void RemoveScreenSync(GameScreen screen) {
             // If we have a graphics device, tell the screen to unload content.
             if(isInitialized) {
                 screen.Unload();
             }
 
-            screens.Remove(screen);
-            tempScreensList.Remove(screen);
+            lock(screens) {
+                screens.Remove(screen);
 
-            // if there is a screen still in the manager, update TouchPanel
-            // to respond to gestures that screen is interested in.
-            if(screens.Count > 0) {
-                TouchPanel.EnabledGestures = screens[screens.Count - 1].EnabledGestures;
+                // if there is a screen still in the manager, update TouchPanel
+                // to respond to gestures that screen is interested in.
+                if(screens.Count > 0) {
+                    TouchPanel.EnabledGestures = screens[screens.Count - 1].EnabledGestures;
+                }
             }
         }
 
