@@ -22,8 +22,8 @@ namespace CritterCamp {
     public partial class GamePage : PhoneApplicationPage {
         private CritterCampGame _game;
 
-        string urlLogin = "http://" + Configuration.HOSTNAME + "/login";
-        string urlRegister = "http://" + Configuration.HOSTNAME + "/login/create";
+        string urlLogin = "https://" + Configuration.HOSTNAME + "/login";
+        string urlRegister = "https://" + Configuration.HOSTNAME + "/login/create";
         string postDataFormat = "username={0}&password={1}&version=" + Configuration.VERSION;
         bool connecting = false;
 

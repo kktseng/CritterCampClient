@@ -133,7 +133,7 @@ namespace CritterCamp.Screens.Games {
                 foreach(TouchLocation loc in input.TouchState) {
                     Vector2 scaledPos = Helpers.ScaleInput(new Vector2(loc.Position.X, loc.Position.Y));
 
-                    if(selectedPig == null) {
+                    if(selectedPig == null && phase == Phase.Begin) {
                         foreach(Pig p in mainPigs) {
                             // Don't let users grab falling pigs
                             if(p.getState() == PigStates.Falling)
@@ -164,16 +164,7 @@ namespace CritterCamp.Screens.Games {
         public void Explode() {
             exploded = true;
             soundList["bomb"].Play();
-            for(int i = 0; i < 4; i++) {
-                foreach(Pig p in pennedPigs[i]) {
-                    p.setState(PigStates.Standing);
-                    p.setVelocity(Vector2.Zero);
-                }
-            }
-            foreach(Pig p in mainPigs) {
-                p.setState(PigStates.Standing);
-                p.setVelocity(Vector2.Zero);
-            }
+
             // Inform other players of explosion
             JObject packet = new JObject(
                 new JProperty("action", "game"),
@@ -186,20 +177,22 @@ namespace CritterCamp.Screens.Games {
         }
 
         public override void removePlayer(string user) {
-            if(!deadUsers.Contains(user)) {
-                deadUsers.Insert(0, user);
-                if(deadUsers.Count == playerData.Count - 1 && !deadUsers.Contains(playerName)) {
-                    // Tell other players game is finished
-                    JObject packet = new JObject(
-                        new JProperty("action", "game"),
-                        new JProperty("name", "jetpack_jamboree"),
-                        new JProperty("data", new JObject(
-                            new JProperty("action", "exploded")
-                        ))
-                    );
-                    conn.SendMessage(packet.ToString());
-                } else if(deadUsers.Count >= playerData.Count) {
-                    phase = Phase.GameOver;
+            lock(deadUsers) {
+                if(!deadUsers.Contains(user)) {
+                    deadUsers.Insert(0, user);
+                    if(deadUsers.Count == playerData.Count - 1 && !deadUsers.Contains(playerName)) {
+                        // Tell other players game is finished
+                        JObject packet = new JObject(
+                            new JProperty("action", "game"),
+                            new JProperty("name", "jetpack_jamboree"),
+                            new JProperty("data", new JObject(
+                                new JProperty("action", "exploded")
+                            ))
+                        );
+                        conn.SendMessage(packet.ToString());
+                    } else if(deadUsers.Count >= playerData.Count) {
+                        phase = Phase.GameOver;
+                    }
                 }
             }
         }
@@ -256,6 +249,16 @@ namespace CritterCamp.Screens.Games {
                 } else {
                     if(banner == null)
                         banner = new TextBanner(this, "GAME OVER");
+                    for(int i = 0; i < 4; i++) {
+                        foreach(Pig p in pennedPigs[i]) {
+                            p.setState(PigStates.Standing);
+                            p.setVelocity(Vector2.Zero);
+                        }
+                    }
+                    foreach(Pig p in mainPigs) {
+                        p.setState(PigStates.Standing);
+                        p.setVelocity(Vector2.Zero);
+                    }
                 }
                 // Keep track of when the game switches to game over
                 bannerStart = gameTime.TotalGameTime;
@@ -263,17 +266,19 @@ namespace CritterCamp.Screens.Games {
                 if(banner == null)
                     banner = new TextBanner(this, "YOU WIN!");
                 if(gameTime.TotalGameTime - bannerStart > BANNER_TIME) {
-                    // Sync scores
-                    JObject packet = new JObject(
-                        new JProperty("action", "group"),
-                        new JProperty("type", "report_score"),
-                        new JProperty("score", new JObject(
-                            from username in deadUsers
-                            select new JProperty(username, deadUsers.IndexOf(username) + 1)
-                        ))
-                    );
-                    conn.SendMessage(packet.ToString());
-                    phase = Phase.Limbo;
+                    lock(deadUsers) {
+                        // Sync scores
+                        JObject packet = new JObject(
+                            new JProperty("action", "group"),
+                            new JProperty("type", "report_score"),
+                            new JProperty("score", new JObject(
+                                from username in deadUsers
+                                select new JProperty(username, deadUsers.IndexOf(username) + 1)
+                            ))
+                        );
+                        conn.SendMessage(packet.ToString());
+                        phase = Phase.Limbo;
+                    }
                 }               
             }
         }
@@ -297,11 +302,13 @@ namespace CritterCamp.Screens.Games {
             // Draw player count info
             for(int i = 0; i < avatars.Keys.Count; i++) {
                 string username = avatars.Keys.ElementAt(i);
-                if(deadUsers.Contains(username)) {
-                    sd.Draw(textureList["doodads"], new Vector2(((float)Constants.BUFFER_SPRITE_DIM * 7.5f) + 200 * i, ((float)Constants.BUFFER_SPRITE_DIM * 10.5f)), (int)TextureData.Doodads.skull);
-                } else {
-                    sd.Draw(textureList["doodads"], new Vector2(((float)Constants.BUFFER_SPRITE_DIM * 7.5f) + 200 * i, ((float)Constants.BUFFER_SPRITE_DIM * 10.5f)), (int)TextureData.Doodads.smallSign);
-                    sd.DrawString(ScreenManager.Fonts["boris48"], avatars[username].count.ToString(), new Vector2(((float)Constants.BUFFER_SPRITE_DIM * 7.5f) + 200 * i, ((float)Constants.BUFFER_SPRITE_DIM * 10.5f)), spriteScale: 0.5f);
+                lock(deadUsers) {
+                    if(deadUsers.Contains(username)) {
+                        sd.Draw(textureList["doodads"], new Vector2(((float)Constants.BUFFER_SPRITE_DIM * 7.5f) + 200 * i, ((float)Constants.BUFFER_SPRITE_DIM * 10.5f)), (int)TextureData.Doodads.skull);
+                    } else {
+                        sd.Draw(textureList["doodads"], new Vector2(((float)Constants.BUFFER_SPRITE_DIM * 7.5f) + 200 * i, ((float)Constants.BUFFER_SPRITE_DIM * 10.5f)), (int)TextureData.Doodads.smallSign);
+                        sd.DrawString(ScreenManager.Fonts["boris48"], avatars[username].count.ToString(), new Vector2(((float)Constants.BUFFER_SPRITE_DIM * 7.5f) + 200 * i, ((float)Constants.BUFFER_SPRITE_DIM * 10.5f)), spriteScale: 0.5f);
+                    }
                 }
             }
 
