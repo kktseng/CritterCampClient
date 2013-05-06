@@ -532,9 +532,8 @@ namespace CritterCamp.Screens {
             exitButton.Position = new Vector2(startX, startY + 350);
             exitButton.TextScale = 0.7f;
             exitButton.Tapped += (s, e) => {
-                ScreenManager.Deactivate();
-                IsolatedStorageSettings.ApplicationSettings.Save();
-                Application.Current.Terminate();
+                ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
+                LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(OfflineScreen)));
             };
 
             exitPage.addElement(text);

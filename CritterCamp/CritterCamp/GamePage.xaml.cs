@@ -37,7 +37,6 @@ namespace CritterCamp {
             _game = XamlGame<CritterCampGame>.Create("", this);
             CoreApplication.Properties["GamePage"] = this;
 
-            this.Loaded += new RoutedEventHandler(onLoaded);
             CoreApplication.Properties["MediaElement"] = MediaElement;
             TryMediaPlay();
             //adDuplexAd.IsTest = true; // use this line to display our own ad for testing
@@ -88,9 +87,9 @@ namespace CritterCamp {
             });
         }
 
-        public void onLoaded(object sender, RoutedEventArgs e) {
+        public void reset() {
             // check and see if we have a tcp connection already
-            if(CoreApplication.Properties.ContainsKey("TCPSocket")) {
+            if (CoreApplication.Properties.ContainsKey("TCPSocket")) {
                 ((TCPConnection)CoreApplication.Properties["TCPSocket"]).Disconnect(); // disconnect the exisiting connection
                 CoreApplication.Properties.Remove("TCPSocket");
             } else {
@@ -100,34 +99,36 @@ namespace CritterCamp {
         }
 
         public void ResetScreen(string message = "") {
-            Status.Text = message;
-            ContentPanel.Visibility = Visibility.Visible; // show everything
+            Dispatcher.BeginInvoke(() => {
+                Status.Text = message;
+                ContentPanel.Visibility = Visibility.Visible; // show everything
 
-            // check and see if we have an error message to display
-            if(CoreApplication.Properties.ContainsKey("error")) {
-                Status.Text = (string)CoreApplication.Properties["error"]; // show the error message
-                CoreApplication.Properties.Remove("error");
+                // check and see if we have an error message to display
+                if(CoreApplication.Properties.ContainsKey("error")) {
+                    Status.Text = (string)CoreApplication.Properties["error"]; // show the error message
+                    CoreApplication.Properties.Remove("error");
 
-                UserInput.Visibility = Visibility.Collapsed; // hide the input boxes
-                PlayButton.Visibility = Visibility.Collapsed; // hide the play button
-                ResumeButton.Visibility = Visibility.Visible; // show the resume button
-            } else {
-                // get previous login information if it exists
-                if(IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("username", out username) &&
-                    IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("password", out password)) {
-                    // login information is already in the app
-
-                    UserInput.Visibility = Visibility.Collapsed; // hide the input 
-                    PlayButton.Visibility = Visibility.Visible; // show the play button
-                    ResumeButton.Visibility = Visibility.Collapsed; // hide the resume button
-                    Status.Text += "Welcome back " + username + "!";
-                } else {
-                    // no previous login information. ask the user for their information
-                    UserInput.Visibility = Visibility.Visible; // show the input boxes
+                    UserInput.Visibility = Visibility.Collapsed; // hide the input boxes
                     PlayButton.Visibility = Visibility.Collapsed; // hide the play button
-                    ResumeButton.Visibility = Visibility.Collapsed; // show the resume button
+                    ResumeButton.Visibility = Visibility.Visible; // show the resume button
+                } else {
+                    // get previous login information if it exists
+                    if(IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("username", out username) &&
+                        IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("password", out password)) {
+                        // login information is already in the app
+
+                        UserInput.Visibility = Visibility.Collapsed; // hide the input 
+                        PlayButton.Visibility = Visibility.Visible; // show the play button
+                        ResumeButton.Visibility = Visibility.Collapsed; // hide the resume button
+                        Status.Text += "Welcome back " + username + "!";
+                    } else {
+                        // no previous login information. ask the user for their information
+                        UserInput.Visibility = Visibility.Visible; // show the input boxes
+                        PlayButton.Visibility = Visibility.Collapsed; // hide the play button
+                        ResumeButton.Visibility = Visibility.Collapsed; // show the resume button
+                    }
                 }
-            }
+            });
         }
 
         private void Register_Click(object sender, RoutedEventArgs e) {
