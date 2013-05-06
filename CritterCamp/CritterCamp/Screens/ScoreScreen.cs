@@ -40,6 +40,7 @@ namespace CritterCamp.Screens {
                 gainedExpToShow = currExp - currLvlExp; // exp gained is our experience in our current level
                 currExpToShow = 0; // and our curr exp is 0 in our current level
                 myData.level = myLevel;
+                CoreApplication.Properties["myPlayerData"] = myData; // resave the player data
                 levelGained = true;
             }
 
@@ -50,6 +51,7 @@ namespace CritterCamp.Screens {
                 if (player.username == myData.username) {
                     // displaying ourself. draw a yellow background instead of the default light brown
                     playerView.FillColor = new Color(247, 215, 137);
+                    player = myData; // use myData for updated level info
                 }
 
                 PlayerAvatar playerAvatar = new PlayerAvatar(player, new Vector2(312 + 424 * i, 400));
