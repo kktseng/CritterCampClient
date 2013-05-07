@@ -231,6 +231,14 @@ namespace CritterCamp.Screens {
                     gameToPlay = gamesToVote[gameToPlayIndex];
                 }
 
+                // send in packet for metric collection
+                JObject packet = new JObject(
+                    new JProperty("action", "group"),
+                    new JProperty("type", "select_game"),
+                    new JProperty("game", gameToPlay.ServerName)
+                );
+                conn.SendMessage(packet.ToString());
+
                 // go to the tutorial screen
                 CoreApplication.Properties["currentGameData"] = gameToPlay;
                 LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(typeof(TutorialScreen)));
