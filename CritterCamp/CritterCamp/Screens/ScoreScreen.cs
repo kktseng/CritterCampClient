@@ -33,7 +33,7 @@ namespace CritterCamp.Screens {
             int currExp = (int)CoreApplication.Properties["exp"]; // our current experience
             int expGained = (int)CoreApplication.Properties["exp_gained"]; // how much experience we gained
             int prevExp = currExp - expGained;
-            int currExpToShow = currExp - currLvlExp - expGained;
+            int currExpToShow = currExp - expGained;
             int gainedExpToShow = expGained;
             bool levelGained = false;
             if (myData.level != myLevel) { // our new level doesnt match. we gained a level
@@ -96,7 +96,7 @@ namespace CritterCamp.Screens {
             levelLabel.CenterX = false;
             levelView.addElement(levelLabel);
 
-            Label expLabel = new Label((currExp - currLvlExp) + " / " + nextLvlExp, new Vector2(levelViewX, levelViewY));
+            Label expLabel = new Label(currExp + " / " + nextLvlExp, new Vector2(levelViewX, levelViewY));
             expLabel.TextColor = Color.White;
             levelView.addElement(expLabel);
 

@@ -143,7 +143,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Sounds\adventure.mp3">
+    <Content Include="Content\Sounds\adventure.wma">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sounds\row.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="CritterCampLogo.png" />
@@ -306,6 +309,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Sounds\buttonSound.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sounds\adventure.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Content\Sounds\fbIcon.xnb" />

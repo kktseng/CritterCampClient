@@ -22,8 +22,8 @@ namespace CritterCamp {
     public partial class GamePage : PhoneApplicationPage {
         private CritterCampGame _game;
 
-        string urlLogin = "https://" + Configuration.HOSTNAME + "/login";
-        string urlRegister = "https://" + Configuration.HOSTNAME + "/login/create";
+        string urlLogin = "http://" + Configuration.HOSTNAME + "/login";
+        string urlRegister = "http://" + Configuration.HOSTNAME + "/login/create";
         string postDataFormat = "username={0}&password={1}&version=" + Configuration.VERSION;
         bool connecting = false;
 
@@ -38,7 +38,7 @@ namespace CritterCamp {
             CoreApplication.Properties["GamePage"] = this;
 
             CoreApplication.Properties["MediaElement"] = MediaElement;
-            TryMediaPlay();
+            //TryMediaPlay();
             //adDuplexAd.IsTest = true; // use this line to display our own ad for testing
 
             // Sample code to localize the ApplicationBar
@@ -86,6 +86,7 @@ namespace CritterCamp {
                 adDuplexAd.Visibility = Visibility.Visible;
             });
         }
+
 
         public void reset() {
             // check and see if we have a tcp connection already

@@ -28,7 +28,6 @@ namespace CritterCamp {
         public CritterCampGame() {
             Content.RootDirectory = "Content";
             ContentManager cm = new ContentManager(Services, "Content");
-            //CoreApplication.Properties["TempContentManager"] = cm;
 
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = true;
@@ -57,19 +56,30 @@ namespace CritterCamp {
 
             // Add new screens
             screenManager.AddScreen(new OfflineScreen(), null);
+
+            Song s = Content.Load<Song>("Sounds/adventure");
+            TryMediaPlay(s);
         }
 
         private void Activation(object sender, ActivatedEventArgs e) {
-            TryMediaPlay();
+            //Song s = Content.Load<Song>("Sounds/adventure");
+            //TryMediaPlay(s);
         }
 
-        public void TryMediaPlay() {
-            MediaElement me = (MediaElement)CoreApplication.Properties["MediaElement"];
+        public void TryMediaPlay(Song s) {
+           // MediaElement me = (MediaElement)CoreApplication.Properties["MediaElement"];
             if(MediaPlayer.GameHasControl) {
-                me.Stop();
-                me.MediaOpened += LoadMedia;
-                me.Source = new System.Uri("Content/Sounds/adventure.mp3", UriKind.Relative);
-                me.MediaEnded += EndMedia;
+                //WMediaPlayer.IsRepeating = true;
+                MediaPlayer.IsMuted = false;
+                MediaPlayer.Volume = 1;
+                MediaPlayer.Play(s);
+
+
+                //MediaPlayer.
+                //me.Stop();
+                //me.MediaOpened += LoadMedia;
+                //me.Source = new System.Uri("Content/Sounds/adventure.mp3", UriKind.Relative);
+                //me.MediaEnded += EndMedia;
             }
         }
 

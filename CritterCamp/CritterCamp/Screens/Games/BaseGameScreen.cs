@@ -33,15 +33,15 @@ namespace CritterCamp.Screens.Games {
         public Dictionary<string, SpriteFont> fontList = new Dictionary<string, SpriteFont>();
         public Dictionary<string, SoundEffect> soundList = new Dictionary<string, SoundEffect>();
 
+        public string playerName = (string)CoreApplication.Properties["username"];
+        public Dictionary<string, PlayerData> playerData;
+
         protected ContentManager cm;
         protected int expGained = 0;
 
         protected List<IAnimatedObject> actors = new List<IAnimatedObject>();
         protected List<IAnimatedObject> toAdd = new List<IAnimatedObject>();
         protected List<IAnimatedObject> toRemove = new List<IAnimatedObject>();
-
-        protected string playerName = (string)CoreApplication.Properties["username"];
-        protected Dictionary<string, PlayerData> playerData;
 
         protected bool scoreReceived = false; // We can't exit immediately due to race conditions
 
@@ -79,9 +79,20 @@ namespace CritterCamp.Screens.Games {
                 CoreApplication.Properties["scores"] = new List<PlayerData>(sortedScoreData);
 
                 // calculate exp
+                int tieCount = 0;
                 for(int i = 0; i < sortedScoreData.Count; i++) {
                     if(sortedScoreData[i].username == playerName) {
                         expGained = (4 - i) * 100;
+                        int temp = i - 1;
+                        while(temp >= 0) {
+                            if(sortedScoreData[temp].score == sortedScoreData[i].score) {
+                                tieCount++;
+                                temp--;
+                            } else {
+                                break;
+                            }
+                        }
+                        expGained += tieCount * 100;
                     }
                 }
 
@@ -126,7 +137,6 @@ namespace CritterCamp.Screens.Games {
             base.Activate(instancePreserved);
             if(cm == null) {
                 cm = new ContentManager(ScreenManager.Game.Services, "Content");
-                //cm = (ContentManager)CoreApplication.Properties["TempContentManager"];
             }
         }
 

@@ -21,6 +21,7 @@ using System.Xml.Linq;
 using CritterCamp.Screens.Games.Lib;
 using CritterCamp;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 #endregion
 
 namespace GameStateManagement {
@@ -118,7 +119,7 @@ namespace GameStateManagement {
 
 
         /// <summary>
-        /// Load your graphics content.
+        /// Load your graphics conten
         /// </summary>
         protected override void LoadContent() {
             // Load content belonging to the screen manager.

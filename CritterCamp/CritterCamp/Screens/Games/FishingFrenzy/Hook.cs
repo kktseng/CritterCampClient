@@ -139,11 +139,12 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             sd.Draw(getImg(), new Vector2(coord.X, coord.Y - 10 - Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.fishingTextures.line);
             
             // draw sinker
-            sd.Draw(getImg(), new Vector2(coord.X, coord.Y - Constants.BUFFER_SPRITE_DIM), (int)TextureData.fishingTextures.sinker);
+            float scale = player.username == ((FishingFrenzyScreen)screen).playerName ? 1.5f : 1;
+            sd.Draw(getImg(), new Vector2(coord.X, coord.Y - Constants.BUFFER_SPRITE_DIM), (int)TextureData.fishingTextures.sinker, spriteScale: scale);
             sd.Draw(screen.textureList["pig"], 
                 new Vector2(coord.X, coord.Y - Constants.BUFFER_SPRITE_DIM), 
                 (int)TextureData.PlayerStates.standing + Helpers.TextureLen(typeof(TextureData.PlayerStates)) * player.color,
-                spriteScale: 0.5f
+                spriteScale: 0.5f * scale
             );
 
             // draw hook
