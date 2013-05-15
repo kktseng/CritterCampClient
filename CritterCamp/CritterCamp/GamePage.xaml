@@ -15,7 +15,7 @@
     shell:SystemTray.IsVisible="False">
 
     <DrawingSurfaceBackgroundGrid x:Name="XnaSurface" Background="Transparent">
-        <MediaElement x:Name="MediaElement"/>
+        <MediaElement x:Name="XnaMediaElement"/>
         <adduplex:AdControl x:Name="adDuplexAd" 
             AppId="39335" VerticalAlignment="Bottom" Grid.Row="2"
          />

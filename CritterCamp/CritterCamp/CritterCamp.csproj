@@ -146,9 +146,6 @@
     <Content Include="Content\Sounds\adventure.wma">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Sounds\row.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="CritterCampLogo.png" />
     <Content Include="pigIcon300.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

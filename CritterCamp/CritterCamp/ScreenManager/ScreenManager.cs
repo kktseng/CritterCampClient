@@ -119,7 +119,7 @@ namespace GameStateManagement {
 
 
         /// <summary>
-        /// Load your graphics conten
+        /// Load your graphics content
         /// </summary>
         protected override void LoadContent() {
             // Load content belonging to the screen manager.

@@ -37,7 +37,6 @@ namespace CritterCamp {
             _game = XamlGame<CritterCampGame>.Create("", this);
             CoreApplication.Properties["GamePage"] = this;
 
-            CoreApplication.Properties["MediaElement"] = MediaElement;
             //TryMediaPlay();
             //adDuplexAd.IsTest = true; // use this line to display our own ad for testing
 
@@ -49,30 +48,6 @@ namespace CritterCamp {
             if(e.Orientation == PageOrientation.LandscapeLeft) {
                 base.OnOrientationChanged(e);
             }
-        }
-
-        public void TryMediaPlay() {
-            if(MediaPlayer.GameHasControl) {
-                string isOn;
-                if(IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("volume", out isOn)) {
-                    if(!Boolean.Parse(isOn)) {
-                        MediaElement.IsMuted = true;
-                    }
-                }
-                MediaElement.Stop();
-                MediaElement.MediaOpened += LoadMedia;
-                MediaElement.Source = new System.Uri("Content/Sounds/adventure.mp3", UriKind.Relative);
-                MediaElement.MediaEnded += EndMedia;
-            }
-        }
-
-        private void EndMedia(object sender, RoutedEventArgs e) {
-            if(MediaElement.CurrentState != System.Windows.Media.MediaElementState.Playing)
-                MediaElement.Play();
-        }
-
-        private void LoadMedia(object sender, RoutedEventArgs e) {
-            MediaElement.Play();
         }
 
         public void hideAdDuplex() {
@@ -226,7 +201,6 @@ namespace CritterCamp {
                 connecting = false;
                 return;
             }
-
             if(fromRegister) // this login call was from a register
                 Status.Text += " Logging in...";
             else

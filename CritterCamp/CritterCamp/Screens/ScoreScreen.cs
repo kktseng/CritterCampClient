@@ -33,7 +33,8 @@ namespace CritterCamp.Screens {
             int currExp = (int)CoreApplication.Properties["exp"]; // our current experience
             int expGained = (int)CoreApplication.Properties["exp_gained"]; // how much experience we gained
             int prevExp = currExp - expGained;
-            int currExpToShow = currExp - expGained;
+            int currExpToShow = currExp - currLvlExp;
+            int expToNext = nextLvlExp - currLvlExp;
             int gainedExpToShow = expGained;
             bool levelGained = false;
             if (myData.level != myLevel) { // our new level doesnt match. we gained a level
@@ -78,8 +79,8 @@ namespace CritterCamp.Screens {
             const int rectSizeX = levelViewWidth - 150;
             const int rectSizeY = levelViewHeight - 100;
 
-            int currExpToShowSize = rectSizeX * currExpToShow / nextLvlExp;
-            gainedExpToShowSize = rectSizeX * gainedExpToShow / nextLvlExp;
+            int currExpToShowSize = rectSizeX * prevExp / expToNext;
+            gainedExpToShowSize = rectSizeX * gainedExpToShow / expToNext;
             BorderedView levelView = new BorderedView(new Vector2(levelViewWidth, levelViewHeight), new Vector2(levelViewX, levelViewY));
             FilledRectangle levelBack = new FilledRectangle(new Rectangle(rectX, rectY, rectSizeX, rectSizeY));
             levelBack.RectangleColor = new Color(102, 102, 102);
@@ -96,7 +97,7 @@ namespace CritterCamp.Screens {
             levelLabel.CenterX = false;
             levelView.addElement(levelLabel);
 
-            Label expLabel = new Label(currExp + " / " + nextLvlExp, new Vector2(levelViewX, levelViewY));
+            Label expLabel = new Label(currExpToShow + " / " + expToNext, new Vector2(levelViewX, levelViewY));
             expLabel.TextColor = Color.White;
             levelView.addElement(expLabel);
 

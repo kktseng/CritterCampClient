@@ -39,6 +39,7 @@ namespace CritterCamp.Screens.Games {
         public float BUCKET_Y = (float)Constants.BUFFER_SPRITE_DIM * 2.5f - 40;
         public static double FISH_SPACING = 0.2d;
         public static TimeSpan SHADOW_INTERVAL = new TimeSpan(0, 0, 45);
+        public static int GEN_FISH_NUM = 10;
 
         protected enum Phase {
             Begin,
@@ -277,7 +278,7 @@ namespace CritterCamp.Screens.Games {
         // [ weighting, minDepth, maxDepth ]
         protected void phaseFish(double[,] weights) {
             List<int> fishRawData = new List<int>();
-            for(int i = 0; i < 15; i++) {
+            for(int i = 0; i < GEN_FISH_NUM; i++) {
                 double temp = rand.NextDouble();
                 double sum = 0;
                 int fishType;

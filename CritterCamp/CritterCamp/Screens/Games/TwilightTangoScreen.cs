@@ -270,6 +270,8 @@ namespace CritterCamp.Screens.Games {
                             p.setState(PlayerDanceStates.Standing);
                         }
                         if(error && p.health > 0) {
+                            soundList["puff"].Play();
+                            new Smoke(this, p.getCoord() + new Vector2((100 * (p.health % 3)) + ((p.health / 3) * 50), (p.health / 3) * 65));
                             p.health--;
                             if(p.health <= 0) {
                                 p.rank = currentRank;
@@ -281,8 +283,7 @@ namespace CritterCamp.Screens.Games {
                                     phase = Phase.GameOver;
                                 }
                             }
-                            soundList["puff"].Play();
-                            new Smoke(this, p.getCoord() + new Vector2(100 * p.health, 0));
+
                         }
 
                     }

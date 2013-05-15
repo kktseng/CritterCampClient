@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using System;
+using System.IO.IsolatedStorage;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -57,41 +58,25 @@ namespace CritterCamp {
             // Add new screens
             screenManager.AddScreen(new OfflineScreen(), null);
 
+            string isOn;
+            if(IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("volume", out isOn)) {
+                if(!Boolean.Parse(isOn)) {
+                    MediaPlayer.IsMuted = true;
+                }
+            }
             Song s = Content.Load<Song>("Sounds/adventure");
             TryMediaPlay(s);
         }
 
         private void Activation(object sender, ActivatedEventArgs e) {
-            //Song s = Content.Load<Song>("Sounds/adventure");
-            //TryMediaPlay(s);
+
         }
 
         public void TryMediaPlay(Song s) {
-           // MediaElement me = (MediaElement)CoreApplication.Properties["MediaElement"];
-            if(MediaPlayer.GameHasControl) {
-                //WMediaPlayer.IsRepeating = true;
-                MediaPlayer.IsMuted = false;
-                MediaPlayer.Volume = 1;
+            if(MediaPlayer.GameHasControl && MediaPlayer.State != MediaState.Playing) {
+                MediaPlayer.IsRepeating = true;
                 MediaPlayer.Play(s);
-
-
-                //MediaPlayer.
-                //me.Stop();
-                //me.MediaOpened += LoadMedia;
-                //me.Source = new System.Uri("Content/Sounds/adventure.mp3", UriKind.Relative);
-                //me.MediaEnded += EndMedia;
             }
-        }
-
-        private void EndMedia(object sender, RoutedEventArgs e) {
-            MediaElement me = (MediaElement)CoreApplication.Properties["MediaElement"];
-            if(me.CurrentState != System.Windows.Media.MediaElementState.Playing)
-                me.Play();
-        }
-
-        private void LoadMedia(object sender, RoutedEventArgs e) {
-            MediaElement me = (MediaElement)CoreApplication.Properties["MediaElement"];
-            me.Play();
         }
 
         private void Deactivation(object sender, DeactivatedEventArgs e) {
