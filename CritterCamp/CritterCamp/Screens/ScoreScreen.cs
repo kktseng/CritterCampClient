@@ -39,8 +39,6 @@ namespace CritterCamp.Screens {
             int gainedExpToShow = currExpToShow - prevExp;
             bool levelGained = false;
             if (myData.level != myLevel) { // our new level doesnt match. we gained a level
-                gainedExpToShow = currExp - currLvlExp; // exp gained is our experience in our current level
-                currExpToShow = 0; // and our curr exp is 0 in our current level
                 myData.level = myLevel;
                 CoreApplication.Properties["myPlayerData"] = myData; // resave the player data
                 levelGained = true;
