@@ -32,10 +32,11 @@ namespace CritterCamp.Screens {
             int nextLvlExp = (int)CoreApplication.Properties["next_lvl_exp"]; // experience to get the the next level
             int currExp = (int)CoreApplication.Properties["exp"]; // our current experience
             int expGained = (int)CoreApplication.Properties["exp_gained"]; // how much experience we gained
-            int prevExp = currExp - expGained;
+            int isolatedLvlExp = currExp - currLvlExp;
+            int prevExp = (isolatedLvlExp < expGained) ? 0 : currExp - expGained - currLvlExp;
             int currExpToShow = currExp - currLvlExp;
             int expToNext = nextLvlExp - currLvlExp;
-            int gainedExpToShow = expGained;
+            int gainedExpToShow = currExpToShow - prevExp;
             bool levelGained = false;
             if (myData.level != myLevel) { // our new level doesnt match. we gained a level
                 gainedExpToShow = currExp - currLvlExp; // exp gained is our experience in our current level
