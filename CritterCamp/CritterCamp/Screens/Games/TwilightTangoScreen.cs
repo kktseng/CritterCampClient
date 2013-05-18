@@ -162,7 +162,7 @@ namespace CritterCamp.Screens.Games {
                             JArray a = JArray.Parse((string)commandArray);
                             for(int i = 0; i < commandNum; i++) {
                                 commandList.Add(new Arrow(this, (Direction)(int)a[i], textureList["twilight"], new Vector2(200 + 250 * (i % 7), 200 + 250 * (i / 7)), 1.4f));
-                                commandList[commandList.Count - 1].setVisibility(false);
+                                commandList[commandList.Count - 1].Visible = false;
 
                             }
                             // }
@@ -181,7 +181,7 @@ namespace CritterCamp.Screens.Games {
                 timerBar = timer.TotalMilliseconds / newTime.TotalMilliseconds;
                 if(timer.TotalMilliseconds <= 0) {
                     foreach(Arrow a in commandList) {
-                        a.setState(ArrowStates.FadeOut);
+                        a.State = ArrowStates.FadeOut;
                     }
                     start = gameTime.TotalGameTime;
                     phase = Phase.Input;
@@ -190,7 +190,7 @@ namespace CritterCamp.Screens.Games {
                     // Draw commands every 500ms
                     for(int i = 0; i < (gameTime.TotalGameTime - start).TotalMilliseconds / 500; i++) {
                         if(i < commandList.Count) {
-                            commandList[i].setVisibility(true);
+                            commandList[i].Visible = true;
                         }
                     }
                 }
@@ -237,7 +237,7 @@ namespace CritterCamp.Screens.Games {
                     if(currentMove >= commandList.Count()) {
                         // Switch to show winner when finished
                         foreach(Player p in new List<Player>(players.Values)) {
-                            p.setState(PlayerDanceStates.Standing);
+                            p.State = PlayerDanceStates.Standing;
                         }
 
                         // Clear input list
@@ -258,20 +258,20 @@ namespace CritterCamp.Screens.Games {
                                 error = true;
                                 if(s == playerName) {
                                     soundList["dong"].Play();
-                                    inputArrows.ElementAt(currentMove).setState(ArrowStates.Red);
+                                    inputArrows.ElementAt(currentMove).State = ArrowStates.Red;
                                 }
                             } else if(s == playerName) {
                                 soundList["ding"].Play();
-                                inputArrows.ElementAt(currentMove).setState(ArrowStates.Green);
+                                inputArrows.ElementAt(currentMove).State = ArrowStates.Green;
                             }
-                            p.setState(PlayerDanceStates.DanceLeft + (int)p.input[currentMove]);
+                            p.State = PlayerDanceStates.DanceLeft + (int)p.input[currentMove];
                         } else {
                             error = true;
-                            p.setState(PlayerDanceStates.Standing);
+                            p.State = PlayerDanceStates.Standing;
                         }
                         if(error && p.health > 0) {
                             soundList["puff"].Play();
-                            new Smoke(this, p.getCoord() + new Vector2((100 * (p.health % 3)) + ((p.health / 3) * 50), (p.health / 3) * 65));
+                            new Smoke(this, p.Coord + new Vector2((100 * (p.health % 3)) + ((p.health / 3) * 50), (p.health / 3) * 65));
                             p.health--;
                             if(p.health <= 0) {
                                 p.rank = currentRank;

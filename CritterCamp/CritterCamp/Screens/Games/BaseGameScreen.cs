@@ -37,6 +37,7 @@ namespace CritterCamp.Screens.Games {
         public Dictionary<string, PlayerData> playerData;
 
         protected ContentManager cm;
+        protected Random rand = new Random();
         protected int expGained = 0;
 
         protected List<IAnimatedObject> actors = new List<IAnimatedObject>();
@@ -47,6 +48,10 @@ namespace CritterCamp.Screens.Games {
 
         public BaseGameScreen(Dictionary<string, PlayerData> playerData) : base(true) {
             this.playerData = playerData;
+        }
+
+        public Random Rand {
+            get { return rand; }
         }
 
         protected override void MessageReceived(string message, bool error, TCPConnection connection) {
@@ -178,7 +183,7 @@ namespace CritterCamp.Screens.Games {
 
         protected void DrawActors(SpriteDrawer sd) {
             foreach(IAnimatedObject actor in actors) {
-                if(actor.isVisible() && actor.DrawAutomatically()) {
+                if(actor.DrawAutomatically()) {
                     actor.draw(sd);
                 }
             }

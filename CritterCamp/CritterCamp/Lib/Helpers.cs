@@ -84,11 +84,13 @@ namespace CritterCamp {
             // save important values
             GamePage gp = (GamePage)CoreApplication.Properties["GamePage"];
             float ratio = (float)CoreApplication.Properties["ratio"];
+            int scaleFactor = (int)CoreApplication.Properties["scaleFactor"];
 
             // reset CoreApplication.Properties
             CoreApplication.Properties.Clear();
             CoreApplication.Properties["GamePage"] = gp;
             CoreApplication.Properties["ratio"] = ratio;
+            CoreApplication.Properties["scaleFactor"] = scaleFactor;
         }
 
         /***

@@ -67,13 +67,13 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             SetAnim();
 
             if(dir == 0) {
-                setState(FishStates.swimRight);
-                velocity = new Vector2(speed, 0);
-                coord = new Vector2((float)(timePassed.TotalSeconds * 200 - 300), depth);
+                State = FishStates.swimRight;
+                Velocity = new Vector2(speed, 0);
+                Coord = new Vector2((float)(timePassed.TotalSeconds * 200 - 300), depth);
             } else {
-                setState(FishStates.swimLeft);
-                velocity = new Vector2(-speed, 0);
-                coord = new Vector2((float)(2200 - timePassed.TotalSeconds * 200), depth);
+                State = FishStates.swimLeft;
+                Velocity = new Vector2(-speed, 0);
+                Coord = new Vector2((float)(2200 - timePassed.TotalSeconds * 200), depth);
             }
         }
 
@@ -107,18 +107,18 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
 
         public override void animate(GameTime time) {
             if(state == FishStates.falling) {
-                velocity = new Vector2(0, FALLING_SPD);
+                Velocity = new Vector2(0, FALLING_SPD);
                 float bucket_y = ((FishingFrenzyScreen)screen).BUCKET_Y + ((FishingFrenzyScreen)screen).waveOffset;
                 if(type != FishTypes.small && type != FishTypes.medium && type != FishTypes.shiny) {
-                    if(coord.Y + velocity.Y * time.ElapsedGameTime.TotalSeconds + Constants.BUFFER_SPRITE_DIM > bucket_y)
+                    if(Coord.Y + Velocity.Y * time.ElapsedGameTime.TotalSeconds + Constants.BUFFER_SPRITE_DIM > bucket_y)
                         halved = true;
                 }
                 // preemptively play bucket noise
-                if(!bucketSound && coord.Y + velocity.Y * time.ElapsedGameTime.TotalSeconds > bucket_y - 125) {
+                if(!bucketSound && Coord.Y + Velocity.Y * time.ElapsedGameTime.TotalSeconds > bucket_y - 125) {
                     screen.soundList["bucket"].Play();
                     bucketSound = true;
                 }
-                if(coord.Y + velocity.Y * time.ElapsedGameTime.TotalSeconds > bucket_y) {
+                if(Coord.Y + Velocity.Y * time.ElapsedGameTime.TotalSeconds > bucket_y) {
                     screen.removeActor(this);
                     ((FishingFrenzyScreen)screen).fishies.Remove(this);
                     ((FishingFrenzyScreen)screen).scores[caughtBy] += score;
@@ -132,28 +132,28 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
         public override void draw(SpriteDrawer sd) {
             if(state == FishStates.hooked) {
                 if(type == FishTypes.small || type == FishTypes.medium || type == FishTypes.shiny) {
-                    sd.Draw(getImg(), getCoord(), getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
+                    sd.Draw(getImg(), Coord, getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
                 } else {
-                    sd.Draw(getImg(), getCoord() - new Vector2(0, Constants.BUFFER_SPRITE_DIM), getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
-                    sd.Draw(getImg(), getCoord(), getNum() + 1, getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
+                    sd.Draw(getImg(), Coord - new Vector2(0, Constants.BUFFER_SPRITE_DIM), getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
+                    sd.Draw(getImg(), Coord, getNum() + 1, getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
                 }
             } else if(state == FishStates.falling) {
                 if(type == FishTypes.small || type == FishTypes.medium || type == FishTypes.shiny) {
-                    sd.Draw(getImg(), getCoord(), getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
+                    sd.Draw(getImg(), Coord, getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
                 } else {
                     if(!halved)
-                        sd.Draw(getImg(), getCoord() + new Vector2(0, Constants.BUFFER_SPRITE_DIM), getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
-                    sd.Draw(getImg(), getCoord(), getNum() + 1, getFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
+                        sd.Draw(getImg(), Coord + new Vector2(0, Constants.BUFFER_SPRITE_DIM), getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
+                    sd.Draw(getImg(), Coord, getNum() + 1, getFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
                 }
             } else {
                 if(type == FishTypes.small || type == FishTypes.medium || type == FishTypes.shiny) {
                     base.draw(sd);
                 } else if(state == FishStates.swimRight) {
-                    sd.Draw(getImg(), getCoord() - new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum() + 1, getFrame().Value.effect);
-                    sd.Draw(getImg(), getCoord() + new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum(), getFrame().Value.effect);
+                    sd.Draw(getImg(), Coord - new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum() + 1, getFrame().Value.effect);
+                    sd.Draw(getImg(), Coord + new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum(), getFrame().Value.effect);
                 } else if(state == FishStates.swimLeft) {
-                    sd.Draw(getImg(), getCoord() - new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum(), getFrame().Value.effect);
-                    sd.Draw(getImg(), getCoord() + new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum() + 1, getFrame().Value.effect);
+                    sd.Draw(getImg(), Coord - new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum(), getFrame().Value.effect);
+                    sd.Draw(getImg(), Coord + new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum() + 1, getFrame().Value.effect);
                 }
             }
         }

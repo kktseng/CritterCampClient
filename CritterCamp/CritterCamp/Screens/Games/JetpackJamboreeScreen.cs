@@ -136,16 +136,16 @@ namespace CritterCamp.Screens.Games {
                     if(selectedPig == null && phase == Phase.Begin) {
                         foreach(Pig p in mainPigs) {
                             // Don't let users grab falling pigs
-                            if(p.getState() == PigStates.Falling)
+                            if(p.State == PigStates.Falling)
                                 continue;
-                            Rectangle pig = new Rectangle((int)p.getCoord().X - 75, (int)p.getCoord().Y - 75, 150, 150);
+                            Rectangle pig = new Rectangle((int)p.Coord.X - 75, (int)p.Coord.Y - 75, 150, 150);
                             if(pig.Contains(new Point((int)scaledPos.X, (int)scaledPos.Y))) {
                                 selectedPig = p;
                                 soundList["blop2"].Play();
                                 p.selected = true;
-                                old_pos = selectedPig.getCoord();
+                                old_pos = selectedPig.Coord;
 
-                                if(p.getState() == PigStates.Entering) {
+                                if(p.State == PigStates.Entering) {
                                     old_pos += new Vector2(0, 96);
                                     p.timeLeft = Pig.EXPLODE_TIME;
                                 }
@@ -153,7 +153,7 @@ namespace CritterCamp.Screens.Games {
                             }
                         }
                     } else {
-                        selectedPig.setCoord(scaledPos);
+                        selectedPig.Coord = scaledPos;
                     }
                 }
             }
@@ -229,7 +229,7 @@ namespace CritterCamp.Screens.Games {
                     for(int i = 0; i < pennedPigs.Count; i++) {
                         if(pennedPigs[i].Count >= MAX_PIG_COUNT) {
                             foreach(Pig p in pennedPigs[i]) {
-                                p.setState(PigStates.Flying);
+                                p.State = PigStates.Flying;
                             }
                             soundList["launching"].Play();
                             pennedPigs[i].Clear();
@@ -251,13 +251,13 @@ namespace CritterCamp.Screens.Games {
                         banner = new TextBanner(this, "GAME OVER");
                     for(int i = 0; i < 4; i++) {
                         foreach(Pig p in pennedPigs[i]) {
-                            p.setState(PigStates.Standing);
-                            p.setVelocity(Vector2.Zero);
+                            p.State = PigStates.Standing;
+                            p.Velocity = Vector2.Zero;
                         }
                     }
                     foreach(Pig p in mainPigs) {
-                        p.setState(PigStates.Standing);
-                        p.setVelocity(Vector2.Zero);
+                        p.State = PigStates.Standing;
+                        p.Velocity = Vector2.Zero;
                     }
                 }
                 // Keep track of when the game switches to game over
@@ -383,7 +383,7 @@ namespace CritterCamp.Screens.Games {
                             mainPigs.Add(p);
                         }
                         soundList["landing"].Play();
-                        avatars[(string)data["source"]].setState(true);
+                        avatars[(string)data["source"]].State = true;
                     }
                 } else if((string)data["action"] == "exploded") {
                     string exploded_user = (string)data["source"];

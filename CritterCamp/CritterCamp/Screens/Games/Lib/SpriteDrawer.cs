@@ -135,6 +135,10 @@ namespace CritterCamp.Screens.Games.Lib {
             Draw(texture, coord, spriteNum, spriteDim, new Rectangle(0, 0, (int)spriteDim.X, (int)spriteDim.Y), effect, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache);
         }
 
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Color color, float spriteRotation = 0, float spriteScale = 1f, bool cache = false) {
+            Draw(texture, coord, spriteNum, sprite_dim, new Rectangle(0, 0, (int)sprite_dim.X, (int)sprite_dim.Y), SpriteEffects.None, color, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache);
+        }
+
         public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Rectangle rect, float spriteRotation = 0, float spriteScale = 1f, bool cache = false) {
             Draw(texture, coord, spriteNum, sprite_dim, rect, SpriteEffects.None, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache);
         }

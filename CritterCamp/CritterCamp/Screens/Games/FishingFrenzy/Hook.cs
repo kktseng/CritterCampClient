@@ -30,7 +30,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
         public Hook(FishingFrenzyScreen screen, int x, TimeSpan start, PlayerData player)
                 : base(screen, "fishing", new Vector2(x, -Constants.BUFFER_SPRITE_DIM)) {
             autoDraw = false;
-            setState(HookState.down);
+            State = HookState.down;
             this.start = start;
             this.player = player;
             reelingIn = screen.soundList["reelingIn"].CreateInstance();
@@ -43,13 +43,13 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
 
         public override void animate(GameTime time) {
             // check if hook has been reeled
-            if(getState() == HookState.up && coord.Y < -250) {
+            if(State == HookState.up && Coord.Y < -250) {
                 foreach(Fish f in hookedFish) {
-                    f.setState(FishStates.falling);
+                    f.State = FishStates.falling;
                     int i = 0;
                     foreach(string username in ((FishingFrenzyScreen)screen).scores.Keys) {
                         if(username == player.username) {
-                            f.setCoord(new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), -((FishingFrenzyScreen)screen).rand.Next(150, 500)));
+                            f.Coord = new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), -((FishingFrenzyScreen)screen).Rand.Next(150, 500));
                             break;
                         }
                         if(i == 2)
@@ -64,28 +64,28 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             }
 
             TimeSpan hookAge = time.TotalGameTime - start - ((FishingFrenzyScreen)screen).baseline;
-            if(getState() == HookState.down) {
-                coord = new Vector2(coord.X, (float)(hookAge.TotalSeconds * HOOK_SPD - HOOK_SPD));
+            if(State == HookState.down) {
+                Coord = new Vector2(Coord.X, (float)(hookAge.TotalSeconds * HOOK_SPD - HOOK_SPD));
             } else {
                 if(hookAge - downTime > new TimeSpan(0, 0, 1)) {
-                    coord = new Vector2(coord.X, (float)(downTime + downTime - hookAge + new TimeSpan(0, 0, 1)).TotalSeconds * HOOK_SPD - HOOK_SPD);
+                    Coord = new Vector2(Coord.X, (float)(downTime + downTime - hookAge + new TimeSpan(0, 0, 1)).TotalSeconds * HOOK_SPD - HOOK_SPD);
                 } else { // create the parabola effect
                     TimeSpan parabolaTime = hookAge - downTime;
                     float parabolaOffset = PARABOLA_SIZE - (float)Math.Pow(parabolaTime.TotalMilliseconds - 500, 2) / (250000f / PARABOLA_SIZE);
-                    coord = new Vector2(coord.X, (float)(downTime.TotalSeconds * HOOK_SPD - HOOK_SPD) + parabolaOffset);
+                    Coord = new Vector2(Coord.X, (float)(downTime.TotalSeconds * HOOK_SPD - HOOK_SPD) + parabolaOffset);
                 }
             }
 
             // check for max depth
-            if(coord.Y > MAX_DEPTH) {
-                setState(HookState.up);
+            if(Coord.Y > MAX_DEPTH) {
+                State = HookState.up;
                 if(downTime == TimeSpan.Zero) {
                     downTime = time.TotalGameTime - start - ((FishingFrenzyScreen)screen).baseline;
                 }
             }
 
             // check for splashes
-            if((splashCount == 0 && coord.Y > 75) || (splashCount == 1 && coord.Y < 425 && getState() == HookState.up)) {
+            if((splashCount == 0 && Coord.Y > 75) || (splashCount == 1 && Coord.Y < 425 && State == HookState.up)) {
                 screen.soundList["splash"].Play();
                 splashCount++;
             }
@@ -93,9 +93,9 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             // update coords for all hooked fish
             foreach(Fish fish in hookedFish) {
                 if(fish.type == FishTypes.small || fish.type == FishTypes.medium || fish.type == FishTypes.shiny) {
-                    fish.setCoord(coord + new Vector2(0, 30));
+                    fish.Coord = Coord + new Vector2(0, 30);
                 } else {
-                    fish.setCoord(coord + new Vector2(0, 30 + Constants.BUFFER_SPRITE_DIM));
+                    fish.Coord = Coord + new Vector2(0, 30 + Constants.BUFFER_SPRITE_DIM);
                 }
             }
         }
@@ -103,21 +103,21 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
         public void checkHooked(GameTime time) {
             // check for hooked fish
             foreach(Fish fish in ((FishingFrenzyScreen)screen).fishies) {
-                if(fish.getState() != FishStates.hooked && fish.getState() != FishStates.falling) {
+                if(fish.State != FishStates.hooked && fish.State != FishStates.falling) {
                     Rectangle fishRect;
-                    Rectangle hookRect = new Rectangle((int)getCoord().X - Constants.BUFFER_SPRITE_DIM / 2 + 13, (int)getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, 70, Constants.BUFFER_SPRITE_DIM / 2);
+                    Rectangle hookRect = new Rectangle((int)Coord.X - Constants.BUFFER_SPRITE_DIM / 2 + 13, (int)Coord.Y - Constants.BUFFER_SPRITE_DIM / 2, 70, Constants.BUFFER_SPRITE_DIM / 2);
                     if(fish.type == FishTypes.small || fish.type == FishTypes.medium || fish.type == FishTypes.shiny) {
-                        fishRect = new Rectangle((int)fish.getCoord().X - Constants.BUFFER_SPRITE_DIM / 2, (int)fish.getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, Constants.BUFFER_SPRITE_DIM, Constants.BUFFER_SPRITE_DIM);
+                        fishRect = new Rectangle((int)fish.Coord.X - Constants.BUFFER_SPRITE_DIM / 2, (int)fish.Coord.Y - Constants.BUFFER_SPRITE_DIM / 2, Constants.BUFFER_SPRITE_DIM, Constants.BUFFER_SPRITE_DIM);
                     } else {
-                        fishRect = new Rectangle((int)fish.getCoord().X - Constants.BUFFER_SPRITE_DIM, (int)fish.getCoord().Y - Constants.BUFFER_SPRITE_DIM / 2, Constants.BUFFER_SPRITE_DIM * 2, Constants.BUFFER_SPRITE_DIM);
+                        fishRect = new Rectangle((int)fish.Coord.X - Constants.BUFFER_SPRITE_DIM, (int)fish.Coord.Y - Constants.BUFFER_SPRITE_DIM / 2, Constants.BUFFER_SPRITE_DIM * 2, Constants.BUFFER_SPRITE_DIM);
                     }
                     if(fishRect.Intersects(hookRect)) {
                         // hook the fish
                         screen.soundList["blop"].Play();
                         hookedFish.Add(fish);
-                        fish.setState(FishStates.hooked);
+                        fish.State = FishStates.hooked;
                         fish.caughtBy = player.username;
-                        setState(HookState.up);
+                        State = HookState.up;
                         if(downTime == TimeSpan.Zero) {
                             downTime = time.TotalGameTime - start - ((FishingFrenzyScreen)screen).baseline;
                         }
@@ -128,16 +128,16 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
 
         public override void draw(SpriteDrawer sd) {
             // draw line
-            for(int i = 0; i < coord.Y - Constants.BUFFER_SPRITE_DIM / 2; i += Constants.BUFFER_SPRITE_DIM) {
-                sd.Draw(getImg(), new Vector2(coord.X, i), (int)TextureData.fishingTextures.line);
+            for(int i = 0; i < Coord.Y - Constants.BUFFER_SPRITE_DIM / 2; i += Constants.BUFFER_SPRITE_DIM) {
+                sd.Draw(getImg(), new Vector2(Coord.X, i), (int)TextureData.fishingTextures.line);
             }
-            sd.Draw(getImg(), new Vector2(coord.X, coord.Y - 10 - Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.fishingTextures.line);
+            sd.Draw(getImg(), new Vector2(Coord.X, Coord.Y - 10 - Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.fishingTextures.line);
             
             // draw sinker
             float scale = player.username == ((FishingFrenzyScreen)screen).playerName ? 1.5f : 1;
-            sd.Draw(getImg(), new Vector2(coord.X, coord.Y - Constants.BUFFER_SPRITE_DIM), (int)TextureData.fishingTextures.sinker, spriteScale: scale);
+            sd.Draw(getImg(), new Vector2(Coord.X, Coord.Y - Constants.BUFFER_SPRITE_DIM), (int)TextureData.fishingTextures.sinker, spriteScale: scale);
             sd.Draw(screen.textureList["pig"], 
-                new Vector2(coord.X, coord.Y - Constants.BUFFER_SPRITE_DIM), 
+                new Vector2(Coord.X, Coord.Y - Constants.BUFFER_SPRITE_DIM), 
                 (int)TextureData.PlayerStates.standing + Helpers.TextureLen(typeof(TextureData.PlayerStates)) * player.color,
                 spriteScale: 0.5f * scale
             );

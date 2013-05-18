@@ -13,9 +13,11 @@ using System.Threading.Tasks;
 
 namespace CritterCamp.Screens.Games {
     class ColorClashScreen : BaseGameScreen {
-        protected TileMap tileMap;
+        public List<Splatter> splatters = new List<Splatter>();
 
+        protected TileMap tileMap;
         protected Crosshair crosshair;
+
 
         public ColorClashScreen(Dictionary<string, PlayerData> playerData)
             : base(playerData) {
@@ -52,7 +54,7 @@ namespace CritterCamp.Screens.Games {
             // launch the paintball
             if(input.TouchState.Count == 0) {
                 if(crosshair != null) {
-
+                    splatters.Add(new Splatter(this, crosshair, rand));
                 }
                 removeActor(crosshair);
                 crosshair = null;
@@ -62,7 +64,7 @@ namespace CritterCamp.Screens.Games {
                     if(crosshair == null) {
                         crosshair = new Crosshair(this, scaledPos);
                     } else {
-                        crosshair.setCoord(scaledPos);
+                        crosshair.Coord = scaledPos;
                     }
                 }
             }

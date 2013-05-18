@@ -50,7 +50,6 @@ namespace CritterCamp.Screens.Games {
             End,
             Sleep
         }
-        public Random rand = new Random();
         public int waveOffset;
         public TimeSpan baseline;
 
@@ -184,7 +183,7 @@ namespace CritterCamp.Screens.Games {
                 // remove fish that are out of bounds
                 List<Fish> toRem = new List<Fish>();
                 foreach(Fish f in fishies) {
-                    if(f.getCoord().X < -301 || f.getCoord().X > 2201) { // 1px more than start
+                    if(f.Coord.X < -301 || f.Coord.X > 2201) { // 1px more than start
                         toRem.Add(f);
                     }
                 }
@@ -379,7 +378,7 @@ namespace CritterCamp.Screens.Games {
 
             // Draw all fish not hooked
             foreach(Fish f in fishies) {
-                if(f.getState() != FishStates.hooked) {
+                if(f.State != FishStates.hooked) {
                     f.draw(sd);
                 }
             }
@@ -407,7 +406,7 @@ namespace CritterCamp.Screens.Games {
                 }
             }
             foreach(Fish f in fishies) {
-                if(f.getState() == FishStates.hooked) {
+                if(f.State == FishStates.hooked) {
                     f.draw(sd);
                 }
             }

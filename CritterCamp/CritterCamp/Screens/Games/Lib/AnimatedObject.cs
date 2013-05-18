@@ -7,10 +7,8 @@ using System.Collections.Generic;
 namespace CritterCamp.Screens.Games.Lib {
     public interface IAnimatedObject {
         bool DrawAutomatically();
-        bool isVisible();
         void draw(SpriteDrawer sd);
         void animate(GameTime time);
-        Vector2 getCoord();
     }
     public abstract class AnimatedObject<T> : IAnimatedObject {
         public struct Frame {
@@ -34,10 +32,6 @@ namespace CritterCamp.Screens.Games.Lib {
         protected BaseGameScreen screen;
 
         protected string imgName;
-        protected Vector2 coord;
-        protected Vector2 velocity = new Vector2(0, 0);
-        protected float scale = 1.0f;
-        protected bool visible = true;
 
         protected T state { get; private set; }
         protected Dictionary<T, List<Frame>> animation = new Dictionary<T, List<Frame>>();
@@ -50,6 +44,10 @@ namespace CritterCamp.Screens.Games.Lib {
         protected T defaultState;
         protected bool hasDefaultState = false;
 
+        private Vector2 coord;
+        private Vector2 velocity = new Vector2(0, 0);
+        private float scale = 1.0f;
+        private bool visible = true;
 
         public AnimatedObject(BaseGameScreen screen, string imgName, Vector2 coord, bool dieWhenFinished = false) {
             SetAnim();
@@ -114,47 +112,46 @@ namespace CritterCamp.Screens.Games.Lib {
             return getFrame().Value.spriteNum;
         }
 
-        public Vector2 getCoord() {
-            return coord + getFrame().Value.offset;
+        public Vector2 Coord {
+            get {
+                if(animation.Count == 0)
+                    return coord;
+                return coord + getFrame().Value.offset;
+            }
+            set { coord = value; }
         }
 
-        public Vector2 getVelocity() {
-            return velocity;
+        public Vector2 Velocity {
+            get { return velocity; }
+            set { velocity = value; }
         }
 
-        public void setVelocity(Vector2 velocity) {
-            this.velocity = velocity;
+        public float Scale {
+            get { return scale; }
+            set { scale = value; }
         }
 
         public void move(Vector2 offset) {
             coord += offset;
         }
 
-        public void setCoord(Vector2 coord) {
-            this.coord = coord;
-        }
-
-        public T getState() {
-            return state;
-        }
-
-        public void setState(T state) {
-            this.state = state;
-            int maxCount = 0;
-            foreach(Frame f in animation[state]) {
-                maxCount += f.length;
+        public T State {
+            get { return state; }
+            set {
+                state = value;
+                int maxCount = 0;
+                foreach(Frame f in animation[state]) {
+                    maxCount += f.length;
+                }
+                maxFrame = maxCount;
+                frame = 0;
+                numCycles = 0;
             }
-            maxFrame = maxCount;
-            frame = 0;
-            numCycles = 0;
         }
 
-        public void setVisibility(bool visibility) {
-            visible = visibility;
-        }
-
-        public bool isVisible() {
-            return visible;
+        public bool Visible {
+            get { return visible; }
+            set { visible = value; }
         }
 
         public virtual void animate(GameTime time) {
@@ -172,7 +169,7 @@ namespace CritterCamp.Screens.Games.Lib {
                     }
                     // If default state has been set, change to the default state
                     if(hasDefaultState) {
-                        setState(defaultState);
+                        State = defaultState;
                         // Otherwise hold last frame of current cycle
                     } else {
                         frame = temp;
@@ -183,7 +180,9 @@ namespace CritterCamp.Screens.Games.Lib {
         }
 
         public virtual void draw(SpriteDrawer sd) {
-            sd.Draw(getImg(), getCoord(), getNum(), getFrame().Value.effect, spriteScale: scale);
+            if(visible) {
+                sd.Draw(getImg(), Coord, getNum(), getFrame().Value.effect, spriteScale: scale);
+            }
         }
     }
 }

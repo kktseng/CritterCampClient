@@ -22,18 +22,18 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             }
 
             if(left) {
-                setCoord(new Vector2(2120, depth));
-                velocity = new Vector2(-50, 0);
+                Coord = new Vector2(2120, depth);
+                Velocity = new Vector2(-50, 0);
             } else {
-                setCoord(new Vector2(-100, depth));
-                velocity = new Vector2(50, 0);
+                Coord = new Vector2(-100, depth);
+                Velocity = new Vector2(50, 0);
             }
 
             // reset animation for new texture
             animation.Clear();
             SetAnim();
 
-            setState(left);
+            State = left;
         }
 
         protected override void SetAnim() {
@@ -42,7 +42,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
 
         public override void animate(GameTime time) {
             base.animate(time);
-            if(getCoord().X > 2400 || getCoord().X < -350) {
+            if(Coord.X > 2400 || Coord.X < -350) {
                 screen.removeActor(this);
             }
         }
@@ -50,14 +50,14 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
         public override void draw(SpriteDrawer sd) {
             int spriteCount = (shadowType == 0) ? 8 : 6;
             // going left
-            if(getState()) {
+            if(State) {
                 for(int i = 0; i < spriteCount; i++) {
-                    sd.Draw(getImg(), getCoord() + new Vector2(Constants.BUFFER_SPRITE_DIM * (i / 2), Constants.BUFFER_SPRITE_DIM * (i % 2)), getNum() + i, getFrame().Value.effect);
+                    sd.Draw(getImg(), Coord + new Vector2(Constants.BUFFER_SPRITE_DIM * (i / 2), Constants.BUFFER_SPRITE_DIM * (i % 2)), getNum() + i, getFrame().Value.effect);
                 }
             // going right
             } else {
                 for(int i = 0; i < spriteCount; i++) {
-                    sd.Draw(getImg(), getCoord() + new Vector2(-Constants.BUFFER_SPRITE_DIM * (i / 2), Constants.BUFFER_SPRITE_DIM * (i % 2)), getNum() + i, getFrame().Value.effect);
+                    sd.Draw(getImg(), Coord + new Vector2(-Constants.BUFFER_SPRITE_DIM * (i / 2), Constants.BUFFER_SPRITE_DIM * (i % 2)), getNum() + i, getFrame().Value.effect);
                 }
             }
         }

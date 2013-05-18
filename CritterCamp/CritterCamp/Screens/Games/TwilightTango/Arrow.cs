@@ -17,14 +17,13 @@ namespace CritterCamp.Screens.Games.TwilightTango {
 
     public class Arrow : AnimatedObject<ArrowStates> {
         public Direction dir;
-        public float scale;
         bool soundPlayed = false;
 
         public Arrow(BaseGameScreen screen, Direction dir, Texture2D img, Vector2 coord, float scale)
             : base(screen, "twilight", coord) {
             this.dir = dir;
-            this.scale = scale;
-            setState(ArrowStates.FadeIn);
+            Scale = scale;
+            State = ArrowStates.FadeIn;
             maxCycles = 1;
         }
 
@@ -44,9 +43,9 @@ namespace CritterCamp.Screens.Games.TwilightTango {
         public override void animate(GameTime time) {
             base.animate(time);
             if(numCycles == 1 && state == ArrowStates.FadeOut) {
-                visible = false;
+                Visible = false;
             }
-            if(!soundPlayed && visible) {
+            if(!soundPlayed && Visible) {
                 switch(dir) {
                     case Direction.Down:
                         screen.soundList["chime1"].Play();
@@ -66,7 +65,7 @@ namespace CritterCamp.Screens.Games.TwilightTango {
         }
 
         public override void draw(SpriteDrawer sd) {
-            sd.Draw(getImg(), getCoord(), getNum(), spriteRotation: (int)dir * Constants.ROTATE_90, spriteScale: scale);
+            sd.Draw(getImg(), Coord, getNum(), spriteRotation: (int)dir * Constants.ROTATE_90, spriteScale: Scale);
         }
     }
 }

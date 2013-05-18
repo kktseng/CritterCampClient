@@ -58,11 +58,11 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
 
         public Pig(JetpackJamboreeScreen screen, PigStates startingState, Random rand) : base(screen, "pig", Vector2.Zero) {
             if(startingState == PigStates.Falling) {
-                coord = new Vector2(rand.Next(MIN_FLY_ENTER, MAX_FLY_ENTER), rand.Next((int)(-FLY_TIME * 0.6), -Constants.BUFFER_SPRITE_DIM / 2));
+                Coord = new Vector2(rand.Next(MIN_FLY_ENTER, MAX_FLY_ENTER), rand.Next((int)(-FLY_TIME * 0.6), -Constants.BUFFER_SPRITE_DIM / 2));
             } else if(startingState == PigStates.Entering) {
-                coord = new Vector2(WALK_IN_ENTER[rand.Next(0, 3)], -Constants.BUFFER_SPRITE_DIM / 2);
+                Coord = new Vector2(WALK_IN_ENTER[rand.Next(0, 3)], -Constants.BUFFER_SPRITE_DIM / 2);
             }
-            setState(startingState);
+            State = startingState;
             this.rand = rand;
             color = rand.Next(4);
         }
@@ -94,7 +94,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
                             walk();
                         } else {
                             timeLeft -= time.ElapsedGameTime;
-                            velocity = new Vector2(0, (float)timeLeft.Value.TotalMilliseconds);
+                            Velocity = new Vector2(0, (float)timeLeft.Value.TotalMilliseconds);
                         }
                     }
                 } else if(state == PigStates.Entering) {
@@ -106,7 +106,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
                             walk();
                         } else {
                             timeLeft -= time.ElapsedGameTime;
-                            velocity = new Vector2(0, ENTER_SPD);
+                            Velocity = new Vector2(0, ENTER_SPD);
                         }
                     }
                 } else if(state == PigStates.WalkLeft || state == PigStates.WalkRight) {
@@ -116,7 +116,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
                         // Explode
                         if(jetPackState > 3) {
                             if(!((JetpackJamboreeScreen)screen).exploded) {
-                                new Explosion(screen, coord - new Vector2(0, 32));
+                                new Explosion(screen, Coord - new Vector2(0, 32));
                                 ((JetpackJamboreeScreen)screen).Explode();
                                 screen.removeActor(this);
                             }
@@ -126,12 +126,12 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
                     }
                     checkBounds(curBounds, time.ElapsedGameTime);
                 } else if(state == PigStates.Flying) {
-                    if(coord.Y < -Constants.BUFFER_SPRITE_DIM) {
+                    if(Coord.Y < -Constants.BUFFER_SPRITE_DIM) {
                         screen.removeActor(this);
                     }
-                    velocity = new Vector2(0, -FLY_SPD);
+                    Velocity = new Vector2(0, -FLY_SPD);
                 } else if(state == PigStates.Standing) {
-                    velocity = Vector2.Zero;
+                    Velocity = Vector2.Zero;
                 }
             }
             base.animate(time);
@@ -146,29 +146,29 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
             float scale = selected ? 1.2f : 1;
             switch(state) {
                 case PigStates.WalkLeft:
-                    sd.Draw(getImg(), getCoord(), getNum(), getFrame().Value.effect, spriteScale: scale);
-                    sd.Draw(screen.textureList["doodads"], coord - (new Vector2(-30, 10) * scale), (int)TextureData.Doodads.sideJet1 + jetPackState, SpriteEffects.FlipHorizontally, spriteScale: scale);
+                    sd.Draw(getImg(), Coord, getNum(), getFrame().Value.effect, spriteScale: scale);
+                    sd.Draw(screen.textureList["doodads"], Coord - (new Vector2(-30, 10) * scale), (int)TextureData.Doodads.sideJet1 + jetPackState, SpriteEffects.FlipHorizontally, spriteScale: scale);
                     break;
                 case PigStates.WalkRight:
-                    sd.Draw(getImg(), getCoord(), getNum(), getFrame().Value.effect, spriteScale: scale);
-                    sd.Draw(screen.textureList["doodads"], coord - (new Vector2(30, 10) * scale), (int)TextureData.Doodads.sideJet1 + jetPackState, spriteScale: scale);
+                    sd.Draw(getImg(), Coord, getNum(), getFrame().Value.effect, spriteScale: scale);
+                    sd.Draw(screen.textureList["doodads"], Coord - (new Vector2(30, 10) * scale), (int)TextureData.Doodads.sideJet1 + jetPackState, spriteScale: scale);
                     break;
                 case PigStates.Flying:
-                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
-                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 40) + new Vector2(0, Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.jetFlame1 + jetFlameState);
+                    sd.Draw(screen.textureList["doodads"], Coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
+                    sd.Draw(screen.textureList["doodads"], Coord - new Vector2(0, 40) + new Vector2(0, Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.jetFlame1 + jetFlameState);
                     base.draw(sd);
                     break;
                 case PigStates.Falling:
-                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
-                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 40) + new Vector2(0, Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.jetFlame1 + jetFlameState);
+                    sd.Draw(screen.textureList["doodads"], Coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
+                    sd.Draw(screen.textureList["doodads"], Coord - new Vector2(0, 40) + new Vector2(0, Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.jetFlame1 + jetFlameState);
                     base.draw(sd);
                     break;
                 case PigStates.Entering:
-                    sd.Draw(screen.textureList["doodads"], coord - (new Vector2(0, 20) * scale), (int)TextureData.Doodads.jetPack1, spriteScale: scale);
-                    sd.Draw(getImg(), getCoord(), getNum(), getFrame().Value.effect, spriteScale: scale);
+                    sd.Draw(screen.textureList["doodads"], Coord - (new Vector2(0, 20) * scale), (int)TextureData.Doodads.jetPack1, spriteScale: scale);
+                    sd.Draw(getImg(), Coord, getNum(), getFrame().Value.effect, spriteScale: scale);
                     break;
                 case PigStates.Standing:
-                    sd.Draw(screen.textureList["doodads"], coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
+                    sd.Draw(screen.textureList["doodads"], Coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
                     base.draw(sd);
                     break;
             }
@@ -182,44 +182,44 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
             // provide some leeway when checking bounds
             } else if(checkBounds(new Rectangle(areas[color].X - 80, areas[color].Y - 10, areas[color].Width + 160, areas[color].Height + 20), new TimeSpan(0))) {
                 curBounds = areas[color];
-                Vector2 testCoord = coord + velocity * 0.1f;
+                Vector2 testCoord = Coord + Velocity * 0.1f;
                 // if set in leeway, push pig back towards middle
                 if(testCoord.X <= areas[color].X + 60)
-                    coord.X += areas[color].X - coord.X + 40;
+                    Coord = Coord + new Vector2(areas[color].X - Coord.X + 40, 0);
                 if(testCoord.X >= areas[color].X + areas[color].Width - 60)
-                    coord.X -= coord.X - areas[color].X - areas[color].Width + 40;
+                    Coord = Coord - new Vector2(Coord.X - areas[color].X - areas[color].Width + 40, 0);
                 if(testCoord.Y <= areas[color].Y + 60)
-                    coord.Y += areas[color].Y - coord.Y + 40;
+                    Coord = Coord + new Vector2(0, areas[color].Y - Coord.Y + 40);
                 if(testCoord.Y >= areas[color].Y + areas[color].Height - 60)
-                    coord.Y -= coord.Y - areas[color].Y - areas[color].Height + 40;
+                    Coord = Coord - new Vector2(0, Coord.Y - areas[color].Y - areas[color].Height + 40);
                 return true;
             } else {
-                coord = old_pos;
+                Coord = old_pos;
                 return false;
             }
         }
 
         protected bool checkBounds(Rectangle r, TimeSpan time) {
-            Vector2 new_coord = coord + velocity * (float)time.TotalSeconds;
-            Vector2 old_vel = velocity;
+            Vector2 new_coord = Coord + Velocity * (float)time.TotalSeconds;
+            Vector2 old_vel = Velocity;
             if(new_coord.X <= r.Left || new_coord.X >= r.Right) {
-                velocity = velocity * new Vector2(-1, 1);
+                Velocity = Velocity * new Vector2(-1, 1);
             } else if(new_coord.Y <= r.Top || new_coord.Y >= r.Bottom) {
-                velocity = velocity * new Vector2(1, -1);
+                Velocity = Velocity * new Vector2(1, -1);
             }
-            if(velocity != old_vel) {
-                setState(velocity.X < 0 ? PigStates.WalkLeft : PigStates.WalkRight);
+            if(Velocity != old_vel) {
+                State = Velocity.X < 0 ? PigStates.WalkLeft : PigStates.WalkRight;
                 return false;
             }
             return true;
         }
 
         protected void walk() {
-            velocity = new Vector2(rand.Next(-MAX_WALK_SPD, MAX_WALK_SPD), rand.Next(-MAX_WALK_SPD / 2, MAX_WALK_SPD / 2));
-            if(velocity.X < MIN_WALK_SPD) {
-                velocity.X = velocity.X < 0 ? -MIN_WALK_SPD : MIN_WALK_SPD;
+            Velocity = new Vector2(rand.Next(-MAX_WALK_SPD, MAX_WALK_SPD), rand.Next(-MAX_WALK_SPD / 2, MAX_WALK_SPD / 2));
+            if(Velocity.X < MIN_WALK_SPD) {
+                Velocity = new Vector2(Velocity.X < 0 ? -MIN_WALK_SPD : MIN_WALK_SPD, 0);
             }
-            setState(velocity.X < 0 ? PigStates.WalkLeft : PigStates.WalkRight);
+            State = Velocity.X < 0 ? PigStates.WalkLeft : PigStates.WalkRight;
         }
     }
 }

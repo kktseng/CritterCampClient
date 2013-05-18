@@ -10,7 +10,7 @@ namespace CritterCamp.Screens.Games.TwilightTango {
     public class Smoke : AnimatedObject<bool> {
         public Smoke(BaseGameScreen screen, Vector2 coord)
             : base(screen, "effects", coord, dieWhenFinished: true) {
-            setState(true);
+            State = true;
             maxCycles = 1;
         }
 

@@ -13,7 +13,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
 
         public Avatar(BaseGameScreen screen, Vector2 coord, int color)
             : base(screen, "pig", coord) {
-            setState(false);
+            State = false;
             maxCycles = 1;
             this.color = color;
             count = 0;
@@ -30,16 +30,16 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
 
         public override void draw(SpriteDrawer sd) {
             int len = Helpers.TextureLen(typeof(TextureData.PlayerStates));
-            sd.Draw(getImg(), getCoord(), getNum() + len * color, effect: getFrame().Value.effect);
+            sd.Draw(getImg(), Coord, getNum() + len * color, effect: getFrame().Value.effect);
             // draw red baton if sending pigs down
-            if(getState()) {
+            if(State) {
                 int flash = (frame / 300) % 2;
-                sd.Draw(screen.textureList["doodads"], getCoord() + new Vector2(-35, -80), (int)TextureData.Doodads.redBaton1 + flash);
-                sd.Draw(screen.textureList["doodads"], getCoord() + new Vector2(40, -35), (int)TextureData.Doodads.redBaton1 + flash);
+                sd.Draw(screen.textureList["doodads"], Coord + new Vector2(-35, -80), (int)TextureData.Doodads.redBaton1 + flash);
+                sd.Draw(screen.textureList["doodads"], Coord + new Vector2(40, -35), (int)TextureData.Doodads.redBaton1 + flash);
             // otherwise draw the green one
             } else {
-                sd.Draw(screen.textureList["doodads"], getCoord() + new Vector2(-50, -40), (int)TextureData.Doodads.greenBaton1);
-                sd.Draw(screen.textureList["doodads"], getCoord() + new Vector2(50, -40), (int)TextureData.Doodads.greenBaton1);
+                sd.Draw(screen.textureList["doodads"], Coord + new Vector2(-50, -40), (int)TextureData.Doodads.greenBaton1);
+                sd.Draw(screen.textureList["doodads"], Coord + new Vector2(50, -40), (int)TextureData.Doodads.greenBaton1);
             }
         }
 

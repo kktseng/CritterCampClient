@@ -12,7 +12,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
 
         public Explosion(BaseGameScreen screen, Vector2 coord) 
             : base(screen, "explosion", coord, dieWhenFinished: true) {
-            setState(true);
+            State = true;
             maxCycles = 1;
         }
 
@@ -38,7 +38,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
         }
 
         public override void draw(SpriteDrawer sd) {
-            sd.Draw(screen.textureList["explosion"], coord, getNum(), new Vector2(128, 128), spriteScale: 2f);
+            sd.Draw(screen.textureList["explosion"], Coord, getNum(), new Vector2(128, 128), spriteScale: 2f);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace CritterCamp.Screens.Games.ColorClash {
     class Crosshair : AnimatedObject<bool> {
         public Crosshair(ColorClashScreen screen, Vector2 pos)
             : base(screen, "jetpack", pos) {
-            setState(true);
+            State = true;
         }
 
         protected override void SetAnim() {
@@ -21,7 +21,7 @@ namespace CritterCamp.Screens.Games.ColorClash {
         }
 
         public override void animate(GameTime time) {
-            scale += (float)time.ElapsedGameTime.TotalSeconds;
+            Scale += (float)time.ElapsedGameTime.TotalSeconds;
             base.animate(time);
         }
 
