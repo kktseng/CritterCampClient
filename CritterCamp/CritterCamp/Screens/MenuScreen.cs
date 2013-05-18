@@ -183,7 +183,7 @@ namespace CritterCamp.Screens {
                 b.Draw(this);
             }
 
-            //DrawCoordinates(sd);
+            DrawCoordinates(sd);
             sd.End();
             base.Draw(gameTime);
         }

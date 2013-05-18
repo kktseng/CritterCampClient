@@ -37,10 +37,10 @@ namespace CritterCamp.Screens.Games.Lib {
             //float ratio = 1f;
             if((int)(backBuffer.Y / (float)backBuffer.X * 1000) == (int)(Constants.RATIO_16_9 * 1000)) {
                // ratio = Constants.CONVERSION_15_9;
-                offset = Constants.OFFSET_16_9;
+                offset = Constants.OFFSET_720P;
                 CoreApplication.Properties["ratio"] = Constants.RATIO_16_9;
             } else if((int)((float)backBuffer.Y / (float)backBuffer.X * 1000) == (int)(Constants.RATIO_15_9 * 1000)) {
-                offset = Constants.OFFSET_15_9;
+                offset = Constants.OFFSET_WXGA;
                 CoreApplication.Properties["ratio"] = Constants.RATIO_15_9;
             }
             // scale = Matrix.CreateScale(1f / ratio, 1f, 1f);
@@ -151,15 +151,18 @@ namespace CritterCamp.Screens.Games.Lib {
             Draw(texture, coord, spriteNum, spriteScale: 2f);
         }
 
-        public void DrawPlayer(PlayerDataSprite pdata, Vector2 coord, TextureData.PlayerStates state, float spriteRotation = 0, float spriteScale = 1f) {
-            Draw(pdata.body, coord, (int)state, spriteRotation, spriteScale);
+        public void DrawPlayer(BaseGameScreen screen, PlayerData playerData, Vector2 coord, TextureData.PlayerStates state, float spriteRotation = 0, float spriteScale = 1f, SpriteEffects spriteEffect = SpriteEffects.None) {
+            /*Draw(pdata.body, coord, (int)state, spriteRotation, spriteScale);
             Draw(pdata.faces, coord, (int)state, spriteRotation, spriteScale);
             if(pdata.accessories != null) {
                 Draw(pdata.accessories, coord, (int)state, spriteRotation, spriteScale);
             }
             if(pdata.hats != null) {
                 Draw(pdata.hats, coord - spriteScale * new Vector2(0, 32), 0, spriteRotation, spriteScale);
-            }
+            }*/
+
+            // TODO: kevin lin edit here
+            Draw(screen.textureList["pig"], coord, (int)state, spriteEffect, spriteRotation: spriteRotation, spriteScale: spriteScale);
         }
 
         public void DrawString(SpriteFont font, string text, Vector2 coord, Color color, bool centerX = true, bool centerY = true, float spriteScale = 1f) {

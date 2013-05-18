@@ -37,6 +37,9 @@ namespace CritterCamp {
             _game = XamlGame<CritterCampGame>.Create("", this);
             CoreApplication.Properties["GamePage"] = this;
 
+            // WP8 ONLY
+            CoreApplication.Properties["scaleFactor"] = App.Current.Host.Content.ScaleFactor;
+
             //TryMediaPlay();
             //adDuplexAd.IsTest = true; // use this line to display our own ad for testing
 

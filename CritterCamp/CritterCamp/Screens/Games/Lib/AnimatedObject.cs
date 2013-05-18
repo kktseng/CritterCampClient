@@ -29,13 +29,14 @@ namespace CritterCamp.Screens.Games.Lib {
             }
 
         };
-        public bool autoDraw = true;
+        public bool autoDraw = true; // determines whether or not the screen will automatically draw this object
 
         protected BaseGameScreen screen;
 
         protected string imgName;
         protected Vector2 coord;
         protected Vector2 velocity = new Vector2(0, 0);
+        protected float scale = 1.0f;
         protected bool visible = true;
 
         protected T state { get; private set; }
@@ -182,7 +183,7 @@ namespace CritterCamp.Screens.Games.Lib {
         }
 
         public virtual void draw(SpriteDrawer sd) {
-            sd.Draw(getImg(), getCoord(), getNum(), getFrame().Value.effect);
+            sd.Draw(getImg(), getCoord(), getNum(), getFrame().Value.effect, spriteScale: scale);
         }
     }
 }

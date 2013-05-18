@@ -82,6 +82,14 @@ namespace CritterCamp {
             whale1, whale2, whale3, whale4, whale5, whale6, whale7, whale8
         }
 
+        public enum colorTextures {
+            crosshair,
+            splatter1_1, splatter1_2, splatter1_3, splatter1_4,
+            splatter2_1, splatter2_2, splatter2_3, splatter2_4,
+            splatter3_1, splatter3_2, splatter3_3, splatter3_4,
+            splatter4_1, splatter4_2, splatter4_3, splatter4_4
+        }
+
         public enum Fish {
             small,
             medium,

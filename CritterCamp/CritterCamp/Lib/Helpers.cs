@@ -47,24 +47,35 @@ namespace CritterCamp {
         }
 
         public static Vector2 ScaleInput(Vector2 input) {
-            if(!CoreApplication.Properties.ContainsKey("ratio"))
-                return Vector2.Zero;
-            float ratio = (float)CoreApplication.Properties["ratio"];
             Vector2 inputScale = Vector2.One;
             int offset = 0;
-            if(ratio == Constants.RATIO_16_9) {
+
+            // WP8 ONLY
+            int scaleFactor = (int)CoreApplication.Properties["scaleFactor"];
+
+            // WVGA
+            if(scaleFactor == 100) {
                 if(Constants.ROTATION != 0) {
-                    input = new Vector2(input.Y, Constants.INPUT_16_9.Y - input.X);
+                    input = new Vector2(input.Y, Constants.INPUT_WVGA.Y - input.X);
                 }
-                inputScale = new Vector2(Constants.INPUT_16_9.X / Constants.BUFFER_WIDTH, Constants.INPUT_16_9.Y / Constants.BUFFER_HEIGHT);
-                offset = Constants.OFFSET_16_9;
-            } else if(ratio == Constants.RATIO_15_9) {
+                inputScale = new Vector2(Constants.INPUT_WVGA.X / Constants.BUFFER_WIDTH, Constants.INPUT_WVGA.Y / Constants.BUFFER_HEIGHT);
+                offset = Constants.OFFSET_WVGA;
+            // WXGA
+            } else if(scaleFactor == 160) {
                 if(Constants.ROTATION != 0) {
-                    input = new Vector2(input.Y, Constants.INPUT_15_9.Y - input.X);
+                    input = new Vector2(input.Y, Constants.INPUT_WXGA.Y - input.X);
                 }
-                inputScale = new Vector2(Constants.INPUT_15_9.X / Constants.BUFFER_WIDTH, Constants.INPUT_15_9.Y / Constants.BUFFER_HEIGHT);
-                offset = Constants.OFFSET_15_9;
+                inputScale = new Vector2(Constants.INPUT_WXGA.X / Constants.BUFFER_WIDTH, Constants.INPUT_WXGA.Y / Constants.BUFFER_HEIGHT);
+                offset = Constants.OFFSET_WXGA;
+            // 720p
+            } else if(scaleFactor == 150) {
+                if(Constants.ROTATION != 0) {
+                    input = new Vector2(input.Y, Constants.INPUT_720P.Y - input.X);
+                }
+                inputScale = new Vector2(Constants.INPUT_720P.X / Constants.BUFFER_WIDTH, Constants.INPUT_720P.Y / Constants.BUFFER_HEIGHT);
+                offset = Constants.OFFSET_720P;
             }
+
             return input / inputScale + new Vector2(0, Constants.BUFFER_OFFSET - offset);
         }
 

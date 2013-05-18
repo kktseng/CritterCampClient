@@ -96,6 +96,9 @@
     <Compile Include="ScreenManager\ScreenManager.cs" />
     <Compile Include="Screens\Button.cs" />
     <Compile Include="Screens\Games\BaseGameScreen.cs" />
+    <Compile Include="Screens\Games\ColorClashScreen.cs" />
+    <Compile Include="Screens\Games\ColorClash\Crosshair.cs" />
+    <Compile Include="Screens\Games\ColorClash\Splatter.cs" />
     <Compile Include="Screens\Games\FishingFrenzyScreen.cs" />
     <Compile Include="Screens\Games\FishingFrenzy\Fish.cs" />
     <Compile Include="Screens\Games\FishingFrenzy\Hook.cs" />
@@ -109,7 +112,7 @@
     <Compile Include="Screens\Games\Lib\SpriteDrawer.cs" />
     <Compile Include="Screens\Games\Lib\TextBanner.cs" />
     <Compile Include="Screens\Games\Lib\TileMap.cs" />
-    <Compile Include="Screens\Games\MissileMadnessScreen.cs" />
+    <Compile Include="Screens\Games\SampleGameScreen.cs" />
     <Compile Include="Screens\Games\TwilightTangoScreen.cs" />
     <Compile Include="Screens\Games\TwilightTango\Arrow.cs" />
     <Compile Include="Screens\Games\TwilightTango\Player.cs" />
@@ -349,7 +352,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="Screens\Games\MissileMadness\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
