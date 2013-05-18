@@ -50,7 +50,7 @@ namespace CritterCamp {
             Vector2 inputScale = Vector2.One;
             int offset = 0;
 
-            // WP8 ONLY
+#if WINDOWS_PHONE
             int scaleFactor = (int)CoreApplication.Properties["scaleFactor"];
 
             // WVGA
@@ -75,6 +75,7 @@ namespace CritterCamp {
                 inputScale = new Vector2(Constants.INPUT_720P.X / Constants.BUFFER_WIDTH, Constants.INPUT_720P.Y / Constants.BUFFER_HEIGHT);
                 offset = Constants.OFFSET_720P;
             }
+#endif
 
             return input / inputScale + new Vector2(0, Constants.BUFFER_OFFSET - offset);
         }
