@@ -16,7 +16,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
             maxCycles = 1;
         }
 
-        protected override void setAnim() {
+        protected override void SetAnim() {
             animation.Add(true, new List<Frame>() {
                 new Frame((int)TextureData.Explosions.nuke1, EXPLOSION_FRAME),
                 new Frame((int)TextureData.Explosions.nuke2, EXPLOSION_FRAME),

@@ -19,11 +19,9 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
             count = 0;
         }
 
-        protected override void setAnim() {
+        protected override void SetAnim() {
             setDefaultState(false);
-            animation.Add(false, new List<Frame>() {
-                new Frame((int)TextureData.PlayerStates.standing, 1)
-            });
+            animation.Add(false, SingleFrame((int)TextureData.PlayerStates.standing));
             animation.Add(true, new List<Frame>() {
                 new Frame((int)TextureData.PlayerStates.holdUp1, 75),
                 new Frame((int)TextureData.PlayerStates.holdUp2, 2000)

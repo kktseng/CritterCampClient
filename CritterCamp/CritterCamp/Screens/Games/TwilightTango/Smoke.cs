@@ -14,7 +14,7 @@ namespace CritterCamp.Screens.Games.TwilightTango {
             maxCycles = 1;
         }
 
-        protected override void setAnim() {
+        protected override void SetAnim() {
             animation.Add(true, new List<Frame>() {
                 new Frame((int)TextureData.Effects.smoke1, 100),
                 new Frame((int)TextureData.Effects.smoke2, 100),

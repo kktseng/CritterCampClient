@@ -37,13 +37,8 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             Helpers.GetSoundLibrary(screen).LoopSound(reelingIn);
         }
 
-        protected override void setAnim() {
-            animation.Add(HookState.down, new List<Frame>() {
-                new Frame((int)TextureData.fishingTextures.hook, 100)
-            });
-            animation.Add(HookState.up, new List<Frame>() {
-                new Frame((int)TextureData.fishingTextures.hook, 100)
-            });
+        protected override void SetAnim() {
+            SetFrames(SingleFrame((int)TextureData.fishingTextures.hook), HookState.down, HookState.up);
         }
 
         public override void animate(GameTime time) {

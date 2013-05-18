@@ -31,18 +31,13 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
 
             // reset animation for new texture
             animation.Clear();
-            setAnim();
+            SetAnim();
 
             setState(left);
         }
 
-        protected override void setAnim() {
-            animation.Add(false, new List<Frame>() {
-                new Frame(textureStart, 100, Vector2.Zero, SpriteEffects.FlipHorizontally)
-            });
-            animation.Add(true, new List<Frame>() {
-                new Frame(textureStart, 100)
-            });
+        protected override void SetAnim() {
+            SetLeftRight(SingleFrame(textureStart), true, false);
         }
 
         public override void animate(GameTime time) {

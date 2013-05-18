@@ -51,7 +51,7 @@ namespace CritterCamp.Screens.Games.Lib {
 
 
         public AnimatedObject(BaseGameScreen screen, string imgName, Vector2 coord, bool dieWhenFinished = false) {
-            setAnim();
+            SetAnim();
             this.screen = screen;
             screen.addActor(this);
             this.dieWhenFinished = dieWhenFinished;
@@ -60,7 +60,28 @@ namespace CritterCamp.Screens.Games.Lib {
         }
 
         // Initializes animation
-        protected abstract void setAnim();
+        protected abstract void SetAnim();
+
+        protected void SetFrames(List<Frame> frameList, params T[] states) {
+            for(int i = 0; i < states.Length; i++) {
+                animation.Add(states[i], frameList);
+            }
+        }
+
+        protected List<Frame> SingleFrame(int texture) {
+            return new List<Frame>() { new Frame(texture, 100) };
+        }
+
+        // Automatically flips for left and right
+        protected void SetLeftRight(List<Frame> f, T defaultState, T flippedState) {
+            // flip the states
+            List<Frame> flipped = new List<Frame>();
+            foreach(Frame frame in f) {
+                flipped.Add(new Frame(frame.spriteNum, frame.length, frame.offset * new Vector2(-1, 1), effect: SpriteEffects.FlipHorizontally));
+            }
+            animation.Add(defaultState, f);
+            animation.Add(flippedState, flipped);
+        }
 
         protected void setDefaultState(T defaultState) {
             this.defaultState = defaultState;

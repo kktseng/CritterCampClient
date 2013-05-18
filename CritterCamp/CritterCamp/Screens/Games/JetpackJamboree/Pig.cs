@@ -67,32 +67,20 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
             color = rand.Next(4);
         }
 
-        protected override void setAnim() {
-            animation.Add(PigStates.WalkRight, new List<Frame>() {
+        protected override void SetAnim() {
+            SetLeftRight(new List<Frame>() {
                 new Frame((int)TextureData.PlayerStates.walkRight1, 50),
                 new Frame((int)TextureData.PlayerStates.walkRight2, 50),
                 new Frame((int)TextureData.PlayerStates.walkRight3, 50),
                 new Frame((int)TextureData.PlayerStates.walkRight4, 50)
-            });
-            animation.Add(PigStates.WalkLeft, new List<Frame>() {
-                new Frame((int)TextureData.PlayerStates.walkRight1, 50, new Vector2(0, 0), SpriteEffects.FlipHorizontally),
-                new Frame((int)TextureData.PlayerStates.walkRight2, 50, new Vector2(0, 0), SpriteEffects.FlipHorizontally),
-                new Frame((int)TextureData.PlayerStates.walkRight3, 50, new Vector2(0, 0), SpriteEffects.FlipHorizontally),
-                new Frame((int)TextureData.PlayerStates.walkRight4, 50, new Vector2(0, 0), SpriteEffects.FlipHorizontally)
-            });
-            animation.Add(PigStates.Falling, new List<Frame>() {
-                new Frame((int)TextureData.PlayerStates.standing, 1)
-            });
-            animation.Add(PigStates.Flying, new List<Frame>() {
-                new Frame((int)TextureData.PlayerStates.jump2, 1)
-            });
+            }, PigStates.WalkRight, PigStates.WalkLeft);
+            animation.Add(PigStates.Falling, SingleFrame((int)TextureData.PlayerStates.standing));
+            animation.Add(PigStates.Flying, SingleFrame((int)TextureData.PlayerStates.jump2));
             animation.Add(PigStates.Entering, new List<Frame>() {
                 new Frame((int)TextureData.PlayerStates.walkDown1, 50),
                 new Frame((int)TextureData.PlayerStates.walkDown2, 50)
             });
-            animation.Add(PigStates.Standing, new List<Frame>() {
-                new Frame((int)TextureData.PlayerStates.standing, 100),
-            });
+            animation.Add(PigStates.Standing, SingleFrame((int)TextureData.PlayerStates.standing));
         }
 
         public override void animate(GameTime time) {

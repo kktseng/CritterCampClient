@@ -28,7 +28,7 @@ namespace CritterCamp.Screens.Games.TwilightTango {
             maxCycles = 1;
         }
 
-        protected override void setAnim() {
+        protected override void SetAnim() {
             List<Frame> fadeIn = new List<Frame>();
             for(int i = 0; i < 11; i++) {
                 fadeIn.Add(new Frame((int)TextureData.twilightTexture.arrow1 + i, 50));
@@ -37,12 +37,8 @@ namespace CritterCamp.Screens.Games.TwilightTango {
             List<Frame> fadeOut = new List<Frame>(fadeIn);
             fadeOut.Reverse(); // Reverse frame order for fade out
             animation.Add(ArrowStates.FadeOut, fadeOut);
-            animation.Add(ArrowStates.Green, new List<Frame>() {
-                new Frame((int)TextureData.twilightTexture.greenArrow, 1)
-            });
-            animation.Add(ArrowStates.Red, new List<Frame>() {
-               new Frame((int)TextureData.twilightTexture.redArrow, 1)
-            });
+            animation.Add(ArrowStates.Green, SingleFrame((int)TextureData.twilightTexture.greenArrow));
+            animation.Add(ArrowStates.Red, SingleFrame((int)TextureData.twilightTexture.redArrow));
         }
 
         public override void animate(GameTime time) {

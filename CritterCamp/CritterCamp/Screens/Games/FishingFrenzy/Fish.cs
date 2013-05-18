@@ -64,7 +64,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
 
             // reset animation for new texture
             animation.Clear();
-            setAnim();
+            SetAnim();
 
             if(dir == 0) {
                 setState(FishStates.swimRight);
@@ -77,7 +77,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             }
         }
 
-        protected override void setAnim() {
+        protected override void SetAnim() {
             if(type == FishTypes.shiny) {
                 animation.Add(FishStates.swimLeft, new List<Frame>() {
                     new Frame((int)TextureData.Fish.shiny1, 200),
@@ -100,18 +100,8 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
                     new Frame((int)TextureData.Fish.shiny3, 200)
                 });
             } else {
-                animation.Add(FishStates.swimLeft, new List<Frame>() {
-                    new Frame(textureNum, 100)
-                });
-                animation.Add(FishStates.swimRight, new List<Frame>() {
-                    new Frame(textureNum, 100, Vector2.Zero, effect: SpriteEffects.FlipHorizontally)
-                });
-                animation.Add(FishStates.hooked, new List<Frame>() {
-                    new Frame(textureNum, 100)
-                });
-                animation.Add(FishStates.falling, new List<Frame>() {
-                    new Frame(textureNum, 100)
-                });
+                SetFrames(SingleFrame(textureNum), FishStates.hooked, FishStates.falling);
+                SetLeftRight(SingleFrame(textureNum), FishStates.swimLeft, FishStates.swimRight);
             }
         }
 

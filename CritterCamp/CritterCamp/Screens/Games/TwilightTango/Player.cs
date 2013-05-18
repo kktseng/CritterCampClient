@@ -32,11 +32,9 @@ namespace CritterCamp.Screens.Games.TwilightTango {
             this.color = color;
         }
 
-        protected override void setAnim() {
+        protected override void SetAnim() {
             setDefaultState(PlayerDanceStates.Standing);
-            animation.Add(PlayerDanceStates.Standing, new List<Frame>() {
-                new Frame((int)TextureData.PlayerStates.standing, 1)
-            });
+            animation.Add(PlayerDanceStates.Standing, SingleFrame((int)TextureData.PlayerStates.standing));
             animation.Add(PlayerDanceStates.DanceUp, new List<Frame>() {
                 new Frame((int)TextureData.PlayerStates.jump4, 50),
                 new Frame((int)TextureData.PlayerStates.jump1, 50, new Vector2(0, -21)),
@@ -49,16 +47,11 @@ namespace CritterCamp.Screens.Games.TwilightTango {
                 new Frame((int)TextureData.PlayerStates.pickup2, 100),
                 new Frame((int)TextureData.PlayerStates.pickup3, 150)
             });
-            animation.Add(PlayerDanceStates.DanceRight, new List<Frame>() {
+            SetLeftRight(new List<Frame>() {
                 new Frame((int)TextureData.PlayerStates.punchRight1, 75),
                 new Frame((int)TextureData.PlayerStates.punchRight2, 75, new Vector2(-13, 0)),
                 new Frame((int)TextureData.PlayerStates.punchRight3, 150, new Vector2(-13, 0))
-            });
-            animation.Add(PlayerDanceStates.DanceLeft, new List<Frame>() {
-                new Frame((int)TextureData.PlayerStates.punchRight1, 75, new Vector2(0, 0), effect: SpriteEffects.FlipHorizontally),
-                new Frame((int)TextureData.PlayerStates.punchRight2, 75, new Vector2(13, 0), effect: SpriteEffects.FlipHorizontally),
-                new Frame((int)TextureData.PlayerStates.punchRight3, 150, new Vector2(13, 0), effect: SpriteEffects.FlipHorizontally)
-            });
+            }, PlayerDanceStates.DanceRight, PlayerDanceStates.DanceLeft);
         }
 
         public override void draw(SpriteDrawer sd) {
