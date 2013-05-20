@@ -21,6 +21,7 @@ namespace CritterCamp.Screens {
                 FullProfileLevel.Text = "Level " + value.level.ToString();
                 ProfileName.Text = value.username;
                 ProfileLevel.Text = "Level " + value.level.ToString();
+                Avatar.Texture = value.profile;
                 //FullProfileMoney.Text = value.money;
             }
         }
@@ -44,7 +45,7 @@ namespace CritterCamp.Screens {
             }
         }
 
-        private Image Avatar = new Image("TEMPPIGS", 0);
+        private Image Avatar = new Image("pig", 0);
         private Label FullProfileName = new Label();
         private Label FullProfileLevel = new Label();
         private Label FullProfileMoney = new Label("$250");

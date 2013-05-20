@@ -234,7 +234,6 @@ namespace CritterCamp {
                      * Friends list
                      * Party list
                      * News
-                     * Profile
                      * Money
                      **/
                     // TODO: Retrieve and parse friend list data from HTTP response
@@ -243,7 +242,7 @@ namespace CritterCamp {
 
                     CoreApplication.Properties["news"] = response.news;
 
-                    PlayerData mydata = new PlayerData(username, "profile", response.lvl, 0);
+                    PlayerData mydata = new PlayerData(username, response.profile, response.lvl, 0);
                     CoreApplication.Properties["myPlayerData"] = mydata;
 
                     // Create a TCP connection
@@ -325,6 +324,7 @@ namespace CritterCamp {
     class LoginResponse : Response {
         public string auth;
         public int lvl;
+        public string profile;
         public List<NewsPost> news;
 
         public LoginResponse(string response)
@@ -332,6 +332,8 @@ namespace CritterCamp {
                 if(responseJSON["auth"] != null) {
                     auth = (string)responseJSON["auth"];
                     lvl = (int)responseJSON["level"];
+                    profile = "pig";
+                    //profile = (string)responseJSON["profile"]; uncomment when http hook is put in
 
                     news = new List<NewsPost>();
                     JArray newsJson = (JArray)responseJSON["news"];

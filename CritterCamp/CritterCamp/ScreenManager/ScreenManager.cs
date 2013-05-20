@@ -134,7 +134,7 @@ namespace GameStateManagement {
                 "paperBG", "bgScreen",
                 "gameIcons", "scoreScreenIcons", "scorePanel",
                 "backButton", "buttonMint",  "buttonGreen", "buttonSoundOn", "buttonSoundOff",
-                "whitePixel" };
+                "whitePixel", "buttonProfile" };
             for(int i = 0; i < textureNames.Length; i++) {
                 textures[textureNames[i]] = content.Load<Texture2D>(textureNames[i]);
             }

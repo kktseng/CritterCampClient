@@ -50,7 +50,7 @@ namespace CritterCamp.Screens {
                 BorderedView playerView = new BorderedView(new Vector2(410, 525), new Vector2(312 + 424 * i, 425));
                 if (player.username == myData.username) {
                     // displaying ourself. draw a yellow background instead of the default light brown
-                    playerView.FillColor = new Color(247, 215, 137);
+                    playerView.FillColor = Constants.YellowHighlight;
                     player.level = myLevel; // update the level info
                 }
 

@@ -69,6 +69,15 @@ namespace CritterCamp.Screens {
                 ButtonTexture.TextureIndex = value;
             }
         }
+        public float ButtonImageScale {
+            get {
+                return ButtonTexture.Scale;
+            }
+            set {
+                ButtonTexture.Scale = value;
+                ButtonHighlightTexture.Scale = value;
+            }
+        }
         public string HighlightImage { // the image to display for when the button is highlighted
             get {
                 return ButtonHighlightTexture.Texture;

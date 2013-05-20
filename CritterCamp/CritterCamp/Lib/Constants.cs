@@ -40,5 +40,6 @@ namespace CritterCamp {
 
         public static Color DarkBrown = new Color(84, 50, 0);
         public static Color LightBrown = new Color(234, 199, 157);
+        public static Color YellowHighlight = new Color(247, 215, 137);
     }
 }

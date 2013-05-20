@@ -19,8 +19,22 @@ namespace CritterCamp.Screens {
             }
             set {
                 base.Size = value;
-                rect = new Rectangle(0, 0, (int)value.X, (int)value.Y); // set the rectangle whenever we change the size of the image
+                updateRect();
             }
+        }
+
+        public override float Scale {
+            get {
+                return base.Scale;
+            }
+            set {
+                base.Scale = value;
+                updateRect();
+            }
+        }
+
+        private void updateRect() {
+            rect = new Rectangle(0, 0, (int)(Size.X / (Scale * Scale)), (int)(Size.Y / (Scale * Scale))); // set the rectangle whenever we change the size of the image
         }
         
         private Rectangle rect; // rectangle for drawing the image in
@@ -51,9 +65,9 @@ namespace CritterCamp.Screens {
         /// </summary>
         protected override void DrawThis() {
             if (DrawOverlay) {
-                MySpriteDrawer.Draw(MyScreenManager.Textures[Texture], Position, TextureIndex, Size, rect, SpriteEffects.None, Overlay, spriteScale: Scale);
+                MySpriteDrawer.Draw(MyScreenManager.Textures[Texture], Position, TextureIndex, Size/(Scale*Scale), rect, SpriteEffects.None, Overlay, spriteScale: Scale);
             } else if (Size != Vector2.Zero) {
-                MySpriteDrawer.Draw(MyScreenManager.Textures[Texture], Position, TextureIndex, Size, spriteScale: Scale);
+                MySpriteDrawer.Draw(MyScreenManager.Textures[Texture], Position, TextureIndex, Size/(Scale*Scale), spriteScale: Scale);
             } else {
                 MySpriteDrawer.Draw(MyScreenManager.Textures[Texture], Position, TextureIndex, spriteScale : Scale);
             }
