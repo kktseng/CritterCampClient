@@ -321,6 +321,9 @@
     <Content Include="Content\Sounds\adventure.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\color.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Content\Sounds\fbIcon.xnb" />
     <None Include="Content\Sounds\twitterIcon.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

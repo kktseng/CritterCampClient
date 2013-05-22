@@ -26,7 +26,7 @@ namespace CritterCamp.Screens.Games {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            addTextures("map", "pig", "doodads", "jetpack");
+            addTextures("map", "pig", "doodads", "color");
             // addSounds("swoosh", "splash", "reelingIn", "bucket", "blop");
             setMap();
         }

@@ -165,7 +165,7 @@ namespace CritterCamp.Screens.Games {
                                 commandList[commandList.Count - 1].Visible = false;
 
                             }
-                            // }
+                            //}
                             start = gameTime.TotalGameTime;
                             phase = Phase.Commands;
                         };
@@ -271,8 +271,8 @@ namespace CritterCamp.Screens.Games {
                         }
                         if(error && p.health > 0) {
                             soundList["puff"].Play();
-                            new Smoke(this, p.Coord + new Vector2((100 * (p.health % 3)) + ((p.health / 3) * 50), (p.health / 3) * 65));
                             p.health--;
+                            new Smoke(this, p.Coord + new Vector2((100 * (p.health % 3)) + ((p.health / 3) * 50), (p.health / 3) * 65));               
                             if(p.health <= 0) {
                                 p.rank = currentRank;
                                 foreach(Player tiedPlayer in tieCheck) {

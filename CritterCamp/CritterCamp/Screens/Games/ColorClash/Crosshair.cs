@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace CritterCamp.Screens.Games.ColorClash {
     class Crosshair : AnimatedObject<bool> {
         public Crosshair(ColorClashScreen screen, Vector2 pos)
-            : base(screen, "jetpack", pos) {
+            : base(screen, "color", pos) {
             State = true;
         }
 

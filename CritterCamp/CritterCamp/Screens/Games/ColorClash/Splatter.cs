@@ -16,8 +16,9 @@ namespace CritterCamp.Screens.Games.ColorClash {
         public Rectangle area;
 
         public Splatter(ColorClashScreen screen, Crosshair crosshair, Random rand)
-            : base(screen, "jetpack", crosshair.Coord) {
-            splatterType = rand.Next(0, 4);
+            : base(screen, "color", crosshair.Coord) {
+            //splatterType = rand.Next(0, 4);
+                splatterType = 0;
             Scale = crosshair.Scale;
             area = new Rectangle(
                 (int)(Coord.X - Constants.BUFFER_SPRITE_DIM * Scale),
@@ -37,10 +38,10 @@ namespace CritterCamp.Screens.Games.ColorClash {
 
         public override void draw(SpriteDrawer sd) {
             int halfDim = Constants.BUFFER_SPRITE_DIM / 2;
-            sd.Draw(screen.textureList["jetpack"], Coord + new Vector2(-halfDim, -halfDim) * Scale, (int)TextureData.colorTextures.splatter1_1 + splatterType * 4, color, spriteScale: Scale);
-            sd.Draw(screen.textureList["jetpack"], Coord + new Vector2(halfDim, -halfDim) * Scale, (int)TextureData.colorTextures.splatter1_2 + splatterType * 4, color, spriteScale: Scale);
-            sd.Draw(screen.textureList["jetpack"], Coord + new Vector2(-halfDim, halfDim) * Scale, (int)TextureData.colorTextures.splatter1_3 + splatterType * 4, color, spriteScale: Scale);
-            sd.Draw(screen.textureList["jetpack"], Coord + new Vector2(halfDim, halfDim) * Scale, (int)TextureData.colorTextures.splatter1_4 + splatterType * 4, color, spriteScale: Scale);
+            sd.Draw(screen.textureList["color"], Coord + new Vector2(-halfDim, -halfDim) * Scale, (int)TextureData.colorTextures.splatter1_1 + splatterType * 4, color, spriteScale: Scale, cache: true);
+            sd.Draw(screen.textureList["color"], Coord + new Vector2(-halfDim, halfDim) * Scale, (int)TextureData.colorTextures.splatter1_2 + splatterType * 4, color, spriteScale: Scale, cache: true);
+            sd.Draw(screen.textureList["color"], Coord + new Vector2(halfDim, -halfDim) * Scale, (int)TextureData.colorTextures.splatter1_3 + splatterType * 4, color, spriteScale: Scale, cache: true);
+            sd.Draw(screen.textureList["color"], Coord + new Vector2(halfDim, halfDim) * Scale, (int)TextureData.colorTextures.splatter1_4 + splatterType * 4, color, spriteScale: Scale, cache: true);
         }
     }
 }

@@ -89,7 +89,7 @@ namespace CritterCamp.Screens.Games.Lib {
         }
 
         public bool DrawAutomatically() {
-            return autoDraw;
+            return autoDraw && visible;
         }
 
         public Texture2D getImg() {
