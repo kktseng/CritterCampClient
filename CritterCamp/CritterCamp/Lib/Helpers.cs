@@ -80,7 +80,7 @@ namespace CritterCamp {
             return input / inputScale + new Vector2(0, Constants.BUFFER_OFFSET - offset);
         }
 
-        public static Color mapColor(int color) {
+        public static Color mapColor(int color) { 
             switch(color) {
                 case 1:
                     return Color.Orange;

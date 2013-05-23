@@ -199,7 +199,7 @@ namespace CritterCamp.Screens.Games {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
             if(phase == Phase.Sync) {
                 // sync with all users before starting
-                syncAction = (JArray data) => {
+                Sync((JArray data, double rand) => {
                     foreach(string name in playerData.Keys) {
                         bool found = false;
                         foreach(JToken tok in data) {
@@ -210,8 +210,7 @@ namespace CritterCamp.Screens.Games {
                             removePlayer(name);
                     }
                     phase = Phase.Begin;
-                };
-                Helpers.Sync(playerName);
+                }, playerName);
                 phase = Phase.Limbo;
             } else if(phase == Phase.Limbo) {
                 // do nothing while we wait for sync

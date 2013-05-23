@@ -104,10 +104,9 @@ namespace CritterCamp.Screens.Games {
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             if(!synced) {
-                syncAction = (JArray data) => {
+                Sync((JArray data, double random) => {
                     gameStart = gameTime.TotalGameTime;
-                };
-                Helpers.Sync();
+                });
                 synced = true;
             }
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);

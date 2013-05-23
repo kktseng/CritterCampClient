@@ -59,14 +59,13 @@ namespace CritterCamp.Screens {
                 done = true;
                 text = "Waiting for other players...";
 
-                syncAction = (JArray data) => {
+                Sync((JArray data, double rand) => {
                     if(Configuration.GAME_TEST) {
                         LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(Configuration.DEF_GAME));
                     } else {
                         LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(game.ScreenType));
                     }
-                };
-                Helpers.Sync("tutorial", 10);
+                }, "tutorial", 10);
             }
 
             if (timeLeft == 0) {
@@ -83,15 +82,14 @@ namespace CritterCamp.Screens {
                     done = true;
                     text = "Waiting for other players...";
 
-                    syncAction = (JArray data) => {
+                    Sync((JArray data, double rand) => {
                         timeLeftTimer.Dispose(); // dispose of the timer so we don't decrement the time anymore
                         if(Configuration.GAME_TEST) {
                             LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(Configuration.DEF_GAME));
                         } else {
                             LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(game.ScreenType));
                         }
-                    };
-                    Helpers.Sync("tutorial", 13); // give other players 13 seconds to continue
+                    }, "tutorial", 13); // give other players 13 seconds to continue
                 }
             }
 

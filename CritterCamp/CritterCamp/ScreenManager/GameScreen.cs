@@ -29,7 +29,7 @@ namespace GameStateManagement {
         Hidden,
     }
 
-    public delegate void SyncAction(JArray data); 
+    public delegate void SyncAction(JArray data, double rand); 
 
     /// <summary>
     /// A screen is a single layer that has update and draw logic, and which
@@ -46,13 +46,28 @@ namespace GameStateManagement {
             this.online = online;
         }
 
-        protected SyncAction syncAction;
+        private SyncAction syncAction;
 
         protected virtual void MessageReceived(string message, bool error, TCPConnection connection) {
             JObject o = JObject.Parse(message);
             if((string)o["action"] == "group" && (string)o["type"] == "synced") {
-                syncAction((JArray)o["data"]);
+                syncAction((JArray)o["data"], (double)o["rand"]);
             }
+        }
+
+        protected void Sync(SyncAction syncAction) {
+            this.syncAction = syncAction;
+            Helpers.Sync();
+        }
+
+        protected void Sync(SyncAction syncAction, string data) {
+            this.syncAction = syncAction;
+            Helpers.Sync(data);
+        }
+
+        protected void Sync(SyncAction syncAction, string data, int timeout) {
+            this.syncAction = syncAction;
+            Helpers.Sync(data, timeout);
         }
 
         public void setConn(TCPConnection conn) {

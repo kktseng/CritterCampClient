@@ -291,7 +291,7 @@ namespace CritterCamp.Screens.Games {
                 fishRawData.Add(rand.Next(0, 2));
                 fishRawData.Add(rand.Next(1, 10));
             }
-            syncAction = (JArray data) => {
+            Sync((JArray data, double random) => {
                 fishData = new List<FishData>();
                 foreach(JToken tok in data) {
                     JArray array = JArray.Parse((string)tok);
@@ -300,8 +300,7 @@ namespace CritterCamp.Screens.Games {
                     }
                 }
                 phase = Phase.Base;
-            };
-            Helpers.Sync(JsonConvert.SerializeObject(fishRawData));
+            }, JsonConvert.SerializeObject(fishRawData));
         }
 
         public override void removePlayer(string user) {

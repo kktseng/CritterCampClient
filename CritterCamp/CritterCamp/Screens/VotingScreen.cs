@@ -150,11 +150,9 @@ namespace CritterCamp.Screens {
 
                 if (selectedGame != null) {
                     // user selected a game already
-                    syncAction = (JArray data) => { };
-                    Helpers.Sync(selectedGame.ServerName, 10); // send that as the vote
+                    Sync(handleVotes, selectedGame.ServerName, 10); // send that as the vote
                 } else {
-                    syncAction = (JArray data) => { };
-                    Helpers.Sync(null, 10); // send a null vote
+                    Sync(handleVotes, null, 10); // send a null vote
                 }
                 voted = true;
                 voteButton.Disabled = true;
@@ -193,58 +191,53 @@ namespace CritterCamp.Screens {
             voteButton.Disabled = true;
             messageLabel.Text = "Waiting for the other players.";
 
-            syncAction = (JArray data) => { };
-            Helpers.Sync(selectedGame.ServerName, 13);  // give other players 13 seconds to vote
+            Sync(handleVotes, selectedGame.ServerName, 13);  // give other players 13 seconds to vote
+        }
+
+        private void handleVotes(JArray data, double rand) {
+            int[] votes = new int[GameConstants.GAMES.Length];
+            int maxVote = 0;
+            GameData gameToPlay = null;
+
+            // find the game that was voted the most. if tie, use the earlier appearing one
+            foreach(string game in data) {
+                if(game == null) {
+                    continue; // received a null vote. that player didn't vote in time and should count as a random vote
+                }
+                GameData gd = GameConstants.GetGameData(game);
+                votes[gd.GameIndex]++;
+
+                if(votes[gd.GameIndex] > maxVote) {
+                    maxVote = votes[gd.GameIndex];
+                    gameToPlay = gd;
+                }
+            }
+
+            // dispose of the timer
+            timeLeftTimer.Dispose();
+
+            if(gameToPlay == null) {
+                // all the votes were null. choose a random game based on the rand value in the message
+
+                int gameToPlayIndex = ((int)(rand * 3)) / 3;
+                gameToPlay = gamesToVote[gameToPlayIndex];
+            }
+
+            // send in packet for metric collection
+            JObject packet = new JObject(
+                new JProperty("action", "group"),
+                new JProperty("type", "select_game"),
+                new JProperty("game", gameToPlay.ServerName)
+            );
+            conn.SendMessage(packet.ToString());
+
+            // go to the tutorial screen
+            CoreApplication.Properties["currentGameData"] = gameToPlay;
+            LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(typeof(TutorialScreen)));
         }
 
         protected override void MessageReceived(string message, bool error, TCPConnection connection) {
             base.MessageReceived(message, error, connection);
-            JObject o = JObject.Parse(message);
-
-            // received a sync packet from the server
-            if ((string)o["action"] == "group" && (string)o["type"] == "synced") {
-                JArray data = (JArray)o["data"];
-                int[] votes = new int[GameConstants.GAMES.Length];
-                int maxVote = 0;
-                GameData gameToPlay = null;
-
-                // find the game that was voted the most. if tie, use the earlier appearing one
-                foreach (string game in data) {
-                    if (game == null) {
-                        continue; // received a null vote. that player didn't vote in time and should count as a random vote
-                    }
-                    GameData gd = GameConstants.GetGameData(game);
-                    votes[gd.GameIndex]++;
-
-                    if (votes[gd.GameIndex] > maxVote) {
-                        maxVote = votes[gd.GameIndex];
-                        gameToPlay = gd;
-                    }
-                }
-
-                // dispose of the timer
-                timeLeftTimer.Dispose();
-
-                if (gameToPlay == null) {
-                    // all the votes were null. choose a random game based on the rand value in the message
-                    double rand = (double)o["rand"];
-
-                    int gameToPlayIndex = ((int)(rand * 3)) / 3;
-                    gameToPlay = gamesToVote[gameToPlayIndex];
-                }
-
-                // send in packet for metric collection
-                JObject packet = new JObject(
-                    new JProperty("action", "group"),
-                    new JProperty("type", "select_game"),
-                    new JProperty("game", gameToPlay.ServerName)
-                );
-                conn.SendMessage(packet.ToString());
-
-                // go to the tutorial screen
-                CoreApplication.Properties["currentGameData"] = gameToPlay;
-                LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(typeof(TutorialScreen)));
-            }
         }
     }
 }
