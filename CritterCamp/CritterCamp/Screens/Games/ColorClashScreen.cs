@@ -15,6 +15,9 @@ namespace CritterCamp.Screens.Games {
     class ColorClashScreen : BaseGameScreen {
         public static TimeSpan BLINK_TIME = new TimeSpan(0, 0, 1);
 
+        public TimeSpan gameStart;
+        public bool synced = false, ready = false;
+
         public List<Splatter> splatters = new List<Splatter>();
         public Dictionary<string, Avatar> players = new Dictionary<string, Avatar>();
         public Crosshair crosshair;
@@ -28,9 +31,9 @@ namespace CritterCamp.Screens.Games {
             for(int i = 0; i < playerData.Values.Count; i++) {
                 PlayerData pd = playerData.Values.ElementAt(i);
                 if(pd.color != 1) {
-                    players[pd.username] = new Avatar(this, new Vector2(200, 200 + 100 * i), pd, Helpers.mapColor(pd.color));
+                    players[pd.username] = new Avatar(this, new Vector2(200, 200 + 250 * i), pd, Helpers.mapColor(pd.color));
                 } else {
-                    players[pd.username] = new Avatar(this, new Vector2(200, 200 + 100 * i), pd, Helpers.mapColor(4 - colorCount));
+                    players[pd.username] = new Avatar(this, new Vector2(200, 200 + 250 * i), pd, Helpers.mapColor(4 - colorCount));
                 }
             }
 
@@ -67,11 +70,22 @@ namespace CritterCamp.Screens.Games {
             // launch the paintball
             if(input.TouchState.Count == 0) {
                 if(crosshair != null && !crosshair.blinking) {
-                    players[playerName].ThrowPaint(gameTime.TotalGameTime + BLINK_TIME);
+                    players[playerName].ThrowPaint(gameTime.TotalGameTime + BLINK_TIME - gameStart, crosshair.Coord);
                     crosshair.Blink(BLINK_TIME, gameTime.TotalGameTime);
 
                     // let others know you threw paint
-                    // TODO
+                    JObject packet = new JObject(
+                        new JProperty("action", "game"),
+                        new JProperty("name", "color_clash"),
+                        new JProperty("data", new JObject(
+                            new JProperty("action", "paint"),
+                            new JProperty("x_pos", crosshair.Coord.X),
+                            new JProperty("y_pos", crosshair.Coord.Y),
+                            new JProperty("time", (gameTime.TotalGameTime + BLINK_TIME - gameStart).Ticks),
+                            new JProperty("scale", players[playerName].currentPaint.Scale)
+                        ))
+                    );
+                    conn.SendMessage(packet.ToString());
                 }
             } else {
                 foreach(TouchLocation loc in input.TouchState) {
@@ -89,6 +103,13 @@ namespace CritterCamp.Screens.Games {
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
+            if(!synced) {
+                syncAction = (JArray data) => {
+                    gameStart = gameTime.TotalGameTime;
+                };
+                Helpers.Sync();
+                synced = true;
+            }
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
@@ -103,11 +124,6 @@ namespace CritterCamp.Screens.Games {
             // Draw the game map
             tileMap.draw(sd);
 
-            // Draw the players
-            for(int i = 0; i < playerData.Values.Count; i++) {
-            //    sd.DrawPlayer(this, playerData.Values.ElementAt(i), new Vector2(100, 200 + 100 * i), TextureData.PlayerStates.walkRight2, spriteScale: 1.5f);
-            }
-
             DrawActors(sd);
 
             ScreenManager.SpriteBatch.End();
@@ -117,10 +133,17 @@ namespace CritterCamp.Screens.Games {
         protected override void MessageReceived(string message, bool error, TCPConnection connection) {
             base.MessageReceived(message, error, connection);
             JObject o = JObject.Parse(message);
-            if((string)o["action"] == "game" && (string)o["name"] == "sample_game") {
+            if((string)o["action"] == "game" && (string)o["name"] == "color_clash") {
                 JObject data = (JObject)o["data"];
-                if((string)data["action"] == "add") {
-                    // TODO
+                if((string)data["action"] == "paint") {
+                    string user = (string)data["source"];
+                    if(user != playerName) {
+                        Splatter splatter = new Splatter(this, players[user], rand);
+                        splatter.Scale = (float)data["scale"];
+                        players[user].StartThrow(splatter);
+                        players[user].ThrowPaint(new TimeSpan((long)data["time"]), new Vector2((float)data["x_pos"], (float)data["y_pos"]));
+                       // splatter.Throw(new TimeSpan((long)data["time"]));
+                    }
                 }
             }
         }

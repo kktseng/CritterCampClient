@@ -42,23 +42,27 @@ namespace CritterCamp.Screens.Games.ColorClash {
         }
 
         public void StartThrow() {
-            State = AvatarStates.Charging;
-            ColorClashScreen ccs = (ColorClashScreen)screen;
-            currentPaint = new Splatter(ccs, ccs.crosshair, this, ccs.Rand);
-            ccs.splatters.Add(currentPaint);
+            StartThrow(new Splatter((ColorClashScreen)screen, this, screen.Rand));
         }
 
-        public void ThrowPaint(TimeSpan throwTime) {
+        public void StartThrow(Splatter splatter) {
+            State = AvatarStates.Charging;
+            ColorClashScreen ccs = (ColorClashScreen)screen;
+            currentPaint = splatter;
+            ((ColorClashScreen)screen).splatters.Add(currentPaint);
+        }
+
+        public void ThrowPaint(TimeSpan throwTime, Vector2 destination) {
             readyToThrow = true;
-            currentPaint.StopGrowing();
+            currentPaint.StopGrowing(destination);
             this.throwTime = throwTime;
         }
 
         public override void animate(GameTime time) {
             if(currentPaint != null && readyToThrow) {
-                if(time.TotalGameTime >= throwTime) {
+                if(time.TotalGameTime - ((ColorClashScreen)screen).gameStart >= throwTime) {
                     State = AvatarStates.Throwing;
-                    currentPaint.Throw(time);
+                    currentPaint.Throw(time.TotalGameTime);
                     currentPaint = null;
                     readyToThrow = false;
                 }

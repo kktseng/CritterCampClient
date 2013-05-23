@@ -28,11 +28,10 @@ namespace CritterCamp.Screens.Games.ColorClash {
         protected Vector2 start, destination;
         protected bool grow = true;
 
-        public Splatter(ColorClashScreen screen, Crosshair crosshair, Avatar avatar, Random rand)
+        public Splatter(ColorClashScreen screen, Avatar avatar, Random rand)
             : base(screen, "color", avatar.Coord) {
             State = PaintStates.charging;
             this.start = avatar.Coord - new Vector2(75, 15);
-            destination = crosshair.Coord;
             //splatterType = rand.Next(0, 4);
             splatterType = 0;
             this.avatar = avatar;
@@ -49,17 +48,18 @@ namespace CritterCamp.Screens.Games.ColorClash {
             animation.Add(PaintStates.splatter, SingleFrame((int)TextureData.colorTextures.splatter1 + splatterType));
         }
 
-        public void Throw(GameTime time) {
-            startTime = time.TotalGameTime;
+        public void Throw(TimeSpan time) {
+            startTime = time;
             State = PaintStates.throwing;
         }
 
-        public void StopGrowing() {
+        public void StopGrowing(Vector2 destination) {
             grow = false;
+            this.destination = destination;
         }
 
         public override void animate(GameTime time) {
-            if(State == PaintStates.charging) {
+            if(State == PaintStates.charging || startTime > time.TotalGameTime) {
                 Coord = start;
                 if(grow)
                     Scale += (float)time.ElapsedGameTime.TotalSeconds;
