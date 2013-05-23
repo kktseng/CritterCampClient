@@ -42,7 +42,7 @@ namespace CritterCamp.Screens.Games.TwilightTango {
 
         public override void animate(GameTime time) {
             base.animate(time);
-            if(numCycles == 1 && state == ArrowStates.FadeOut) {
+            if(numCycles == 1 && State == ArrowStates.FadeOut) {
                 Visible = false;
             }
             if(!soundPlayed && Visible) {

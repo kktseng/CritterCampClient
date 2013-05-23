@@ -33,7 +33,6 @@ namespace CritterCamp.Screens.Games.Lib {
 
         protected string imgName;
 
-        protected T state { get; private set; }
         protected Dictionary<T, List<Frame>> animation = new Dictionary<T, List<Frame>>();
         protected int frame = 0;
         protected int maxFrame;
@@ -48,6 +47,7 @@ namespace CritterCamp.Screens.Games.Lib {
         private Vector2 velocity = new Vector2(0, 0);
         private float scale = 1.0f;
         private bool visible = true;
+        private T state;
 
         public AnimatedObject(BaseGameScreen screen, string imgName, Vector2 coord, bool dieWhenFinished = false) {
             SetAnim();
@@ -99,6 +99,8 @@ namespace CritterCamp.Screens.Games.Lib {
         public Frame? getFrame() {
             int frameCount = 0;
             foreach(Frame f in animation[state]) {
+                if(f.length <= 0)
+                    return f;
                 frameCount += f.length;
                 if(frame < frameCount) {
                     return f;
@@ -159,7 +161,7 @@ namespace CritterCamp.Screens.Games.Lib {
                 return;
             }
             int temp = frame;
-            frame = (int)((frame + time.ElapsedGameTime.TotalMilliseconds) % maxFrame);
+            frame = (maxFrame > 0) ? (int)((frame + time.ElapsedGameTime.TotalMilliseconds) % maxFrame) : frame;
             if(frame < temp) {
                 numCycles++;
                 if(maxCycles > 0 && numCycles >= maxCycles) {

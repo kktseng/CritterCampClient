@@ -98,6 +98,7 @@
     <Compile Include="Screens\Button.cs" />
     <Compile Include="Screens\Games\BaseGameScreen.cs" />
     <Compile Include="Screens\Games\ColorClashScreen.cs" />
+    <Compile Include="Screens\Games\ColorClash\Avatar.cs" />
     <Compile Include="Screens\Games\ColorClash\Crosshair.cs" />
     <Compile Include="Screens\Games\ColorClash\Splatter.cs" />
     <Compile Include="Screens\Games\FishingFrenzyScreen.cs" />

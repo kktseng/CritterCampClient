@@ -52,14 +52,16 @@ namespace CritterCamp.Screens {
             JArray gameChoices = (JArray)CoreApplication.Properties["game_choices"];
 
             players = new Dictionary<string, PlayerData>();
+
             // Parse color for duplicate skins
+            // If not default, no two players should have the same color
             Dictionary<string, int> colorMap = new Dictionary<string, int>();
+            int colorCount = 1;
             foreach (JObject playerData in playerInfo) {
                 string profile = (string)playerData["profile"];
                 int color = 0;
                 if (colorMap.ContainsKey(profile)) {
-                    color = colorMap[profile];
-                    colorMap[profile]++;
+                    color = colorCount++;
                 } else {
                     colorMap[profile] = 1;
                 }

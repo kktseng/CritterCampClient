@@ -85,7 +85,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
 
         public override void animate(GameTime time) {
             if(!selected && !((JetpackJamboreeScreen)screen).exploded) {
-                if(state == PigStates.Falling) {
+                if(State == PigStates.Falling) {
                     if(!timeLeft.HasValue) {
                         timeLeft = new TimeSpan(0, 0, 0, 0, FLY_TIME);
                     } else {
@@ -97,7 +97,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
                             Velocity = new Vector2(0, (float)timeLeft.Value.TotalMilliseconds);
                         }
                     }
-                } else if(state == PigStates.Entering) {
+                } else if(State == PigStates.Entering) {
                     if(!timeLeft.HasValue) {
                         timeLeft = new TimeSpan(0, 0, 0, 0, ENTER_TIME);
                     } else {
@@ -109,7 +109,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
                             Velocity = new Vector2(0, ENTER_SPD);
                         }
                     }
-                } else if(state == PigStates.WalkLeft || state == PigStates.WalkRight) {
+                } else if(State == PigStates.WalkLeft || State == PigStates.WalkRight) {
                     timeLeft -= time.ElapsedGameTime;
                     if(curBounds == MAIN_BOUNDS) {
                         jetPackState = 3 - (int)((timeLeft.Value.TotalSeconds / EXPLODE_TIME.TotalSeconds) * 4);
@@ -125,12 +125,12 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
                         jetPackState = 0;
                     }
                     checkBounds(curBounds, time.ElapsedGameTime);
-                } else if(state == PigStates.Flying) {
+                } else if(State == PigStates.Flying) {
                     if(Coord.Y < -Constants.BUFFER_SPRITE_DIM) {
                         screen.removeActor(this);
                     }
                     Velocity = new Vector2(0, -FLY_SPD);
-                } else if(state == PigStates.Standing) {
+                } else if(State == PigStates.Standing) {
                     Velocity = Vector2.Zero;
                 }
             }
@@ -144,7 +144,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
         public override void draw(SpriteDrawer sd) {
             int jetFlameState = rand.Next(0, 1);
             float scale = selected ? 1.2f : 1;
-            switch(state) {
+            switch(State) {
                 case PigStates.WalkLeft:
                     sd.Draw(getImg(), Coord, getNum(), getFrame().Value.effect, spriteScale: scale);
                     sd.Draw(screen.textureList["doodads"], Coord - (new Vector2(-30, 10) * scale), (int)TextureData.Doodads.sideJet1 + jetPackState, SpriteEffects.FlipHorizontally, spriteScale: scale);

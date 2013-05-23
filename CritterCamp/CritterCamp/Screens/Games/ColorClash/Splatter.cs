@@ -10,16 +10,32 @@ using System.Threading.Tasks;
 
 
 namespace CritterCamp.Screens.Games.ColorClash {
-    class Splatter : AnimatedObject<bool> {
+    public enum PaintStates {
+        charging,
+        throwing,
+        splatter
+    }
+
+    // true = paintball, false = splatter
+    class Splatter : AnimatedObject<PaintStates> {
+        public static TimeSpan TRAVEL_TIME = new TimeSpan(0, 0, 0, 0, 500);
+
         public int splatterType;
-        public Color color = Color.Orange;
+        public Avatar avatar;
         public Rectangle area;
 
-        public Splatter(ColorClashScreen screen, Crosshair crosshair, Random rand)
-            : base(screen, "color", crosshair.Coord) {
+        protected TimeSpan startTime;
+        protected Vector2 start, destination;
+        protected bool grow = true;
+
+        public Splatter(ColorClashScreen screen, Crosshair crosshair, Avatar avatar, Random rand)
+            : base(screen, "color", avatar.Coord) {
+            State = PaintStates.charging;
+            this.start = avatar.Coord - new Vector2(75, 15);
+            destination = crosshair.Coord;
             //splatterType = rand.Next(0, 4);
-                splatterType = 0;
-            Scale = crosshair.Scale;
+            splatterType = 0;
+            this.avatar = avatar;
             area = new Rectangle(
                 (int)(Coord.X - Constants.BUFFER_SPRITE_DIM * Scale),
                 (int)(Coord.Y - Constants.BUFFER_SPRITE_DIM * Scale),
@@ -29,19 +45,42 @@ namespace CritterCamp.Screens.Games.ColorClash {
         }
 
         protected override void SetAnim() {
-            /* do nothing - use custom draw method */
+            SetFrames(SingleFrame((int)TextureData.colorTextures.paintBall), PaintStates.throwing, PaintStates.charging);
+            animation.Add(PaintStates.splatter, SingleFrame((int)TextureData.colorTextures.splatter1 + splatterType));
+        }
+
+        public void Throw(GameTime time) {
+            startTime = time.TotalGameTime;
+            State = PaintStates.throwing;
+        }
+
+        public void StopGrowing() {
+            grow = false;
         }
 
         public override void animate(GameTime time) {
-            base.animate(time);
+            if(State == PaintStates.charging) {
+                Coord = start;
+                if(grow)
+                    Scale += (float)time.ElapsedGameTime.TotalSeconds;
+                return;    
+            }   
+            TimeSpan elapsed = time.TotalGameTime - startTime;
+            double ratio = elapsed.TotalMilliseconds / TRAVEL_TIME.TotalMilliseconds;
+            if(ratio >= 1) {
+                Coord = destination;
+                State = PaintStates.splatter;
+            } else {
+                double heightRatio = Math.Abs(0.5d - ratio) * 2;
+                heightRatio *= heightRatio;
+                Vector2 travelVec = destination - start;
+                Coord = start + travelVec * (float)ratio + new Vector2(0, 200 * (float)heightRatio) - new Vector2(0, 200);
+            }
         }
 
         public override void draw(SpriteDrawer sd) {
-            int halfDim = Constants.BUFFER_SPRITE_DIM / 2;
-            sd.Draw(screen.textureList["color"], Coord + new Vector2(-halfDim, -halfDim) * Scale, (int)TextureData.colorTextures.splatter1_1 + splatterType * 4, color, spriteScale: Scale, cache: true);
-            sd.Draw(screen.textureList["color"], Coord + new Vector2(-halfDim, halfDim) * Scale, (int)TextureData.colorTextures.splatter1_2 + splatterType * 4, color, spriteScale: Scale, cache: true);
-            sd.Draw(screen.textureList["color"], Coord + new Vector2(halfDim, -halfDim) * Scale, (int)TextureData.colorTextures.splatter1_3 + splatterType * 4, color, spriteScale: Scale, cache: true);
-            sd.Draw(screen.textureList["color"], Coord + new Vector2(halfDim, halfDim) * Scale, (int)TextureData.colorTextures.splatter1_4 + splatterType * 4, color, spriteScale: Scale, cache: true);
+            float scale = (State == PaintStates.splatter) ? 1.5f : 0.2f;
+            sd.Draw(getImg(), Coord, getNum(), avatar.gameColor, spriteScale: scale * Scale);
         }
     }
 }

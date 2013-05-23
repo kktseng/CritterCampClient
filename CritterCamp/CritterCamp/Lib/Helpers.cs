@@ -80,6 +80,18 @@ namespace CritterCamp {
             return input / inputScale + new Vector2(0, Constants.BUFFER_OFFSET - offset);
         }
 
+        public static Color mapColor(int color) {
+            switch(color) {
+                case 1:
+                    return Color.Orange;
+                case 2:
+                    return Color.Blue;
+                case 3:
+                    return Color.Green;
+            }
+            return Color.Red;
+        }
+
         public static void ResetState() {
             // save important values
             GamePage gp = (GamePage)CoreApplication.Properties["GamePage"];

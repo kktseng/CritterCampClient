@@ -106,7 +106,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
         }
 
         public override void animate(GameTime time) {
-            if(state == FishStates.falling) {
+            if(State == FishStates.falling) {
                 Velocity = new Vector2(0, FALLING_SPD);
                 float bucket_y = ((FishingFrenzyScreen)screen).BUCKET_Y + ((FishingFrenzyScreen)screen).waveOffset;
                 if(type != FishTypes.small && type != FishTypes.medium && type != FishTypes.shiny) {
@@ -124,20 +124,20 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
                     ((FishingFrenzyScreen)screen).scores[caughtBy] += score;
                 }
             }
-            if(state != FishStates.hooked) {
+            if(State != FishStates.hooked) {
                 base.animate(time);
             }
         }
 
         public override void draw(SpriteDrawer sd) {
-            if(state == FishStates.hooked) {
+            if(State == FishStates.hooked) {
                 if(type == FishTypes.small || type == FishTypes.medium || type == FishTypes.shiny) {
                     sd.Draw(getImg(), Coord, getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
                 } else {
                     sd.Draw(getImg(), Coord - new Vector2(0, Constants.BUFFER_SPRITE_DIM), getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
                     sd.Draw(getImg(), Coord, getNum() + 1, getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
                 }
-            } else if(state == FishStates.falling) {
+            } else if(State == FishStates.falling) {
                 if(type == FishTypes.small || type == FishTypes.medium || type == FishTypes.shiny) {
                     sd.Draw(getImg(), Coord, getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
                 } else {
@@ -148,10 +148,10 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             } else {
                 if(type == FishTypes.small || type == FishTypes.medium || type == FishTypes.shiny) {
                     base.draw(sd);
-                } else if(state == FishStates.swimRight) {
+                } else if(State == FishStates.swimRight) {
                     sd.Draw(getImg(), Coord - new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum() + 1, getFrame().Value.effect);
                     sd.Draw(getImg(), Coord + new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum(), getFrame().Value.effect);
-                } else if(state == FishStates.swimLeft) {
+                } else if(State == FishStates.swimLeft) {
                     sd.Draw(getImg(), Coord - new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum(), getFrame().Value.effect);
                     sd.Draw(getImg(), Coord + new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum() + 1, getFrame().Value.effect);
                 }

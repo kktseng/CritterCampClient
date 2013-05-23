@@ -13,14 +13,27 @@ using System.Threading.Tasks;
 
 namespace CritterCamp.Screens.Games {
     class ColorClashScreen : BaseGameScreen {
+        public static TimeSpan BLINK_TIME = new TimeSpan(0, 0, 1);
+
         public List<Splatter> splatters = new List<Splatter>();
+        public Dictionary<string, Avatar> players = new Dictionary<string, Avatar>();
+        public Crosshair crosshair;
 
         protected TileMap tileMap;
-        protected Crosshair crosshair;
-
 
         public ColorClashScreen(Dictionary<string, PlayerData> playerData)
             : base(playerData) {
+            // assign players colors
+            int colorCount = 0;
+            for(int i = 0; i < playerData.Values.Count; i++) {
+                PlayerData pd = playerData.Values.ElementAt(i);
+                if(pd.color != 1) {
+                    players[pd.username] = new Avatar(this, new Vector2(200, 200 + 100 * i), pd.color, Helpers.mapColor(pd.color));
+                } else {
+                    players[pd.username] = new Avatar(this, new Vector2(200, 200 + 100 * i), pd.color, Helpers.mapColor(4 - colorCount));
+                }
+            }
+
             EnabledGestures = GestureType.Tap;
         }
 
@@ -53,18 +66,22 @@ namespace CritterCamp.Screens.Games {
         public override void HandleInput(GameTime gameTime, InputState input) {
             // launch the paintball
             if(input.TouchState.Count == 0) {
-                if(crosshair != null) {
-                    splatters.Add(new Splatter(this, crosshair, rand));
+                if(crosshair != null && !crosshair.blinking) {
+                    players[playerName].ThrowPaint(gameTime.TotalGameTime + BLINK_TIME);
+                    crosshair.Blink(BLINK_TIME, gameTime.TotalGameTime);
+
+                    // let others know you threw paint
+                    // TODO
                 }
-                removeActor(crosshair);
-                crosshair = null;
             } else {
                 foreach(TouchLocation loc in input.TouchState) {
                     Vector2 scaledPos = Helpers.ScaleInput(new Vector2(loc.Position.X, loc.Position.Y));
                     if(crosshair == null) {
                         crosshair = new Crosshair(this, scaledPos);
+                        players[playerName].StartThrow();
                     } else {
-                        crosshair.Coord = scaledPos;
+                        if(!crosshair.blinking)
+                            crosshair.Coord = scaledPos;
                     }
                 }
             }
@@ -88,7 +105,7 @@ namespace CritterCamp.Screens.Games {
 
             // Draw the players
             for(int i = 0; i < playerData.Values.Count; i++) {
-                sd.DrawPlayer(this, playerData.Values.ElementAt(i), new Vector2(100, 200 + 100 * i), TextureData.PlayerStates.walkRight2, spriteScale: 1.5f);
+            //    sd.DrawPlayer(this, playerData.Values.ElementAt(i), new Vector2(100, 200 + 100 * i), TextureData.PlayerStates.walkRight2, spriteScale: 1.5f);
             }
 
             DrawActors(sd);
