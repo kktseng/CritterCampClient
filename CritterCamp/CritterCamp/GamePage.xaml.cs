@@ -333,7 +333,7 @@ namespace CritterCamp {
                     auth = (string)responseJSON["auth"];
                     lvl = (int)responseJSON["level"];
                     profile = "pig";
-                    //profile = (string)responseJSON["profile"]; uncomment when http hook is put in
+                    profile = (string)responseJSON["profile"];
 
                     news = new List<NewsPost>();
                     JArray newsJson = (JArray)responseJSON["news"];

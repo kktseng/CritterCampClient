@@ -47,7 +47,7 @@ namespace CritterCamp.Screens.Games.ColorClash {
 
         public override void draw(SpriteDrawer sd) {
             if(Visible)
-                sd.Draw(screen.textureList["color"], Coord, (int)TextureData.colorTextures.crosshair, ((ColorClashScreen)screen).players[screen.playerName].gameColor, spriteScale: Scale);
+                sd.Draw(screen.textureList["color"], Coord, (int)TextureData.colorTextures.crosshair, ((ColorClashScreen)screen).players[screen.playerName].color, spriteScale: Scale);
         }
     }
 }

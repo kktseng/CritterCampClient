@@ -81,7 +81,7 @@ namespace CritterCamp.Screens.Games {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            addTextures("fish", "fishing", "map", "pig", "doodads");
+            addTextures("fish", "fishing", "map", "doodads");
             addSounds("swoosh", "splash", "reelingIn", "bucket", "blop");
             setMap();
         }
@@ -336,16 +336,16 @@ namespace CritterCamp.Screens.Games {
             waveOffset = (int)(10 * Math.Sin(waveOffset * Math.PI / 180));
             waveOffset += 10;
 
-            // Draw the pigs
+            // Draw the players
             for(int i = 0; i < playerData.Values.Count; i++) {
                 PlayerData pd = playerData.Values.ElementAt(i);
                 if(i < 2) {
-                    sd.Draw(textureList["pig"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7.5f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i, 125 + waveOffset), (int)TextureData.PlayerStates.walkRight1 + Helpers.TextureLen(typeof(TextureData.PlayerStates)) * pd.color, SpriteEffects.FlipHorizontally);
+                    sd.DrawPlayer(this, pd, new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7.5f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i, 125 + waveOffset), (int)TextureData.PlayerStates.walkRight1, spriteEffect: SpriteEffects.FlipHorizontally);
                     sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i + 37, 110 + waveOffset), (int)TextureData.Doodads.fishingPole1, SpriteEffects.FlipHorizontally);
                     sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i - 7, 110 + waveOffset - Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.fishingPole2, SpriteEffects.FlipHorizontally);
                     sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i - 45, 110 + waveOffset - Constants.BUFFER_SPRITE_DIM * 2), (int)TextureData.Doodads.fishingPole2, SpriteEffects.FlipHorizontally);
                 } else {
-                    sd.Draw(textureList["pig"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 6.5f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i, 125 + waveOffset), (int)TextureData.PlayerStates.walkRight1 + Helpers.TextureLen(typeof(TextureData.PlayerStates)) * pd.color);
+                    sd.DrawPlayer(this, pd, new Vector2((float)Constants.BUFFER_SPRITE_DIM * 6.5f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i, 125 + waveOffset), (int)TextureData.PlayerStates.walkRight1);
                     sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i - 37, 110 + waveOffset), (int)TextureData.Doodads.fishingPole1);
                     sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i + 7, 110 + waveOffset - Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.fishingPole2);
                     sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i + 45, 110 + waveOffset - Constants.BUFFER_SPRITE_DIM * 2), (int)TextureData.Doodads.fishingPole2);

@@ -80,7 +80,7 @@ namespace CritterCamp.Screens.Games.ColorClash {
 
         public override void draw(SpriteDrawer sd) {
             float scale = (State == PaintStates.splatter) ? 1.5f : 0.2f;
-            sd.Draw(getImg(), Coord, getNum(), avatar.gameColor, spriteScale: scale * Scale);
+            sd.Draw(getImg(), Coord, getNum(), avatar.color, spriteScale: scale * Scale);
         }
     }
 }

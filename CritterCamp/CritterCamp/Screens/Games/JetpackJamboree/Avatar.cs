@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace CritterCamp.Screens.Games.JetpackJamboree {
     class Avatar : AnimatedObject<bool> { // true = sending pigs down
-        public int color;
+        public PlayerData player;
         public int count;
 
-        public Avatar(BaseGameScreen screen, Vector2 coord, int color)
+        public Avatar(BaseGameScreen screen, Vector2 coord, PlayerData player)
             : base(screen, "pig", coord) {
             State = false;
             maxCycles = 1;
-            this.color = color;
+            this.player = player;
             count = 0;
         }
 
@@ -29,8 +29,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
         }
 
         public override void draw(SpriteDrawer sd) {
-            int len = Helpers.TextureLen(typeof(TextureData.PlayerStates));
-            sd.Draw(getImg(), Coord, getNum() + len * color, effect: getFrame().Value.effect);
+            sd.DrawPlayer(screen, player, Coord, getNum());
             // draw red baton if sending pigs down
             if(State) {
                 int flash = (frame / 300) % 2;

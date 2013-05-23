@@ -43,8 +43,6 @@ namespace CritterCamp.Screens.Games {
         protected List<string> deadUsers = new List<string>(); // keeps track of who lost
         protected Dictionary<string, Avatar> avatars = new Dictionary<string, Avatar>(); // keeps track of baton waving
 
-        protected Random rand = new Random();
-
         public JetpackJamboreeScreen(Dictionary<string, PlayerData> playerData)
             : base(playerData) {
             for(int i = 0; i < 4; i++) {
@@ -52,7 +50,7 @@ namespace CritterCamp.Screens.Games {
             }
             for(int i = 0; i < playerData.Keys.Count; i++) {
                 string username = playerData.Keys.ElementAt(i);
-                avatars[username] = new Avatar(this, new Vector2(((float)Constants.BUFFER_SPRITE_DIM * 6.5f) + 200 * i, ((float)Constants.BUFFER_SPRITE_DIM * 10.5f)), playerData[username].color);
+                avatars[username] = new Avatar(this, new Vector2(((float)Constants.BUFFER_SPRITE_DIM * 6.5f) + 200 * i, ((float)Constants.BUFFER_SPRITE_DIM * 10.5f)), playerData[username]);
             }
             updateTimer = new Timer(updateTimerCallback, null, 1000, 2000);
 
@@ -75,7 +73,7 @@ namespace CritterCamp.Screens.Games {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            addTextures("jetpack", "map", "doodads", "pig", "explosion");
+            addTextures("jetpack", "map", "doodads", "explosion", "pig");
             addSounds("blop", "blop2", "bomb", "landing", "launching");
             setMap();
         }

@@ -67,10 +67,9 @@ namespace CritterCamp.Screens.Games {
         public TwilightTangoScreen(Dictionary<string, PlayerData> playerData)
             : base(playerData) {
             currentRank = playerData.Count;
-            int i = 0;
-            foreach(PlayerData data in playerData.Values) {
-                players[data.username] = new Player(this, new Vector2(150 + 450 * i, 800), data.color);
-                i++;
+            for(int i = 0; i < playerData.Values.Count; i++) {
+                PlayerData data = playerData.Values.ElementAt(i);
+                players[data.username] = new Player(this, new Vector2(150 + 450 * i, 800), data);
             }
 
             // Enable flick gestures
@@ -79,7 +78,7 @@ namespace CritterCamp.Screens.Games {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            addTextures("twilight", "map", "doodads", "effects", "pig");
+            addTextures("twilight", "map", "doodads", "effects");
             addSounds("ding", "dong", "chime1", "chime2", "chime3", "chime4", "puff");
             setMap();
         }

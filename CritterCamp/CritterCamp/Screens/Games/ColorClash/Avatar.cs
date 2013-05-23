@@ -14,19 +14,19 @@ namespace CritterCamp.Screens.Games.ColorClash {
     }
 
     class Avatar : AnimatedObject<AvatarStates> { // true = sending pigs down
-        public int drawColor;
-        public Color gameColor;
+        public Color color;
         public Splatter currentPaint;
+        public PlayerData player;
         
         protected TimeSpan throwTime;
         protected bool readyToThrow = false;
 
-        public Avatar(BaseGameScreen screen, Vector2 coord, int drawColor, Color gameColor)
-            : base(screen, "pig", coord) {
+        public Avatar(BaseGameScreen screen, Vector2 coord, PlayerData player, Color color)
+            : base(screen, "", coord) {
             State = AvatarStates.Standing;
             maxCycles = 1;
-            this.drawColor = drawColor;
-            this.gameColor = gameColor;
+            this.color = color;
+            this.player = player;
         }
 
         protected override void SetAnim() {
@@ -68,7 +68,7 @@ namespace CritterCamp.Screens.Games.ColorClash {
 
         public override void draw(SpriteDrawer sd) {
             int len = Helpers.TextureLen(typeof(TextureData.PlayerStates));
-            sd.Draw(getImg(), Coord, getNum() + len * drawColor, effect: getFrame().Value.effect, spriteScale: 1.5f);
+            sd.DrawPlayer(screen, player, Coord, getNum(), spriteScale: 1.5f);
         }
     }
 }

@@ -143,6 +143,9 @@ namespace CritterCamp.Screens.Games {
             if(cm == null) {
                 cm = new ContentManager(ScreenManager.Game.Services, "Content");
             }
+            foreach(PlayerData pd in playerData.Values) {
+                addTextures(pd.profile);
+            }
         }
 
         // Methods for managing actors
