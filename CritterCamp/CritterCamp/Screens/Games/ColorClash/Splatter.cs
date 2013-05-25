@@ -30,6 +30,7 @@ namespace CritterCamp.Screens.Games.ColorClash {
 
         public Splatter(ColorClashScreen screen, Avatar avatar, Random rand)
             : base(screen, "color", avatar.Coord) {
+            autoDraw = false;
             State = PaintStates.charging;
             this.start = avatar.Coord - new Vector2(75, 15);
             //splatterType = rand.Next(0, 4);

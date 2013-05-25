@@ -22,7 +22,7 @@ namespace CritterCamp.Screens.Games {
         public Dictionary<string, Avatar> players = new Dictionary<string, Avatar>();
         public Crosshair crosshair;
 
-        protected TileMap tileMap;
+        protected TileMap tileMap, doodadMap;
 
         public ColorClashScreen(Dictionary<string, PlayerData> playerData)
             : base(playerData) {
@@ -33,7 +33,7 @@ namespace CritterCamp.Screens.Games {
                 if(pd.color != 1) {
                     players[pd.username] = new Avatar(this, new Vector2(200, 200 + 250 * i), pd, Helpers.mapColor(pd.color));
                 } else {
-                    players[pd.username] = new Avatar(this, new Vector2(200, 200 + 250 * i), pd, Helpers.mapColor(4 - colorCount));
+                    players[pd.username] = new Avatar(this, new Vector2(200, 200 + 250 * i), pd, Helpers.mapColor(3 - colorCount));
                 }
             }
 
@@ -49,6 +49,7 @@ namespace CritterCamp.Screens.Games {
 
         public void setMap() {
             tileMap = new TileMap(textureList["map"]);
+            doodadMap = new TileMap(textureList["doodads"]);
             int[,] map = new int[,] {
                 {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
                 {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
@@ -63,7 +64,22 @@ namespace CritterCamp.Screens.Games {
                 {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
                 {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 }
             };
+            int[,] ddMap = new int[,] {
+                {  -1, -1, -1, 18, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22 },
+                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, 19, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 23 },
+            };
             tileMap.setMap(map);
+            doodadMap.setMap(ddMap);
         }
 
         public override void HandleInput(GameTime gameTime, InputState input) {
@@ -122,8 +138,50 @@ namespace CritterCamp.Screens.Games {
 
             // Draw the game map
             tileMap.draw(sd);
+            doodadMap.draw(sd);
 
+            // Draw the canvas
+            for(int i = 4; i < 19; i++) {
+                for(int j = 1; j < 11 ; j++) {
+                    int x = Constants.BUFFER_SPRITE_DIM * i + Constants.BUFFER_SPRITE_DIM / 2;
+                    int y = Constants.BUFFER_SPRITE_DIM * j + Constants.BUFFER_SPRITE_DIM / 2 - Constants.BUFFER_OFFSET;
+                    sd.Draw(textureList["color"], new Vector2(x, y), (int)TextureData.colorTextures.canvas, cache: true);
+                }
+            }
+
+            // Draw splatters that have already hit
+            foreach(Splatter s in splatters) {
+                if(s.State == PaintStates.splatter) {
+                    s.draw(sd);
+                }
+            }
+
+            // Draw frame
+            for(int i = 5; i < 18; i++) {
+                int x = Constants.BUFFER_SPRITE_DIM * i + Constants.BUFFER_SPRITE_DIM / 2;
+                sd.Draw(textureList["color"], new Vector2(x, Constants.BUFFER_SPRITE_DIM * (1.5f) - Constants.BUFFER_OFFSET), (int)TextureData.colorTextures.frameSide, SpriteEffects.FlipVertically, cache: true);
+                sd.Draw(textureList["color"], new Vector2(x, Constants.BUFFER_SPRITE_DIM * (10.5f) - Constants.BUFFER_OFFSET), (int)TextureData.colorTextures.frameSide, cache: true);
+            }
+            for(int i = 2; i < 10; i++) {
+                int y = Constants.BUFFER_SPRITE_DIM * i + Constants.BUFFER_SPRITE_DIM / 2 - Constants.BUFFER_OFFSET;
+                sd.Draw(textureList["color"], new Vector2(Constants.BUFFER_SPRITE_DIM * (4.5f), y), (int)TextureData.colorTextures.frameSide, spriteRotation: Constants.ROTATE_90, cache: true);
+                sd.Draw(textureList["color"], new Vector2(Constants.BUFFER_SPRITE_DIM * (18.5f), y), (int)TextureData.colorTextures.frameSide, spriteRotation: Constants.ROTATE_90 * 3, cache: true);
+            }
+            sd.Draw(textureList["color"], new Vector2(Constants.BUFFER_SPRITE_DIM * (4.5f), Constants.BUFFER_SPRITE_DIM * (1.5f) - Constants.BUFFER_OFFSET), (int)TextureData.colorTextures.frameCorner, SpriteEffects.FlipVertically, cache: true);
+            sd.Draw(textureList["color"], new Vector2(Constants.BUFFER_SPRITE_DIM * (4.5f), Constants.BUFFER_SPRITE_DIM * (10.5f) - Constants.BUFFER_OFFSET), (int)TextureData.colorTextures.frameCorner, cache: true);
+            sd.Draw(textureList["color"], new Vector2(Constants.BUFFER_SPRITE_DIM * (18.5f), Constants.BUFFER_SPRITE_DIM * (1.5f) - Constants.BUFFER_OFFSET), (int)TextureData.colorTextures.frameCorner, SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally, cache: true);
+            sd.Draw(textureList["color"], new Vector2(Constants.BUFFER_SPRITE_DIM * (18.5f), Constants.BUFFER_SPRITE_DIM * (10.5f) - Constants.BUFFER_OFFSET), (int)TextureData.colorTextures.frameCorner, SpriteEffects.FlipHorizontally, cache: true);
+
+            // Draw players
             DrawActors(sd);
+
+            // Draw paint balls
+            foreach(Splatter s in splatters) {
+                if(s.State != PaintStates.splatter) {
+                    s.draw(sd);
+                }
+            }
+
 
             ScreenManager.SpriteBatch.End();
             base.Draw(gameTime);

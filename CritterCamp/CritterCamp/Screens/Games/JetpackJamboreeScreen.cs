@@ -108,8 +108,8 @@ namespace CritterCamp.Screens.Games {
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
                 {  -1, -1, -1, -1, -1, 18, 21, 21, 21, 21, 21, 21, 21, 21, 22, -1, -1, -1, -1, -1 },
-                {  -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1, -1, -1, -1, 17, -1, -1, -1, -1, -1 },
-                {  21, 21, 21, 21, 21, 17, -1, -1, -1, -1, -1, -1, -1, -1, 17, 21, 21, 21, 21, 21 },
+                {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
+                {  21, 21, 21, 21, 21, 22, -1, -1, -1, -1, -1, -1, -1, -1, 18, 21, 21, 21, 21, 21 },
             };
             tileMap.setMap(map);
             doodadMap.setMap(ddMap);
@@ -288,8 +288,8 @@ namespace CritterCamp.Screens.Games {
 
             // Draw the game map
             tileMap.draw(sd);
-            DrawLaunchpad(sd, new Vector2(0, -Constants.BUFFER_OFFSET + 64), 0);
-            DrawLaunchpad(sd, new Vector2(Constants.BUFFER_SPRITE_DIM * 15, -Constants.BUFFER_OFFSET + 64), 1);
+            DrawLaunchpad(sd, new Vector2(0, Constants.BUFFER_SPRITE_DIM - Constants.BUFFER_OFFSET - 32), 0);
+            DrawLaunchpad(sd, new Vector2(Constants.BUFFER_SPRITE_DIM * 15, Constants.BUFFER_SPRITE_DIM - Constants.BUFFER_OFFSET - 32), 1);
             DrawLaunchpad(sd, new Vector2(0, Constants.BUFFER_SPRITE_DIM * 7 - Constants.BUFFER_OFFSET - 32), 2);
             DrawLaunchpad(sd, new Vector2(Constants.BUFFER_SPRITE_DIM * 15, Constants.BUFFER_SPRITE_DIM * 7 - Constants.BUFFER_OFFSET - 32), 3);
             doodadMap.draw(sd);

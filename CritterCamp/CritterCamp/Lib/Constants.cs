@@ -24,7 +24,7 @@ namespace CritterCamp {
         public static float RATIO_15_9 = 15f / 9f;
         public static float RATIO_4_3 = 4f / 3f;
 
-        public static float CONVERSION_15_9 = 15f / 16f;
+        public static float CONVERSION_15_9 = 9f / 10f;
 
         public static int BUFFER_OFFSET = (int)(BUFFER_HEIGHT * (1 - CONVERSION_15_9) / 2);
 

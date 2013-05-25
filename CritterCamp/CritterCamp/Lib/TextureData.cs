@@ -88,7 +88,8 @@ namespace CritterCamp {
             //splatter3_1, splatter3_2, splatter3_3, splatter3_4,
             //splatter4_1, splatter4_2, splatter4_3, splatter4_4,
             paintBall,
-            crosshair
+            crosshair,
+            frameCorner, frameSide, canvas
         }
 
         public enum Fish {
