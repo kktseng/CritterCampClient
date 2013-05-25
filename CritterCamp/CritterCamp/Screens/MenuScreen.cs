@@ -172,7 +172,7 @@ namespace CritterCamp.Screens {
             sd.Begin();
 
             if (!IsPopup) {
-                sd.Draw(ScreenManager.Textures[background], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 775));
+                sd.Draw(ScreenManager.Textures[background], new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 768));
             }
 
             // Draw all of the UIElements

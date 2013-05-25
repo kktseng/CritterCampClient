@@ -26,7 +26,7 @@ namespace CritterCamp {
 
         public static float CONVERSION_15_9 = 9f / 10f;
 
-        public static int BUFFER_OFFSET = (int)(BUFFER_HEIGHT * (1 - CONVERSION_15_9) / 2);
+        public static int BUFFER_OFFSET = 36; // (1920 / (15/9) - 1080) / 2
 
         public static int OFFSET_WVGA = BUFFER_OFFSET;
         public static int OFFSET_WXGA = BUFFER_OFFSET;
