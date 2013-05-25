@@ -54,9 +54,9 @@ namespace CritterCamp.Screens.Games.TwilightTango {
             }, PlayerDanceStates.DanceRight, PlayerDanceStates.DanceLeft);
         }
 
-        public override void draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd) {
             for(int i = 0; i < health; i++) {
-                sd.DrawPlayer(screen, player, Coord + new Vector2((100 * (i % 3)) + ((i / 3) * 50), (i / 3) * 65), getNum(), spriteEffect: getFrame().Value.effect);
+                sd.DrawPlayer(screen, player, Coord + new Vector2((100 * (i % 3)) + ((i / 3) * 50), (i / 3) * 65), GetNum(), spriteEffect: GetFrame().Value.effect);
             }
         }
 

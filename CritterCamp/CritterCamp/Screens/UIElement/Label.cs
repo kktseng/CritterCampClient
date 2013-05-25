@@ -26,24 +26,24 @@ namespace CritterCamp.Screens {
         /// Creates a new Label with the defaults
         /// </summary>
         public Label() : base() {
-            initialize("");
+            Initialize("");
         }
 
         /// <summary>
         /// Creates a new Text with the given text
         /// </summary>
         public Label(string Text) : base() {
-            initialize(Text);
+            Initialize(Text);
         }
 
         /// <summary>
         /// Creates a new Text with the given text, position
         /// </summary>
         public Label(string Text, Vector2 position) : base(new Vector2(), position) {
-            initialize(Text);
+            Initialize(Text);
         }
 
-        protected void initialize(string Text) {
+        protected void Initialize(string Text) {
             this.Text = Text;
             Font = "blueHighway28";
             TextColor = Color.Black;

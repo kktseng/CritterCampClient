@@ -129,14 +129,14 @@ namespace CritterCamp.Screens.Games {
                             }
                         }
                         if(!found) {
-                            removePlayer(pdata.username);
+                            RemovePlayer(pdata.username);
                         }
                     }
                 }
             }
         }
 
-        public abstract void removePlayer(string user);
+        public abstract void RemovePlayer(string user);
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
@@ -144,26 +144,26 @@ namespace CritterCamp.Screens.Games {
                 cm = new ContentManager(ScreenManager.Game.Services, "Content");
             }
             foreach(PlayerData pd in playerData.Values) {
-                addTextures(pd.profile);
+                AddTextures(pd.profile);
             }
         }
 
         // Methods for managing actors
-        public void addActor(IAnimatedObject actor) {
+        public void AddActor(IAnimatedObject actor) {
             lock(toAdd) {
                 toAdd.Add(actor);
             };
         }
 
-        public void removeActor(IAnimatedObject actor) {
+        public void RemoveActor(IAnimatedObject actor) {
             lock(toRemove) {
                 toRemove.Add(actor);
             };
         }
 
-        public void removeActor<T>(List<T> actorList) {
+        public void RemoveActor<T>(List<T> actorList) {
             foreach(IAnimatedObject a in actorList) {
-                removeActor(a);
+                RemoveActor(a);
             }
             actorList.Clear();
         }
@@ -180,25 +180,25 @@ namespace CritterCamp.Screens.Games {
                 toRemove.Clear();
             }
             foreach(IAnimatedObject actor in actors) {
-                actor.animate(gameTime);
+                actor.Animate(gameTime);
             }
         }
 
         protected void DrawActors(SpriteDrawer sd) {
             foreach(IAnimatedObject actor in actors) {
                 if(actor.DrawAutomatically()) {
-                    actor.draw(sd);
+                    actor.Draw(sd);
                 }
             }
         }
 
-        protected void addTextures(params string[] names) {
+        protected void AddTextures(params string[] names) {
             for(int i = 0; i < names.Length; i++) {
                 textureList[names[i]] = cm.Load<Texture2D>(names[i]);
             }
         }
 
-        protected void addSounds(params string[] names) {
+        protected void AddSounds(params string[] names) {
             for(int i = 0; i < names.Length; i++) {
                 soundList[names[i]] = cm.Load<SoundEffect>("Sounds/" + names[i]);
             }

@@ -19,7 +19,7 @@ namespace CritterCamp.Screens {
             }
             set {
                 base.Size = value;
-                updateRect();
+                UpdateRectangle();
             }
         }
 
@@ -29,11 +29,11 @@ namespace CritterCamp.Screens {
             }
             set {
                 base.Scale = value;
-                updateRect();
+                UpdateRectangle();
             }
         }
 
-        private void updateRect() {
+        private void UpdateRectangle() {
             rect = new Rectangle(0, 0, (int)(Size.X / (Scale * Scale)), (int)(Size.Y / (Scale * Scale))); // set the rectangle whenever we change the size of the image
         }
         

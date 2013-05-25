@@ -40,8 +40,8 @@ namespace CritterCamp.Screens.Games.TwilightTango {
             animation.Add(ArrowStates.Red, SingleFrame((int)TextureData.twilightTexture.redArrow));
         }
 
-        public override void animate(GameTime time) {
-            base.animate(time);
+        public override void Animate(GameTime time) {
+            base.Animate(time);
             if(numCycles == 1 && State == ArrowStates.FadeOut) {
                 Visible = false;
             }
@@ -64,8 +64,8 @@ namespace CritterCamp.Screens.Games.TwilightTango {
             }
         }
 
-        public override void draw(SpriteDrawer sd) {
-            sd.Draw(getImg(), Coord, getNum(), spriteRotation: (int)dir * Constants.ROTATE_90, spriteScale: Scale);
+        public override void Draw(SpriteDrawer sd) {
+            sd.Draw(GetImg(), Coord, GetNum(), spriteRotation: (int)dir * Constants.ROTATE_90, spriteScale: Scale);
         }
     }
 }

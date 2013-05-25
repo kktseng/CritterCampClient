@@ -23,17 +23,17 @@ namespace CritterCamp.Screens.Games.Lib {
         }
 
         // Sets the entire map
-        public void setMap(int[,] map) {
+        public void SetMap(int[,] map) {
             this.map = map;
         }
 
         // Replaces a single tile in the map
-        public void setMap(int row, int col, int tile) {
+        public void SetMap(int row, int col, int tile) {
             map[col, row] = tile;
         }
 
         // Draws map using a SpriteDrawer
-        public void draw(SpriteDrawer sd) {
+        public void Draw(SpriteDrawer sd) {
             for(int i = 0; i < map.GetLength(0); i++) {
                 for(int j = 0; j < map.GetLength(1); j++) {
                     if(map[i, j] == -1) {

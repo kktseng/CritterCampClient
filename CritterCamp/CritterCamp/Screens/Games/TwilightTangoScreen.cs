@@ -78,8 +78,8 @@ namespace CritterCamp.Screens.Games {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            addTextures("twilight", "map", "doodads", "effects");
-            addSounds("ding", "dong", "chime1", "chime2", "chime3", "chime4", "puff");
+            AddTextures("twilight", "map", "doodads", "effects");
+            AddSounds("ding", "dong", "chime1", "chime2", "chime3", "chime4", "puff");
             setMap();
         }
 
@@ -99,7 +99,7 @@ namespace CritterCamp.Screens.Games {
                 {  7,  4, 10, 11, 12,  7,  4,  5,  8,  7, 10, 11, 15,  7,  6,  4, 13, 15, 14,  6 },
                 {  4,  4,  8,  7,  4,  4, 10, 11,  9,  4,  8, 15, 14,  4,  4,  5,  8, 15,  7,  4 }
             };
-            tileMap.setMap(map);
+            tileMap.SetMap(map);
         }
 
         public override void HandleInput(GameTime gameTime, InputState input) {
@@ -127,7 +127,7 @@ namespace CritterCamp.Screens.Games {
             base.HandleInput(gameTime, input);
         }
 
-        public override void removePlayer(string user) {
+        public override void RemovePlayer(string user) {
             // Don't have to do anything special since game ends without input from others
         }
 
@@ -155,7 +155,7 @@ namespace CritterCamp.Screens.Games {
                         }
                         // Send ready packet to sync before starting
                         Sync((JArray data, double random) => {
-                            removeActor(commandList);
+                            RemoveActor(commandList);
                             //foreach(JToken commandArray in data) {
                             JToken commandArray = data[0]; // Temporary hack
                             JArray a = JArray.Parse((string)commandArray);
@@ -242,7 +242,7 @@ namespace CritterCamp.Screens.Games {
                         foreach(Player p in new List<Player>(players.Values)) {
                             p.input.Clear();
                         }
-                        removeActor(inputArrows);
+                        RemoveActor(inputArrows);
 
                         phase = Phase.Close;
                         return;
@@ -337,7 +337,7 @@ namespace CritterCamp.Screens.Games {
         public override void Draw(GameTime gameTime) {
             SpriteDrawer sd = Helpers.GetSpriteDrawer(this);
             sd.Begin();
-            tileMap.draw(sd);
+            tileMap.Draw(sd);
             DrawActors(sd);
             if(banner != null) {
                 // Draw banner

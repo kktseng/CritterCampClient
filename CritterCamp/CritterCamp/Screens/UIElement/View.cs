@@ -17,25 +17,25 @@ namespace CritterCamp.Screens {
         /// Creates a new View
         /// </summary>
         public View() {
-            initialize();
+            Initialize();
         }
 
         /// <summary>
         /// Creates a new view with the given size, position
         /// </summary>
         public View(Vector2 size, Vector2 position) : base(size, position) {
-            initialize();
+            Initialize();
         }
 
-        protected new void initialize() {
+        protected new void Initialize() {
             UIElements = new List<UIElement>();
         }
 
-        public void addElement(UIElement uie) {
+        public void AddElement(UIElement uie) {
             UIElements.Add(uie);
         }
 
-        public void removeElement(UIElement uie) {
+        public void RemoveElement(UIElement uie) {
             UIElements.Remove(uie);
         }
 

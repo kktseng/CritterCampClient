@@ -83,7 +83,7 @@ namespace CritterCamp.Screens {
                     backOverlayRect.Disabled = false;
                     backOverlayRect.Tapped += PopupExitTap;
 
-                    mainView.addElement(backOverlayRect);
+                    mainView.AddElement(backOverlayRect);
                 }
             }
             get {

@@ -58,7 +58,7 @@ namespace CritterCamp.Screens.Games.ColorClash {
             this.throwTime = throwTime;
         }
 
-        public override void animate(GameTime time) {
+        public override void Animate(GameTime time) {
             if(currentPaint != null && readyToThrow) {
                 if(time.TotalGameTime - ((ColorClashScreen)screen).gameStart >= throwTime) {
                     State = AvatarStates.Throwing;
@@ -67,12 +67,12 @@ namespace CritterCamp.Screens.Games.ColorClash {
                     readyToThrow = false;
                 }
             }
-            base.animate(time);
+            base.Animate(time);
         }
 
-        public override void draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd) {
             int len = Helpers.TextureLen(typeof(TextureData.PlayerStates));
-            sd.DrawPlayer(screen, player, Coord, getNum(), spriteScale: 1.5f);
+            sd.DrawPlayer(screen, player, Coord, GetNum(), spriteScale: 1.5f);
         }
     }
 }

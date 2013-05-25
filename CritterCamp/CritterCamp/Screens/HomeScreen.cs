@@ -65,12 +65,12 @@ namespace CritterCamp.Screens {
             BorderedView myInfo = new BorderedView(new Vector2(1920/2-50, 300), new Vector2(1440, 150));
             me = new PlayerAvatar(myData, new Vector2(1150, 150));
             me.DrawFullProfileData = true;
-            myInfo.addElement(me);
+            myInfo.AddElement(me);
             Button1 profile = new Button1("buttonProfile", 0);
             profile.Size = new Vector2(100, 100);
             profile.Position = new Vector2(1750, 150);
             profile.Tapped += profileButton_Tapped;
-            myInfo.addElement(profile);
+            myInfo.AddElement(profile);
             myInfo.Disabled = false;
 
             BorderedView menu = new BorderedView(new Vector2(1920/2-50, 600), new Vector2(1440, 625));
@@ -79,8 +79,8 @@ namespace CritterCamp.Screens {
             SearchingButtons = new View(new Vector2(1920 / 2 - 50, 600), new Vector2(1440, 625));
             SearchingButtons.Disabled = false;
             SearchingButtons.Visible = false;
-            menu.addElement(PlayButtons);
-            menu.addElement(SearchingButtons);
+            menu.AddElement(PlayButtons);
+            menu.AddElement(SearchingButtons);
             menu.Disabled = false;
 
             Button1 play = new Button1("Play");
@@ -93,9 +93,9 @@ namespace CritterCamp.Screens {
             Button1 about = new Button1("About");
             about.Position = new Vector2(1440, 800);
             about.Tapped += aboutButton_Tapped;
-            PlayButtons.addElement(play);
-            PlayButtons.addElement(leader);
-            PlayButtons.addElement(about);
+            PlayButtons.AddElement(play);
+            PlayButtons.AddElement(leader);
+            PlayButtons.AddElement(about);
 
             Label searchingText = new Label("Searching for players", new Vector2(1440, 450));
             searchingText.Font = "buttonFont";
@@ -106,15 +106,15 @@ namespace CritterCamp.Screens {
             for (int i = 0; i < 7; i++) {
                 Image PigImage = new Image(myData.profile, i);
                 PigImage.Position = StartingPosition + new Vector2(size * i, 0);
-                SearchingButtons.addElement(PigImage);
+                SearchingButtons.AddElement(PigImage);
                 AnimatedPigs.Add(PigImage);
             }
             Button1 cancel = new Button1("Cancel");
             cancel.Position = new Vector2(1440, 800);
             cancel.Tapped += cancelButton_Tapped;
 
-            SearchingButtons.addElement(searchingText);
-            SearchingButtons.addElement(cancel);
+            SearchingButtons.AddElement(searchingText);
+            SearchingButtons.AddElement(cancel);
 
             Button1 volume = new Button1("");
             volume.Position = new Vector2(1720, 1005);
@@ -158,37 +158,37 @@ namespace CritterCamp.Screens {
             Label newsPostLabel = new Label(lineBreaksPost, new Vector2(75, 250));
             newsPostLabel.CenterX = false;
             newsPostLabel.CenterY = false;
-            NewsView.addElement(newsDate);
-            NewsView.addElement(newsPostLabel);
+            NewsView.AddElement(newsDate);
+            NewsView.AddElement(newsPostLabel);
 
             FriendsView = new View(new Vector2(1920 / 2 - 50, 875), new Vector2(480, 495));
             Label friendsLabel = new Label("You have no friends. :(", new Vector2(75, 180));
             friendsLabel.CenterX = false;
             friendsLabel.CenterY = false;
-            FriendsView.addElement(friendsLabel);
+            FriendsView.AddElement(friendsLabel);
 
             PartyView = new View(new Vector2(1920 / 2 - 50, 875), new Vector2(480, 495));
             Label partyLabel = new Label("You have no one in your party. :(", new Vector2(75, 180));
             partyLabel.CenterX = false;
             partyLabel.CenterY = false;
-            PartyView.addElement(partyLabel);
+            PartyView.AddElement(partyLabel);
 
             SelectedLabel = News;
             SelectedView = NewsView;
             FriendsView.Visible = false;
             PartyView.Visible = false;
 
-            info.addElement(News);
+            info.AddElement(News);
             //info.addElement(Friends);
             //info.addElement(Party);
-            info.addElement(NewsView);
+            info.AddElement(NewsView);
             //info.addElement(FriendsView);
             //info.addElement(PartyView);
 
-            mainView.addElement(myInfo);
-            mainView.addElement(menu);
-            mainView.addElement(info);
-            mainView.addElement(volume);
+            mainView.AddElement(myInfo);
+            mainView.AddElement(menu);
+            mainView.AddElement(info);
+            mainView.AddElement(volume);
         }
 
         void news_Tapped(object sender, EventArgs e) {
@@ -363,7 +363,7 @@ namespace CritterCamp.Screens {
 
             Label title = new Label("Choose your character:", new Vector2(1920 / 2, 355));
             title.Font = "buttonFont";
-            charPage.addElement(title);
+            charPage.AddElement(title);
 
             int startX = 335;
             int startY = 540;
@@ -382,18 +382,18 @@ namespace CritterCamp.Screens {
                     BorderedView yellowHighlight = new BorderedView(new Vector2(250, 250), new Vector2(startX, startY));
                     yellowHighlight.BorderColor = Constants.YellowHighlight; // set the border color to yellow
                     yellowHighlight.DrawFill = false; // don't draw the fill color
-                    yellowHighlight.addElement(newIcon);
+                    yellowHighlight.AddElement(newIcon);
                     yellowHighlight.Disabled = false;
-                    charPage.addElement(yellowHighlight);
+                    charPage.AddElement(yellowHighlight);
                 } else {
-                    charPage.addElement(newIcon);
+                    charPage.AddElement(newIcon);
                 }
 
 
                 startX += 250;
             }
             charPage.Disabled = false;
-            mainView.addElement(charPage);
+            mainView.AddElement(charPage);
         }
 
         private void iconButton_Tapped(object sender, UIElementTappedArgs e) {
@@ -456,18 +456,18 @@ namespace CritterCamp.Screens {
             Label music2 = new Label("Call to Adventure by Kevin Macleod", new Vector2(startX, startY + 715));
             music2.CenterX = false;
 
-            aboutPage.addElement(about);
-            aboutPage.addElement(version);
-            aboutPage.addElement(email1);
-            aboutPage.addElement(email2);
-            aboutPage.addElement(rate);
-            aboutPage.addElement(fbIcon);
-            aboutPage.addElement(fb);
-            aboutPage.addElement(twIcon);
-            aboutPage.addElement(tw);
-            aboutPage.addElement(music1);
-            aboutPage.addElement(music2);
-            mainView.addElement(aboutPage);
+            aboutPage.AddElement(about);
+            aboutPage.AddElement(version);
+            aboutPage.AddElement(email1);
+            aboutPage.AddElement(email2);
+            aboutPage.AddElement(rate);
+            aboutPage.AddElement(fbIcon);
+            aboutPage.AddElement(fb);
+            aboutPage.AddElement(twIcon);
+            aboutPage.AddElement(tw);
+            aboutPage.AddElement(music1);
+            aboutPage.AddElement(music2);
+            mainView.AddElement(aboutPage);
         }
 
         private void rateButton_Tapped(object sender, UIElementTappedArgs e) {
@@ -520,18 +520,18 @@ namespace CritterCamp.Screens {
                     row.BorderColor = Constants.LightBrown;
                 }
                 row.DrawFill = false;
-                leaderPage.addElement(row);
+                leaderPage.AddElement(row);
                 playerRows.Add(row);
             }
             retreiving = new Label("Retreiving the top players", new Vector2(startX, startY+70));
             retreiving.CenterX = false;
 
-            leaderPage.addElement(rank);
-            leaderPage.addElement(player);
-            leaderPage.addElement(level);
-            leaderPage.addElement(top10);
-            leaderPage.addElement(retreiving);
-            mainView.addElement(leaderPage);
+            leaderPage.AddElement(rank);
+            leaderPage.AddElement(player);
+            leaderPage.AddElement(level);
+            leaderPage.AddElement(top10);
+            leaderPage.AddElement(retreiving);
+            mainView.AddElement(leaderPage);
         }
 
         protected void handleLeaders(string message, bool error, TCPConnection connection) {
@@ -562,9 +562,9 @@ namespace CritterCamp.Screens {
                     player.CenterX = false;
                     Label levelLabel = new Label(level.ToString(), new Vector2(startX + 850, startY + index * 70));
 
-                    row.addElement(rankLabel);
-                    row.addElement(player);
-                    row.addElement(levelLabel);
+                    row.AddElement(rankLabel);
+                    row.AddElement(player);
+                    row.AddElement(levelLabel);
 
                     if (myData.username == username) {
                         row.BorderColor = Constants.YellowHighlight;
@@ -586,9 +586,9 @@ namespace CritterCamp.Screens {
                 myPlayer.CenterX = false;
                 Label myLevel = new Label(myData.level.ToString(), new Vector2(startX + 850, startY + 11 * 70));
 
-                myRow.addElement(myRankLabel);
-                myRow.addElement(myPlayer);
-                myRow.addElement(myLevel);
+                myRow.AddElement(myRankLabel);
+                myRow.AddElement(myPlayer);
+                myRow.AddElement(myLevel);
                 myRow.BorderColor = Constants.YellowHighlight;
             }
         }
@@ -624,10 +624,10 @@ namespace CritterCamp.Screens {
                 LoadingScreen.Load(ScreenManager, false, null, Helpers.GetScreenFactory(this).CreateScreen(typeof(OfflineScreen)));
             };
 
-            exitPage.addElement(text);
-            exitPage.addElement(keepPlaying);
-            exitPage.addElement(exitButton);
-            mainView.addElement(exitPage);
+            exitPage.AddElement(text);
+            exitPage.AddElement(keepPlaying);
+            exitPage.AddElement(exitButton);
+            mainView.AddElement(exitPage);
         }
     }
 

@@ -181,17 +181,17 @@ namespace CritterCamp.Screens {
         /// Creates a new Button with the given texture
         /// </summary>
         public Button1(string image, int textureIndex) : base(new Vector2(290, 90), new Vector2()) {
-            initialize(image, textureIndex, "");
+            Initialize(image, textureIndex, "");
         }
 
         /// <summary>
         /// Creates a new Button with the given text
         /// </summary>
         public Button1(string text) : base(new Vector2(290, 90), new Vector2()) {
-            initialize(defaultButtonTexture, 0, text);
+            Initialize(defaultButtonTexture, 0, text);
         }
 
-        protected void initialize(string image, int textureIndex, string text) {
+        protected void Initialize(string image, int textureIndex, string text) {
             ButtonImage = image;
             ButtonTextureIndex = textureIndex;
             Text = text;

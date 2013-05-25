@@ -75,7 +75,7 @@ namespace CritterCamp.Screens {
 
             Label ChooseGame = new Label("Choose Game", new Vector2(middleIconX, 200));
             ChooseGame.Font = "boris48";
-            voteMenu.addElement(ChooseGame);
+            voteMenu.AddElement(ChooseGame);
 
             // add the buttons for the games            
             buttons = new List<Button1>();
@@ -94,7 +94,7 @@ namespace CritterCamp.Screens {
                 gameChoice.Tapped += selectGame;
 
                 buttons.Add(gameChoice);
-                voteMenu.addElement(gameChoice);
+                voteMenu.AddElement(gameChoice);
 
                 iconX += iconSpace + iconSize;
             }
@@ -104,18 +104,18 @@ namespace CritterCamp.Screens {
             voteButton.Position = new Vector2(middleIconX, iconStartY + iconSpace + 120);
             voteButton.Tapped += vote;
             voteButton.Disabled = true;
-            voteMenu.addElement(voteButton);
+            voteMenu.AddElement(voteButton);
 
             messageLabel = new Label("Select a game and click vote.", new Vector2(middleIconX, (float)(iconStartY + iconSpace + 240)));
-            voteMenu.addElement(messageLabel);
+            voteMenu.AddElement(messageLabel);
 
             Label timeLeftLabel = new Label("Time Left: ", new Vector2(middleIconX - 15, iconStartY + iconSpace + 320));
             timeLeftNumber = new Label(timeLeft.ToString(), new Vector2(middleIconX + 115, iconStartY + iconSpace + 320));
             timeLeftNumber.CenterX = false;
-            voteMenu.addElement(timeLeftLabel);
-            voteMenu.addElement(timeLeftNumber);
+            voteMenu.AddElement(timeLeftLabel);
+            voteMenu.AddElement(timeLeftNumber);
 
-            mainView.addElement(voteMenu);
+            mainView.AddElement(voteMenu);
 
             BorderedView playersView = new BorderedView(new Vector2(750, 875), new Vector2(middlePlayers, 540));
             float playersX = 225;
@@ -130,15 +130,15 @@ namespace CritterCamp.Screens {
                     BorderedView yellowHighlight = new BorderedView(new Vector2(700, spacing), new Vector2(middlePlayers, playersY));
                     yellowHighlight.BorderColor = Constants.YellowHighlight; // set the border color to yellow
                     yellowHighlight.DrawFill = false; // don't draw the fill color
-                    yellowHighlight.addElement(playerAvatar);
-                    playersView.addElement(yellowHighlight);
+                    yellowHighlight.AddElement(playerAvatar);
+                    playersView.AddElement(yellowHighlight);
                 } else {
-                    playersView.addElement(playerAvatar);
+                    playersView.AddElement(playerAvatar);
                 }
                 playersY += spacing;
             }
 
-            mainView.addElement(playersView);
+            mainView.AddElement(playersView);
         }
 
         // Method callback for every second of the countdown timer

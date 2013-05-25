@@ -28,8 +28,8 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
             });
         }
 
-        public override void draw(SpriteDrawer sd) {
-            sd.DrawPlayer(screen, player, Coord, getNum());
+        public override void Draw(SpriteDrawer sd) {
+            sd.DrawPlayer(screen, player, Coord, GetNum());
             // draw red baton if sending pigs down
             if(State) {
                 int flash = (frame / 300) % 2;

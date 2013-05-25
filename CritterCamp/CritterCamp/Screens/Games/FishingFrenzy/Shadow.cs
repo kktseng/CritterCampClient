@@ -40,24 +40,24 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             SetLeftRight(SingleFrame(textureStart), true, false);
         }
 
-        public override void animate(GameTime time) {
-            base.animate(time);
+        public override void Animate(GameTime time) {
+            base.Animate(time);
             if(Coord.X > 2400 || Coord.X < -350) {
-                screen.removeActor(this);
+                screen.RemoveActor(this);
             }
         }
 
-        public override void draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd) {
             int spriteCount = (shadowType == 0) ? 8 : 6;
             // going left
             if(State) {
                 for(int i = 0; i < spriteCount; i++) {
-                    sd.Draw(getImg(), Coord + new Vector2(Constants.BUFFER_SPRITE_DIM * (i / 2), Constants.BUFFER_SPRITE_DIM * (i % 2)), getNum() + i, getFrame().Value.effect);
+                    sd.Draw(GetImg(), Coord + new Vector2(Constants.BUFFER_SPRITE_DIM * (i / 2), Constants.BUFFER_SPRITE_DIM * (i % 2)), GetNum() + i, GetFrame().Value.effect);
                 }
             // going right
             } else {
                 for(int i = 0; i < spriteCount; i++) {
-                    sd.Draw(getImg(), Coord + new Vector2(-Constants.BUFFER_SPRITE_DIM * (i / 2), Constants.BUFFER_SPRITE_DIM * (i % 2)), getNum() + i, getFrame().Value.effect);
+                    sd.Draw(GetImg(), Coord + new Vector2(-Constants.BUFFER_SPRITE_DIM * (i / 2), Constants.BUFFER_SPRITE_DIM * (i % 2)), GetNum() + i, GetFrame().Value.effect);
                 }
             }
         }

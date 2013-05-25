@@ -41,7 +41,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             SetFrames(SingleFrame((int)TextureData.fishingTextures.hook), HookState.down, HookState.up);
         }
 
-        public override void animate(GameTime time) {
+        public override void Animate(GameTime time) {
             // check if hook has been reeled
             if(State == HookState.up && Coord.Y < -250) {
                 foreach(Fish f in hookedFish) {
@@ -59,7 +59,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
                 }
                 reelingIn.Stop();
                 ((FishingFrenzyScreen)screen).hooked.Remove(player.username);
-                screen.removeActor(this);
+                screen.RemoveActor(this);
                 return;
             }
 
@@ -126,20 +126,20 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             }
         }
 
-        public override void draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd) {
             // draw line
             for(int i = 0; i < Coord.Y - Constants.BUFFER_SPRITE_DIM / 2; i += Constants.BUFFER_SPRITE_DIM) {
-                sd.Draw(getImg(), new Vector2(Coord.X, i), (int)TextureData.fishingTextures.line);
+                sd.Draw(GetImg(), new Vector2(Coord.X, i), (int)TextureData.fishingTextures.line);
             }
-            sd.Draw(getImg(), new Vector2(Coord.X, Coord.Y - 10 - Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.fishingTextures.line);
+            sd.Draw(GetImg(), new Vector2(Coord.X, Coord.Y - 10 - Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.fishingTextures.line);
             
             // draw sinker
             float scale = player.username == ((FishingFrenzyScreen)screen).playerName ? 1.5f : 1;
-            sd.Draw(getImg(), new Vector2(Coord.X, Coord.Y - Constants.BUFFER_SPRITE_DIM), (int)TextureData.fishingTextures.sinker, spriteScale: scale);
+            sd.Draw(GetImg(), new Vector2(Coord.X, Coord.Y - Constants.BUFFER_SPRITE_DIM), (int)TextureData.fishingTextures.sinker, spriteScale: scale);
             sd.DrawPlayer(screen, player, new Vector2(Coord.X, Coord.Y - Constants.BUFFER_SPRITE_DIM), (int)TextureData.PlayerStates.standing, spriteScale: 0.5f * scale);
 
             // draw hook
-            base.draw(sd);
+            base.Draw(sd);
         }
     }
 }

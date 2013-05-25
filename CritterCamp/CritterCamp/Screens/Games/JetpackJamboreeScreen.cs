@@ -73,8 +73,8 @@ namespace CritterCamp.Screens.Games {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            addTextures("jetpack", "map", "doodads", "explosion", "pig");
-            addSounds("blop", "blop2", "bomb", "landing", "launching");
+            AddTextures("jetpack", "map", "doodads", "explosion", "pig");
+            AddSounds("blop", "blop2", "bomb", "landing", "launching");
             setMap();
         }
 
@@ -111,8 +111,8 @@ namespace CritterCamp.Screens.Games {
                 {  -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1, -1, -1 },
                 {  21, 21, 21, 21, 21, 22, -1, -1, -1, -1, -1, -1, -1, -1, 18, 21, 21, 21, 21, 21 },
             };
-            tileMap.setMap(map);
-            doodadMap.setMap(ddMap);
+            tileMap.SetMap(map);
+            doodadMap.SetMap(ddMap);
         }
 
         public override void HandleInput(GameTime gameTime, InputState input) {
@@ -174,7 +174,7 @@ namespace CritterCamp.Screens.Games {
             conn.SendMessage(packet.ToString());
         }
 
-        public override void removePlayer(string user) {
+        public override void RemovePlayer(string user) {
             lock(deadUsers) {
                 if(!deadUsers.Contains(user)) {
                     deadUsers.Insert(0, user);
@@ -207,7 +207,7 @@ namespace CritterCamp.Screens.Games {
                                 found = true;
                         }
                         if(!found)
-                            removePlayer(name);
+                            RemovePlayer(name);
                     }
                     phase = Phase.Begin;
                 }, playerName);
@@ -287,12 +287,12 @@ namespace CritterCamp.Screens.Games {
             sd.Begin();
 
             // Draw the game map
-            tileMap.draw(sd);
+            tileMap.Draw(sd);
             DrawLaunchpad(sd, new Vector2(0, Constants.BUFFER_SPRITE_DIM - Constants.BUFFER_OFFSET - 32), 0);
             DrawLaunchpad(sd, new Vector2(Constants.BUFFER_SPRITE_DIM * 15, Constants.BUFFER_SPRITE_DIM - Constants.BUFFER_OFFSET - 32), 1);
             DrawLaunchpad(sd, new Vector2(0, Constants.BUFFER_SPRITE_DIM * 7 - Constants.BUFFER_OFFSET - 32), 2);
             DrawLaunchpad(sd, new Vector2(Constants.BUFFER_SPRITE_DIM * 15, Constants.BUFFER_SPRITE_DIM * 7 - Constants.BUFFER_OFFSET - 32), 3);
-            doodadMap.draw(sd);
+            doodadMap.Draw(sd);
 
             DrawActors(sd);
 
@@ -384,7 +384,7 @@ namespace CritterCamp.Screens.Games {
                     }
                 } else if((string)data["action"] == "exploded") {
                     string exploded_user = (string)data["source"];
-                    removePlayer(exploded_user);
+                    RemovePlayer(exploded_user);
                 } else if((string)data["action"] == "update") {
                     if(playerName != (string)data["source"]) {
                         avatars[(string)data["source"]].count = (int)data["count"];

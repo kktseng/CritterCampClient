@@ -61,12 +61,12 @@ namespace CritterCamp.Screens {
 
                 Image badge = new Image("scoreScreenIcons", player.score - 1, new Vector2(192, 192), new Vector2(312 + 424 * i, 150 + 20 * (player.score - 1)));
 
-                playerView.addElement(playerAvatar);
-                playerView.addElement(playerName);
-                playerView.addElement(playerLevel);
+                playerView.AddElement(playerAvatar);
+                playerView.AddElement(playerName);
+                playerView.AddElement(playerLevel);
 
-                mainView.addElement(playerView);
-                mainView.addElement(badge);
+                mainView.AddElement(playerView);
+                mainView.AddElement(badge);
             }
             
             const int levelViewHeight = 200;
@@ -83,37 +83,37 @@ namespace CritterCamp.Screens {
             BorderedView levelView = new BorderedView(new Vector2(levelViewWidth, levelViewHeight), new Vector2(levelViewX, levelViewY));
             FilledRectangle levelBack = new FilledRectangle(new Rectangle(rectX, rectY, rectSizeX, rectSizeY));
             levelBack.RectangleColor = new Color(102, 102, 102);
-            levelView.addElement(levelBack);
+            levelView.AddElement(levelBack);
             FilledRectangle levelCurrExp = new FilledRectangle(new Rectangle(rectX, rectY, currExpToShowSize, rectSizeY));
             levelCurrExp.RectangleColor = new Color(48, 198, 48);
-            levelView.addElement(levelCurrExp);
+            levelView.AddElement(levelCurrExp);
             levelExpGain = new FilledRectangle(new Rectangle(rectX + currExpToShowSize-1, rectY, 0, rectSizeY));
             levelExpGain.RectangleColor = new Color(154, 231, 154);
-            levelView.addElement(levelExpGain);
+            levelView.AddElement(levelExpGain);
 
             Label levelLabel = new Label("Level " + myLevel, new Vector2(rectX+50, levelViewY));
             levelLabel.TextColor = Color.White;
             levelLabel.CenterX = false;
-            levelView.addElement(levelLabel);
+            levelView.AddElement(levelLabel);
 
             Label expLabel = new Label(currExpToShow + " / " + expToNext, new Vector2(levelViewX, levelViewY));
             expLabel.TextColor = Color.White;
-            levelView.addElement(expLabel);
+            levelView.AddElement(expLabel);
 
             Label expGainedLabel = new Label("+" + expGained + "XP", new Vector2(levelViewX + 325, levelViewY));
             expGainedLabel.TextColor = Color.Yellow;
-            levelView.addElement(expGainedLabel);
+            levelView.AddElement(expGainedLabel);
 
             if (levelGained) { // display a level gained message
                 Label levelGainedLabel = new Label("+level", new Vector2(levelViewX + 525, levelViewY));
                 levelGainedLabel.TextColor = Color.Yellow;
-                levelView.addElement(levelGainedLabel);
+                levelView.AddElement(levelGainedLabel);
             }
 
-            mainView.addElement(levelView);
+            mainView.AddElement(levelView);
 
             Label messageLabel = new Label("Tap to continue", new Vector2(levelViewX, levelViewY + 150));
-            mainView.addElement(messageLabel);
+            mainView.AddElement(messageLabel);
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {

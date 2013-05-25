@@ -14,17 +14,17 @@ namespace CritterCamp.Screens {
         /// Creates a new FilledRectangle with the defaults
         /// </summary>
         public FilledRectangle() : base() {
-            initialize(new Rectangle(0, 0, 0, 0));
+            Initialize(new Rectangle(0, 0, 0, 0));
         }
 
         /// <summary>
         /// Creates a new FilledRectangle with the given rectangle
         /// </summary>
         public FilledRectangle(Rectangle rect) : base() {
-            initialize(rect);
+            Initialize(rect);
         }
 
-        protected void initialize(Rectangle rect) {
+        protected void Initialize(Rectangle rect) {
             DrawRectangle = rect;
             RectangleColor = Color.Black;
         }

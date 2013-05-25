@@ -105,7 +105,7 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             }
         }
 
-        public override void animate(GameTime time) {
+        public override void Animate(GameTime time) {
             if(State == FishStates.falling) {
                 Velocity = new Vector2(0, FALLING_SPD);
                 float bucket_y = ((FishingFrenzyScreen)screen).BUCKET_Y + ((FishingFrenzyScreen)screen).waveOffset;
@@ -119,41 +119,41 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
                     bucketSound = true;
                 }
                 if(Coord.Y + Velocity.Y * time.ElapsedGameTime.TotalSeconds > bucket_y) {
-                    screen.removeActor(this);
+                    screen.RemoveActor(this);
                     ((FishingFrenzyScreen)screen).fishies.Remove(this);
                     ((FishingFrenzyScreen)screen).scores[caughtBy] += score;
                 }
             }
             if(State != FishStates.hooked) {
-                base.animate(time);
+                base.Animate(time);
             }
         }
 
-        public override void draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd) {
             if(State == FishStates.hooked) {
                 if(type == FishTypes.small || type == FishTypes.medium || type == FishTypes.shiny) {
-                    sd.Draw(getImg(), Coord, getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
+                    sd.Draw(GetImg(), Coord, GetNum(), GetFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
                 } else {
-                    sd.Draw(getImg(), Coord - new Vector2(0, Constants.BUFFER_SPRITE_DIM), getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
-                    sd.Draw(getImg(), Coord, getNum() + 1, getFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
+                    sd.Draw(GetImg(), Coord - new Vector2(0, Constants.BUFFER_SPRITE_DIM), GetNum(), GetFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
+                    sd.Draw(GetImg(), Coord, GetNum() + 1, GetFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
                 }
             } else if(State == FishStates.falling) {
                 if(type == FishTypes.small || type == FishTypes.medium || type == FishTypes.shiny) {
-                    sd.Draw(getImg(), Coord, getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
+                    sd.Draw(GetImg(), Coord, GetNum(), GetFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
                 } else {
                     if(!halved)
-                        sd.Draw(getImg(), Coord + new Vector2(0, Constants.BUFFER_SPRITE_DIM), getNum(), getFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
-                    sd.Draw(getImg(), Coord, getNum() + 1, getFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
+                        sd.Draw(GetImg(), Coord + new Vector2(0, Constants.BUFFER_SPRITE_DIM), GetNum(), GetFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
+                    sd.Draw(GetImg(), Coord, GetNum() + 1, GetFrame().Value.effect, spriteRotation: Constants.ROTATE_90 * 3);
                 }
             } else {
                 if(type == FishTypes.small || type == FishTypes.medium || type == FishTypes.shiny) {
-                    base.draw(sd);
+                    base.Draw(sd);
                 } else if(State == FishStates.swimRight) {
-                    sd.Draw(getImg(), Coord - new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum() + 1, getFrame().Value.effect);
-                    sd.Draw(getImg(), Coord + new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum(), getFrame().Value.effect);
+                    sd.Draw(GetImg(), Coord - new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), GetNum() + 1, GetFrame().Value.effect);
+                    sd.Draw(GetImg(), Coord + new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), GetNum(), GetFrame().Value.effect);
                 } else if(State == FishStates.swimLeft) {
-                    sd.Draw(getImg(), Coord - new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum(), getFrame().Value.effect);
-                    sd.Draw(getImg(), Coord + new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), getNum() + 1, getFrame().Value.effect);
+                    sd.Draw(GetImg(), Coord - new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), GetNum(), GetFrame().Value.effect);
+                    sd.Draw(GetImg(), Coord + new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), GetNum() + 1, GetFrame().Value.effect);
                 }
             }
         }

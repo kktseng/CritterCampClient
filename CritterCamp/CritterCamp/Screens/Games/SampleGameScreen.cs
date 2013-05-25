@@ -21,12 +21,12 @@ namespace CritterCamp.Screens.Games {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            addTextures("map", "pig", "doodads");
+            AddTextures("map", "pig", "doodads");
             // addSounds("swoosh", "splash", "reelingIn", "bucket", "blop");
-            setMap();
+            SetMap();
         }
 
-        public void setMap() {
+        public void SetMap() {
             tileMap = new TileMap(textureList["map"]);
             int[,] map = new int[,] {
                 {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
@@ -42,7 +42,7 @@ namespace CritterCamp.Screens.Games {
                 {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
                 {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 }
             };
-            tileMap.setMap(map);
+            tileMap.SetMap(map);
         }
 
         public override void HandleInput(GameTime gameTime, InputState input) {
@@ -54,7 +54,7 @@ namespace CritterCamp.Screens.Games {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
-        public override void removePlayer(string user) {
+        public override void RemovePlayer(string user) {
 
         }
 
@@ -63,7 +63,7 @@ namespace CritterCamp.Screens.Games {
             SpriteDrawer sd = Helpers.GetSpriteDrawer(this);
 
             // Draw the game map
-            tileMap.draw(sd);
+            tileMap.Draw(sd);
 
             DrawActors(sd);
 

@@ -42,11 +42,11 @@ namespace CritterCamp.Screens.Games.Lib {
             sd.DrawString(font, text, coord);
         }
 
-        public void setText(string text) {
+        public void SetText(string text) {
             this.text = text;
         }
 
-        public string getText() {
+        public string GetText() {
             return text;
         }
     }

@@ -80,7 +80,7 @@ namespace CritterCamp.Screens {
         /// Creates a new UIElement with default size, position and visibility
         /// </summary>
         public UIElement() {
-            initialize();
+            Initialize();
         }
 
         /// <summary>
@@ -89,14 +89,14 @@ namespace CritterCamp.Screens {
         /// <param name="Size">The size of this element.</param>
         /// <param name="Position">The position of this element.</param>
         public UIElement(Vector2 Size, Vector2 Position) {
-            initialize(Size, Position);
+            Initialize(Size, Position);
         }
 
-        protected void initialize() {
-            initialize(new Vector2(), new Vector2());
+        protected void Initialize() {
+            Initialize(new Vector2(), new Vector2());
         }
 
-        protected void initialize(Vector2 Size, Vector2 Position) {
+        protected void Initialize(Vector2 Size, Vector2 Position) {
             this.Size = Size;
             this.Position = Position;
             Visible = true;

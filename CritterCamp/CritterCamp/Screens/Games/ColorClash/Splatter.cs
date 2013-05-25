@@ -59,7 +59,7 @@ namespace CritterCamp.Screens.Games.ColorClash {
             this.destination = destination;
         }
 
-        public override void animate(GameTime time) {
+        public override void Animate(GameTime time) {
             if(State == PaintStates.charging || startTime > time.TotalGameTime) {
                 Coord = start;
                 if(grow)
@@ -79,9 +79,9 @@ namespace CritterCamp.Screens.Games.ColorClash {
             }
         }
 
-        public override void draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd) {
             float scale = (State == PaintStates.splatter) ? 1.5f : 0.2f;
-            sd.Draw(getImg(), Coord, getNum(), avatar.color, spriteScale: scale * Scale);
+            sd.Draw(GetImg(), Coord, GetNum(), avatar.color, spriteScale: scale * Scale);
         }
     }
 }

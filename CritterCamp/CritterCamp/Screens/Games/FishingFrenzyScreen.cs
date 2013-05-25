@@ -81,8 +81,8 @@ namespace CritterCamp.Screens.Games {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            addTextures("fish", "fishing", "map", "doodads");
-            addSounds("swoosh", "splash", "reelingIn", "bucket", "blop");
+            AddTextures("fish", "fishing", "map", "doodads");
+            AddSounds("swoosh", "splash", "reelingIn", "bucket", "blop");
             setMap();
         }
 
@@ -102,7 +102,7 @@ namespace CritterCamp.Screens.Games {
                 {  23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23 },
                 {  26, 24, 25, 24, 25, 24, 26, 27, 24, 26, 24, 25, 24, 24, 26, 28, 24, 27, 26, 24 }
             };
-            tileMap.setMap(map);
+            tileMap.SetMap(map);
         }
 
         public override void HandleInput(GameTime gameTime, InputState input) {
@@ -189,7 +189,7 @@ namespace CritterCamp.Screens.Games {
                 }
                 foreach(Fish f in toRem) {
                     fishies.Remove(f);
-                    removeActor(f);
+                    RemoveActor(f);
                 }
 
                 // swap backup hooks in
@@ -303,7 +303,7 @@ namespace CritterCamp.Screens.Games {
             }, JsonConvert.SerializeObject(fishRawData));
         }
 
-        public override void removePlayer(string user) {
+        public override void RemovePlayer(string user) {
 
         }
 
@@ -329,7 +329,7 @@ namespace CritterCamp.Screens.Games {
             SpriteDrawer sd = Helpers.GetSpriteDrawer(this);
 
             // Draw the game map
-            tileMap.draw(sd);
+            tileMap.Draw(sd);
 
             waveOffset = (int)(gameTime.TotalGameTime.TotalMilliseconds / 10) % 360;
             waveOffset = (int)(10 * Math.Sin(waveOffset * Math.PI / 180));
@@ -378,7 +378,7 @@ namespace CritterCamp.Screens.Games {
             // Draw all fish not hooked
             foreach(Fish f in fishies) {
                 if(f.State != FishStates.hooked) {
-                    f.draw(sd);
+                    f.Draw(sd);
                 }
             }
 
@@ -401,12 +401,12 @@ namespace CritterCamp.Screens.Games {
             // Draw hooks and hooked fish
             lock(hooked) {
                 foreach(Hook h in hooked.Values) {
-                    h.draw(sd);
+                    h.Draw(sd);
                 }
             }
             foreach(Fish f in fishies) {
                 if(f.State == FishStates.hooked) {
-                    f.draw(sd);
+                    f.Draw(sd);
                 }
             }
 

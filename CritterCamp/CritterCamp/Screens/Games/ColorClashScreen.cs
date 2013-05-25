@@ -22,7 +22,7 @@ namespace CritterCamp.Screens.Games {
         public Dictionary<string, Avatar> players = new Dictionary<string, Avatar>();
         public Crosshair crosshair;
 
-        protected TileMap tileMap, doodadMap;
+        protected TileMap tileMap, doodadMap, overlayMap;
 
         public ColorClashScreen(Dictionary<string, PlayerData> playerData)
             : base(playerData) {
@@ -42,7 +42,7 @@ namespace CritterCamp.Screens.Games {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            addTextures("map", "pig", "doodads", "color");
+            AddTextures("map", "pig", "doodads", "color");
             // addSounds("swoosh", "splash", "reelingIn", "bucket", "blop");
             setMap();
         }
@@ -50,6 +50,7 @@ namespace CritterCamp.Screens.Games {
         public void setMap() {
             tileMap = new TileMap(textureList["map"]);
             doodadMap = new TileMap(textureList["doodads"]);
+            overlayMap = new TileMap(textureList["map"]);
             int[,] map = new int[,] {
                 {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
                 {   4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
@@ -78,8 +79,23 @@ namespace CritterCamp.Screens.Games {
                 {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
                 {  -1, -1, -1, 19, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 23 },
             };
-            tileMap.setMap(map);
-            doodadMap.setMap(ddMap);
+            int[,] olMap = new int[,] {
+                {  -1, -1, -1,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
+                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
+                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
+                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
+                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
+                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
+                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
+                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
+                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
+                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
+                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
+                {  -1, -1, -1,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
+            };
+            overlayMap.SetMap(map);                                                 
+            tileMap.SetMap(map);
+            doodadMap.SetMap(ddMap);
         }
 
         public override void HandleInput(GameTime gameTime, InputState input) {
@@ -128,7 +144,7 @@ namespace CritterCamp.Screens.Games {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
-        public override void removePlayer(string user) {
+        public override void RemovePlayer(string user) {
 
         }
 
@@ -137,8 +153,7 @@ namespace CritterCamp.Screens.Games {
             SpriteDrawer sd = Helpers.GetSpriteDrawer(this);
 
             // Draw the game map
-            tileMap.draw(sd);
-            doodadMap.draw(sd);
+            tileMap.Draw(sd);
 
             // Draw the canvas
             for(int i = 4; i < 19; i++) {
@@ -152,7 +167,7 @@ namespace CritterCamp.Screens.Games {
             // Draw splatters that have already hit
             foreach(Splatter s in splatters) {
                 if(s.State == PaintStates.splatter) {
-                    s.draw(sd);
+                    s.Draw(sd);
                 }
             }
 
@@ -172,13 +187,17 @@ namespace CritterCamp.Screens.Games {
             sd.Draw(textureList["color"], new Vector2(Constants.BUFFER_SPRITE_DIM * (18.5f), Constants.BUFFER_SPRITE_DIM * (1.5f) - Constants.BUFFER_OFFSET), (int)TextureData.colorTextures.frameCorner, SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally, cache: true);
             sd.Draw(textureList["color"], new Vector2(Constants.BUFFER_SPRITE_DIM * (18.5f), Constants.BUFFER_SPRITE_DIM * (10.5f) - Constants.BUFFER_OFFSET), (int)TextureData.colorTextures.frameCorner, SpriteEffects.FlipHorizontally, cache: true);
 
+            // Redraw grass tiles and draw fence to hide splatters that have gone outside
+            overlayMap.Draw(sd);
+            doodadMap.Draw(sd);
+
             // Draw players
             DrawActors(sd);
 
             // Draw paint balls
             foreach(Splatter s in splatters) {
                 if(s.State != PaintStates.splatter) {
-                    s.draw(sd);
+                    s.Draw(sd);
                 }
             }
 

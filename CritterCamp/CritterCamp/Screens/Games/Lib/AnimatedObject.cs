@@ -7,8 +7,8 @@ using System.Collections.Generic;
 namespace CritterCamp.Screens.Games.Lib {
     public interface IAnimatedObject {
         bool DrawAutomatically();
-        void draw(SpriteDrawer sd);
-        void animate(GameTime time);
+        void Draw(SpriteDrawer sd);
+        void Animate(GameTime time);
     }
     public abstract class AnimatedObject<T> : IAnimatedObject {
         public struct Frame {
@@ -52,7 +52,7 @@ namespace CritterCamp.Screens.Games.Lib {
         public AnimatedObject(BaseGameScreen screen, string imgName, Vector2 coord, bool dieWhenFinished = false) {
             SetAnim();
             this.screen = screen;
-            screen.addActor(this);
+            screen.AddActor(this);
             this.dieWhenFinished = dieWhenFinished;
             this.imgName = imgName;
             this.coord = coord;
@@ -92,11 +92,11 @@ namespace CritterCamp.Screens.Games.Lib {
             return autoDraw && visible;
         }
 
-        public Texture2D getImg() {
+        public Texture2D GetImg() {
             return screen.textureList[imgName];
         }
 
-        public Frame? getFrame() {
+        public Frame? GetFrame() {
             int frameCount = 0;
             foreach(Frame f in animation[state]) {
                 if(f.length <= 0)
@@ -110,15 +110,15 @@ namespace CritterCamp.Screens.Games.Lib {
             return null;
         }
 
-        public virtual int getNum() {
-            return getFrame().Value.spriteNum;
+        public virtual int GetNum() {
+            return GetFrame().Value.spriteNum;
         }
 
         public Vector2 Coord {
             get {
                 if(animation.Count == 0)
                     return coord;
-                return coord + getFrame().Value.offset;
+                return coord + GetFrame().Value.offset;
             }
             set { coord = value; }
         }
@@ -133,7 +133,7 @@ namespace CritterCamp.Screens.Games.Lib {
             set { scale = value; }
         }
 
-        public void move(Vector2 offset) {
+        public void Move(Vector2 offset) {
             coord += offset;
         }
 
@@ -156,7 +156,7 @@ namespace CritterCamp.Screens.Games.Lib {
             set { visible = value; }
         }
 
-        public virtual void animate(GameTime time) {
+        public virtual void Animate(GameTime time) {
             if(!visible) {
                 return;
             }
@@ -166,7 +166,7 @@ namespace CritterCamp.Screens.Games.Lib {
                 numCycles++;
                 if(maxCycles > 0 && numCycles >= maxCycles) {
                     if(dieWhenFinished) {
-                        screen.removeActor(this);
+                        screen.RemoveActor(this);
                         visible = false;
                     }
                     // If default state has been set, change to the default state
@@ -181,9 +181,9 @@ namespace CritterCamp.Screens.Games.Lib {
             coord += velocity * (float)time.ElapsedGameTime.TotalSeconds;
         }
 
-        public virtual void draw(SpriteDrawer sd) {
+        public virtual void Draw(SpriteDrawer sd) {
             if(visible) {
-                sd.Draw(getImg(), Coord, getNum(), getFrame().Value.effect, spriteScale: scale);
+                sd.Draw(GetImg(), Coord, GetNum(), GetFrame().Value.effect, spriteScale: scale);
             }
         }
     }

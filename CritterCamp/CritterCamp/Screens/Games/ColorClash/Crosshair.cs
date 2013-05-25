@@ -30,22 +30,22 @@ namespace CritterCamp.Screens.Games.ColorClash {
             blinkStart = totalTime;
         }
 
-        public override void animate(GameTime time) {
+        public override void Animate(GameTime time) {
             if(!blinking) {
                 Scale += (float)time.ElapsedGameTime.TotalSeconds;
                 return;
             }
             TimeSpan blinkElapsed = time.TotalGameTime - blinkStart;
             if(blinkElapsed > blinkTime) {
-                screen.removeActor(this);
+                screen.RemoveActor(this);
                 ((ColorClashScreen)screen).crosshair = null;
             } else {
                 Visible = ((int)(blinkElapsed.TotalMilliseconds / 100)) % 2 == 0;
             }
-            base.animate(time);
+            base.Animate(time);
         }
 
-        public override void draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd) {
             if(Visible)
                 sd.Draw(screen.textureList["color"], Coord, (int)TextureData.colorTextures.crosshair, ((ColorClashScreen)screen).players[screen.playerName].color, spriteScale: Scale);
         }
