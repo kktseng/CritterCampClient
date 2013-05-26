@@ -24,7 +24,23 @@ namespace CritterCamp.Screens {
 
         public override void Activate(bool instancePreserved) {
             // Load global textures here
-            ContentManager cm = ScreenManager.Game.Content;
+            ContentManager content = ScreenManager.Game.Content;
+            string[] fontNames = new string[] { "matiz48", "buttonFont", "boris48", "blueHighway28", "menufont" };
+            for(int i = 0; i < fontNames.Length; i++) {
+                ScreenManager.Fonts[fontNames[i]] = content.Load<SpriteFont>("Fonts/" + fontNames[i]);
+            }
+            string[] textureNames = new string[] {
+                "paperBG", "bgScreen",
+                "gameIcons", "scoreScreenIcons", "scorePanel",
+                "backButton", "buttonMint",  "buttonGreen", "buttonSoundOn", "buttonSoundOff",
+                "whitePixel", "buttonProfile" };
+            for(int i = 0; i < textureNames.Length; i++) {
+                ScreenManager.Textures[textureNames[i]] = content.Load<Texture2D>(textureNames[i]);
+            }
+            string[] soundNames = new string[] { "buttonSound" };
+            for(int i = 0; i < soundNames.Length; i++) {
+                ScreenManager.Sounds[soundNames[i]] = content.Load<SoundEffect>("Sounds/" + soundNames[i]);
+            }
             base.Activate(instancePreserved);
 
             ((GamePage)CoreApplication.Properties["GamePage"]).reset();

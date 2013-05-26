@@ -125,6 +125,7 @@ namespace GameStateManagement {
             // Load content belonging to the screen manager.
             ContentManager content = Game.Content;
 
+            // Load global resources here
             spriteBatch = new SpriteBatch(GraphicsDevice);
             string[] fontNames = new string[] { "matiz48", "buttonFont", "boris48", "blueHighway28", "menufont" };
             for(int i = 0; i < fontNames.Length; i++) {
@@ -134,7 +135,9 @@ namespace GameStateManagement {
                 "paperBG", "bgScreen",
                 "gameIcons", "scoreScreenIcons", "scorePanel",
                 "backButton", "buttonMint",  "buttonGreen", "buttonSoundOn", "buttonSoundOff",
-                "whitePixel", "buttonProfile" };
+                "whitePixel", "buttonProfile",
+                "avatar"
+            };
             for(int i = 0; i < textureNames.Length; i++) {
                 textures[textureNames[i]] = content.Load<Texture2D>(textureNames[i]);
             }

@@ -44,17 +44,17 @@ namespace CritterCamp.Screens {
         /// Creates a new Image with the given texture
         /// </summary>
         public Image(string image, int textureIndex) : base() {
-            initialize(image, textureIndex);
+            Initialize(image, textureIndex);
         }
 
         /// <summary>
         /// Creates a new Image with the given text, position
         /// </summary>
         public Image(string image, int textureIndex, Vector2 size, Vector2 position) : base(size, position) {
-            initialize(image, textureIndex);
+            Initialize(image, textureIndex);
         }
 
-        protected void initialize(string image, int textureIndex) {
+        protected void Initialize(string image, int textureIndex) {
             this.Texture = image;
             this.TextureIndex = textureIndex;
             DrawOverlay = false;
