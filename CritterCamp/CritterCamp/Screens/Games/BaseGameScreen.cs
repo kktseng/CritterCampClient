@@ -32,6 +32,7 @@ namespace CritterCamp.Screens.Games {
             this.expPercent = 0;
         }
     }
+
     public abstract class BaseGameScreen : GameScreen {
         public Dictionary<string, Texture2D> textureList = new Dictionary<string, Texture2D>();
         public Dictionary<string, SpriteFont> fontList = new Dictionary<string, SpriteFont>();

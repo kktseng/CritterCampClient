@@ -89,7 +89,7 @@ namespace CritterCamp {
                 case 3:
                     return Color.Green;
             }
-            return Color.Red;
+            return Color.Tomato;
         }
 
         public static void ResetState() {

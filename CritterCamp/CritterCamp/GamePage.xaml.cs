@@ -219,9 +219,9 @@ namespace CritterCamp {
                 if (response.success) { // login was sucessful
                     // save the username and password in local settings so that it can load it later
                     if (IsolatedStorageSettings.ApplicationSettings.Contains("username")) {
-                        IsolatedStorageSettings.ApplicationSettings["username"] = username;
+                        IsolatedStorageSettings.ApplicationSettings["username"] = response.username;
                     } else {
-                        IsolatedStorageSettings.ApplicationSettings.Add("username", username);
+                        IsolatedStorageSettings.ApplicationSettings.Add("username", response.username);
                     }
                     if (IsolatedStorageSettings.ApplicationSettings.Contains("password")) {
                         IsolatedStorageSettings.ApplicationSettings["password"] = password;
@@ -243,7 +243,7 @@ namespace CritterCamp {
                     CoreApplication.Properties["news"] = response.news;
                     CoreApplication.Properties["unlocked"] = response.unlockedProfiles;
 
-                    PlayerData mydata = new PlayerData(username, response.profile, response.lvl, 0);
+                    PlayerData mydata = new PlayerData(response.username, response.profile, response.lvl, 0);
                     CoreApplication.Properties["myPlayerData"] = mydata;
 
                     // Create a TCP connection
@@ -262,7 +262,7 @@ namespace CritterCamp {
                             CoreApplication.Properties["TCPSocket"] = conn;
 
                             // navigate to gamepage to start the game
-                            CoreApplication.Properties["username"] = username;
+                            CoreApplication.Properties["username"] = response.username;
                             Dispatcher.BeginInvoke(() => {
                                 //NavigationService.Navigate(new Uri("/GamePage.xaml", UriKind.Relative));
                                 // Reload home page and hide grid
@@ -324,6 +324,7 @@ namespace CritterCamp {
 
     class LoginResponse : Response {
         public string auth;
+        public string username;
         public int lvl;
         public string profile;
         public List<NewsPost> news;
@@ -335,6 +336,7 @@ namespace CritterCamp {
                     auth = (string)responseJSON["auth"];
                     lvl = (int)responseJSON["level"];
                     profile = (string)responseJSON["profile"];
+                    username = (string)responseJSON["username"];
 
                     news = new List<NewsPost>();
                     JArray newsJson = (JArray)responseJSON["news"];

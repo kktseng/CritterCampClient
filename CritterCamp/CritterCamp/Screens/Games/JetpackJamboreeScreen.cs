@@ -75,10 +75,10 @@ namespace CritterCamp.Screens.Games {
             base.Activate(instancePreserved);
             AddTextures("jetpack", "map", "doodads", "explosion", "pig");
             AddSounds("blop", "blop2", "bomb", "landing", "launching");
-            setMap();
+            SetMap();
         }
 
-        public void setMap() {
+        public void SetMap() {
             tileMap = new TileMap(textureList["map"], -32);
             doodadMap = new TileMap(textureList["doodads"], -32);
             int[,] map = new int[,] {

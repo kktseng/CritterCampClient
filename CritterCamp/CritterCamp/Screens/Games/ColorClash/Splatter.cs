@@ -63,7 +63,7 @@ namespace CritterCamp.Screens.Games.ColorClash {
             if(State == PaintStates.charging || startTime > time.TotalGameTime) {
                 Coord = start;
                 if(grow)
-                    Scale += (float)time.ElapsedGameTime.TotalSeconds;
+                    Scale = Math.Min(Scale + (float)time.ElapsedGameTime.TotalSeconds, 2.5f);
                 return;    
             }   
             TimeSpan elapsed = time.TotalGameTime - startTime;
@@ -80,7 +80,7 @@ namespace CritterCamp.Screens.Games.ColorClash {
         }
 
         public override void Draw(SpriteDrawer sd) {
-            float scale = (State == PaintStates.splatter) ? 1.5f : 0.2f;
+            float scale = (State == PaintStates.splatter) ? 1f : 0.2f;
             sd.Draw(GetImg(), Coord, GetNum(), avatar.color, spriteScale: scale * Scale);
         }
     }
