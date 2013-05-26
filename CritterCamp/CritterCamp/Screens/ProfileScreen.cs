@@ -65,16 +65,16 @@ namespace CritterCamp.Screens {
             title.Font = "buttonFont";
             profilePage.AddElement(title);
 
-            int leftX = 500;
-            int leftXSize = 650;
+            int leftX = 475;
+            int leftXSize = 725;
             // the view to draw our avatar
-            profileAvatar = new BorderedView(new Vector2(leftXSize, 500), new Vector2(leftX, 325));
+            profileAvatar = new BorderedView(new Vector2(leftXSize, 470), new Vector2(leftX, 315));
             profileAvatar.BorderColor = Constants.YellowHighlight;
             profileAvatar.FillColor = Constants.DarkBrown;
             profilePage.AddElement(profileAvatar);
 
             // the view to draw our information
-            profileInfo = new BorderedView(new Vector2(leftXSize, 250), new Vector2(leftX, 725));
+            profileInfo = new BorderedView(new Vector2(leftXSize, 300), new Vector2(leftX, 715));
             profileInfo.DrawFill = false;
             profileInfo.BorderColor = Constants.Brown;
             profilePage.AddElement(profileInfo);
@@ -117,29 +117,35 @@ namespace CritterCamp.Screens {
             avatar = new PlayerAvatar(dataToDisplay, new Vector2(500, 375));
             profileAvatar.AddElement(avatar);
 
-            Label usernameLabel = new Label(dataToDisplay.username, new Vector2(200, 670));
+            Label usernameLabel = new Label(dataToDisplay.username, new Vector2(140, 625));
             usernameLabel.CenterX = false;
             usernameLabel.Font = "buttonFont";
-            usernameLabel.Scale = 0.8f;
+            usernameLabel.Scale = 0.6f;
             profileInfo.AddElement(usernameLabel);
-            int xSize = 600;
-            FilledRectangle levelBack = new FilledRectangle(new Rectangle(200, 725, xSize, 40));
+            int xSize = 485;
+            FilledRectangle levelBack = new FilledRectangle(new Rectangle(330, 680, xSize, 30));
             levelBack.RectangleColor = new Color(102, 102, 102);
             profileInfo.AddElement(levelBack);
-            FilledRectangle levelCurrExp = new FilledRectangle(new Rectangle(200, 725, (int)(xSize*dataToDisplay.expPercent), 40));
+            FilledRectangle levelCurrExp = new FilledRectangle(new Rectangle(330, 680, (int)(xSize*dataToDisplay.expPercent), 30));
             levelCurrExp.RectangleColor = new Color(48, 198, 48);
             profileInfo.AddElement(levelCurrExp);
-            Label level = new Label("Level " + dataToDisplay.level, new Vector2(200, 810));
+            Label level = new Label("Lv " + Helpers.PadNumber(dataToDisplay.level, 3), new Vector2(140, 700));
             level.CenterX = false;
             level.Font = "buttonFont";
-            level.Scale = 0.6f;
+            level.Scale = 0.55f;
             level.TextColor = Constants.DarkBrown;
             profileInfo.AddElement(level);
-            Label rank = new Label("Rank #" + dataToDisplay.rank, new Vector2(450, 810));
+            Label rank = new Label("Rank #" + dataToDisplay.rank, new Vector2(140, 760));
             rank.CenterX = false;
             rank.Font = "buttonFont";
-            rank.Scale = 0.6f;
+            rank.Scale = 0.55f;
             profileInfo.AddElement(rank);
+            Label money = new Label("$250", new Vector2(140, 825));
+            money.CenterX = false;
+            money.Scale = 0.6f;
+            money.Font = "buttonFont";
+            money.TextColor = Color.Yellow;
+            profileInfo.AddElement(money);
 
             if (dataToDisplay.username == myData.username) {
                 // displaying our own profile. display the critters we can use
@@ -180,12 +186,6 @@ namespace CritterCamp.Screens {
                     startX += 200;
                 }
 
-                Label money = new Label("$250 ED", new Vector2(1000, 775));
-                money.CenterX = false;
-                money.Scale = 0.6f;
-                money.Font = "buttonFont";
-                money.TextColor = Color.Yellow;
-                profileMain.AddElement(money);
                 Button1 shop = new Button1("Shop");
                 shop.Position = new Vector2(1500, 775);
                 profileMain.AddElement(shop);

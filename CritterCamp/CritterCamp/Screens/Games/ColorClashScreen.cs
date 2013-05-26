@@ -31,9 +31,9 @@ namespace CritterCamp.Screens.Games {
             for(int i = 0; i < playerData.Values.Count; i++) {
                 PlayerData pd = playerData.Values.ElementAt(i);
                 if(pd.color != 1) {
-                    players[pd.username] = new Avatar(this, new Vector2(200, 200 + 250 * i), pd, Helpers.mapColor(pd.color));
+                    players[pd.username] = new Avatar(this, new Vector2(200, 200 + 250 * i), pd, Helpers.MapColor(pd.color));
                 } else {
-                    players[pd.username] = new Avatar(this, new Vector2(200, 200 + 250 * i), pd, Helpers.mapColor(3 - colorCount));
+                    players[pd.username] = new Avatar(this, new Vector2(200, 200 + 250 * i), pd, Helpers.MapColor(3 - colorCount));
                 }
             }
 

@@ -80,7 +80,7 @@ namespace CritterCamp {
             return input / inputScale + new Vector2(0, Constants.BUFFER_OFFSET - offset);
         }
 
-        public static Color mapColor(int color) { 
+        public static Color MapColor(int color) { 
             switch(color) {
                 case 1:
                     return Color.Orange;
@@ -90,6 +90,15 @@ namespace CritterCamp {
                     return Color.Green;
             }
             return Color.Tomato;
+        }
+
+        public static string PadNumber(int number, int digits) {
+            string s = number.ToString();
+            int len = s.Length;
+            for(int i = 0; i < digits - len; i++) {
+                s = "0" + s;
+            }
+            return s;
         }
 
         public static void ResetState() {
