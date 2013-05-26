@@ -175,11 +175,13 @@ namespace CritterCamp.Screens {
         public UIElement Element;
         public string Arg;
         public Object ObjectArg;
+        public Object ObjectArgExtra1;
 
         public UIElementTappedArgs(UIElement u) {
             Element = u;
             Arg = "";
             ObjectArg = null;
+            ObjectArgExtra1 = null;
         }
     }
 }

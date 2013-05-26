@@ -32,6 +32,7 @@ namespace CritterCamp.Screens {
         View SelectedView, NewsView, FriendsView, PartyView;
         Color InactiveColor = new Color(119, 95, 77);
         PlayerAvatar me;
+        PlayerData myData;
         //public Song backMusic;
 
         public HomeScreen() : base("Main Menu") {}
@@ -60,7 +61,7 @@ namespace CritterCamp.Screens {
             //MediaPlayer.Volume = 1.0f;
             //MediaPlayer.Play(backMusic);
 
-            PlayerData myData = (PlayerData)CoreApplication.Properties["myPlayerData"];
+            myData = (PlayerData)CoreApplication.Properties["myPlayerData"];
 
             BorderedView myInfo = new BorderedView(new Vector2(1920/2-50, 300), new Vector2(1440, 150));
             me = new PlayerAvatar(myData, new Vector2(1150, 150));
@@ -179,11 +180,11 @@ namespace CritterCamp.Screens {
             PartyView.Visible = false;
 
             info.AddElement(News);
-            //info.addElement(Friends);
-            //info.addElement(Party);
+            //info.AddElement(Friends);
+            //info.AddElement(Party);
             info.AddElement(NewsView);
-            //info.addElement(FriendsView);
-            //info.addElement(PartyView);
+            //info.AddElement(FriendsView);
+            //info.AddElement(PartyView);
 
             mainView.AddElement(myInfo);
             mainView.AddElement(menu);
@@ -263,7 +264,7 @@ namespace CritterCamp.Screens {
             cancelSearch();
 
             ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
-            ScreenManager.AddScreen(new CharacterScreen(this), null);
+            ScreenManager.AddScreen(new ProfileScreen(this, myData.username), null);
         }
 
         void volumeButton_Tapped(object sender, EventArgs e) {
@@ -342,74 +343,6 @@ namespace CritterCamp.Screens {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
-    }
-
-    class CharacterScreen : MenuScreen {
-        BorderedView charPage;
-        HomeScreen homeScreen;
-
-        public CharacterScreen(HomeScreen hs) : base("Character Screen") {
-            homeScreen = hs;
-        }
-
-        public override void Activate(bool instancePreserved) {
-            base.Activate(instancePreserved);
-            IsPopup = true;
-
-            PlayerData myData = (PlayerData)CoreApplication.Properties["myPlayerData"];
-
-            charPage = new BorderedView(new Vector2(1550, 450), new Vector2(1920 / 2, 1080 / 2 - 75));
-            charPage.Disabled = false;
-
-            Label title = new Label("Choose your character:", new Vector2(1920 / 2, 355));
-            title.Font = "buttonFont";
-            charPage.AddElement(title);
-
-            int startX = 335;
-            int startY = 540;
-
-            foreach (ProfileData pd in ProfileConstants.PROFILES) {
-                Button1 newIcon = new Button1(pd.ServerName, 0);
-                newIcon.ButtonImageScale = 2f;
-                newIcon.Size = new Vector2(128, 128);
-                newIcon.Position = new Vector2(startX, startY);
-
-                newIcon.TappedArgs.ObjectArg = pd;
-                newIcon.Tapped += iconButton_Tapped;
-
-                if (pd.ServerName == myData.profile) {
-                    // drawing our own avatar. put it in a view so we can highlight it yellow
-                    BorderedView yellowHighlight = new BorderedView(new Vector2(250, 250), new Vector2(startX, startY));
-                    yellowHighlight.BorderColor = Constants.YellowHighlight; // set the border color to yellow
-                    yellowHighlight.DrawFill = false; // don't draw the fill color
-                    yellowHighlight.AddElement(newIcon);
-                    yellowHighlight.Disabled = false;
-                    charPage.AddElement(yellowHighlight);
-                } else {
-                    charPage.AddElement(newIcon);
-                }
-
-
-                startX += 250;
-            }
-            charPage.Disabled = false;
-            mainView.AddElement(charPage);
-        }
-
-        private void iconButton_Tapped(object sender, UIElementTappedArgs e) {
-            // pressed on an icon. send the new profile icon data to the server
-            ProfileData pd = (ProfileData)e.ObjectArg;
-
-            TCPConnection conn = (TCPConnection)CoreApplication.Properties["TCPSocket"];
-            conn.SendMessage(@"{ ""action"": ""profile"", ""type"": ""set"", ""profile"": """ + pd.ServerName + "\" }");
-
-            PlayerData myData = (PlayerData)CoreApplication.Properties["myPlayerData"];
-            myData.profile = pd.ServerName;
-            CoreApplication.Properties["myPlayerData"] = myData;
-            homeScreen.updatePlayerData();
-
-            PopupExit();
-        }
     }
 
     class AboutScreen : MenuScreen {
@@ -591,6 +524,9 @@ namespace CritterCamp.Screens {
                 myRow.AddElement(myLevel);
                 myRow.BorderColor = Constants.YellowHighlight;
             }
+
+            TCPConnection conn = (TCPConnection)CoreApplication.Properties["TCPSocket"];
+            conn.pMessageReceivedEvent -= handleLeaders;
         }
     }
 

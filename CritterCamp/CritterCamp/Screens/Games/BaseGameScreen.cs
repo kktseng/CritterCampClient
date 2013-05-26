@@ -19,6 +19,8 @@ namespace CritterCamp.Screens.Games {
         public int level;
         public int color;
         public int score;
+        public int rank;
+        public float expPercent;
 
         public PlayerData(string username, string profile, int level, int color) {
             this.username = username;
@@ -26,6 +28,8 @@ namespace CritterCamp.Screens.Games {
             this.level = level;
             this.color = color;
             this.score = 0;
+            this.rank = 0;
+            this.expPercent = 0;
         }
     }
     public abstract class BaseGameScreen : GameScreen {

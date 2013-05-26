@@ -241,6 +241,7 @@ namespace CritterCamp {
                     // TODO: Retrieve money from SQLite
 
                     CoreApplication.Properties["news"] = response.news;
+                    CoreApplication.Properties["unlocked"] = response.unlockedProfiles;
 
                     PlayerData mydata = new PlayerData(username, response.profile, response.lvl, 0);
                     CoreApplication.Properties["myPlayerData"] = mydata;
@@ -326,13 +327,13 @@ namespace CritterCamp {
         public int lvl;
         public string profile;
         public List<NewsPost> news;
+        public List<string> unlockedProfiles;
 
         public LoginResponse(string response)
             : base(response) {
                 if(responseJSON["auth"] != null) {
                     auth = (string)responseJSON["auth"];
                     lvl = (int)responseJSON["level"];
-                    profile = "pig";
                     profile = (string)responseJSON["profile"];
 
                     news = new List<NewsPost>();
@@ -340,6 +341,13 @@ namespace CritterCamp {
                     foreach (JObject n in newsJson) {
                         news.Add(NewsPost.createFromJObject(n));
                     }
+
+                    unlockedProfiles = new List<string>();
+                    JArray unlockedJson = (JArray)responseJSON["unlocked"];
+                    foreach (string n in unlockedJson) {
+                        unlockedProfiles.Add((string)n);
+                    }
+
                 }
         }
     }

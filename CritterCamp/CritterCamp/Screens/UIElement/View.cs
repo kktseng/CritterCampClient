@@ -32,11 +32,15 @@ namespace CritterCamp.Screens {
         }
 
         public void AddElement(UIElement uie) {
-            UIElements.Add(uie);
+            lock (UIElements) {
+                UIElements.Add(uie);
+            }
         }
 
         public void RemoveElement(UIElement uie) {
-            UIElements.Remove(uie);
+            lock (UIElements) {
+                UIElements.Remove(uie);
+            }
         }
 
         /// <summary>
@@ -91,13 +95,15 @@ namespace CritterCamp.Screens {
             }
 
             // went through all the elements in the view and couldn't find one that our press touches
-            return false;
+            return true;
         }
 
         public override void ResetSelected() {
             base.ResetSelected();
-            SelectedUIElement.ResetSelected();
-            SelectedUIElement = null;
+            if (SelectedUIElement != null) {
+                SelectedUIElement.ResetSelected();
+                SelectedUIElement = null;
+            }
         }
 
         /// <summary>
@@ -105,8 +111,10 @@ namespace CritterCamp.Screens {
         /// </summary>
         protected override void DrawThis() {
             // draw every UIElement in this view
-            foreach(UIElement uie in UIElements) {
-                uie.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
+            lock (UIElements) {
+                foreach (UIElement uie in UIElements) {
+                    uie.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
+                }
             }
         }
     }
