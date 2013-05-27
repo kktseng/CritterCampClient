@@ -42,12 +42,6 @@ namespace CritterCamp.Screens {
             GamePage gamePage = (GamePage)CoreApplication.Properties["GamePage"];
             gamePage.showAdDuplex();
             ContentManager cm = ScreenManager.Game.Content;
-
-            // temporary pig drawing for profiles
-            if (!ScreenManager.Textures.ContainsKey("pig")) {
-                ScreenManager.Textures.Add("pig", cm.Load<Texture2D>("pig"));
-                ScreenManager.Textures.Add("cow", cm.Load<Texture2D>("cow"));
-            }
             
             if (!ScreenManager.Textures.ContainsKey("fbIcon")) {
                 ScreenManager.Textures.Add("fbIcon", cm.Load<Texture2D>("fbIcon"));
