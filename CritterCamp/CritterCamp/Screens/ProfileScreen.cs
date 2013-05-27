@@ -84,9 +84,9 @@ namespace CritterCamp.Screens {
             search = new Button1("Search");
             search.Position = new Vector2(rightX, 125);
             search.Visible = false;
-            profilePage.AddElement(search);
+            //profilePage.AddElement(search);
             // the view for the critters or for add friend/add to party button
-            profileMain = new BorderedView(new Vector2(rightXSize, 625), new Vector2(rightX, 525));
+            profileMain = new BorderedView(new Vector2(rightXSize, 780), new Vector2(rightX, 475));
             profileMain.DrawFill = false;
             profileMain.BorderColor = Constants.Brown;
             profileMain.Disabled = false;
@@ -145,18 +145,18 @@ namespace CritterCamp.Screens {
             money.Scale = 0.6f;
             money.Font = "buttonFont";
             money.TextColor = Color.Yellow;
-            profileInfo.AddElement(money);
+            //profileInfo.AddElement(money);
 
             if (dataToDisplay.username == myData.username) {
                 // displaying our own profile. display the critters we can use
-                Label critters = new Label("Critters", new Vector2(900, 270));
+                Label critters = new Label("Critters", new Vector2(900, 150));
                 critters.CenterX = false;
                 critters.Font = "buttonFont";
                 critters.Scale = 0.6f;
                 profileMain.AddElement(critters);
 
                 int startX = 1000;
-                int startY = 400;
+                int startY = 280;
 
                 List<string> unlockedProfiles = (List<string>)CoreApplication.Properties["unlocked"];
                 foreach (string prof in unlockedProfiles) {
@@ -188,7 +188,7 @@ namespace CritterCamp.Screens {
 
                 Button1 shop = new Button1("Shop");
                 shop.Position = new Vector2(1500, 775);
-                profileMain.AddElement(shop);
+                //profileMain.AddElement(shop);
             }
         }
 
