@@ -36,12 +36,12 @@ namespace CritterCamp.Screens {
                 base.Position = value;
                 // need to update all our UIelements with the new position
                 Avatar.Position = value;
-                FullProfileName.Position = value + new Vector2(130, -60);
-                FullProfileLevel.Position = value + new Vector2(130, 25);
-                FullProfileMoney.Position = value + new Vector2(130, 80);
+                FullProfileName.Position = value + new Vector2(125, -60);
+                FullProfileLevel.Position = value + new Vector2(125, 10);
+                FullProfileMoney.Position = value + new Vector2(125, 80);
 
-                ProfileName.Position = value + new Vector2(130, -25);
-                ProfileLevel.Position = value + new Vector2(130, 25);
+                ProfileName.Position = value + new Vector2(125, -25);
+                ProfileLevel.Position = value + new Vector2(125, 25);
             }
         }
 
@@ -72,7 +72,8 @@ namespace CritterCamp.Screens {
             FullProfileLevel.Font = "buttonFont";
             FullProfileMoney.Font = "buttonFont";
 
-            FullProfileLevel.Scale = 0.6f;
+            FullProfileName.Scale = 0.55f;
+            FullProfileLevel.Scale = 0.5f;
             FullProfileMoney.Scale = 0.5f;
 
             ProfileName.CenterX = false;

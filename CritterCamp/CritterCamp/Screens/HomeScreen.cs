@@ -58,12 +58,12 @@ namespace CritterCamp.Screens {
             myData = (PlayerData)CoreApplication.Properties["myPlayerData"];
 
             BorderedView myInfo = new BorderedView(new Vector2(1920/2-50, 300), new Vector2(1440, 150));
-            me = new PlayerAvatar(myData, new Vector2(1150, 150));
+            me = new PlayerAvatar(myData, new Vector2(1135, 150));
             me.DrawFullProfileData = true;
             myInfo.AddElement(me);
             Button1 profile = new Button1("buttonProfile", 0);
             profile.Size = new Vector2(100, 100);
-            profile.Position = new Vector2(1750, 150);
+            profile.Position = new Vector2(1750, 200);
             profile.Tapped += profileButton_Tapped;
             myInfo.AddElement(profile);
             myInfo.Disabled = false;
