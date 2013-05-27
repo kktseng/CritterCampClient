@@ -15,13 +15,13 @@ namespace CritterCamp.Screens {
                 return playerDataInfo;
             } set {
                 playerDataInfo = value;
-                Avatar.TextureIndex = (int)TextureData.PlayerStates.standing + value.color * Helpers.TextureLen(typeof(TextureData.PlayerStates));
+
+                Avatar.TextureIndex = ProfileConstants.GetProfileData(value.profile).ProfileIndex * Constants.AVATAR_COLORS + value.color;
 
                 FullProfileName.Text = value.username;
                 FullProfileLevel.Text = "Level " + value.level.ToString();
                 ProfileName.Text = value.username;
                 ProfileLevel.Text = "Level " + value.level.ToString();
-                Avatar.Texture = value.profile;
                 //FullProfileMoney.Text = value.money;
             }
         }
@@ -45,7 +45,7 @@ namespace CritterCamp.Screens {
             }
         }
 
-        private Image Avatar = new Image("pig", 0);
+        private Image Avatar = new Image("standing", 0);
         private Label FullProfileName = new Label();
         private Label FullProfileLevel = new Label();
         private Label FullProfileMoney = new Label("$250");
@@ -59,7 +59,7 @@ namespace CritterCamp.Screens {
             this.Position = Position;
             PlayerDataInfo = Data;
 
-            Avatar.Scale = 2f;
+            Avatar.Size = new Vector2(128, 128);
 
             FullProfileName.CenterX = false;
             FullProfileLevel.CenterX = false;

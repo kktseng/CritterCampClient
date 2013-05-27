@@ -34,6 +34,10 @@ namespace CritterCamp.Screens {
         PlayerData myData;
         BorderedView currentYellowHighlight;
         PlayerAvatar avatar;
+        int leftX = 475;
+        int leftXSize = 725;
+        int rightX = 1330;
+        int rightXSize = 900;
 
         public ProfileScreen(HomeScreen hs, string username) : base("Profile Screen") {
             homeScreen = hs;
@@ -65,8 +69,6 @@ namespace CritterCamp.Screens {
             title.Font = "buttonFont";
             profilePage.AddElement(title);
 
-            int leftX = 475;
-            int leftXSize = 725;
             // the view to draw our avatar
             profileAvatar = new BorderedView(new Vector2(leftXSize, 470), new Vector2(leftX, 315));
             profileAvatar.BorderColor = Constants.YellowHighlight;
@@ -79,8 +81,6 @@ namespace CritterCamp.Screens {
             profileInfo.BorderColor = Constants.Brown;
             profilePage.AddElement(profileInfo);
 
-            int rightX = 1330;
-            int rightXSize = 900;
             search = new Button1("Search");
             search.Position = new Vector2(rightX, 125);
             search.Visible = false;
@@ -114,7 +114,7 @@ namespace CritterCamp.Screens {
             profilePage.RemoveElement(title);
             search.Visible = true;
 
-            avatar = new PlayerAvatar(dataToDisplay, new Vector2(500, 375));
+            avatar = new PlayerAvatar(dataToDisplay, new Vector2(leftX, 375));
             profileAvatar.AddElement(avatar);
 
             Label usernameLabel = new Label(dataToDisplay.username, new Vector2(140, 625));
@@ -162,8 +162,8 @@ namespace CritterCamp.Screens {
                 foreach (string prof in unlockedProfiles) {
                     ProfileData pd = ProfileConstants.GetProfileData(prof);
 
-                    Button1 newIcon = new Button1(pd.ServerName, 0);
-                    newIcon.ButtonImageScale = 1.5f;
+                    Button1 newIcon = new Button1("standing", pd.ProfileIndex * Constants.AVATAR_COLORS);
+                    newIcon.ButtonImageScale = .75f;
                     newIcon.Size = new Vector2(96, 96);
                     newIcon.Position = new Vector2(startX, startY);
 

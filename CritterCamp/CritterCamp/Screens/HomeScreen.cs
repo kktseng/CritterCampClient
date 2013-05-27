@@ -105,7 +105,7 @@ namespace CritterCamp.Screens {
             int size = 100;
             Vector2 StartingPosition = new Vector2(1440-size*3, 600);
             for (int i = 0; i < 7; i++) {
-                Image PigImage = new Image(myData.profile, i);
+                Image PigImage = new Image("pig", i);
                 PigImage.Position = StartingPosition + new Vector2(size * i, 0);
                 SearchingButtons.AddElement(PigImage);
                 AnimatedPigs.Add(PigImage);

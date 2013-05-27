@@ -330,6 +330,9 @@
     <None Include="Content\Sounds\twitterIcon.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Content\standing.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\twitterIcon.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
