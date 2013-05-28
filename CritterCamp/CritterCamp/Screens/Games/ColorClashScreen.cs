@@ -24,8 +24,8 @@ namespace CritterCamp.Screens.Games {
 
         protected TileMap tileMap, doodadMap, overlayMap;
 
-        public ColorClashScreen(Dictionary<string, PlayerData> playerData)
-            : base(playerData, false) {
+        public ColorClashScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer)
+            : base(playerData, singlePlayer) {
             // assign players colors
             int colorCount = 0;
             for(int i = 0; i < playerData.Values.Count; i++) {

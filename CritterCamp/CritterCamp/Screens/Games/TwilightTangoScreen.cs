@@ -64,8 +64,8 @@ namespace CritterCamp.Screens.Games {
         private TimeSpan start;
         private TimeSpan timer;
 
-        public TwilightTangoScreen(Dictionary<string, PlayerData> playerData)
-            : base(playerData, true) {
+        public TwilightTangoScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer)
+            : base(playerData, singlePlayer) {
             currentRank = playerData.Count;
             for(int i = 0; i < playerData.Values.Count; i++) {
                 PlayerData data = playerData.Values.ElementAt(i);

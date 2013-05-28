@@ -43,8 +43,8 @@ namespace CritterCamp.Screens.Games {
         protected List<string> deadUsers = new List<string>(); // keeps track of who lost
         protected Dictionary<string, Avatar> avatars = new Dictionary<string, Avatar>(); // keeps track of baton waving
 
-        public JetpackJamboreeScreen(Dictionary<string, PlayerData> playerData)
-            : base(playerData, true) {
+        public JetpackJamboreeScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer)
+            : base(playerData, singlePlayer) {
             for(int i = 0; i < 4; i++) {
                 pennedPigs.Add(new List<Pig>());
             }
