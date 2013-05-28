@@ -30,6 +30,7 @@ namespace CritterCamp.Screens {
         View GameType;
         View SearchingButtons;
         List<Image> AnimatedPigs;
+        Label playersInParty;
         Label SelectedLabel;
         Label News, Friends, Party;
         View SelectedView, NewsView, FriendsView, PartyView;
@@ -102,9 +103,11 @@ namespace CritterCamp.Screens {
             Label searchingText = new Label("Searching for players", new Vector2(1440, 450));
             searchingText.Font = "buttonFont";
             searchingText.Scale = 0.8f;
+            playersInParty = new Label("Players in party: 1/4", new Vector2(1440, 525));
+            playersInParty.Scale = 0.8f;
             AnimatedPigs = new List<Image>();
             int size = 100;
-            Vector2 StartingPosition = new Vector2(1440-size*3, 600);
+            Vector2 StartingPosition = new Vector2(1440-size*3, 635);
             for (int i = 0; i < 7; i++) {
                 Image PigImage = new Image("pig", i);
                 PigImage.Position = StartingPosition + new Vector2(size * i, 0);
@@ -115,6 +118,7 @@ namespace CritterCamp.Screens {
             cancel.Position = new Vector2(1440, 800);
             cancel.Tapped += cancelButton_Tapped;
 
+            SearchingButtons.AddElement(playersInParty);
             SearchingButtons.AddElement(searchingText);
             SearchingButtons.AddElement(cancel);
 
@@ -357,6 +361,7 @@ namespace CritterCamp.Screens {
                     startingGame = true;
                 } else if((string)o["type"] == "count") {
                     groupSize = (int)o["size"];
+                    playersInParty.Text = "Players in party: " + groupSize + "/4";
                 }
             }
         }
