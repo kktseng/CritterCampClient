@@ -172,7 +172,7 @@ namespace CritterCamp {
 
         public void Disconnect() {
             if (mSocket != null) { // try to disconnect gracefully
-                SendMessage("close");
+                SendMessage("{close}");
             }
         }
 
