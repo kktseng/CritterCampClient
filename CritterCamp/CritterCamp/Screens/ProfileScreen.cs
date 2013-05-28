@@ -175,20 +175,20 @@ namespace CritterCamp.Screens {
                     newIcon.TappedArgs.ObjectArg = pd;
                     newIcon.Tapped += iconButton_Tapped;
 
-                    BorderedView yellowHighlight = new BorderedView(new Vector2(175, 175), new Vector2(startX, startY));
+                    BorderedView yellowHighlight = new BorderedView(new Vector2(190, 190), new Vector2(startX, startY));
+                    yellowHighlight.BorderWidth = 11;
                     if (pd.ServerName == myData.profile) {
-                        yellowHighlight.BorderColor = Constants.YellowHighlight; // set the border color to yellow
+                        yellowHighlight.FillColor = Constants.YellowHighlight; // set the border color to yellow
                         currentYellowHighlight = yellowHighlight;
                     } else {
-                        yellowHighlight.BorderColor = Constants.Brown;
+                        yellowHighlight.FillColor = Constants.Brown;
                     }
-                    yellowHighlight.DrawFill = false; // don't draw the fill color
                     yellowHighlight.AddElement(newIcon);
                     yellowHighlight.Disabled = false;
                     newIcon.TappedArgs.ObjectArgExtra1 = yellowHighlight;
                     profileMain.AddElement(yellowHighlight);
 
-                    startX += 200;
+                    startX += 225;
                 }
 
                 Button1 shop = new Button1("Shop");
@@ -209,9 +209,9 @@ namespace CritterCamp.Screens {
             avatar.PlayerDataInfo = myData;
             homeScreen.updatePlayerData();
 
-            currentYellowHighlight.BorderColor = Constants.Brown;
+            currentYellowHighlight.FillColor = Constants.Brown;
             BorderedView selectedIcon = (BorderedView)e.ObjectArgExtra1;
-            selectedIcon.BorderColor = Constants.YellowHighlight;
+            selectedIcon.FillColor = Constants.YellowHighlight;
             currentYellowHighlight = selectedIcon;
         }
 

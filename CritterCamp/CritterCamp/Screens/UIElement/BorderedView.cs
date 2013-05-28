@@ -16,6 +16,7 @@ namespace CritterCamp.Screens {
 
         private Rectangle BorderRect;
         private Rectangle FillRect;
+        private int borderWidth;
 
         public override Vector2 Size {
             get {
@@ -35,6 +36,15 @@ namespace CritterCamp.Screens {
                 UpdateRectangles();
             }
         }
+        public int BorderWidth {
+            get {
+                return borderWidth;
+            }
+            set {
+                borderWidth = value;
+                UpdateRectangles();
+            }
+        }
         
         /// <summary>
         /// Creates a new View
@@ -47,14 +57,18 @@ namespace CritterCamp.Screens {
         /// Creates a new view with the given size, position
         /// </summary>
         public BorderedView(Vector2 size, Vector2 position) : base(size, position) {
-            UpdateRectangles();
             DrawFill = true;
+            borderWidth = 25;
+            UpdateRectangles();
         }
 
         private void UpdateRectangles() { 
             // recalculates the rectangles
             BorderRect = new Rectangle((int)(Position.X - Size.X / 2), (int)(Position.Y - Size.Y / 2), (int)Size.X, (int)Size.Y);
-            FillRect = new Rectangle((int)(Position.X - Size.X / 2 + 25), (int)(Position.Y - Size.Y / 2 + 25), (int)Size.X - 50, (int)Size.Y - 50);
+            FillRect = new Rectangle((int)(Position.X - Size.X / 2 + BorderWidth),
+                (int)(Position.Y - Size.Y / 2 + BorderWidth),
+                (int)Size.X - BorderWidth*2,
+                (int)Size.Y - BorderWidth*2);
         }
 
         /// <summary>   
