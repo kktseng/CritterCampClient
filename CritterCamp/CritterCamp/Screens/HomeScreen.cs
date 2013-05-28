@@ -24,8 +24,10 @@ namespace CritterCamp.Screens {
     class HomeScreen : MenuScreen {
         private bool looking = false;
         private bool startingGame = false;
+        private bool choosingType = false;
         int groupSize = 1;
         View PlayButtons;
+        View GameType;
         View SearchingButtons;
         List<Image> AnimatedPigs;
         Label SelectedLabel;
@@ -75,8 +77,12 @@ namespace CritterCamp.Screens {
             SearchingButtons = new View(new Vector2(1920 / 2 - 50, 600), new Vector2(1440, 625));
             SearchingButtons.Disabled = false;
             SearchingButtons.Visible = false;
+            GameType = new View(new Vector2(1920 / 2 - 50, 600), new Vector2(1440, 625));
+            GameType.Disabled = false;
+            GameType.Visible = false;
             menu.AddElement(PlayButtons);
             menu.AddElement(SearchingButtons);
+            menu.AddElement(GameType);
             menu.Disabled = false;
 
             Button1 play = new Button1("Play");
@@ -111,6 +117,20 @@ namespace CritterCamp.Screens {
 
             SearchingButtons.AddElement(searchingText);
             SearchingButtons.AddElement(cancel);
+
+            Label gameTypeText = new Label("Choose your game type", new Vector2(1440, 450));
+            gameTypeText.Font = "buttonFont";
+            gameTypeText.Scale = 0.8f;
+            Button1 single = new Button1("Single");
+            single.Position = new Vector2(1440, 650);
+            single.Tapped += playSingleButton_Tapped;
+            Button1 party = new Button1("Party");
+            party.Position = new Vector2(1440, 800);
+            party.Tapped += playPartyButton_Tapped;
+            GameType.AddElement(gameTypeText);
+            GameType.AddElement(single);
+            GameType.AddElement(party);
+
 
             Button1 volume = new Button1("");
             volume.Position = new Vector2(1720, 1005);
@@ -227,18 +247,35 @@ namespace CritterCamp.Screens {
             SelectedView.Visible = true;
         }
 
+        void playSingleButton_Tapped(object sender, EventArgs e) {
+            GameType.Visible = false;
+            SearchingButtons.Visible = true;
+            looking = true;
+
+            CoreApplication.Properties["singlePlayer"] = true;
+            ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
+            LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(VotingScreenSingle)));
+        }
+
+        void playPartyButton_Tapped(object sender, EventArgs e) {
+            GameType.Visible = false;
+            SearchingButtons.Visible = true;
+            choosingType = false;
+            looking = true;
+
+            // Start looking for a group
+            TCPConnection conn = (TCPConnection)CoreApplication.Properties["TCPSocket"];
+
+            // Search for group
+            conn.SendMessage(@"{ ""action"": ""group"", ""type"": ""join"" }");
+        }
+
         void playButton_Tapped(object sender, EventArgs e) {
-            if(!looking) {
-                PlayButtons.Visible = false;
-                SearchingButtons.Visible = true;
-                looking = true;
+            looking = false;
+            choosingType = true;
 
-                // Start looking for a group
-                TCPConnection conn = (TCPConnection)CoreApplication.Properties["TCPSocket"];
-
-                // Search for group
-                conn.SendMessage(@"{ ""action"": ""group"", ""type"": ""join"" }");
-            }
+            PlayButtons.Visible = false;
+            GameType.Visible = true;
         }
 
         void leaderButton_Tapped(object sender, EventArgs e) {
@@ -295,6 +332,11 @@ namespace CritterCamp.Screens {
         }
 
         public override void OnBackPressed() {
+            if (choosingType) {
+                PlayButtons.Visible = true;
+                GameType.Visible = false;
+                return;
+            }
             if (looking) {
                 cancelSearch();
                 return;
@@ -327,6 +369,7 @@ namespace CritterCamp.Screens {
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             if(startingGame) {
+                CoreApplication.Properties["singlePlayer"] = false;
                 ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
                 LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(VotingScreen)));
             }

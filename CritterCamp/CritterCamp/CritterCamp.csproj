@@ -96,6 +96,7 @@
     <Compile Include="ScreenManager\ScreenFactory.cs" />
     <Compile Include="ScreenManager\ScreenManager.cs" />
     <Compile Include="Screens\Button.cs" />
+    <Compile Include="Screens\VotingScreen.cs" />
     <Compile Include="Screens\ProfileScreen.cs" />
     <Compile Include="Screens\Games\BaseGameScreen.cs" />
     <Compile Include="Screens\Games\ColorClashScreen.cs" />
@@ -136,7 +137,7 @@
     <Compile Include="Screens\UIElement\Image.cs" />
     <Compile Include="Screens\UIElement\Label.cs" />
     <Compile Include="Screens\UIElement\UIElement.cs" />
-    <Compile Include="Screens\VotingScreen.cs" />
+    <Compile Include="Screens\VotingScreenSingle.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

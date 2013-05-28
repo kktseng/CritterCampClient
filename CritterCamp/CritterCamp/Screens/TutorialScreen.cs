@@ -20,6 +20,7 @@ namespace CritterCamp.Screens {
         protected ContentManager cm;
         protected Texture2D tutorial;
         bool done;
+        bool single;
         private string text = "Tap to skip...";
         int timeLeft;
         Timer timeLeftTimer;
@@ -38,9 +39,13 @@ namespace CritterCamp.Screens {
             }
             tutorial = cm.Load<Texture2D>(game.TutorialTexture);
 
-            done = false;
-            timeLeft = 10;
-            timeLeftTimer = new Timer(timeLeftTimerCallback, null, 1000, 1000);
+            single = (bool)CoreApplication.Properties["singlePlayer"];
+
+            if (!single) { // if it's not single player, start the timer
+                done = false;
+                timeLeft = 10;
+                timeLeftTimer = new Timer(timeLeftTimerCallback, null, 1000, 1000);
+            }
 
             base.Activate(instancePreserved);
         }
@@ -78,6 +83,15 @@ namespace CritterCamp.Screens {
         public override void HandleInput(GameTime gameTime, InputState input) {
             // Read in our gestures
             foreach(GestureSample gesture in input.Gestures) {
+                if (single) { // if it is single player, just start the game
+                    if (Configuration.GAME_TEST) {
+                        LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(Configuration.DEF_GAME));
+                    } else {
+                        LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(game.ScreenType));
+                    }
+                    return;
+                }
+                
                 if (gesture.GestureType == GestureType.Tap && !done) {
                     done = true;
                     text = "Waiting for other players...";
@@ -102,9 +116,10 @@ namespace CritterCamp.Screens {
 
             sd.Draw(tutorial, new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 775));
             sd.DrawString(ScreenManager.Fonts["blueHighway28"], text, new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT - 150));
-            sd.DrawString(ScreenManager.Fonts["blueHighway28"], "Continuing in ", new Vector2(Constants.BUFFER_WIDTH / 2 - 30, Constants.BUFFER_HEIGHT - 225), Color.Black);
-            sd.DrawString(ScreenManager.Fonts["blueHighway28"], timeLeft.ToString(), new Vector2(Constants.BUFFER_WIDTH /2 + 130, Constants.BUFFER_HEIGHT - 225), Color.Black, false, true);
-
+            if (!single) { // it not single player, draw the timer information
+                sd.DrawString(ScreenManager.Fonts["blueHighway28"], "Continuing in ", new Vector2(Constants.BUFFER_WIDTH / 2 - 30, Constants.BUFFER_HEIGHT - 225), Color.Black);
+                sd.DrawString(ScreenManager.Fonts["blueHighway28"], timeLeft.ToString(), new Vector2(Constants.BUFFER_WIDTH / 2 + 130, Constants.BUFFER_HEIGHT - 225), Color.Black, false, true);
+            }
             sd.End();
         }
     }
