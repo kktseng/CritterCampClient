@@ -19,8 +19,8 @@ namespace CritterCamp.Screens {
         int iconStartY = Constants.BUFFER_HEIGHT * 4/10 - 50;
         int iconSpace = 175;
         int iconSize = 128;
-        int middleIconX = Constants.BUFFER_WIDTH * 3/4 - 80;
-        int middlePlayers = 460;
+        int middleIconX = Constants.BUFFER_WIDTH * 3/4 - 20;
+        int middlePlayers = 465;
         Vector2 iconSizeVector;
         bool voted = false;
         Dictionary<string, PlayerData> players;
@@ -33,7 +33,7 @@ namespace CritterCamp.Screens {
         Label timeLeftNumber;
         Label messageLabel;
 
-        public VotingScreen() : base("Voting", "paperBG") {}
+        public VotingScreen() : base("Voting") {}
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
@@ -117,8 +117,8 @@ namespace CritterCamp.Screens {
 
             mainView.AddElement(voteMenu);
 
-            BorderedView playersView = new BorderedView(new Vector2(750, 875), new Vector2(middlePlayers, 540));
-            float playersX = 225;
+            BorderedView playersView = new BorderedView(new Vector2(890, 875), new Vector2(middlePlayers, 540));
+            float playersX = 175;
             float playersY = 540 - 825 * 3 / 8;
             float spacing = (875 - 50) / 4;
             PlayerData myData = (PlayerData)CoreApplication.Properties["myPlayerData"];
@@ -127,7 +127,7 @@ namespace CritterCamp.Screens {
                 playerAvatar.DrawProfileData = true;
                 if (myData.username == p.username) {
                     // drawing our own avatar. put it in a view so we can highlight it yellow
-                    BorderedView yellowHighlight = new BorderedView(new Vector2(700, spacing), new Vector2(middlePlayers, playersY));
+                    BorderedView yellowHighlight = new BorderedView(new Vector2(840, spacing), new Vector2(middlePlayers, playersY));
                     yellowHighlight.BorderColor = Constants.YellowHighlight; // set the border color to yellow
                     yellowHighlight.DrawFill = false; // don't draw the fill color
                     yellowHighlight.AddElement(playerAvatar);

@@ -72,14 +72,13 @@ namespace CritterCamp.Screens {
             FullProfileLevel.Font = "buttonFont";
             FullProfileMoney.Font = "buttonFont";
 
-            FullProfileName.Scale = 0.55f;
+            FullProfileName.Scale = 0.6f;
             FullProfileLevel.Scale = 0.5f;
             FullProfileMoney.Scale = 0.5f;
 
             ProfileName.CenterX = false;
             ProfileLevel.CenterX = false;
             ProfileLevel.Scale = 0.8f;
-
         }
 
         /// <summary>
@@ -89,10 +88,20 @@ namespace CritterCamp.Screens {
             Avatar.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
 
             if (DrawFullProfileData) {
+                if(MyScreenManager.Fonts[FullProfileName.Font].MeasureString(FullProfileName.Text).X > 500) {
+                    FullProfileName.Scale = 0.5f;
+                } else {
+                    FullProfileName.Scale = 0.6f;
+                }
                 FullProfileName.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
                 FullProfileLevel.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
                 //FullProfileMoney.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
             } else if (DrawProfileData) {
+                if(MyScreenManager.Fonts[ProfileName.Font].MeasureString(ProfileName.Text).X > 500) {
+                    ProfileName.Scale = 0.7f;
+                } else {
+                    ProfileName.Scale = 0.8f;
+                }
                 ProfileName.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
                 ProfileLevel.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
             }

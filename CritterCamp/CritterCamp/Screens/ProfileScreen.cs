@@ -154,7 +154,7 @@ namespace CritterCamp.Screens {
 
             if (dataToDisplay.username == myData.username) {
                 // displaying our own profile. display the critters we can use
-                Label critters = new Label("Unlocked Critters", new Vector2(920, 150));
+                Label critters = new Label("Unlocked Critters", new Vector2(905, 150));
                 critters.CenterX = false;
                 critters.Font = "buttonFont";
                 critters.Scale = 0.6f;
@@ -176,12 +176,12 @@ namespace CritterCamp.Screens {
                     newIcon.Tapped += iconButton_Tapped;
 
                     BorderedView yellowHighlight = new BorderedView(new Vector2(190, 190), new Vector2(startX, startY));
-                    yellowHighlight.BorderWidth = 11;
+                    yellowHighlight.BorderWidth = 7;
                     if (pd.ServerName == myData.profile) {
                         yellowHighlight.FillColor = Constants.YellowHighlight; // set the border color to yellow
                         currentYellowHighlight = yellowHighlight;
                     } else {
-                        yellowHighlight.FillColor = Constants.Brown;
+                        yellowHighlight.FillColor = new Color(142, 101, 79);
                     }
                     yellowHighlight.AddElement(newIcon);
                     yellowHighlight.Disabled = false;
@@ -209,7 +209,7 @@ namespace CritterCamp.Screens {
             avatar.PlayerDataInfo = myData;
             homeScreen.updatePlayerData();
 
-            currentYellowHighlight.FillColor = Constants.Brown;
+            currentYellowHighlight.FillColor = new Color(142, 101, 79);
             BorderedView selectedIcon = (BorderedView)e.ObjectArgExtra1;
             selectedIcon.FillColor = Constants.YellowHighlight;
             currentYellowHighlight = selectedIcon;
