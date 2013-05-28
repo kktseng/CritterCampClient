@@ -203,20 +203,24 @@ namespace CritterCamp.Screens.Games {
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
             if(phase == Phase.Sync) {
-                // sync with all users before starting
-                Sync((JArray data, double rand) => {
-                    foreach(string name in playerData.Keys) {
-                        bool found = false;
-                        foreach(JToken tok in data) {
-                            if((string)tok == name)
-                                found = true;
+                if(!singlePlayer) {
+                    // sync with all users before starting
+                    Sync((JArray data, double rand) => {
+                        foreach(string name in playerData.Keys) {
+                            bool found = false;
+                            foreach(JToken tok in data) {
+                                if((string)tok == name)
+                                    found = true;
+                            }
+                            if(!found)
+                                RemovePlayer(name);
                         }
-                        if(!found)
-                            RemovePlayer(name);
-                    }
+                        phase = Phase.Begin;
+                    }, playerName);
+                    phase = Phase.Limbo;
+                } else {
                     phase = Phase.Begin;
-                }, playerName);
-                phase = Phase.Limbo;
+                }
             } else if(phase == Phase.Limbo) {
                 // do nothing while we wait for sync
             } else if(phase == Phase.Begin) {
