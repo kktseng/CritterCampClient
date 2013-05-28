@@ -129,9 +129,9 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
         public override void Draw(SpriteDrawer sd) {
             // draw line
             for(int i = 0; i < Coord.Y - Constants.BUFFER_SPRITE_DIM / 2; i += Constants.BUFFER_SPRITE_DIM) {
-                sd.Draw(GetImg(), new Vector2(Coord.X, i), (int)TextureData.fishingTextures.line);
+                sd.Draw(GetImg(), new Vector2(Coord.X, i), (int)TextureData.fishingTextures.line, align: true);
             }
-            sd.Draw(GetImg(), new Vector2(Coord.X, Coord.Y - 10 - Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.fishingTextures.line);
+            sd.Draw(GetImg(), new Vector2(Coord.X, Coord.Y - 10 - Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.fishingTextures.line, align: true);
             
             // draw sinker
             float scale = player.username == ((FishingFrenzyScreen)screen).playerName ? 1.5f : 1;

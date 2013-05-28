@@ -71,7 +71,7 @@ namespace CritterCamp.Screens.Games {
         protected int round = 1;
 
         public FishingFrenzyScreen(Dictionary<string, PlayerData> playerData)
-            : base(playerData) {
+            : base(playerData, true) {
             foreach(PlayerData pd in playerData.Values) {
                 scores.Add(pd.username, 0);
                 displayScore.Add(pd.username, 0);
@@ -117,17 +117,19 @@ namespace CritterCamp.Screens.Games {
                             // Play sound
                             soundList["swoosh"].Play();
 
-                            // Inform others about hook
-                            JObject packet = new JObject(
-                                new JProperty("action", "game"),
-                                new JProperty("name", "fishing_frenzy"),
-                                new JProperty("data", new JObject(
-                                    new JProperty("action", "hook"),
-                                    new JProperty("pos", (int)scaledPos.X),
-                                    new JProperty("time", (gameTime.TotalGameTime - baseline).Ticks)
-                                ))
-                            );
-                            conn.SendMessage(packet.ToString());
+                            if(!singlePlayer) {
+                                // Inform others about hook
+                                JObject packet = new JObject(
+                                    new JProperty("action", "game"),
+                                    new JProperty("name", "fishing_frenzy"),
+                                    new JProperty("data", new JObject(
+                                        new JProperty("action", "hook"),
+                                        new JProperty("pos", (int)scaledPos.X),
+                                        new JProperty("time", (gameTime.TotalGameTime - baseline).Ticks)
+                                    ))
+                                );
+                                conn.SendMessage(packet.ToString());
+                            }
                         }
                     }
                 }
@@ -150,17 +152,19 @@ namespace CritterCamp.Screens.Games {
 
                     // Check if player has won to display appropriate banner
                     string text = "YOU WIN!";
-                    foreach(int score in scores.Values) {
-                        if(score > scores[playerName]) {
+                    foreach(int s in scores.Values) {
+                        if(s > scores[playerName]) {
                             text = "GAME OVER";
                         }
                     }
+                    if(singlePlayer)
+                        text = "Score: " + score;
                     banner = new TextBanner(this, text);
                     phase = Phase.End;
                     return;
                 }
-                phaseFish(roundData[round - 1]);
                 phase = Phase.Limbo;
+                phaseFish(roundData[round - 1]);
             }
             if(phase == Phase.Limbo) {
                 // Do nothing and wait for the sync to finish
@@ -234,24 +238,28 @@ namespace CritterCamp.Screens.Games {
             } else if(phase == Phase.End) {
                 if(gameTime.TotalGameTime - baseline > BANNER_TIME) {
                     // send scores
-                    Dictionary<string, int> ranks = new Dictionary<string, int>();
-                    foreach(string name in playerData.Keys) {
-                        int rank = 1;
-                        foreach(int score in scores.Values) {
-                            if(score > scores[name])
-                                rank++;
+                    if(!singlePlayer) {
+                        Dictionary<string, int> ranks = new Dictionary<string, int>();
+                        foreach(string name in playerData.Keys) {
+                            int rank = 1;
+                            foreach(int s in scores.Values) {
+                                if(s > scores[name])
+                                    rank++;
+                            }
+                            ranks.Add(name, rank);
                         }
-                        ranks.Add(name, rank);
+                        JObject packet = new JObject(
+                            new JProperty("action", "group"),
+                            new JProperty("type", "report_score"),
+                            new JProperty("score", new JObject(
+                                from username in new List<string>(ranks.Keys)
+                                select new JProperty(username, ranks[username])
+                            ))
+                        );
+                        conn.SendMessage(packet.ToString());
+                    } else {
+                        scoreReceived = true;
                     }
-                    JObject packet = new JObject(
-                        new JProperty("action", "group"),
-                        new JProperty("type", "report_score"),
-                        new JProperty("score", new JObject(
-                            from username in new List<string>(ranks.Keys)
-                            select new JProperty(username, ranks[username])
-                        ))
-                    );
-                    conn.SendMessage(packet.ToString());
                     phase = Phase.Sleep;
                 }
             }
@@ -277,7 +285,8 @@ namespace CritterCamp.Screens.Games {
         // [ weighting, minDepth, maxDepth ]
         protected void phaseFish(double[,] weights) {
             List<int> fishRawData = new List<int>();
-            for(int i = 0; i < GEN_FISH_NUM; i++) {
+            int numToGenerate = singlePlayer ? GEN_FISH_NUM * 5 : GEN_FISH_NUM;
+            for(int i = 0; i < numToGenerate; i++) {
                 double temp = rand.NextDouble();
                 double sum = 0;
                 int fishType;
@@ -291,16 +300,24 @@ namespace CritterCamp.Screens.Games {
                 fishRawData.Add(rand.Next(0, 2));
                 fishRawData.Add(rand.Next(1, 10));
             }
-            Sync((JArray data, double random) => {
-                fishData = new List<FishData>();
-                foreach(JToken tok in data) {
-                    JArray array = JArray.Parse((string)tok);
-                    for(int i = 0; i < array.Count; i += 4) {
-                        fishData.Add(new FishData((int)array[i], (int)array[i + 1], (int)array[i + 2], FISH_SPACING * (double)array[i + 3]));
+            if(!singlePlayer) {
+                Sync((JArray data, double random) => {
+                    fishData = new List<FishData>();
+                    foreach(JToken tok in data) {
+                        JArray array = JArray.Parse((string)tok);
+                        for(int i = 0; i < array.Count; i += 4) {
+                            fishData.Add(new FishData((int)array[i], (int)array[i + 1], (int)array[i + 2], FISH_SPACING * (double)array[i + 3]));
+                        }
                     }
+                    phase = Phase.Base;
+                }, JsonConvert.SerializeObject(fishRawData));
+            } else {
+                fishData = new List<FishData>();
+                for(int i = 0; i < fishRawData.Count; i += 4) {
+                    fishData.Add(new FishData((int)fishRawData[i], (int)fishRawData[i + 1], (int)fishRawData[i + 2], FISH_SPACING * (double)fishRawData[i + 3]));
                 }
                 phase = Phase.Base;
-            }, JsonConvert.SerializeObject(fishRawData));
+            }
         }
 
         public override void RemovePlayer(string user) {
@@ -340,14 +357,14 @@ namespace CritterCamp.Screens.Games {
                 PlayerData pd = playerData.Values.ElementAt(i);
                 if(i < 2) {
                     sd.DrawPlayer(this, pd, new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7.5f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i, 125 + waveOffset), (int)TextureData.PlayerStates.walkRight1, spriteEffect: SpriteEffects.FlipHorizontally);
-                    sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i + 37, 110 + waveOffset), (int)TextureData.Doodads.fishingPole1, SpriteEffects.FlipHorizontally);
-                    sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i - 7, 110 + waveOffset - Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.fishingPole2, SpriteEffects.FlipHorizontally);
-                    sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i - 45, 110 + waveOffset - Constants.BUFFER_SPRITE_DIM * 2), (int)TextureData.Doodads.fishingPole2, SpriteEffects.FlipHorizontally);
+                    sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i + 37, 110 + waveOffset), (int)TextureData.Doodads.fishingPole1, SpriteEffects.FlipHorizontally, align: true);
+                    sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i - 7, 110 + waveOffset - Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.fishingPole2, SpriteEffects.FlipHorizontally, align: true);
+                    sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i - 45, 110 + waveOffset - Constants.BUFFER_SPRITE_DIM * 2), (int)TextureData.Doodads.fishingPole2, SpriteEffects.FlipHorizontally, align: true);
                 } else {
                     sd.DrawPlayer(this, pd, new Vector2((float)Constants.BUFFER_SPRITE_DIM * 6.5f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i, 125 + waveOffset), (int)TextureData.PlayerStates.walkRight1);
-                    sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i - 37, 110 + waveOffset), (int)TextureData.Doodads.fishingPole1);
-                    sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i + 7, 110 + waveOffset - Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.fishingPole2);
-                    sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i + 45, 110 + waveOffset - Constants.BUFFER_SPRITE_DIM * 2), (int)TextureData.Doodads.fishingPole2);
+                    sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i - 37, 110 + waveOffset), (int)TextureData.Doodads.fishingPole1, align: true);
+                    sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i + 7, 110 + waveOffset - Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.fishingPole2, align: true);
+                    sd.Draw(textureList["doodads"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 7f + (float)Constants.BUFFER_SPRITE_DIM * 2 * i + 45, 110 + waveOffset - Constants.BUFFER_SPRITE_DIM * 2), (int)TextureData.Doodads.fishingPole2, align: true);
                 }
             }
 
@@ -355,25 +372,25 @@ namespace CritterCamp.Screens.Games {
             DrawActors(sd);
 
             // Draw the boat
-            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 4.5f, (float)Constants.BUFFER_SPRITE_DIM * 1.5f + waveOffset), (int)TextureData.fishingTextures.boat1);
-            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 4.5f, (float)Constants.BUFFER_SPRITE_DIM * 2.5f + waveOffset), (int)TextureData.fishingTextures.boat2);
-            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 5.5f, (float)Constants.BUFFER_SPRITE_DIM * 1.5f + waveOffset), (int)TextureData.fishingTextures.boat3);
-            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 5.5f, (float)Constants.BUFFER_SPRITE_DIM * 2.5f + waveOffset), (int)TextureData.fishingTextures.boat4);
-            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 5.5f, (float)Constants.BUFFER_SPRITE_DIM * 3.5f + waveOffset), (int)TextureData.fishingTextures.boat5);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 4.5f, (float)Constants.BUFFER_SPRITE_DIM * 1.5f + waveOffset), (int)TextureData.fishingTextures.boat1, align: true);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 4.5f, (float)Constants.BUFFER_SPRITE_DIM * 2.5f + waveOffset), (int)TextureData.fishingTextures.boat2, align: true);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 5.5f, (float)Constants.BUFFER_SPRITE_DIM * 1.5f + waveOffset), (int)TextureData.fishingTextures.boat3, align: true);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 5.5f, (float)Constants.BUFFER_SPRITE_DIM * 2.5f + waveOffset), (int)TextureData.fishingTextures.boat4, align: true);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 5.5f, (float)Constants.BUFFER_SPRITE_DIM * 3.5f + waveOffset), (int)TextureData.fishingTextures.boat5, align: true);
             for(int i = 0; i < 8; i++) {
-                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 2.5f + waveOffset), (int)TextureData.fishingTextures.boat7);
-                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 3.5f + waveOffset), (int)TextureData.fishingTextures.boat8);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 2.5f + waveOffset), (int)TextureData.fishingTextures.boat7, align: true);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 3.5f + waveOffset), (int)TextureData.fishingTextures.boat8, align: true);
                 if((i < 4 && i % 2 == 0) || (i > 4 && i % 2 == 1)) {
-                    sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 1.5f + waveOffset), (int)TextureData.fishingTextures.boat6);                 
+                    sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 1.5f + waveOffset), (int)TextureData.fishingTextures.boat6, align: true);                 
                 } else {
-                    sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 1.5f + waveOffset), (int)TextureData.fishingTextures.boat9);
+                    sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 1.5f + waveOffset), (int)TextureData.fishingTextures.boat9, align: true);
                 }
             }
-            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 15.5f, (float)Constants.BUFFER_SPRITE_DIM * 1.5f + waveOffset), (int)TextureData.fishingTextures.boat1, SpriteEffects.FlipHorizontally);
-            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 15.5f, (float)Constants.BUFFER_SPRITE_DIM * 2.5f + waveOffset), (int)TextureData.fishingTextures.boat2, SpriteEffects.FlipHorizontally);
-            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 14.5f, (float)Constants.BUFFER_SPRITE_DIM * 1.5f + waveOffset), (int)TextureData.fishingTextures.boat3, SpriteEffects.FlipHorizontally);
-            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 14.5f, (float)Constants.BUFFER_SPRITE_DIM * 2.5f + waveOffset), (int)TextureData.fishingTextures.boat4, SpriteEffects.FlipHorizontally);
-            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 14.5f, (float)Constants.BUFFER_SPRITE_DIM * 3.5f + waveOffset), (int)TextureData.fishingTextures.boat5, SpriteEffects.FlipHorizontally);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 15.5f, (float)Constants.BUFFER_SPRITE_DIM * 1.5f + waveOffset), (int)TextureData.fishingTextures.boat1, SpriteEffects.FlipHorizontally, align: true);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 15.5f, (float)Constants.BUFFER_SPRITE_DIM * 2.5f + waveOffset), (int)TextureData.fishingTextures.boat2, SpriteEffects.FlipHorizontally, align: true);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 14.5f, (float)Constants.BUFFER_SPRITE_DIM * 1.5f + waveOffset), (int)TextureData.fishingTextures.boat3, SpriteEffects.FlipHorizontally, align: true);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 14.5f, (float)Constants.BUFFER_SPRITE_DIM * 2.5f + waveOffset), (int)TextureData.fishingTextures.boat4, SpriteEffects.FlipHorizontally, align: true);
+            sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 14.5f, (float)Constants.BUFFER_SPRITE_DIM * 3.5f + waveOffset), (int)TextureData.fishingTextures.boat5, SpriteEffects.FlipHorizontally, align: true);
 
             // Draw all fish not hooked
             foreach(Fish f in fishies) {
@@ -388,14 +405,14 @@ namespace CritterCamp.Screens.Games {
             // Draw the waves
             int offset = (int)(gameTime.TotalGameTime.TotalMilliseconds / 10) % (Constants.BUFFER_SPRITE_DIM * 4);
             for(int i = -1; i < 6; i++) {
-                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f) + offset, (float)Constants.BUFFER_SPRITE_DIM * 2.5f), (int)TextureData.fishingTextures.wave1);
-                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f) + offset, (float)Constants.BUFFER_SPRITE_DIM * 3.5f), (int)TextureData.fishingTextures.wave2);
-                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 1) + offset, (float)Constants.BUFFER_SPRITE_DIM * 2.5f), (int)TextureData.fishingTextures.wave3);
-                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 1) + offset, (float)Constants.BUFFER_SPRITE_DIM * 3.5f), (int)TextureData.fishingTextures.wave4);
-                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 2) + offset, (float)Constants.BUFFER_SPRITE_DIM * 2.5f), (int)TextureData.fishingTextures.wave5);
-                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 2) + offset, (float)Constants.BUFFER_SPRITE_DIM * 3.5f), (int)TextureData.fishingTextures.wave6);
-                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 3) + offset, (float)Constants.BUFFER_SPRITE_DIM * 2.5f), (int)TextureData.fishingTextures.wave7);
-                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 3) + offset, (float)Constants.BUFFER_SPRITE_DIM * 3.5f), (int)TextureData.fishingTextures.wave8);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f) + offset, (float)Constants.BUFFER_SPRITE_DIM * 2.5f), (int)TextureData.fishingTextures.wave1, align: true);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f) + offset, (float)Constants.BUFFER_SPRITE_DIM * 3.5f), (int)TextureData.fishingTextures.wave2, align: true);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 1) + offset, (float)Constants.BUFFER_SPRITE_DIM * 2.5f), (int)TextureData.fishingTextures.wave3, align: true);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 1) + offset, (float)Constants.BUFFER_SPRITE_DIM * 3.5f), (int)TextureData.fishingTextures.wave4, align: true);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 2) + offset, (float)Constants.BUFFER_SPRITE_DIM * 2.5f), (int)TextureData.fishingTextures.wave5, align: true);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 2) + offset, (float)Constants.BUFFER_SPRITE_DIM * 3.5f), (int)TextureData.fishingTextures.wave6, align: true);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 3) + offset, (float)Constants.BUFFER_SPRITE_DIM * 2.5f), (int)TextureData.fishingTextures.wave7, align: true);
+                sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (i * 4f + 3) + offset, (float)Constants.BUFFER_SPRITE_DIM * 3.5f), (int)TextureData.fishingTextures.wave8, align: true);
             }
 
             // Draw hooks and hooked fish

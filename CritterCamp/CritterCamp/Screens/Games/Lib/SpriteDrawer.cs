@@ -107,13 +107,17 @@ namespace CritterCamp.Screens.Games.Lib {
              
         }
 
-        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect, SpriteEffects effect, Color color, float spriteRotation = 0, float spriteScale = 1f, bool cache = false) {
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect, SpriteEffects effect, Color color, float spriteRotation = 0, float spriteScale = 1f, bool cache = false, bool align = false) {
             // Check to see if sprites are in bounds
             if(coord.X >= -spriteDim.X / drawScale.X && coord.X < Constants.BUFFER_WIDTH + spriteDim.X / drawScale.X && coord.Y >= -spriteDim.Y / drawScale.Y && coord.Y < Constants.BUFFER_HEIGHT + spriteDim.Y / drawScale.Y) {      
                 SpriteBatch sb = sm.SpriteBatch;
-
-                coord = new Vector2((float)(Math.Floor(coord.X)), (float)(Math.Floor(coord.Y)));
-                coord = CoordConverter(coord, cache);
+                if(!align) {
+                    coord += new Vector2(0, offset);
+                    coord /= coordScale;
+                } else {
+                    coord = new Vector2((float)(Math.Floor(coord.X)), (float)(Math.Floor(coord.Y)));
+                    coord = CoordConverter(coord, cache);
+                }
 
                 // Fix coordinates for landscape
                 if(Constants.ROTATION != 0)
@@ -127,28 +131,28 @@ namespace CritterCamp.Screens.Games.Lib {
             }
         }
 
-        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect, SpriteEffects effect, float spriteRotation = 0, float spriteScale = 1f, bool cache = false) {
-            Draw(texture, coord, spriteNum, spriteDim, rect, effect, Color.White, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache);
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect, SpriteEffects effect, float spriteRotation = 0, float spriteScale = 1f, bool cache = false, bool align = false) {
+            Draw(texture, coord, spriteNum, spriteDim, rect, effect, Color.White, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache, align: align);
         }
 
-        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, float spriteRotation = 0, float spriteScale = 1f, bool cache = false, SpriteEffects effect = SpriteEffects.None) {
-            Draw(texture, coord, spriteNum, spriteDim, new Rectangle(0, 0, (int)spriteDim.X, (int)spriteDim.Y), effect, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache);
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, float spriteRotation = 0, float spriteScale = 1f, bool cache = false, bool align = false, SpriteEffects effect = SpriteEffects.None) {
+            Draw(texture, coord, spriteNum, spriteDim, new Rectangle(0, 0, (int)spriteDim.X, (int)spriteDim.Y), effect, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache, align: align);
         }
 
-        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Color color, float spriteRotation = 0, float spriteScale = 1f, bool cache = false) {
-            Draw(texture, coord, spriteNum, sprite_dim, new Rectangle(0, 0, (int)sprite_dim.X, (int)sprite_dim.Y), SpriteEffects.None, color, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache);
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Color color, float spriteRotation = 0, float spriteScale = 1f, bool cache = false, bool align = false) {
+            Draw(texture, coord, spriteNum, sprite_dim, new Rectangle(0, 0, (int)sprite_dim.X, (int)sprite_dim.Y), SpriteEffects.None, color, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache, align: align);
         }
 
-        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Rectangle rect, float spriteRotation = 0, float spriteScale = 1f, bool cache = false) {
-            Draw(texture, coord, spriteNum, sprite_dim, rect, SpriteEffects.None, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache);
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Rectangle rect, float spriteRotation = 0, float spriteScale = 1f, bool cache = false, bool align = false) {
+            Draw(texture, coord, spriteNum, sprite_dim, rect, SpriteEffects.None, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache, align: align);
         }
 
-        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, SpriteEffects effect, float spriteRotation = 0, float spriteScale = 1f, bool cache = false) {
-            Draw(texture, coord, spriteNum, sprite_dim, effect: effect, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache);
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, SpriteEffects effect, float spriteRotation = 0, float spriteScale = 1f, bool cache = false, bool align = false) {
+            Draw(texture, coord, spriteNum, sprite_dim, effect: effect, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache, align: align);
         }
 
-        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, float spriteRotation = 0, float spriteScale = 1f, bool cache = false) {
-            Draw(texture, coord, spriteNum, sprite_dim, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache);
+        public void Draw(Texture2D texture, Vector2 coord, int spriteNum, float spriteRotation = 0, float spriteScale = 1f, bool cache = false, bool align = false) {
+            Draw(texture, coord, spriteNum, sprite_dim, spriteRotation: spriteRotation, spriteScale: spriteScale, cache: cache, align: align);
         }
 
         public void Draw2X(Texture2D texture, Vector2 coord, int spriteNum) {

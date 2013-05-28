@@ -37,7 +37,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
             MIN_FLY_ENTER,
             (int)(Constants.BUFFER_SPRITE_DIM),
             MAX_FLY_ENTER - MIN_FLY_ENTER,
-            (int)(Constants.BUFFER_HEIGHT - Constants.BUFFER_SPRITE_DIM * 3.5f)
+            (int)(Constants.BUFFER_HEIGHT - Constants.BUFFER_SPRITE_DIM * 4f)
         );
 
         private static Rectangle[] areas = new Rectangle[] {
@@ -192,6 +192,7 @@ namespace CritterCamp.Screens.Games.JetpackJamboree {
                     Coord = Coord + new Vector2(0, areas[color].Y - Coord.Y + 40);
                 if(testCoord.Y >= areas[color].Y + areas[color].Height - 60)
                     Coord = Coord - new Vector2(0, Coord.Y - areas[color].Y - areas[color].Height + 40);
+                screen.score++;
                 return true;
             } else {
                 Coord = old_pos;

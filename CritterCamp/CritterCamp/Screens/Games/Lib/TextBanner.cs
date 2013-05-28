@@ -31,13 +31,13 @@ namespace CritterCamp.Screens.Games.Lib {
             float offset = (numTiles % 2 == 0) ? numTiles / 2 * Constants.BUFFER_SPRITE_DIM : (numTiles / 2 + 0.5f) * (float)Constants.BUFFER_SPRITE_DIM;
             offset += Constants.BUFFER_SPRITE_DIM / 2;
 
-            sd.Draw(screen.textureList["doodads"], coord - new Vector2(offset, Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.Doodads.signTopLeft, cache: true);
-            sd.Draw(screen.textureList["doodads"], coord - new Vector2(offset, -Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.Doodads.signBtmLeft, cache: true);
-            sd.Draw(screen.textureList["doodads"], coord + new Vector2(offset, -Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.Doodads.signTopRight, cache: true);
-            sd.Draw(screen.textureList["doodads"], coord + new Vector2(offset, Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.Doodads.signBtmRight, cache: true);
+            sd.Draw(screen.textureList["doodads"], coord - new Vector2(offset, Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.Doodads.signTopLeft, cache: true, align: true);
+            sd.Draw(screen.textureList["doodads"], coord - new Vector2(offset, -Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.Doodads.signBtmLeft, cache: true, align: true);
+            sd.Draw(screen.textureList["doodads"], coord + new Vector2(offset, -Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.Doodads.signTopRight, cache: true, align: true);
+            sd.Draw(screen.textureList["doodads"], coord + new Vector2(offset, Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.Doodads.signBtmRight, cache: true, align: true);
             for(int i = 1; i <= numTiles; i++) {
-                sd.Draw(screen.textureList["doodads"], coord - new Vector2(offset - Constants.BUFFER_SPRITE_DIM * i, Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.Doodads.signTopMid, cache: true);
-                sd.Draw(screen.textureList["doodads"], coord - new Vector2(offset - Constants.BUFFER_SPRITE_DIM * i, -Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.Doodads.signBtmMid, cache: true);
+                sd.Draw(screen.textureList["doodads"], coord - new Vector2(offset - Constants.BUFFER_SPRITE_DIM * i, Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.Doodads.signTopMid, cache: true, align: true);
+                sd.Draw(screen.textureList["doodads"], coord - new Vector2(offset - Constants.BUFFER_SPRITE_DIM * i, -Constants.BUFFER_SPRITE_DIM / 2), (int)TextureData.Doodads.signBtmMid, cache: true, align: true);
             }
             sd.DrawString(font, text, coord);
         }

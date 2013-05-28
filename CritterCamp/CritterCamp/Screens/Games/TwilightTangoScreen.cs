@@ -21,7 +21,7 @@ namespace CritterCamp.Screens.Games {
     }
 
     class TwilightTangoScreen : BaseGameScreen {
-        public static int MAX_ROUNDS = 10;
+        public static int MAX_ROUNDS = 11;
         public static int COMMAND_INCR = 1;
         public static int COMMAND_INIT = 4;
 
@@ -65,7 +65,7 @@ namespace CritterCamp.Screens.Games {
         private TimeSpan timer;
 
         public TwilightTangoScreen(Dictionary<string, PlayerData> playerData)
-            : base(playerData) {
+            : base(playerData, true) {
             currentRank = playerData.Count;
             for(int i = 0; i < playerData.Values.Count; i++) {
                 PlayerData data = playerData.Values.ElementAt(i);
@@ -153,21 +153,31 @@ namespace CritterCamp.Screens.Games {
                         for(int i = 0; i < 20; i++) {
                             commands.Add(rand.Next(0, 4));
                         }
-                        // Send ready packet to sync before starting
-                        Sync((JArray data, double random) => {
+                        if(singlePlayer) {
                             RemoveActor(commandList);
-                            //foreach(JToken commandArray in data) {
-                            JToken commandArray = data[0]; // Temporary hack
-                            JArray a = JArray.Parse((string)commandArray);
                             for(int i = 0; i < commandNum; i++) {
-                                commandList.Add(new Arrow(this, (Direction)(int)a[i], textureList["twilight"], new Vector2(200 + 250 * (i % 7), 200 + 250 * (i / 7)), 1.4f));
+                                commandList.Add(new Arrow(this, (Direction)(int)commands[i], textureList["twilight"], new Vector2(200 + 250 * (i % 7), 200 + 250 * (i / 7)), 1.4f));
                                 commandList[commandList.Count - 1].Visible = false;
-
                             }
-                            //}
                             start = gameTime.TotalGameTime;
                             phase = Phase.Commands;
-                        }, JsonConvert.SerializeObject(commands));
+                        } else {
+                            // Send ready packet to sync before starting
+                            Sync((JArray data, double random) => {
+                                RemoveActor(commandList);
+                                //foreach(JToken commandArray in data) {
+                                JToken commandArray = data[0]; // Temporary hack
+                                JArray a = JArray.Parse((string)commandArray);
+                                for(int i = 0; i < commandNum; i++) {
+                                    commandList.Add(new Arrow(this, (Direction)(int)a[i], textureList["twilight"], new Vector2(200 + 250 * (i % 7), 200 + 250 * (i / 7)), 1.4f));
+                                    commandList[commandList.Count - 1].Visible = false;
+
+                                }
+                                //}
+                                start = gameTime.TotalGameTime;
+                                phase = Phase.Commands;
+                            }, JsonConvert.SerializeObject(commands));
+                        }
                         syncing = true;
                     }
                 }
@@ -221,7 +231,7 @@ namespace CritterCamp.Screens.Games {
                 }
             } else if(phase == Phase.Dancing) {
                 // Check for LMS
-                if(currentRank == 1) {
+                if(currentRank == 1 && !singlePlayer) {
                     foreach(Player p in players.Values) {
                         if(p.health > 0)
                             p.rank = 1;
@@ -260,6 +270,7 @@ namespace CritterCamp.Screens.Games {
                                 }
                             } else if(s == playerName) {
                                 soundList["ding"].Play();
+                                score++;
                                 inputArrows.ElementAt(currentMove).State = ArrowStates.Green;
                             }
                             p.State = PlayerDanceStates.DanceLeft + (int)p.input[currentMove];
@@ -292,41 +303,54 @@ namespace CritterCamp.Screens.Games {
                 // Exit game when max number of rounds have been reached or a winner has been reached
                 start = gameTime.TotalGameTime;
                 if(++rounds >= MAX_ROUNDS) {
-                    List<Player> sortedPlayers = new List<Player>(players.Values);
-                    sortedPlayers.Sort();
-                    int lastHealth = 0, tieCount = 0;
-                    for(int i = 0; i < sortedPlayers.Count; i++) {
-                        if(sortedPlayers[i].health > 0) {
-                            if(lastHealth == sortedPlayers[i].health) {
-                                tieCount++;
-                            } else {
-                                tieCount = 0;
+                    if(singlePlayer) {
+                        rounds--;
+                        phase = Phase.Sync;
+                    } else {
+                        List<Player> sortedPlayers = new List<Player>(players.Values);
+                        sortedPlayers.Sort();
+                        int lastHealth = 0, tieCount = 0;
+                        for(int i = 0; i < sortedPlayers.Count; i++) {
+                            if(sortedPlayers[i].health > 0) {
+                                if(lastHealth == sortedPlayers[i].health) {
+                                    tieCount++;
+                                } else {
+                                    tieCount = 0;
+                                }
+                                sortedPlayers[i].rank = i + 1 - tieCount;
+                                lastHealth = sortedPlayers[i].health;
                             }
-                            sortedPlayers[i].rank = i + 1 - tieCount;
-                            lastHealth = sortedPlayers[i].health;
                         }
+                        phase = Phase.GameOver;
                     }
-                    phase = Phase.GameOver;
                 } else {
                     commandNum += COMMAND_INCR;
                     phase = Phase.Sync;
                 }
             } else if(phase == Phase.GameOver) {
                 if(banner == null) {
-                    string bannerText = (players[playerName].rank == 1) ? "YOU WIN!" : "GAME OVER";
+                    string bannerText;
+                    if(singlePlayer)
+                        bannerText = "SCORE: " + score;
+                    else
+                        bannerText = (players[playerName].rank == 1) ? "YOU WIN!" : "GAME OVER";
                     banner = new TextBanner(this, bannerText);
                 }
                 if((gameTime.TotalGameTime - start) > BANNER_TIME) {
-                    // Sync scores
-                    JObject packet = new JObject(
-                        new JProperty("action", "group"),
-                        new JProperty("type", "report_score"),
-                        new JProperty("score", new JObject(
-                            from username in new List<string>(players.Keys)
-                            select new JProperty(username, players[username].rank)
-                        ))
-                    );
-                    conn.SendMessage(packet.ToString());
+                    if(singlePlayer) {
+                        scoreReceived = true;
+                    } else {
+                        // Sync scores
+                        JObject packet = new JObject(
+                            new JProperty("action", "group"),
+                            new JProperty("type", "report_score"),
+                            new JProperty("score", new JObject(
+                                from username in new List<string>(players.Keys)
+                                select new JProperty(username, players[username].rank)
+                            ))
+                        );
+                        conn.SendMessage(packet.ToString());
+                    }
                     phase = Phase.Sleep;
                 }
             } else if(phase == Phase.Sleep) {
@@ -391,16 +415,18 @@ namespace CritterCamp.Screens.Games {
                     players[playerName].input.Add(command);
                     inputArrows.Add(new Arrow(this, command, textureList["twilight"], new Vector2(150 + 120 * numArrows, 150), 1f));
 
-                    // Send the command information to the server
-                    JObject packet = new JObject(
-                        new JProperty("action", "game"),
-                        new JProperty("name", "twilight_tango"),
-                        new JProperty("data", new JObject(
-                            new JProperty("action", "command"),
-                            new JProperty("commands", players[playerName].input.Cast<int>().ToList())
-                        ))
-                    );
-                    conn.SendMessage(packet.ToString());
+                    if(!singlePlayer) {
+                        // Send the command information to the server
+                        JObject packet = new JObject(
+                            new JProperty("action", "game"),
+                            new JProperty("name", "twilight_tango"),
+                            new JProperty("data", new JObject(
+                                new JProperty("action", "command"),
+                                new JProperty("commands", players[playerName].input.Cast<int>().ToList())
+                            ))
+                        );
+                        conn.SendMessage(packet.ToString());
+                    }
                 }
             }
         }

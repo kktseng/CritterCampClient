@@ -52,12 +52,12 @@ namespace CritterCamp.Screens.Games.FishingFrenzy {
             // going left
             if(State) {
                 for(int i = 0; i < spriteCount; i++) {
-                    sd.Draw(GetImg(), Coord + new Vector2(Constants.BUFFER_SPRITE_DIM * (i / 2), Constants.BUFFER_SPRITE_DIM * (i % 2)), GetNum() + i, GetFrame().Value.effect);
+                    sd.Draw(GetImg(), Coord + new Vector2(Constants.BUFFER_SPRITE_DIM * (i / 2), Constants.BUFFER_SPRITE_DIM * (i % 2)), GetNum() + i, GetFrame().Value.effect, align: true);
                 }
             // going right
             } else {
                 for(int i = 0; i < spriteCount; i++) {
-                    sd.Draw(GetImg(), Coord + new Vector2(-Constants.BUFFER_SPRITE_DIM * (i / 2), Constants.BUFFER_SPRITE_DIM * (i % 2)), GetNum() + i, GetFrame().Value.effect);
+                    sd.Draw(GetImg(), Coord + new Vector2(-Constants.BUFFER_SPRITE_DIM * (i / 2), Constants.BUFFER_SPRITE_DIM * (i % 2)), GetNum() + i, GetFrame().Value.effect, align: true);
                 }
             }
         }

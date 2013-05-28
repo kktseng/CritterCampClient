@@ -27,7 +27,7 @@ namespace CritterCamp.Screens.Games.TwilightTango {
             : base(screen, "pig", coord) {
             input = new List<Direction>();
             State = PlayerDanceStates.Standing;
-            health = 5;
+            health = screen.singlePlayer ? 9 : 5;
             maxCycles = 1;
             this.player = player;
         }
@@ -56,7 +56,7 @@ namespace CritterCamp.Screens.Games.TwilightTango {
 
         public override void Draw(SpriteDrawer sd) {
             for(int i = 0; i < health; i++) {
-                sd.DrawPlayer(screen, player, Coord + new Vector2((100 * (i % 3)) + ((i / 3) * 50), (i / 3) * 65), GetNum(), spriteEffect: GetFrame().Value.effect);
+                sd.DrawPlayer(screen, player, Coord + new Vector2((100 * (i % (health / 2 + 1)) + (i / (health / 2 + 1)) * 50), (i / (health / 2 + 1)) * 65), GetNum(), spriteEffect: GetFrame().Value.effect);
             }
         }
 

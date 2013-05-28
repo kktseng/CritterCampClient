@@ -40,6 +40,7 @@ namespace CritterCamp.Screens.Games {
 
         public string playerName = (string)CoreApplication.Properties["username"];
         public Dictionary<string, PlayerData> playerData;
+        public bool singlePlayer;
 
         protected ContentManager cm;
         protected Random rand = new Random();
@@ -49,10 +50,12 @@ namespace CritterCamp.Screens.Games {
         protected List<IAnimatedObject> toAdd = new List<IAnimatedObject>();
         protected List<IAnimatedObject> toRemove = new List<IAnimatedObject>();
 
+        public int score = 0; // for single player
         protected bool scoreReceived = false; // We can't exit immediately due to race conditions
 
-        public BaseGameScreen(Dictionary<string, PlayerData> playerData) : base(true) {
+        public BaseGameScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer) : base(true) {
             this.playerData = playerData;
+            this.singlePlayer = singlePlayer;
         }
 
         public Random Rand {
@@ -213,7 +216,11 @@ namespace CritterCamp.Screens.Games {
             // If the score has already been received, it's time to quit
             if(scoreReceived) {
                 ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
-                LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(ScoreScreen)));
+                if(singlePlayer) {
+                    LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(HomeScreen)));
+                } else {
+                    LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(ScoreScreen)));
+                }
                 return;
             }
             UpdateActors(gameTime);
