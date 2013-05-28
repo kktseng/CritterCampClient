@@ -326,11 +326,14 @@
     <Content Include="Content\color.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\profileBgSample.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Content\Sounds\fbIcon.xnb" />
     <None Include="Content\Sounds\twitterIcon.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Content\standing.xnb">
+    <None Include="Content\avatars.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\twitterIcon.xnb">

@@ -133,10 +133,10 @@ namespace GameStateManagement {
             }
             string[] textureNames = new string[] {
                 "paperBG", "bgScreen",
-                "gameIcons", "scoreScreenIcons", "scorePanel",
+                "gameIcons", "scoreScreenIcons", "scorePanel", "profileBgSample",
                 "backButton", "buttonMint",  "buttonGreen", "buttonSoundOn", "buttonSoundOff",
                 "whitePixel", "buttonProfile",
-                "standing", "pig"
+                "avatars", "pig"
             };
             for(int i = 0; i < textureNames.Length; i++) {
                 textures[textureNames[i]] = content.Load<Texture2D>(textureNames[i]);

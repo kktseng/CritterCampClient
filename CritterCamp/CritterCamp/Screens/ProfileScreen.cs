@@ -75,6 +75,11 @@ namespace CritterCamp.Screens {
             profileAvatar.FillColor = Constants.DarkBrown;
             profilePage.AddElement(profileAvatar);
 
+            Image profileBackground = new Image("profileBgSample", 0);
+            profileBackground.Position = new Vector2(leftX, 315);
+            profileBackground.Size = new Vector2(483, 318);
+            profileAvatar.AddElement(profileBackground);
+
             // the view to draw our information
             profileInfo = new BorderedView(new Vector2(leftXSize, 300), new Vector2(leftX, 715));
             profileInfo.DrawFill = false;
@@ -86,7 +91,7 @@ namespace CritterCamp.Screens {
             search.Visible = false;
             //profilePage.AddElement(search);
             // the view for the critters or for add friend/add to party button
-            profileMain = new BorderedView(new Vector2(rightXSize, 780), new Vector2(rightX, 475));
+            profileMain = new BorderedView(new Vector2(rightXSize, 790), new Vector2(rightX, 469));
             profileMain.DrawFill = false;
             profileMain.BorderColor = Constants.Brown;
             profileMain.Disabled = false;
@@ -149,7 +154,7 @@ namespace CritterCamp.Screens {
 
             if (dataToDisplay.username == myData.username) {
                 // displaying our own profile. display the critters we can use
-                Label critters = new Label("Critters", new Vector2(900, 150));
+                Label critters = new Label("Unlocked Critters", new Vector2(920, 150));
                 critters.CenterX = false;
                 critters.Font = "buttonFont";
                 critters.Scale = 0.6f;
@@ -162,7 +167,7 @@ namespace CritterCamp.Screens {
                 foreach (string prof in unlockedProfiles) {
                     ProfileData pd = ProfileConstants.GetProfileData(prof);
 
-                    Button1 newIcon = new Button1("standing", pd.ProfileIndex * Constants.AVATAR_COLORS);
+                    Button1 newIcon = new Button1("avatars", pd.ProfileIndex * Constants.AVATAR_COLORS);
                     newIcon.ButtonImageScale = .75f;
                     newIcon.Size = new Vector2(96, 96);
                     newIcon.Position = new Vector2(startX, startY);

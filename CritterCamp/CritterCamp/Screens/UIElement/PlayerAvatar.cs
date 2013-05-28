@@ -45,7 +45,7 @@ namespace CritterCamp.Screens {
             }
         }
 
-        private Image Avatar = new Image("standing", 0);
+        private Image Avatar = new Image("avatars", 0);
         private Label FullProfileName = new Label();
         private Label FullProfileLevel = new Label();
         private Label FullProfileMoney = new Label("$250");

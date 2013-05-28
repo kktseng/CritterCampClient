@@ -24,6 +24,7 @@ namespace CritterCamp.Screens {
     class HomeScreen : MenuScreen {
         private bool looking = false;
         private bool startingGame = false;
+        int groupSize = 1;
         View PlayButtons;
         View SearchingButtons;
         List<Image> AnimatedPigs;
@@ -305,12 +306,16 @@ namespace CritterCamp.Screens {
         protected override void MessageReceived(string message, bool error, TCPConnection connection) {
             base.MessageReceived(message, error, connection);
             JObject o = JObject.Parse(message);
-            if((string)o["action"] == "group" && (string)o["type"] == "ready") {
-                JArray playerInfo = (JArray)o["users"];
-                JArray gameChoices = (JArray)o["vote"];
-                CoreApplication.Properties["group_info"] = playerInfo;
-                CoreApplication.Properties["game_choices"] = gameChoices;
-                startingGame = true;
+            if((string)o["action"] == "group") {
+                if((string)o["type"] == "ready") {
+                    JArray playerInfo = (JArray)o["users"];
+                    JArray gameChoices = (JArray)o["vote"];
+                    CoreApplication.Properties["group_info"] = playerInfo;
+                    CoreApplication.Properties["game_choices"] = gameChoices;
+                    startingGame = true;
+                } else if((string)o["type"] == "count") {
+                    groupSize = (int)o["size"];
+                }
             }
         }
 
