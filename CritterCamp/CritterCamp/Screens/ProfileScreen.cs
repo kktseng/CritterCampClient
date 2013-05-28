@@ -75,7 +75,7 @@ namespace CritterCamp.Screens {
             profileAvatar.FillColor = Constants.DarkBrown;
             profilePage.AddElement(profileAvatar);
 
-            Image profileBackground = new Image("profileBgSample", 0);
+            Image profileBackground = new Image("pbg_twilight", 0);
             profileBackground.Position = new Vector2(leftX, 315);
             profileBackground.Size = new Vector2(483, 318);
             profileAvatar.AddElement(profileBackground);

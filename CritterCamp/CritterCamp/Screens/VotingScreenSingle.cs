@@ -23,7 +23,7 @@ namespace CritterCamp.Screens {
         Button1 selectedButton = null;
         GameData selectedGame = null;
 
-        public VotingScreenSingle() : base("Voting", "paperBG") { }
+        public VotingScreenSingle() : base("Voting") { }
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
@@ -47,7 +47,7 @@ namespace CritterCamp.Screens {
 
             // add the buttons for the games          
             iconSizeVector = new Vector2(iconSize, iconSize);
-            int iconX = 200;
+            int iconX = 300;
             int iconY = 325;
             foreach (GameData gd in GameConstants.GAMES) {
                 Button1 gameChoice = new Button1(gd.GameIconTexture, gd.GameIconIndex);

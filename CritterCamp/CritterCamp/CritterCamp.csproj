@@ -327,7 +327,7 @@
     <Content Include="Content\color.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\profileBgSample.xnb">
+    <Content Include="Content\pbg_twilight.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Content\Sounds\fbIcon.xnb" />
