@@ -339,6 +339,7 @@ namespace CritterCamp.Screens {
             if (choosingType) {
                 PlayButtons.Visible = true;
                 GameType.Visible = false;
+                choosingType = false;
                 return;
             }
             if (looking) {
