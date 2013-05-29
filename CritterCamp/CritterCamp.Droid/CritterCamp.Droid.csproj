@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{204024F4-E691-4831-BDDF-9CE7EB7059F1}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CritterCamp.Droid</RootNamespace>
+    <AssemblyName>CritterCamp.Droid</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidApplication>true</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidSupportedAbis>armeabi-v7a%3bx86</AndroidSupportedAbis>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;ANDROID</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;ANDROID</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Json.NET\android\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\Android\MonoGame.Framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CritterCamp.Core\Lib\Configuration.cs">
+      <Link>Core\Lib\Configuration.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Lib\Constants.cs">
+      <Link>Core\Lib\Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Lib\GameConstants.cs">
+      <Link>Core\Lib\GameConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Lib\Helpers.cs">
+      <Link>Core\Lib\Helpers.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Lib\ProfileConstants.cs">
+      <Link>Core\Lib\ProfileConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Lib\Storage.cs">
+      <Link>Core\Lib\Storage.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Lib\TCPConnection.cs">
+      <Link>Core\Lib\TCPConnection.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Lib\TextureData.cs">
+      <Link>Core\Lib\TextureData.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\ScreenManager\GameScreen.cs">
+      <Link>Core\ScreenManager\GameScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\ScreenManager\InputAction.cs">
+      <Link>Core\ScreenManager\InputAction.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\ScreenManager\InputState.cs">
+      <Link>Core\ScreenManager\InputState.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\ScreenManager\IScreenFactory.cs">
+      <Link>Core\ScreenManager\IScreenFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\ScreenManager\ScreenFactory.cs">
+      <Link>Core\ScreenManager\ScreenFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\ScreenManager\ScreenManager.cs">
+      <Link>Core\ScreenManager\ScreenManager.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Button.cs">
+      <Link>Core\Screens\Button.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\BaseGameScreen.cs">
+      <Link>Core\Screens\Games\BaseGameScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\ColorClashScreen.cs">
+      <Link>Core\Screens\Games\ColorClashScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\ColorClash\Avatar.cs">
+      <Link>Core\Screens\Games\ColorClash\Avatar.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\ColorClash\Crosshair.cs">
+      <Link>Core\Screens\Games\ColorClash\Crosshair.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\ColorClash\Splatter.cs">
+      <Link>Core\Screens\Games\ColorClash\Splatter.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\FishingFrenzyScreen.cs">
+      <Link>Core\Screens\Games\FishingFrenzyScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\FishingFrenzy\Fish.cs">
+      <Link>Core\Screens\Games\FishingFrenzy\Fish.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\FishingFrenzy\Hook.cs">
+      <Link>Core\Screens\Games\FishingFrenzy\Hook.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\FishingFrenzy\Shadow.cs">
+      <Link>Core\Screens\Games\FishingFrenzy\Shadow.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\JetpackJamboreeScreen.cs">
+      <Link>Core\Screens\Games\JetpackJamboreeScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\JetpackJamboree\Avatar.cs">
+      <Link>Core\Screens\Games\JetpackJamboree\Avatar.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\JetpackJamboree\Explosion.cs">
+      <Link>Core\Screens\Games\JetpackJamboree\Explosion.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\JetpackJamboree\Pig.cs">
+      <Link>Core\Screens\Games\JetpackJamboree\Pig.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\Lib\AnimatedObject.cs">
+      <Link>Core\Screens\Games\Lib\AnimatedObject.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\Lib\SoundLibrary.cs">
+      <Link>Core\Screens\Games\Lib\SoundLibrary.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\Lib\SpriteDrawer.cs">
+      <Link>Core\Screens\Games\Lib\SpriteDrawer.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\Lib\TextBanner.cs">
+      <Link>Core\Screens\Games\Lib\TextBanner.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\Lib\TileMap.cs">
+      <Link>Core\Screens\Games\Lib\TileMap.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\SampleGameScreen.cs">
+      <Link>Core\Screens\Games\SampleGameScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\TwilightTangoScreen.cs">
+      <Link>Core\Screens\Games\TwilightTangoScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\TwilightTango\Arrow.cs">
+      <Link>Core\Screens\Games\TwilightTango\Arrow.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\TwilightTango\Player.cs">
+      <Link>Core\Screens\Games\TwilightTango\Player.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\TwilightTango\Smoke.cs">
+      <Link>Core\Screens\Games\TwilightTango\Smoke.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\HomeScreen.cs">
+      <Link>Core\Screens\HomeScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\LoadingScreen.cs">
+      <Link>Core\Screens\LoadingScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\MenuScreen.cs">
+      <Link>Core\Screens\MenuScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\OfflineScreen.cs">
+      <Link>Core\Screens\OfflineScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\ProfileScreen.cs">
+      <Link>Core\Screens\ProfileScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\ScoreScreen.cs">
+      <Link>Core\Screens\ScoreScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\TutorialScreen.cs">
+      <Link>Core\Screens\TutorialScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIElement\BorderedView.cs">
+      <Link>Core\Screens\UIElement\BorderedView.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIElement\Button.cs">
+      <Link>Core\Screens\UIElement\Button.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIElement\FilledRectangle.cs">
+      <Link>Core\Screens\UIElement\FilledRectangle.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIElement\Image.cs">
+      <Link>Core\Screens\UIElement\Image.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIElement\Label.cs">
+      <Link>Core\Screens\UIElement\Label.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIElement\PlayerAvatar.cs">
+      <Link>Core\Screens\UIElement\PlayerAvatar.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIElement\UIElement.cs">
+      <Link>Core\Screens\UIElement\UIElement.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIElement\View.cs">
+      <Link>Core\Screens\UIElement\View.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\VotingScreen.cs">
+      <Link>Core\Screens\VotingScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\VotingScreenSingle.cs">
+      <Link>Core\Screens\VotingScreenSingle.cs</Link>
+    </Compile>
+    <Compile Include="Activity1.cs" />
+    <Compile Include="Game1.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\spriteFont1.xnb" />
+    <None Include="Resources\AboutResources.txt" />
+    <None Include="Assets\AboutAssets.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Values\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Layout\" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\Splash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Values\Styles.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+     Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

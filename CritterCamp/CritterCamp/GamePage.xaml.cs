@@ -247,7 +247,7 @@ namespace CritterCamp {
                     CoreApplication.Properties["myPlayerData"] = mydata;
 
                     // Create a TCP connection
-                    TCPConnection conn = new TCPConnection();
+                    TCPConnection conn = new TCPWindowsPhone();
                     conn.pMessageReceivedEvent += delegate(string m, bool error, TCPConnection connection) {
                         JObject o = JObject.Parse(m);
                         // TODO: Base TCP handler handles the following
