@@ -25,6 +25,7 @@ namespace CritterCamp {
         string urlLogin = "http://" + Configuration.HOSTNAME + "/login";
         string urlRegister = "http://" + Configuration.HOSTNAME + "/login/create";
         string postDataFormat = "username={0}&password={1}&version=" + Configuration.VERSION;
+        HTTPConnection httpConn = new HTTPWindowsPhone();
         bool connecting = false;
 
         string username;
@@ -178,7 +179,7 @@ namespace CritterCamp {
             Status.Text = "Registering username and password...";
             string postData = string.Format(postDataFormat, username, password);
 
-            HTTPConnectionResult registerResult = await HTTPConnection.GetPostResult(urlRegister, postData);
+            HTTPConnectionResult registerResult = await httpConn.GetPostResult(urlRegister, postData);
             if(!registerResult.error) { // not an error connecting to server
                 LoginResponse response = new LoginResponse(registerResult.message);
                 Status.Text = response.message;
@@ -211,7 +212,7 @@ namespace CritterCamp {
                 Status.Text = "Logging in...";
             string postData = string.Format(postDataFormat, username, password);
 
-            HTTPConnectionResult loginResult = await HTTPConnection.GetPostResult(urlLogin, postData);
+            HTTPConnectionResult loginResult = await httpConn.GetPostResult(urlLogin, postData);
             if(!loginResult.error) { // not an error connecting to server
                 LoginResponse response = new LoginResponse(loginResult.message);
                 Status.Text = response.message;

@@ -11,8 +11,8 @@ using Windows.Storage.Streams;
 using System.IO;
 
 namespace CritterCamp {
-    public class HTTPConnection {
-        public static async Task<HTTPConnectionResult> GetPostResult(string url, string postData) {
+    public class HTTPWindowsPhone : HTTPConnection {
+        public async Task<HTTPConnectionResult> GetPostResult(string url, string postData) {
             System.Diagnostics.Debug.WriteLine("HTTP Sent: " + url + "/" + postData);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             bool error = false;
@@ -60,16 +60,6 @@ namespace CritterCamp {
                 System.Diagnostics.Debug.WriteLine("HTTP Receive: " + message);
                 return new HTTPConnectionResult(error, message);
             }
-        }
-    }
-
-    public class HTTPConnectionResult {
-        public bool error;
-        public string message;
-
-        public HTTPConnectionResult(bool e, string m) {
-            error = e;
-            message = m;
         }
     }
 }
