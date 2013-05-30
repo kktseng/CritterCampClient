@@ -144,11 +144,9 @@ namespace CritterCamp.Screens {
             volume.Tapped += volumeButton_Tapped;
             volume.Size = new Vector2(100, 100);
 
-            string volumeOn;
-            if(IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("volume", out volumeOn)) {
-                if(!Boolean.Parse(volumeOn)) {
-                    volumeButton_Tapped(volume, null);
-                }
+            string volumeOn = PermanentStorage.Get("volume");
+            if(volumeOn != "" && !Boolean.Parse(volumeOn)) {
+                volumeButton_Tapped(volume, null);
             }
 
             BorderedView info  = new BorderedView(new Vector2(1920/2-50, 925), new Vector2(480, 465));
@@ -309,7 +307,7 @@ namespace CritterCamp.Screens {
                 MediaPlayer.IsMuted = !volumeOn;
             });
             SoundEffect.MasterVolume = volumeOn ? 1 : 0;
-            IsolatedStorageSettings.ApplicationSettings["volume"] = volumeOn.ToString();
+            PermanentStorage.Set("volume", volumeOn.ToString());
         }
 
         void cancelButton_Tapped(object sender, EventArgs e) {

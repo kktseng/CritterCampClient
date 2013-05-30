@@ -86,6 +86,9 @@
     <Compile Include="..\CritterCamp.Core\Lib\HTTPConnection.cs">
       <Link>Core\Lib\HTTPConnection.cs</Link>
     </Compile>
+    <Compile Include="..\CritterCamp.Core\Lib\PermanentStorage.cs">
+      <Link>Core\Screens\Games\Lib\PermanentStorage.cs</Link>
+    </Compile>
     <Compile Include="..\CritterCamp.Core\Lib\ProfileConstants.cs">
       <Link>Core\Lib\ProfileConstants.cs</Link>
     </Compile>

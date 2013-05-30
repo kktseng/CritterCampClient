@@ -71,6 +71,12 @@
     <Compile Include="..\CritterCamp.Core\Lib\Helpers.cs">
       <Link>Core\Lib\Helpers.cs</Link>
     </Compile>
+    <Compile Include="..\CritterCamp.Core\Lib\HTTPConnection.cs">
+      <Link>Core\Lib\HTTPConnection.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Lib\PermanentStorage.cs">
+      <Link>Core\Lib\PermanentStorage.cs</Link>
+    </Compile>
     <Compile Include="..\CritterCamp.Core\Lib\ProfileConstants.cs">
       <Link>Core\Lib\ProfileConstants.cs</Link>
     </Compile>
@@ -226,6 +232,7 @@
     </Compile>
     <Compile Include="Activity1.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Lib\HTTPAndroid.cs" />
     <Compile Include="Lib\TCPAndroid.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

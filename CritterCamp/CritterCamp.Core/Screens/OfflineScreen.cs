@@ -17,7 +17,6 @@ namespace CritterCamp.Screens {
         }
 
         public override void OnBackPressed() {
-            IsolatedStorageSettings.ApplicationSettings.Save();
             Application.Current.Terminate();
         }
 
