@@ -43,12 +43,12 @@ namespace CritterCamp {
             
             Task connectTask = mSocket.ConnectAsync(serverHost, portNumber.ToString()).AsTask();
             try {
-                if (!connectTask.Wait(TIMEOUT)) {
+                if(!connectTask.Wait(TIMEOUT)) {
                     // timed out connecting to the server
                     System.Diagnostics.Debug.WriteLine("Timed out connecting to TCP server");
                     return false;
                 }
-            } catch (AggregateException a) {
+            } catch(AggregateException a) {
                 // exception when running connect task. failed to connect to server
                 System.Diagnostics.Debug.WriteLine("Failed to connect to TCP server. Error: " + a.GetBaseException().Message);
                 return false;
@@ -174,7 +174,7 @@ namespace CritterCamp {
         }
 
         private void Close() {
-            if (mSocket != null) {
+            if(mSocket != null) {
                 // detach the stream and close it
                 writer.DetachStream();
                 writer.Dispose();
