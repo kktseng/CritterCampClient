@@ -35,10 +35,10 @@ namespace CritterCamp {
             InitializeComponent();
 
             _game = XamlGame<CritterCampGame>.Create("", this);
-            CoreApplication.Properties["GamePage"] = this;
+            Storage.Set("GamePage", this);
 
 #if WINDOWS_PHONE
-            CoreApplication.Properties["scaleFactor"] = App.Current.Host.Content.ScaleFactor;
+            Storage.Set("scaleFactor", App.Current.Host.Content.ScaleFactor);
 #endif
 
             //TryMediaPlay();
@@ -69,9 +69,9 @@ namespace CritterCamp {
 
         public void reset() {
             // check and see if we have a tcp connection already
-            if (CoreApplication.Properties.ContainsKey("TCPSocket")) {
-                ((TCPConnection)CoreApplication.Properties["TCPSocket"]).Disconnect(); // disconnect the exisiting connection
-                CoreApplication.Properties.Remove("TCPSocket");
+            if (Storage.ContainsKey("TCPSocket")) {
+                Storage.Get<TCPConnection>("TCPSocket").Disconnect(); // disconnect the exisiting connection
+                Storage.Remove("TCPSocket");
             } else {
                 // Disconnecting the TCPSocket will reset the screen for you
                 ResetScreen();
@@ -84,9 +84,9 @@ namespace CritterCamp {
                 ContentPanel.Visibility = Visibility.Visible; // show everything
 
                 // check and see if we have an error message to display
-                if(CoreApplication.Properties.ContainsKey("error")) {
-                    Status.Text = (string)CoreApplication.Properties["error"]; // show the error message
-                    CoreApplication.Properties.Remove("error");
+                if(Storage.ContainsKey("error")) {
+                    Status.Text = Storage.Get<string>("error"); // show the error message
+                   Storage.Remove("error");
 
                     UserInput.Visibility = Visibility.Collapsed; // hide the input boxes
                     PlayButton.Visibility = Visibility.Collapsed; // hide the play button
@@ -240,11 +240,11 @@ namespace CritterCamp {
                     // TODO: Retrieve and parse news information from HTTP response
                     // TODO: Retrieve money from SQLite
 
-                    CoreApplication.Properties["news"] = response.news;
-                    CoreApplication.Properties["unlocked"] = response.unlockedProfiles;
+                    Storage.Set("news", response.news);
+                    Storage.Set("unlocked", response.unlockedProfiles);
 
                     PlayerData mydata = new PlayerData(response.username, response.profile, response.lvl, 0);
-                    CoreApplication.Properties["myPlayerData"] = mydata;
+                    Storage.Set("myPlayerData", mydata);
 
                     // Create a TCP connection
                     TCPConnection conn = new TCPWindowsPhone();
@@ -259,10 +259,10 @@ namespace CritterCamp {
                         if (o["conn_id"] != null) {
                             // authorize the connection using auth key recieved from http login
                             conn.SendMessage("{\"auth\": \"" + response.auth + "\"}");
-                            CoreApplication.Properties["TCPSocket"] = conn;
+                            Storage.Set("TCPSocket", conn);
 
                             // navigate to gamepage to start the game
-                            CoreApplication.Properties["username"] = response.username;
+                            Storage.Set("username", response.username);
                             Dispatcher.BeginInvoke(() => {
                                 //NavigationService.Navigate(new Uri("/GamePage.xaml", UriKind.Relative));
                                 // Reload home page and hide grid
@@ -302,7 +302,7 @@ namespace CritterCamp {
                 ScreenFactory sf = (ScreenFactory)_game.screenManager.Game.Services.GetService(typeof(IScreenFactory));
                 LoadingScreen.Load(_game.screenManager, false, null, sf.CreateScreen(typeof(OfflineScreen)));
                 Helpers.ResetState();
-                CoreApplication.Properties["error"] = "Lost connection to server.";
+                Storage.Set("error", "Lost connection to server.");
                 ResetScreen();
             });
         }

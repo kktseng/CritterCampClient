@@ -7,24 +7,32 @@ using System.Threading.Tasks;
 #if WINDOWS_PHONE
     using Windows.ApplicationModel.Core;
 #endif
+#if ANDROID
+    using Android.App;
+#endif
 
 namespace CritterCamp {
     public static class Storage {
+        private static Dictionary<string, object> Dict = new Dictionary<string, object>();
+       
         public static T Get<T>(string key) {
-#if WINDOWS_PHONE
-            return (T)CoreApplication.Properties[key];
-#endif
-            return default(T);
+            return (T)Storage.Dict[key];
         }
+
         public static void Set<T>(string key, T value) {
-#if WINDOWS_PHONE
-            CoreApplication.Properties[key] = value;
-#endif
+            Storage.Dict[key] = value;
         }
+
         public static void Clear() {
-#if WINDOWS_PHONE
-            CoreApplication.Properties.Clear();
-#endif
+            Storage.Dict.Clear();
+        }
+
+        public static bool ContainsKey(string key) {
+            return Dict.ContainsKey(key);
+        }
+
+        public static void Remove(string key) {
+            Dict.Remove(key);
         }
     }
 }

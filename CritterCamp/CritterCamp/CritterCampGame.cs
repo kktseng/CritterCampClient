@@ -81,7 +81,7 @@ namespace CritterCamp {
 
         private void Deactivation(object sender, DeactivatedEventArgs e) {
             LoadingScreen.Load(screenManager, false, null, Helpers.GetScreenFactory(screenManager).CreateScreen(typeof(OfflineScreen)));
-            ((GamePage)CoreApplication.Properties["GamePage"]).reset();
+            Storage.Get<GamePage>("GamePage").reset();
         }
     }
 }
