@@ -1,4 +1,5 @@
-﻿using CritterCamp.Screens.Games.Lib;
+﻿using CritterCamp.Core.Screens;
+using CritterCamp.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json.Linq;
@@ -34,7 +35,7 @@ namespace CritterCamp {
                 new JProperty("timeout", timeout),
                 new JProperty("data", data)
             );
-            Storage.Get<TCPConnection>("TCPSocket").SendMessage(syncPacket.ToString());
+            Storage.Get<ITCPConnection>("TCPSocket").SendMessage(syncPacket.ToString());
         }
 
         public static int TextureLen(Type enumType) {
@@ -100,13 +101,13 @@ namespace CritterCamp {
 
         public static void ResetState() {
             // save important values
-            GamePage gp = Storage.Get<GamePage>("GamePage");
+            OfflineScreenCore osc = Storage.Get<OfflineScreenCore>("OfflineScreenCore");
             float ratio = Storage.Get<float>("ratio");
             int scaleFactor = Storage.Get<int>("scaleFactor");
 
             // reset CoreApplication.Properties
             Storage.Clear();
-            Storage.Set("GamePage", gp);
+            Storage.Set("OfflineScreenCore", osc);
             Storage.Set("ratio", ratio);
             Storage.Set("scaleFactor", scaleFactor);
         }

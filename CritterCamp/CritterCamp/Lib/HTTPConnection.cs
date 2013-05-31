@@ -8,7 +8,7 @@ using System.Net;
 using System.IO;
 
 namespace CritterCamp {
-    public class HTTPWindowsPhone : HTTPConnection {
+    public class HTTPConnection : IHTTPConnection {
         public async Task<HTTPConnectionResult> GetPostResult(string url, string postData) {
             System.Diagnostics.Debug.WriteLine("HTTP Sent: " + url + "/" + postData);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);

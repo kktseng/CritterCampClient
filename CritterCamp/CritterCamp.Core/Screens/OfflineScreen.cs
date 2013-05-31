@@ -1,4 +1,5 @@
-﻿using GameStateManagement;
+﻿using CritterCamp.Core.Screens;
+using GameStateManagement;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -41,7 +42,11 @@ namespace CritterCamp.Screens {
             }
             base.Activate(instancePreserved);
 
-            Storage.Get<GamePage>("GamePage").reset();
+
+            OfflineScreenCore osc = Storage.Get<OfflineScreenCore>("OfflineScreenCore");
+            osc.reset();
         }
+
+
     }
 }

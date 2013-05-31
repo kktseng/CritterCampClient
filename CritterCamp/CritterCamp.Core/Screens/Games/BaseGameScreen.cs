@@ -61,7 +61,7 @@ namespace CritterCamp.Screens.Games {
             get { return rand; }
         }
 
-        protected override void MessageReceived(string message, bool error, TCPConnection connection) {
+        protected override void MessageReceived(string message, bool error, ITCPConnection connection) {
             base.MessageReceived(message, error, connection);
             JObject o = JObject.Parse(message);
             // Check for final score

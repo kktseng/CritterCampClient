@@ -96,7 +96,7 @@ namespace CritterCamp.Screens {
             mainView.AddElement(profilePage);
         }
 
-        protected void handleProfile(string message, bool error, TCPConnection connection) {
+        protected void handleProfile(string message, bool error, ITCPConnection connection) {
             // parse the playerData
             JObject o = JObject.Parse(message);
             if ((string)o["action"] == "profile") {

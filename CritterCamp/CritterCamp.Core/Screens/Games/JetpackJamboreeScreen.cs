@@ -400,7 +400,7 @@ namespace CritterCamp.Screens.Games {
             sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 3.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically);
         }
 
-        protected override void MessageReceived(string message, bool error, TCPConnection connection) {
+        protected override void MessageReceived(string message, bool error, ITCPConnection connection) {
             base.MessageReceived(message, error, connection);
             JObject o = JObject.Parse(message);
             if((string)o["action"] == "game" && (string)o["name"] == "jetpack_jamboree") {

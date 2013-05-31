@@ -9,7 +9,7 @@ using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 
 namespace CritterCamp {
-    public class TCPWindowsPhone : TCPConnection {
+    public class TCPConnection : ITCPConnection {
         private static readonly int TIMEOUT = 4000; // timeout is 4s
 
         StreamSocket mSocket = null; // Cached Socket object that will be used by each call for the lifetime of this class
@@ -22,7 +22,7 @@ namespace CritterCamp {
 
         private bool sendKeepAlive = false;
 
-        public TCPWindowsPhone() {
+        public TCPConnection() {
             mId = sConnectionId++;
         }
 

@@ -19,6 +19,7 @@ using System.Windows;
 
 #if WINDOWS_PHONE
     using Microsoft.Phone.Tasks;
+using CritterCamp.Core.Screens;
 #endif
 
 namespace CritterCamp.Screens {
@@ -44,8 +45,8 @@ namespace CritterCamp.Screens {
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            GamePage gamePage = Storage.Get<GamePage>("GamePage");
-            gamePage.showAdDuplex();
+            OfflineScreenCore osc = Storage.Get<OfflineScreenCore>("OfflineScreenCore");
+            osc.ShowAdDuplex(true);
             ContentManager cm = ScreenManager.Game.Content;
             
             if (!ScreenManager.Textures.ContainsKey("fbIcon")) {
@@ -302,10 +303,11 @@ namespace CritterCamp.Screens {
         void volumeButton_Tapped(object sender, EventArgs e) {
             bool volumeOn = ((Button1)sender).Highlight;
             ((Button1)sender).Highlight = !volumeOn;
+            /* fix this
             GamePage gp = Storage.Get<GamePage>("GamePage");
             gp.Dispatcher.BeginInvoke(() => {
                 MediaPlayer.IsMuted = !volumeOn;
-            });
+            }); */
             SoundEffect.MasterVolume = volumeOn ? 1 : 0;
             PermanentStorage.Set("volume", volumeOn.ToString());
         }
@@ -345,7 +347,7 @@ namespace CritterCamp.Screens {
             base.OnBackPressed();
         }
 
-        protected override void MessageReceived(string message, bool error, TCPConnection connection) {
+        protected override void MessageReceived(string message, bool error, ITCPConnection connection) {
             base.MessageReceived(message, error, connection);
             JObject o = JObject.Parse(message);
             if((string)o["action"] == "group") {
@@ -363,8 +365,8 @@ namespace CritterCamp.Screens {
         }
 
         public override void Unload() {
-            GamePage gamePage = Storage.Get<GamePage>("GamePage");
-            gamePage.hideAdDuplex();
+            OfflineScreenCore osc = Storage.Get<OfflineScreenCore>("OfflineScreenCore");
+            osc.ShowAdDuplex(false);
             base.Unload();
         }
 
@@ -511,7 +513,7 @@ namespace CritterCamp.Screens {
             mainView.AddElement(leaderPage);
         }
 
-        protected void handleLeaders(string message, bool error, TCPConnection connection) {
+        protected void handleLeaders(string message, bool error, ITCPConnection connection) {
             JObject o = JObject.Parse(message);
             if ((string)o["action"] == "rank" && (string)o["type"] == "leader") {
                 connection.pMessageReceivedEvent -= handleLeaders;
