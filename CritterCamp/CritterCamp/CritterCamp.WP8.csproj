@@ -203,6 +203,9 @@
     <Compile Include="..\CritterCamp.Core\Screens\OfflineScreen.cs">
       <Link>Core\Screens\OfflineScreen.cs</Link>
     </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\OfflineScreenCore.cs">
+      <Link>Core\Screens\OfflineScreenCore.cs</Link>
+    </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\ProfileScreen.cs">
       <Link>Core\Screens\ProfileScreen.cs</Link>
     </Compile>
@@ -245,7 +248,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core\Screens\OfflineScreenCore.cs" />
     <Compile Include="Core\Screens\UIScreens\IOfflineScreen.cs" />
     <Compile Include="Lib\HTTPConnection.cs" />
     <Compile Include="LocalizedStrings.cs" />
