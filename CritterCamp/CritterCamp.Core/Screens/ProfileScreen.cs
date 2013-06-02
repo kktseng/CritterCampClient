@@ -21,7 +21,7 @@ namespace CritterCamp.Screens {
     class ProfileScreen : MenuScreen {
         BorderedView profilePage;
         Label title;
-        Button1 search;
+        Button search;
         BorderedView profileAvatar;
         BorderedView profileInfo;
         BorderedView profileMain;
@@ -82,7 +82,7 @@ namespace CritterCamp.Screens {
             profileInfo.BorderColor = Constants.Brown;
             profilePage.AddElement(profileInfo);
 
-            search = new Button1("Search");
+            search = new Button("Search");
             search.Position = new Vector2(rightX, 125);
             search.Visible = false;
             //profilePage.AddElement(search);
@@ -163,7 +163,7 @@ namespace CritterCamp.Screens {
                 foreach (string prof in unlockedProfiles) {
                     ProfileData pd = ProfileConstants.GetProfileData(prof);
 
-                    Button1 newIcon = new Button1("avatars", pd.ProfileIndex * Constants.AVATAR_COLORS);
+                    Button newIcon = new Button("avatars", pd.ProfileIndex * Constants.AVATAR_COLORS);
                     newIcon.ButtonImageScale = .75f;
                     newIcon.Size = new Vector2(96, 96);
                     newIcon.Position = new Vector2(startX, startY);
@@ -187,7 +187,7 @@ namespace CritterCamp.Screens {
                     startX += 225;
                 }
 
-                Button1 shop = new Button1("Shop");
+                Button shop = new Button("Shop");
                 shop.Position = new Vector2(1500, 775);
                 //profileMain.AddElement(shop);
             }

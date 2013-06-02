@@ -18,8 +18,8 @@ namespace CritterCamp.Screens {
         int iconSpace = 175;
         int iconSize = 128;
         Vector2 iconSizeVector;
-        Button1 playButton;
-        Button1 selectedButton = null;
+        Button playButton;
+        Button selectedButton = null;
         GameData selectedGame = null;
 
         public VotingScreenSingle() : base("Voting") { }
@@ -49,7 +49,7 @@ namespace CritterCamp.Screens {
             int iconX = 300;
             int iconY = 325;
             foreach (GameData gd in GameConstants.GAMES) {
-                Button1 gameChoice = new Button1(gd.GameIconTexture, gd.GameIconIndex);
+                Button gameChoice = new Button(gd.GameIconTexture, gd.GameIconIndex);
                 gameChoice.Size = iconSizeVector;
                 gameChoice.Position = new Vector2(iconX, iconY);
                 gameChoice.Caption1 = gd.NameLine1;
@@ -63,7 +63,7 @@ namespace CritterCamp.Screens {
             }
 
             // add the vote button
-            playButton = new Button1("Play");
+            playButton = new Button("Play");
             playButton.Position = new Vector2(960, 900);
             playButton.Tapped += play;
             playButton.Disabled = true;
@@ -78,7 +78,7 @@ namespace CritterCamp.Screens {
                 selectedButton.Highlight = false;
             }
 
-            selectedButton = (Button1)e.Element;
+            selectedButton = (Button)e.Element;
             selectedButton.Highlight = true; // highlight the button we pressed
             selectedGame = (GameData)e.ObjectArg; // our selected game is the button we pressed
             playButton.Disabled = false; // enable the vote button for people to play

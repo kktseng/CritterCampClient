@@ -7,7 +7,7 @@ namespace CritterCamp.Screens {
     /// <summary>
     /// Represents an button to draw
     /// </summary>
-    class Button1 : UIElement{
+    class Button : UIElement{
         private static string defaultButtonTexture = "buttonMint";
         private static string defaultButtonHighlightTexture = "gameIcons";
         private static string defaultButtonSound = "buttonSound";
@@ -180,14 +180,14 @@ namespace CritterCamp.Screens {
         /// <summary>
         /// Creates a new Button with the given texture
         /// </summary>
-        public Button1(string image, int textureIndex) : base(new Vector2(290, 90), new Vector2()) {
+        public Button(string image, int textureIndex) : base(new Vector2(290, 90), new Vector2()) {
             Initialize(image, textureIndex, "");
         }
 
         /// <summary>
         /// Creates a new Button with the given text
         /// </summary>
-        public Button1(string text) : base(new Vector2(290, 90), new Vector2()) {
+        public Button(string text) : base(new Vector2(290, 90), new Vector2()) {
             Initialize(defaultButtonTexture, 0, text);
         }
 

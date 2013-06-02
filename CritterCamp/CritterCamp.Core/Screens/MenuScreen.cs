@@ -17,20 +17,11 @@ namespace CritterCamp.Screens {
     /// Provides a basic base screen for menus containing UIElements;
     /// </summary>
     class MenuScreen : GameScreen {
-        protected List<Button> menuButtons = new List<Button>();
         protected View mainView;
         private string background = "bgScreen";
-        Button selectedButton = null;
         Vector2 oldPos;
         Vector2 rawInput = Vector2.Zero;
         Vector2 scaledInput = Vector2.Zero;
-
-        /// <summary>
-        /// Gets the list of buttons, so derived classes can add or change the menu contents.
-        /// </summary>
-        protected IList<Button> MenuButtons {
-            get { return menuButtons; }
-        }
 
         /// <summary>
         /// Creates the PhoneMenuScreen with a particular title.
@@ -129,38 +120,6 @@ namespace CritterCamp.Screens {
                     handled = mainView.HandleTouch(scaledPos, loc, input);
                 }
             }
-
-            if (input.TouchState.Count == 0) { // released our finger
-                if (selectedButton != null) {
-                    if (selectedButton.HandleTouch(oldPos)) {
-                        // release our finger on the button
-                        selectedButton.OnTapped(); // this counts as a button press
-                    }
-                    selectedButton.ResetSelected(); // make the button not pressed down anymore
-                    selectedButton = null;
-                }
-            } else {
-                foreach (TouchLocation loc in input.TouchState) {
-                    Vector2 scaledPos = Helpers.ScaleInput(new Vector2(loc.Position.X, loc.Position.Y));
-                    oldPos = scaledPos;
-
-                    if (selectedButton == null) { // we havn't pressed down on a button yet. try to find one that we pressed
-                        if (loc.State.HasFlag(TouchLocationState.Pressed)) {
-                            // and this touch is the beginning of a touch
-                            foreach (Button b in menuButtons) {
-                                if (b.HandleTouch(scaledPos)) {
-                                    // found the button that we pressed
-                                    selectedButton = b;
-                                    break;
-                                }
-                            }
-                        }
-                    } else {
-                        // otherwise just pass the new coordinates to the button
-                        selectedButton.HandleTouch(scaledPos);
-                    }
-                }
-            }
         }
 
         public override void Draw(GameTime gameTime) {
@@ -176,11 +135,6 @@ namespace CritterCamp.Screens {
 
             // Draw all of the UIElements
             mainView.Draw(this, gameTime, spriteBatch, sd);
-
-            // Draw all of the buttons
-            foreach(Button b in menuButtons) {
-                b.Draw(this);
-            }
 
             //DrawCoordinates(sd);
             sd.End();

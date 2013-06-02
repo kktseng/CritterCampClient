@@ -67,7 +67,7 @@ namespace CritterCamp.Screens {
             me = new PlayerAvatar(myData, new Vector2(1135, 150));
             me.DrawFullProfileData = true;
             myInfo.AddElement(me);
-            Button1 profile = new Button1("buttonProfile", 0);
+            Button profile = new Button("buttonProfile", 0);
             profile.Size = new Vector2(100, 100);
             profile.Position = new Vector2(1750, 200);
             profile.Tapped += profileButton_Tapped;
@@ -88,14 +88,14 @@ namespace CritterCamp.Screens {
             menu.AddElement(GameType);
             menu.Disabled = false;
 
-            Button1 play = new Button1("Play");
+            Button play = new Button("Play");
             play.Position = new Vector2(1440, 450);
             play.Tapped += playButton_Tapped;
             play.ButtonImage = "buttonGreen";
-            Button1 leader = new Button1("Leaders");
+            Button leader = new Button("Leaders");
             leader.Position = new Vector2(1440, 650);
             leader.Tapped += leaderButton_Tapped;
-            Button1 about = new Button1("About");
+            Button about = new Button("About");
             about.Position = new Vector2(1440, 800);
             about.Tapped += aboutButton_Tapped;
             PlayButtons.AddElement(play);
@@ -116,7 +116,7 @@ namespace CritterCamp.Screens {
                 SearchingButtons.AddElement(PigImage);
                 AnimatedPigs.Add(PigImage);
             }
-            Button1 cancel = new Button1("Cancel");
+            Button cancel = new Button("Cancel");
             cancel.Position = new Vector2(1440, 800);
             cancel.Tapped += cancelButton_Tapped;
 
@@ -127,10 +127,10 @@ namespace CritterCamp.Screens {
             Label gameTypeText = new Label("Choose your game type", new Vector2(1440, 450));
             gameTypeText.Font = "buttonFont";
             gameTypeText.Scale = 0.8f;
-            Button1 single = new Button1("Single");
+            Button single = new Button("Single");
             single.Position = new Vector2(1440, 650);
             single.Tapped += playSingleButton_Tapped;
-            Button1 party = new Button1("Party");
+            Button party = new Button("Party");
             party.Position = new Vector2(1440, 800);
             party.Tapped += playPartyButton_Tapped;
             GameType.AddElement(gameTypeText);
@@ -138,7 +138,7 @@ namespace CritterCamp.Screens {
             GameType.AddElement(party);
 
 
-            Button1 volume = new Button1("");
+            Button volume = new Button("");
             volume.Position = new Vector2(1720, 1005);
             volume.ButtonImage = "buttonSoundOn";
             volume.HighlightImage = "buttonSoundOff";
@@ -301,8 +301,8 @@ namespace CritterCamp.Screens {
         }
 
         void volumeButton_Tapped(object sender, EventArgs e) {
-            bool volumeOn = ((Button1)sender).Highlight;
-            ((Button1)sender).Highlight = !volumeOn;
+            bool volumeOn = ((Button)sender).Highlight;
+            ((Button)sender).Highlight = !volumeOn;
             /* fix this
             GamePage gp = Storage.Get<GamePage>("GamePage");
             gp.Dispatcher.BeginInvoke(() => {
@@ -417,7 +417,7 @@ namespace CritterCamp.Screens {
             Label email2 = new Label("CritterCampGame@gmail.com", new Vector2(startX + 340, startY + 30));
             email2.CenterX = false;
 
-            Button1 rate = new Button1("Rate Us");
+            Button rate = new Button("Rate Us");
             rate.Position = new Vector2(startX + 200, startY + 177);
             rate.Tapped += rateButton_Tapped;
 
@@ -592,13 +592,13 @@ namespace CritterCamp.Screens {
             int startY = 270;
             Label text = new Label("Are you sure you want to exit?", new Vector2(startX, startY));
 
-            Button1 keepPlaying = new Button1("Keep Playing");
+            Button keepPlaying = new Button("Keep Playing");
             keepPlaying.Position = new Vector2(startX, startY + 150);
             keepPlaying.TextScale = 0.7f;
             keepPlaying.Tapped += PopupExitTap;
             keepPlaying.ButtonImage = "buttonGreen";
 
-            Button1 exitButton = new Button1("Exit");
+            Button exitButton = new Button("Exit");
             exitButton.Position = new Vector2(startX, startY + 350);
             exitButton.TextScale = 0.7f;
             exitButton.Tapped += (s, e) => {

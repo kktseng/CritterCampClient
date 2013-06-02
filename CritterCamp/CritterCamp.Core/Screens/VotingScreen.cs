@@ -23,8 +23,8 @@ namespace CritterCamp.Screens {
         Vector2 iconSizeVector;
         bool voted = false;
         Dictionary<string, PlayerData> players;
-        List<Button1> buttons;
-        Button1 voteButton;
+        List<Button> buttons;
+        Button voteButton;
         GameData[] gamesToVote;
         GameData selectedGame = null;
         int timeLeft;
@@ -77,14 +77,14 @@ namespace CritterCamp.Screens {
             voteMenu.AddElement(ChooseGame);
 
             // add the buttons for the games            
-            buttons = new List<Button1>();
+            buttons = new List<Button>();
             iconSizeVector = new Vector2(iconSize, iconSize);
             int index = 0;
             foreach (string game in gameChoices) {
                 GameData gd = GameConstants.GetGameData(game);
                 gamesToVote[index] = gd;
                 index++;
-                Button1 gameChoice = new Button1(gd.GameIconTexture, gd.GameIconIndex);
+                Button gameChoice = new Button(gd.GameIconTexture, gd.GameIconIndex);
                 gameChoice.Size = iconSizeVector;
                 gameChoice.Position = new Vector2(iconX, iconStartY);
                 gameChoice.Caption1 = gd.NameLine1;
@@ -99,7 +99,7 @@ namespace CritterCamp.Screens {
             }
 
             // add the vote button
-            voteButton = new Button1("Vote");
+            voteButton = new Button("Vote");
             voteButton.Position = new Vector2(middleIconX, iconStartY + iconSpace + 120);
             voteButton.Tapped += vote;
             voteButton.Disabled = true;
@@ -171,11 +171,11 @@ namespace CritterCamp.Screens {
             }
 
             // go through the list and unhighlight any previous selected buttons
-            foreach (Button1 b in buttons) {
+            foreach (Button b in buttons) {
                 b.Highlight = false;
             }
 
-            ((Button1)e.Element).Highlight = true; // highlight the button we pressed
+            ((Button)e.Element).Highlight = true; // highlight the button we pressed
             selectedGame = (GameData)e.ObjectArg; // our selected game is the button we pressed
             voteButton.Disabled = false; // enable the vote button for people to vote
         }
