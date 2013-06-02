@@ -49,9 +49,10 @@ namespace CritterCamp.Screens {
             // Add buttons
             Button play = new LargeButton("PLAY");
             play.Position = new Vector2(1560, 360);
+            play.TextFont = "tahomaLarge";
             play.Tapped += playButton_Tapped;
 
-            Button leaders = new SmallButton("Leaders");
+            Button leaders = new SmallButton("Leaderboard");
             leaders.Position = new Vector2(1560, 546);
 
             Button options = new SmallButton("Options");
@@ -103,7 +104,7 @@ namespace CritterCamp.Screens {
             PlayButtons.AddElement(about);
 
             Label searchingText = new Label("Searching for players", new Vector2(1440, 450));
-            searchingText.Font = "buttonFont";
+            searchingText.Font = "tahoma";
             searchingText.Scale = 0.8f;
             playersInParty = new Label("Players in party: 1/4", new Vector2(1440, 525));
             playersInParty.Scale = 0.8f;
@@ -125,7 +126,7 @@ namespace CritterCamp.Screens {
             SearchingButtons.AddElement(cancel);
 
             Label gameTypeText = new Label("Choose your game type", new Vector2(1440, 450));
-            gameTypeText.Font = "buttonFont";
+            gameTypeText.Font = "tahoma";
             gameTypeText.Scale = 0.8f;
             Button single = new Button("Single");
             single.Position = new Vector2(1440, 650);
@@ -153,16 +154,16 @@ namespace CritterCamp.Screens {
             BorderedView info  = new BorderedView(new Vector2(1920/2-50, 925), new Vector2(480, 465));
             info.Disabled = false;
             News = new Label("News", new Vector2(180, 100));
-            News.Font = "buttonFont";
+            News.Font = "tahoma";
             News.Disabled = false;
             News.Tapped += news_Tapped;
             Friends = new Label("Friends", new Vector2(480, 100));
-            Friends.Font = "buttonFont";
+            Friends.Font = "tahoma";
             Friends.TextColor = InactiveColor;
             Friends.Disabled = false;
             Friends.Tapped += friends_Tapped;
             Party = new Label("Party", new Vector2(770, 100));
-            Party.Font = "buttonFont";
+            Party.Font = "tahoma";
             Party.TextColor = InactiveColor;
             Party.Disabled = false;
             Party.Tapped += party_Tapped;
@@ -400,7 +401,7 @@ namespace CritterCamp.Screens {
             int startY = 120;
             Label about = new Label("About", new Vector2(startX, startY));
             about.CenterX = false;
-            about.Font = "buttonFont";
+            about.Font = "tahoma";
             Label version = new Label("Version 1.0", new Vector2(startX, startY+70));
             version.CenterX = false;
             version.Scale = 0.8f;
@@ -481,7 +482,7 @@ namespace CritterCamp.Screens {
             Label level = new Label("Level", new Vector2(startX + 850, startY));
 
             Label top10 = new Label("Top 10", new Vector2(1920/2, startY));
-            top10.Font = "buttonFont";
+            top10.Font = "tahoma";
             top10.Scale = 0.75f;
 
             playerRows = new List<BorderedView>();

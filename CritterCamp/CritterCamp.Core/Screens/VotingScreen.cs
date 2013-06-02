@@ -123,7 +123,6 @@ namespace CritterCamp.Screens {
             PlayerData myData = Storage.Get<PlayerData>("myPlayerData");
             foreach (PlayerData p in players.Values) {
                 PlayerAvatar playerAvatar = new PlayerAvatar(p, new Vector2(playersX, playersY));
-                playerAvatar.DrawProfileData = true;
                 if (myData.username == p.username) {
                     // drawing our own avatar. put it in a view so we can highlight it yellow
                     BorderedView yellowHighlight = new BorderedView(new Vector2(840, spacing), new Vector2(middlePlayers, playersY));

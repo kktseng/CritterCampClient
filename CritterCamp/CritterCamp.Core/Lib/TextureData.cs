@@ -26,6 +26,12 @@ namespace CritterCamp {
             sunset1, sunset2, sunset3, sunset4 // 29
         }
 
+        public enum ButtonSquare {
+            main,
+            profile,
+            store
+        }
+
         public enum PlayerStates {
             standing,
             jump1, jump2, jump3, jump4,

@@ -62,7 +62,7 @@ namespace CritterCamp.Screens {
             title = new Label("Retreiving profile data", new Vector2(825, 125));
             title.CenterX = false;
             title.Scale = 0.7f;
-            title.Font = "buttonFont";
+            title.Font = "tahoma";
             profilePage.AddElement(title);
 
             // the view to draw our avatar
@@ -120,7 +120,7 @@ namespace CritterCamp.Screens {
 
             Label usernameLabel = new Label(dataToDisplay.username, new Vector2(140, 625));
             usernameLabel.CenterX = false;
-            usernameLabel.Font = "buttonFont";
+            usernameLabel.Font = "tahoma";
             usernameLabel.Scale = 0.6f;
             profileInfo.AddElement(usernameLabel);
             int xSize = 485;
@@ -132,19 +132,19 @@ namespace CritterCamp.Screens {
             profileInfo.AddElement(levelCurrExp);
             Label level = new Label("Lv " + Helpers.PadNumber(dataToDisplay.level, 3), new Vector2(140, 700));
             level.CenterX = false;
-            level.Font = "buttonFont";
+            level.Font = "tahoma";
             level.Scale = 0.55f;
             level.TextColor = Constants.DarkBrown;
             profileInfo.AddElement(level);
             Label rank = new Label("Rank #" + dataToDisplay.rank, new Vector2(140, 760));
             rank.CenterX = false;
-            rank.Font = "buttonFont";
+            rank.Font = "tahoma";
             rank.Scale = 0.55f;
             profileInfo.AddElement(rank);
             Label money = new Label("$250", new Vector2(140, 825));
             money.CenterX = false;
             money.Scale = 0.6f;
-            money.Font = "buttonFont";
+            money.Font = "tahoma";
             money.TextColor = Color.Yellow;
             //profileInfo.AddElement(money);
 
@@ -152,7 +152,7 @@ namespace CritterCamp.Screens {
                 // displaying our own profile. display the critters we can use
                 Label critters = new Label("Unlocked Critters", new Vector2(905, 150));
                 critters.CenterX = false;
-                critters.Font = "buttonFont";
+                critters.Font = "tahoma";
                 critters.Scale = 0.6f;
                 profileMain.AddElement(critters);
 
@@ -203,7 +203,7 @@ namespace CritterCamp.Screens {
             
             myData.profile = pd.ServerName;
             avatar.PlayerDataInfo = myData;
-            homeScreen.updatePlayerData();
+            //homeScreen.updatePlayerData();
 
             currentYellowHighlight.FillColor = new Color(142, 101, 79);
             BorderedView selectedIcon = (BorderedView)e.ObjectArgExtra1;
@@ -213,7 +213,7 @@ namespace CritterCamp.Screens {
 
         public override void Unload() {
             Storage.Set("myPlayerData", myData);
-            homeScreen.updatePlayerData();
+            //homeScreen.updatePlayerData();
             conn.SendMessage(@"{ ""action"": ""profile"", ""type"": ""set"", ""profile"": """ + myData.profile + "\" }");
 
             conn.pMessageReceivedEvent -= handleProfile;

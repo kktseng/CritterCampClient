@@ -17,7 +17,7 @@ namespace CritterCamp.Screens.Games.Lib {
         }
 
         public void Draw(Vector2 coord) {
-            SpriteFont font = screen.ScreenManager.Fonts["buttonFont"];
+            SpriteFont font = screen.ScreenManager.Fonts["tahoma"];
             Vector2 size = font.MeasureString(text);
 
             // Resize coordinates to backbuffer

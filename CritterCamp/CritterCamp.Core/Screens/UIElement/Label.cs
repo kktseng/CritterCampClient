@@ -45,7 +45,7 @@ namespace CritterCamp.Screens {
 
         protected void Initialize(string Text) {
             this.Text = Text;
-            Font = "blueHighway28";
+            Font = "tahoma";
             TextColor = Color.Black;
         }
 

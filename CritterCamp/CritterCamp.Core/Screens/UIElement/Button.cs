@@ -36,6 +36,14 @@ namespace CritterCamp.Screens {
                 TextLabel.Scale = value;
             }
         }
+        public string TextFont {
+            get {
+                return TextLabel.Font;
+            }
+            set {
+                TextLabel.Font = value;
+            }
+        }
         public Color OverlayColor {
             get {
                 return ButtonTexture.Overlay;
@@ -203,7 +211,7 @@ namespace CritterCamp.Screens {
             ButtonImage = image;
             ButtonTextureIndex = textureIndex;
             Text = text;
-            TextLabel.Font = "buttonFont";
+            TextLabel.Font = "tahoma";
             TextLabel.TextColor = Color.White;
             Disabled = false; // make the button tappable
             Tapped += OnTap;

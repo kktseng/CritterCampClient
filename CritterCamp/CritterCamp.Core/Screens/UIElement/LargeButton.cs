@@ -9,7 +9,7 @@ namespace CritterCamp.Screens {
     /// </summary>
     class LargeButton : Button {
         public LargeButton(string text) : base("buttonM", 0) {
-            ButtonTexture.Tint = new Color(179, 204, 87);
+            ButtonTexture.Tint = new Color(230, 124, 108);
             Size = new Vector2(416, 160);
             Text = text;
             CenterX = true;

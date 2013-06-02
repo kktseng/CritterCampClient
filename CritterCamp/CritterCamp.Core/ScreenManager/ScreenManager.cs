@@ -127,15 +127,15 @@ namespace GameStateManagement {
 
             // Load global resources here
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            string[] fontNames = new string[] { "matiz48", "buttonFont", "boris48", "blueHighway28", "menufont" };
+            string[] fontNames = new string[] { "boris48", "blueHighway28", "tahoma", "tahomaLarge" };
             for(int i = 0; i < fontNames.Length; i++) {
                 fonts[fontNames[i]] = content.Load<SpriteFont>("Fonts/" + fontNames[i]);
             }
             string[] textureNames = new string[] {
                 "paperBG", "bgScreen",
-                "gameIcons", "scoreScreenIcons", "scorePanel", "pbg_twilight",
-                "backButton", "buttonMint",  "buttonGreen", "buttonSoundOn", "buttonSoundOff", "buttonS", "buttonM",
-                "whitePixel", "buttonProfile",
+                "gameIcons", "scoreScreenIcons", "scorePanel", "profileBg",
+                "backButton", "buttonMint",  "buttonGreen", "buttonSoundOn", "buttonSoundOff", "buttonS", "buttonM", "buttonSquare",
+                "whitePixel", "profileContainer",
                 "avatars", "pig",
                 "twitterIcon", "fbIcon"
             };
