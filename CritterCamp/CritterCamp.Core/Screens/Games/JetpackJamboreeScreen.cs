@@ -272,7 +272,7 @@ namespace CritterCamp.Screens.Games {
                     avatars[playerName].count = mainPigs.Count;
                 } else {
                     if(banner == null)
-                        banner = (singlePlayer) ? new TextBanner(this, "Score: " + score) : new TextBanner(this, "GAME OVER");
+                        banner = (singlePlayer) ? new TextBanner(this, "Score: " + score) : new TextBanner(this, "WAITING FOR OTHER PLAYERS");
                     for(int i = 0; i < 4; i++) {
                         foreach(Pig p in pennedPigs[i]) {
                             p.State = PigStates.Standing;
@@ -289,8 +289,11 @@ namespace CritterCamp.Screens.Games {
                 // Keep track of when the game switches to game over
                 bannerStart = gameTime.TotalGameTime;
             } else if(phase == Phase.GameOver) {
-                if(banner == null)
+                if(banner == null) {
                     banner = new TextBanner(this, "YOU WIN!");
+                } else if(!singlePlayer) {
+                    banner = new TextBanner(this, "GAME OVER");
+                }
                 if(gameTime.TotalGameTime - bannerStart > BANNER_TIME) {
                     if(singlePlayer) {
                         scoreReceived = true;

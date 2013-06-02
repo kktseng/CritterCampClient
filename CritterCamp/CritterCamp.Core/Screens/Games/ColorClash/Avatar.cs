@@ -17,6 +17,7 @@ namespace CritterCamp.Screens.Games.ColorClash {
         public Color color;
         public Splatter currentPaint;
         public PlayerData player;
+        public float score;
         
         protected TimeSpan throwTime;
         protected bool readyToThrow = false;

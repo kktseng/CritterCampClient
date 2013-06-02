@@ -13,16 +13,30 @@ using System.Threading.Tasks;
 
 namespace CritterCamp.Screens.Games {
     class ColorClashScreen : BaseGameScreen {
+        public static Rectangle BOUNDS = new Rectangle(437, 110, 1337, 870);
+        public static TimeSpan SCORE_TIME = new TimeSpan(0, 0, 0, 5);
+        public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 0, 2);
         public static TimeSpan BLINK_TIME = new TimeSpan(0, 0, 1);
+        public static TimeSpan PAINT_TIME = new TimeSpan(0, 0, 20);
 
-        public TimeSpan gameStart;
+        public TimeSpan gameStart, gameEnd;
         public bool synced = false, ready = false;
 
         public List<Splatter> splatters = new List<Splatter>();
+        public List<Splatter> finishedSplats = new List<Splatter>(); // used to calculate percentages - easier than ordering with time
         public Dictionary<string, Avatar> players = new Dictionary<string, Avatar>();
         public Crosshair crosshair;
 
+        protected Phase phase = Phase.Begin;
+        protected TextBanner banner;
+
         protected TileMap tileMap, doodadMap, overlayMap;
+        protected enum Phase {
+            Begin,
+            Main,
+            Calculation,
+            Limbo
+        }
 
         public ColorClashScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer)
             : base(playerData, singlePlayer) {
@@ -30,10 +44,11 @@ namespace CritterCamp.Screens.Games {
             int colorCount = 0;
             for(int i = 0; i < playerData.Values.Count; i++) {
                 PlayerData pd = playerData.Values.ElementAt(i);
-                if(pd.color != 1) {
-                    players[pd.username] = new Avatar(this, new Vector2(200, 200 + 250 * i), pd, Helpers.MapColor(pd.color));
+                if(pd.color != 0) {
+                    players[pd.username] = new Avatar(this, new Vector2(100, 200 + 250 * i), pd, Helpers.MapColor(pd.color));
                 } else {
-                    players[pd.username] = new Avatar(this, new Vector2(200, 200 + 250 * i), pd, Helpers.MapColor(3 - colorCount));
+                    players[pd.username] = new Avatar(this, new Vector2(100, 200 + 250 * i), pd, Helpers.MapColor(3 - colorCount));
+                    colorCount++;
                 }
             }
 
@@ -52,46 +67,46 @@ namespace CritterCamp.Screens.Games {
             doodadMap = new TileMap(textureList["doodads"]);
             overlayMap = new TileMap(textureList["map"]);
             int[,] map = new int[,] {
+                {   4,  5,  6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                {   5,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                {   4,  4,  6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
                 {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                {   6,  5,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
                 {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                {   4,  4,  5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                {   5,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                {   6,  4,  5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
                 {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                {   5,  6,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
                 {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }
             };
             int[,] ddMap = new int[,] {
-                {  -1, -1, -1, 18, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22 },
-                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
-                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
-                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
-                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
-                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
-                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
-                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
-                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
-                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
-                {  -1, -1, -1, 16, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, 19, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
                 {  -1, -1, -1, 19, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 23 },
             };
             int[,] olMap = new int[,] {
-                {  -1, -1, -1,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
+                {  -1, -1, -1,  4,  4,  5,  4,  6,  4,  4,  5,  4,  4,  5,  4,  6,  4,  4,  4,  5 },
+                {  -1, -1, -1,  5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  5 },
                 {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
+                {  -1, -1, -1,  6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  6 },
+                {  -1, -1, -1,  5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
                 {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
+                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  5 },
                 {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
-                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
-                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
-                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
-                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
-                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
-                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
-                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
-                {  -1, -1, -1,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4 },
+                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  6 },
+                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  5 },
+                {  -1, -1, -1,  5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
+                {  -1, -1, -1,  4,  6,  4,  5,  6,  4,  5,  4,  4,  4,  5,  4,  5,  4,  6,  5,  4 },
             };
             overlayMap.SetMap(olMap);                                                 
             tileMap.SetMap(map);
@@ -119,7 +134,7 @@ namespace CritterCamp.Screens.Games {
                     );
                     conn.SendMessage(packet.ToString());
                 }
-            } else {
+            } else if(phase == Phase.Main) {
                 foreach(TouchLocation loc in input.TouchState) {
                     Vector2 scaledPos = Helpers.ScaleInput(new Vector2(loc.Position.X, loc.Position.Y));
                     if(crosshair == null) {
@@ -127,7 +142,7 @@ namespace CritterCamp.Screens.Games {
                         players[playerName].StartThrow();
                     } else {
                         if(!crosshair.blinking)
-                            crosshair.Move(scaledPos);
+                            crosshair.MoveCrosshair(scaledPos);
                     }
                 }
             }
@@ -135,13 +150,89 @@ namespace CritterCamp.Screens.Games {
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
-            if(!synced) {
-                Sync((JArray data, double random) => {
-                    gameStart = gameTime.TotalGameTime;
-                });
-                synced = true;
+            if(phase == Phase.Begin) {
+                if(!synced) {
+                    Sync((JArray data, double random) => {
+                        gameStart = gameTime.TotalGameTime;
+                        phase = Phase.Main;
+                    });
+                    synced = true;
+                }
+            } else if(phase == Phase.Main) {
+                if(gameTime.TotalGameTime - gameStart > PAINT_TIME) {
+                    Dictionary<Color, float> areas = CalculatePaint();
+                    foreach(Avatar a in players.Values) {
+                        a.score = areas[a.color] / (BOUNDS.Width * BOUNDS.Height);
+                    }
+                    gameEnd = gameTime.TotalGameTime;
+                    banner = new TextBanner(this, "TIME'S UP");
+                    foreach(Avatar a in players.Values) {
+                        if(a.currentPaint != null) {
+                            RemoveActor(a.currentPaint);
+                            splatters.Remove(a.currentPaint);
+                            a.currentPaint = null;
+                            a.State = AvatarStates.Standing;
+                        }
+                    }
+                    if(crosshair != null) {
+                        RemoveActor(crosshair);
+                        crosshair = null;
+                    }
+                    phase = Phase.Calculation;
+                }
+            } else if(phase == Phase.Calculation) {
+                if(gameTime.TotalGameTime - gameEnd > BANNER_TIME + BANNER_TIME + SCORE_TIME) {
+                    if(singlePlayer) {
+                        scoreReceived = true;
+                        phase = Phase.Limbo;
+                    } else {
+                        // Sync scores
+                        JObject packet = new JObject(
+                            new JProperty("action", "group"),
+                            new JProperty("type", "report_score"),
+                            new JProperty("score", new JObject(
+                                from username in players.Keys
+                                select new JProperty(username, (int)(players[username].score * 100))
+                            ))
+                        );
+                        conn.SendMessage(packet.ToString());
+                        phase = Phase.Limbo;
+                    }
+                } else if(gameTime.TotalGameTime - gameEnd > BANNER_TIME + SCORE_TIME) {
+                    banner = banner ?? new TextBanner(this, "GAME OVER");
+                } else if(gameTime.TotalGameTime - gameEnd > BANNER_TIME) {
+                    banner = null;
+                } 
+            } else if(phase == Phase.Limbo) {
+                // Do nothing
             }
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+        }
+
+        protected Dictionary<Color, float> CalculatePaint() {
+            finishedSplats.Reverse();
+            List<Rectangle> temp = new List<Rectangle>();
+            Dictionary<Color, float> area = new Dictionary<Color, float>();
+            for(int i = 0; i < 4; i++) {
+                area[Helpers.MapColor(i)] = 0;
+            }
+            foreach(Splatter s in finishedSplats) {
+
+                Rectangle intersect = Rectangle.Intersect(BOUNDS, s.area);
+                area[s.avatar.color] += intersect.Width * intersect.Height;
+                if(temp.Count == 0) {
+                    temp.Add(intersect);
+                    continue;
+                }
+                foreach(Rectangle r in temp) {
+                    intersect = Rectangle.Intersect(intersect, r);
+                }
+                if(intersect.Width != 0 && intersect.Height != 0) {
+                    area[s.avatar.color] -= intersect.Width * intersect.Height;
+                    temp.Add(intersect);
+                }
+            }
+            return area;
         }
 
         public override void RemovePlayer(string user) {
@@ -165,9 +256,11 @@ namespace CritterCamp.Screens.Games {
             }
 
             // Draw splatters that have already hit
-            foreach(Splatter s in splatters) {
-                if(s.State == PaintStates.splatter) {
-                    s.Draw(sd);
+            lock(splatters) {
+                foreach(Splatter s in splatters) {
+                    if(s.State == PaintStates.splatter) {
+                        s.Draw(sd);
+                    }
                 }
             }
 
@@ -195,12 +288,29 @@ namespace CritterCamp.Screens.Games {
             DrawActors(sd);
 
             // Draw paint balls
-            foreach(Splatter s in splatters) {
-                if(s.State != PaintStates.splatter) {
-                    s.Draw(sd);
+            lock(splatters) {
+                foreach(Splatter s in splatters) {
+                    if(s.State != PaintStates.splatter) {
+                        s.Draw(sd);
+                    }
                 }
             }
 
+            // Draw %'s
+            if(phase == Phase.Calculation && gameTime.TotalGameTime - gameEnd > BANNER_TIME) {
+                foreach(Avatar a in players.Values) {
+                    double timePercentage = (gameTime.TotalGameTime - gameEnd).TotalMilliseconds / ((BANNER_TIME + SCORE_TIME).TotalMilliseconds / 2);
+                    timePercentage = timePercentage > 1 ? 1 : timePercentage;
+                    int percentage = (int)(timePercentage * a.score * 10000);
+                    string display = ((float)percentage / 100).ToString();
+                    sd.DrawString(ScreenManager.Fonts["boris48"], display + "%", a.Coord + new Vector2(175, 0), a.color, spriteScale: 0.55f);
+                }
+            }
+
+            // Draw banner
+            if(banner != null) {
+                banner.Draw(new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2));
+            }
 
             ScreenManager.SpriteBatch.End();
             base.Draw(gameTime);
@@ -214,11 +324,13 @@ namespace CritterCamp.Screens.Games {
                 if((string)data["action"] == "paint") {
                     string user = (string)data["source"];
                     if(user != playerName) {
-                        Splatter splatter = new Splatter(this, players[user], rand);
-                        splatter.Scale = (float)data["scale"];
-                        players[user].StartThrow(splatter);
-                        players[user].ThrowPaint(new TimeSpan((long)data["time"]), new Vector2((float)data["x_pos"], (float)data["y_pos"]));
-                       // splatter.Throw(new TimeSpan((long)data["time"]));
+                        lock(splatters) {
+                            Splatter splatter = new Splatter(this, players[user], rand);
+                            splatter.Scale = (float)data["scale"];
+                            players[user].StartThrow(splatter);
+                            players[user].ThrowPaint(new TimeSpan((long)data["time"]), new Vector2((float)data["x_pos"], (float)data["y_pos"]));
+                            // splatter.Throw(new TimeSpan((long)data["time"]));
+                        }
                     }
                 }
             }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CritterCamp.Screens.Games.ColorClash {
     class Crosshair : AnimatedObject<bool> {
-        public static Rectangle BOUNDS = new Rectangle(500, 100, 500, 500);
+
 
         public bool blinking = false;
         protected TimeSpan blinkStart, blinkTime;
@@ -25,15 +25,15 @@ namespace CritterCamp.Screens.Games.ColorClash {
             /* do nothing - use custom draw method */
         }
 
-        public void Move(Vector2 position) {
-            if(position.X < BOUNDS.Left)
-                position.X = BOUNDS.Left;
-            if(position.X > BOUNDS.Right)
-                position.X = BOUNDS.Right;
-            if(position.Y > BOUNDS.Bottom)
-                position.Y = BOUNDS.Bottom;
-            if(position.Y < BOUNDS.Top)
-                position.Y = BOUNDS.Top;
+        public void MoveCrosshair(Vector2 position) {
+            if(position.X < ColorClashScreen.BOUNDS.Left)
+                position.X = ColorClashScreen.BOUNDS.Left;
+            if(position.X > ColorClashScreen.BOUNDS.Right)
+                position.X = ColorClashScreen.BOUNDS.Right;
+            if(position.Y > ColorClashScreen.BOUNDS.Bottom)
+                position.Y = ColorClashScreen.BOUNDS.Bottom;
+            if(position.Y < ColorClashScreen.BOUNDS.Top)
+                position.Y = ColorClashScreen.BOUNDS.Top;
             Coord = position;
         }
 

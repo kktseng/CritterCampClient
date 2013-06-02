@@ -36,12 +36,6 @@ namespace CritterCamp.Screens.Games.ColorClash {
             //splatterType = rand.Next(0, 4);
             splatterType = 0;
             this.avatar = avatar;
-            area = new Rectangle(
-                (int)(Coord.X - Constants.BUFFER_SPRITE_DIM * Scale),
-                (int)(Coord.Y - Constants.BUFFER_SPRITE_DIM * Scale),
-                (int)(2 * Constants.BUFFER_SPRITE_DIM * Scale),
-                (int)(2 * Constants.BUFFER_SPRITE_DIM * Scale)
-            );
         }
 
         protected override void SetAnim() {
@@ -69,6 +63,15 @@ namespace CritterCamp.Screens.Games.ColorClash {
             TimeSpan elapsed = time.TotalGameTime - startTime;
             double ratio = elapsed.TotalMilliseconds / TRAVEL_TIME.TotalMilliseconds;
             if(ratio >= 1) {
+                if(State != PaintStates.splatter) {
+                    area = new Rectangle(
+                        (int)(destination.X - Constants.BUFFER_SPRITE_DIM / 2 * Scale),
+                        (int)(destination.Y - Constants.BUFFER_SPRITE_DIM / 2 * Scale),
+                        (int)(Constants.BUFFER_SPRITE_DIM * Scale),
+                        (int)(Constants.BUFFER_SPRITE_DIM * Scale)
+                    );
+                    ((ColorClashScreen)screen).finishedSplats.Add(this);
+                }
                 Coord = destination;
                 State = PaintStates.splatter;
             } else {
