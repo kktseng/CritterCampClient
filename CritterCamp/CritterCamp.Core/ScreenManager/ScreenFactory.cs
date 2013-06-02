@@ -27,6 +27,14 @@ namespace GameStateManagement {
                 Dictionary<string, PlayerData> playerData = Storage.Get<Dictionary<string, PlayerData>>("player_data");
                 bool single = Storage.Get<bool>("singlePlayer");
                 return Activator.CreateInstance(screenType, new object[2] { playerData, single }) as GameScreen;
+            } else if(typeof(MainScreen).IsAssignableFrom(screenType)) {
+                if(Storage.ContainsKey("profileBounce")) {
+                    bool bounce = Storage.Get<bool>("profileBounce");
+                    Storage.Remove("profileBounce");
+                    return Activator.CreateInstance(screenType, new object[1] { bounce }) as GameScreen;
+                } else {
+                    return Activator.CreateInstance(screenType, new object[1] { true }) as GameScreen;
+                }
             } else {
                 return Activator.CreateInstance(screenType) as GameScreen;
             }

@@ -55,7 +55,7 @@ namespace CritterCamp.Screens {
                 gameChoice.Caption1 = gd.NameLine1;
                 gameChoice.Caption2 = gd.NameLine2;
                 gameChoice.TappedArgs.ObjectArg = gd;
-                gameChoice.Tapped += selectGame;
+                gameChoice.Tapped += SelectGame;
 
                 voteMenu.AddElement(gameChoice);
 
@@ -65,7 +65,7 @@ namespace CritterCamp.Screens {
             // add the vote button
             playButton = new Button("Play");
             playButton.Position = new Vector2(960, 900);
-            playButton.Tapped += play;
+            playButton.Tapped += Play;
             playButton.Disabled = true;
             voteMenu.AddElement(playButton);
             
@@ -73,7 +73,7 @@ namespace CritterCamp.Screens {
         }
 
         // Method callback when we press on a game icon button to vote for
-        void selectGame(object sender, UIElementTappedArgs e) {
+        void SelectGame(object sender, UIElementTappedArgs e) {
             if (selectedButton != null) {
                 selectedButton.Highlight = false;
             }
@@ -85,7 +85,7 @@ namespace CritterCamp.Screens {
         }
 
         // Method callback for the play button
-        void play(object sender, EventArgs e) {
+        void Play(object sender, EventArgs e) {
             if (selectedGame == null) {
                 // haven't choosen a game yet
                 return;
@@ -95,5 +95,8 @@ namespace CritterCamp.Screens {
             LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(typeof(TutorialScreen)));
         }
 
+        public override void OnBackPressed() {
+            SwitchScreen(typeof(PlayScreen));
+        }
     }
 }

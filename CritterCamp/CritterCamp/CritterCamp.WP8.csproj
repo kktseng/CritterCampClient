@@ -119,6 +119,9 @@
     <Compile Include="..\CritterCamp.Core\ScreenManager\ScreenManager.cs">
       <Link>Core\ScreenManager\ScreenManager.cs</Link>
     </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\AboutScreen.cs">
+      <Link>Core\Screens\AboutScreen.cs</Link>
+    </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\Games\BaseGameScreen.cs">
       <Link>Core\Screens\Games\BaseGameScreen.cs</Link>
     </Compile>
@@ -191,6 +194,9 @@
     <Compile Include="..\CritterCamp.Core\Screens\HomeScreen.cs">
       <Link>Core\Screens\HomeScreen.cs</Link>
     </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\LeaderScreen.cs">
+      <Link>Core\Screens\LeaderScreen.cs</Link>
+    </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\LoadingScreen.cs">
       <Link>Core\Screens\LoadingScreen.cs</Link>
     </Compile>
@@ -205,6 +211,9 @@
     </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\OfflineScreenCore.cs">
       <Link>Core\Screens\OfflineScreenCore.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\PlayScreen.cs">
+      <Link>Core\Screens\PlayScreen.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\ProfileScreen.cs">
       <Link>Core\Screens\ProfileScreen.cs</Link>

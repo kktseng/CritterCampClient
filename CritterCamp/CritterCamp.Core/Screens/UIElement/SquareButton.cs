@@ -11,7 +11,7 @@ namespace CritterCamp.Screens {
         protected Image icon;
 
         public SquareButton() : base("buttonSquare", (int)TextureData.ButtonSquare.main) {
-            ButtonTexture.Tint = new Color(168, 205, 171);
+            buttonTexture.Tint = new Color(168, 205, 171);
             Size = new Vector2(128, 128);
         }
 
@@ -36,13 +36,13 @@ namespace CritterCamp.Screens {
         }
 
         protected override void DrawThis() {
-            ButtonTexture.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
+            buttonTexture.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
             if(Icon != null)
                 Icon.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
-            ButtonHighlightTexture.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
-            TextLabel.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
-            Caption1Label.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
-            Caption2Label.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
+            buttonHighlightTexture.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
+            textLabel.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
+            caption1Label.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
+            caption2Label.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
         }
     }
 }

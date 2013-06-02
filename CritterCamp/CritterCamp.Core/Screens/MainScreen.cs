@@ -16,14 +16,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
-#if WINDOWS_PHONE
-using Microsoft.Phone.Tasks;
 using CritterCamp.Core.Screens;
-#endif
 
 namespace CritterCamp.Screens {
     class MainScreen : MenuScreen {
+        protected bool profileBounce;
         protected PlayerData myData;
         protected Dictionary<Button, Vector2> destinations = new Dictionary<Button, Vector2>();
         protected Dictionary<Button, double> timeOffset = new Dictionary<Button, double>();
@@ -32,16 +29,14 @@ namespace CritterCamp.Screens {
         protected List<UIElement> profileElements = new List<UIElement>();
         protected Dictionary<UIElement, Vector2> profileDestinations = new Dictionary<UIElement, Vector2>();
 
-        public MainScreen() : base() {
-            TransitionOnTime = new TimeSpan(0, 0, 0, 2);
-            TransitionOffTime = new TimeSpan(0, 0, 1);
+        public MainScreen(bool bounce) : base() {
+            profileBounce = bounce;
+            TransitionOnTime = new TimeSpan(0, 0, 0, 1, 500);
+            TransitionOffTime = new TimeSpan(0, 0, 0, 0, 200);
         }
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            OfflineScreenCore osc = Storage.Get<OfflineScreenCore>("OfflineScreenCore");
-            osc.ShowAdDuplex(true);
-
             myData = Storage.Get<PlayerData>("myPlayerData");
 
             // Draw logo
@@ -78,9 +73,11 @@ namespace CritterCamp.Screens {
 
             foreach(UIElement element in profileElements) {
                 mainView.AddElement(element);
-                profileDestinations[element] = element.Position;
-                // immediately hide profile from view
-                element.Position = new Vector2(3000, 2000);
+                if(profileBounce) {
+                    profileDestinations[element] = element.Position;
+                    // immediately hide profile from view
+                    element.Position = new Vector2(3000, 2000);
+                }
             }
         }
 
@@ -92,9 +89,7 @@ namespace CritterCamp.Screens {
                 velocityOffset[b[i]] = rand.NextDouble() + 1;
                 // immediately hide button from view
                 b[i].Position = new Vector2(3000, 2000);
-            }
-
-            
+            }          
         }
 
         void profileButton_Tapped(object sender, EventArgs e) {
@@ -103,8 +98,6 @@ namespace CritterCamp.Screens {
         }
 
         public override void Unload() {
-            OfflineScreenCore osc = Storage.Get<OfflineScreenCore>("OfflineScreenCore");
-            osc.ShowAdDuplex(false);
             base.Unload();
         }
 
@@ -112,26 +105,40 @@ namespace CritterCamp.Screens {
             foreach(Button b in destinations.Keys) {
                 double position = TransitionPosition > timeOffset[b] ? TransitionPosition - timeOffset[b] : 0;
                 position *= 2;
-                if(position > 1) {
-                    b.Position = destinations[b] + new Vector2(1000 * (float)velocityOffset[b] + ((float)position - 1) * 1000, 0);
-                } else if(ScreenState == GameStateManagement.ScreenState.TransitionOn) {
-                    b.Position = destinations[b] + new Vector2((float)Helpers.EaseOutBounce(1 - position, 1000 * (float)velocityOffset[b], -1000 * (float)velocityOffset[b], 1), 0);
-                } else {
-                    b.Position = destinations[b] + new Vector2((float)velocityOffset[b] + ((float)position) * 1000, 0);
+                if(position <= 1) {
+                    if(ScreenState == GameStateManagement.ScreenState.TransitionOn) {
+                        b.Position = destinations[b] + new Vector2((float)Helpers.EaseOutBounce(1 - position, 1000 * (float)velocityOffset[b], -1000 * (float)velocityOffset[b], 1), 0);
+                    } else {
+                        b.Position = destinations[b] + new Vector2((float)velocityOffset[b] + ((float)position) * 1000, 0);
+                    }
                 }
             }
-            foreach(UIElement element in profileElements) {
-                double position = (TransitionPosition - .15) * 2;
-                position = position > 0 ? position : 0;
-                if(position > 1) {
-                    element.Position = profileDestinations[element] - new Vector2(3000 * ((float)position - 1) + 1500, 0);
-                } else if(ScreenState == GameStateManagement.ScreenState.TransitionOn) {
-                    element.Position = profileDestinations[element] - new Vector2((float)Helpers.EaseOutBounce(1 - position, 1500, -1500, 1), 0);
-                } else {
-                    element.Position = profileDestinations[element] - new Vector2(((float)position) * 1500, 0);
+            if(profileBounce) {
+                foreach(UIElement element in profileElements) {
+                    double position = (TransitionPosition - .3) * 2;
+                    position = position > 0 ? position : 0;
+                    if(position <= 1) {
+                        if(ScreenState == GameStateManagement.ScreenState.TransitionOn) {
+                            element.Position = profileDestinations[element] - new Vector2((float)Helpers.EaseOutBounce(1 - position, 1250, -1250, 1), 0);
+                        } else {
+                            element.Position = profileDestinations[element] - new Vector2(((float)position) * 1250, 0);
+                        }
+                    }
+                }
+                if(ScreenState == GameStateManagement.ScreenState.Active) {
+                    OfflineScreenCore osc = Storage.Get<OfflineScreenCore>("OfflineScreenCore");
+                    osc.ShowAdDuplex(true);
                 }
             }
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+        }
+
+        protected override void SwitchScreen(Type screen) {
+            if(typeof(MainScreen).IsAssignableFrom(screen)) {
+                Storage.Set("profileBounce", false);
+                profileBounce = false;
+            }
+            base.SwitchScreen(screen);
         }
     }
 }

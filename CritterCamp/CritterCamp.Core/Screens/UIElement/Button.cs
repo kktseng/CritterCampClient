@@ -8,114 +8,122 @@ namespace CritterCamp.Screens {
     /// Represents an button to draw
     /// </summary>
     class Button : UIElement{
+        public Color SelectedColor = new Color(63, 184, 175);
+        public Color SelectedTextColor = Color.Gray;
+
         private static string defaultButtonTexture = "buttonMint";
         private static string defaultButtonHighlightTexture = "gameIcons";
         private static string defaultButtonSound = "buttonSound";
 
         // protected UI elements for this button
-        protected Label TextLabel = new Label();
-        protected Label Caption1Label = new Label();
-        protected Label Caption2Label = new Label();
-        protected Image ButtonTexture = new Image(defaultButtonTexture, 0, new Vector2(290, 90), new Vector2());
-        protected Image ButtonHighlightTexture = new Image(defaultButtonHighlightTexture, (int)TextureData.games.glow, new Vector2(290, 90), new Vector2());
-        protected string ButtonSound = defaultButtonSound;
+        protected Label textLabel = new Label();
+        protected Label caption1Label = new Label();
+        protected Label caption2Label = new Label();
+        protected Image buttonTexture = new Image(defaultButtonTexture, 0, new Vector2(290, 90), new Vector2());
+        protected Image buttonHighlightTexture = new Image(defaultButtonHighlightTexture, (int)TextureData.games.glow, new Vector2(290, 90), new Vector2());
+        protected string buttonSound = defaultButtonSound;
 
         public string Text { // text to display in the button
             get {
-                return TextLabel.Text;
+                return textLabel.Text;
             }
             set {
-                TextLabel.Text = value;
+                textLabel.Text = value;
             }
         }
         public float TextScale {
             get {
-                return TextLabel.Scale;
+                return textLabel.Scale;
             }
             set {
-                TextLabel.Scale = value;
+                textLabel.Scale = value;
             }
         }
         public string TextFont {
             get {
-                return TextLabel.Font;
+                return textLabel.Font;
             }
             set {
-                TextLabel.Font = value;
+                textLabel.Font = value;
+            }
+        }
+        public Image ButtonTexture {
+            get {
+                return buttonTexture;
             }
         }
         public Color OverlayColor {
             get {
-                return ButtonTexture.Overlay;
+                return buttonTexture.Overlay;
             }
             set {
-                ButtonTexture.Overlay = value;
+                buttonTexture.Overlay = value;
             }
         }
         public string Caption1  { // text to display on the bottom of the button
             get {
-                return Caption1Label.Text;
+                return caption1Label.Text;
             }
             set {
-                Caption1Label.Text = value;
+                caption1Label.Text = value;
             }
         }
         public string Caption2 { // text to display on the bottom of the button
             get {
-                return Caption2Label.Text;
+                return caption2Label.Text;
             }
             set {
-                Caption2Label.Text = value;
+                caption2Label.Text = value;
             }
         }
 
         public string ButtonImage { // the image to display for the button
             get {
-                return ButtonTexture.Texture;
+                return buttonTexture.Texture;
             }
             set {
-                ButtonTexture.Texture = value;
+                buttonTexture.Texture = value;
             }
         }
         public int ButtonTextureIndex { // the texture for the button image
             get {
-                return ButtonTexture.TextureIndex;
+                return buttonTexture.TextureIndex;
             }
             set {
-                ButtonTexture.TextureIndex = value;
+                buttonTexture.TextureIndex = value;
             }
         }
         public float ButtonImageScale {
             get {
-                return ButtonTexture.Scale;
+                return buttonTexture.Scale;
             }
             set {
-                ButtonTexture.Scale = value;
-                ButtonHighlightTexture.Scale = value;
+                buttonTexture.Scale = value;
+                buttonHighlightTexture.Scale = value;
             }
         }
         public string HighlightImage { // the image to display for when the button is highlighted
             get {
-                return ButtonHighlightTexture.Texture;
+                return buttonHighlightTexture.Texture;
             }
             set {
-                ButtonHighlightTexture.Texture = value;
+                buttonHighlightTexture.Texture = value;
             }
         }
         public int HighlightTextureIndex { // the texture for the highlight image
             get {
-                return ButtonHighlightTexture.TextureIndex;
+                return buttonHighlightTexture.TextureIndex;
             }
             set {
-                ButtonHighlightTexture.TextureIndex = value;
+                buttonHighlightTexture.TextureIndex = value;
             }
         }
         public string Sound {
             get {
-                return ButtonSound;
+                return buttonSound;
             }
             set {
-                ButtonSound = value;
+                buttonSound = value;
             }
         }
         private bool highlight;
@@ -125,7 +133,7 @@ namespace CritterCamp.Screens {
             }
             set {
                 highlight = value;
-                ButtonHighlightTexture.Visible = value; // set whether or not to show the highlight texture
+                buttonHighlightTexture.Visible = value; // set whether or not to show the highlight texture
             }
         }
         public override bool Disabled {
@@ -134,16 +142,7 @@ namespace CritterCamp.Screens {
             }
             set {
                 base.Disabled = value;
-                if (Disabled) { // disabled this button. draw a gray overlay
-                    ButtonTexture.Overlay = Color.Gray;
-                    ButtonTexture.DrawOverlay = true;
-                    TextLabel.TextColor = Color.Gray;
-                } else { // button is not disabled. draw no overlay
-                    if (!Selected) {
-                        ButtonTexture.DrawOverlay = false;
-                        TextLabel.TextColor = Color.White;
-                    }
-                }
+                ResetSelected();
             }
         }
         protected override bool Selected {
@@ -153,13 +152,13 @@ namespace CritterCamp.Screens {
             set {
                 base.Selected = value;
                 if (Selected) { // selected this button. draw a green
-                    ButtonTexture.Overlay = Color.Green;
-                    ButtonTexture.DrawOverlay = true;
-                    TextLabel.TextColor = Color.Gray;
+                    buttonTexture.Overlay = SelectedColor;
+                    buttonTexture.DrawOverlay = true;
+                    textLabel.TextColor = SelectedColor;
                 } else { // button is not selected. draw no overlay
                     if (!Disabled) {
-                        ButtonTexture.DrawOverlay = false;
-                        TextLabel.TextColor = Color.White;
+                        buttonTexture.DrawOverlay = false;
+                        textLabel.TextColor = Color.White;
                     }
                 }
             }
@@ -168,8 +167,8 @@ namespace CritterCamp.Screens {
         public override Vector2 Size {
             set {
                 base.Size = value;
-                ButtonTexture.Size = value;
-                ButtonHighlightTexture.Size = value;
+                buttonTexture.Size = value;
+                buttonHighlightTexture.Size = value;
             }
         }
         public override Vector2 PaddedSize {
@@ -185,11 +184,11 @@ namespace CritterCamp.Screens {
             set {
                 base.Position = value;
                 // need to update all our UIelements with the new position
-                TextLabel.Position = value;
-                Caption1Label.Position = value + new Vector2(0, 135);
-                Caption2Label.Position = value + new Vector2(0, 185);
-                ButtonTexture.Position = value;
-                ButtonHighlightTexture.Position = value;
+                textLabel.Position = value;
+                caption1Label.Position = value + new Vector2(0, 135);
+                caption2Label.Position = value + new Vector2(0, 185);
+                buttonTexture.Position = value;
+                buttonHighlightTexture.Position = value;
             }
         }
         
@@ -211,27 +210,27 @@ namespace CritterCamp.Screens {
             ButtonImage = image;
             ButtonTextureIndex = textureIndex;
             Text = text;
-            TextLabel.Font = "tahoma";
-            TextLabel.TextColor = Color.White;
+            textLabel.Font = "tahoma";
+            textLabel.TextColor = Color.White;
             Disabled = false; // make the button tappable
             Tapped += OnTap;
 
-            ButtonHighlightTexture.Visible = false;
+            buttonHighlightTexture.Visible = false;
         }
 
         private void OnTap(object sender, UIElementTappedArgs e) {
-            MyScreenManager.Sounds[ButtonSound].Play();
+            MyScreenManager.Sounds[buttonSound].Play();
         }
 
         /// <summary>
         /// Draws the UIElement.
         /// </summary>
         protected override void DrawThis() {
-            ButtonTexture.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
-            ButtonHighlightTexture.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
-            TextLabel.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
-            Caption1Label.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
-            Caption2Label.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
+            buttonTexture.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
+            buttonHighlightTexture.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
+            textLabel.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
+            caption1Label.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
+            caption2Label.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
         }
     }
 }

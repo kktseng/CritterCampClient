@@ -25,6 +25,7 @@ namespace CritterCamp.Core.Screens {
         public OfflineScreenCore(IOfflineScreen os) {
             offlineScreen = os;
             Storage.Set("OfflineScreenCore", this);
+            ShowAdDuplex(false);
         }
 
         public void ShowAdDuplex(bool show) {

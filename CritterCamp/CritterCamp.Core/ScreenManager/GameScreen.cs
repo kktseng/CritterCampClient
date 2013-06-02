@@ -69,8 +69,8 @@ namespace GameStateManagement {
             Helpers.Sync(data, timeout);
         }
 
-        public void setConn(ITCPConnection conn) {
-            removeConn(); // remove the old connection first
+        public void SetConn(ITCPConnection conn) {
+            RemoveConn(); // remove the old connection first
 
             if (conn != null) { // set the new conenction
                 this.conn = conn;
@@ -78,11 +78,15 @@ namespace GameStateManagement {
             }
         }
 
-        public void removeConn() {
+        public void RemoveConn() {
             if (conn != null) {
                 conn.pMessageReceivedEvent -= MessageReceived; // remove the method from the old connection
                 conn = null;
             }
+        }
+
+        protected virtual void SwitchScreen(Type screen) {
+            LoadingScreen.Load(ScreenManager, false, null, Helpers.GetScreenFactory(this).CreateScreen(screen));
         }
 
         protected Vector2 coordScale, backBuffer;
@@ -264,7 +268,7 @@ namespace GameStateManagement {
         /// </param>
         public virtual void Activate(bool instancePreserved) {
             if(online)
-                setConn(Storage.Get<ITCPConnection>("TCPSocket"));
+                SetConn(Storage.Get<ITCPConnection>("TCPSocket"));
         }
 
 
@@ -278,7 +282,7 @@ namespace GameStateManagement {
         /// Unload content for the screen. Called when the screen is removed from the screen manager.
         /// </summary>
         public virtual void Unload() {
-            removeConn();
+            RemoveConn();
         }
 
 
