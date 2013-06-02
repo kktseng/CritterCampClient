@@ -47,7 +47,7 @@ namespace CritterCamp.Screens.Games {
                 if(pd.color != 0) {
                     players[pd.username] = new Avatar(this, new Vector2(100, 200 + 250 * i), pd, Helpers.MapColor(pd.color));
                 } else {
-                    players[pd.username] = new Avatar(this, new Vector2(100, 200 + 250 * i), pd, Helpers.MapColor(3 - colorCount));
+                    players[pd.username] = new Avatar(this, new Vector2(100, 200 + 250 * i), pd, Helpers.MapColor(4 - colorCount));
                     colorCount++;
                 }
             }
@@ -209,28 +209,33 @@ namespace CritterCamp.Screens.Games {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
+        protected int Calculate(Rectangle r, List<Splatter> remainder) {
+            int sum = 0;
+            if(remainder.Count == 0)
+                return 0;
+            List<List<Splatter>> permutations = new List<List<Splatter>>();
+            List<Splatter> remainder2 = new List<Splatter>(remainder);
+            foreach(Splatter s in remainder) {
+                Rectangle r2 = Rectangle.Intersect(s.area, r);
+                if(r2.Height == 0 || r2.Width == 0)
+                    continue;
+                remainder2.Remove(s);
+                sum += r2.Width * r2.Height - Calculate(r2, remainder2);
+            }
+            return sum;
+        }
+
         protected Dictionary<Color, float> CalculatePaint() {
-            finishedSplats.Reverse();
             List<Rectangle> temp = new List<Rectangle>();
             Dictionary<Color, float> area = new Dictionary<Color, float>();
             for(int i = 0; i < 4; i++) {
                 area[Helpers.MapColor(i)] = 0;
             }
+            List<Splatter> sList = new List<Splatter>(finishedSplats);
             foreach(Splatter s in finishedSplats) {
-
+                sList.Remove(s);
                 Rectangle intersect = Rectangle.Intersect(BOUNDS, s.area);
-                area[s.avatar.color] += intersect.Width * intersect.Height;
-                if(temp.Count == 0) {
-                    temp.Add(intersect);
-                    continue;
-                }
-                foreach(Rectangle r in temp) {
-                    intersect = Rectangle.Intersect(intersect, r);
-                }
-                if(intersect.Width != 0 && intersect.Height != 0) {
-                    area[s.avatar.color] -= intersect.Width * intersect.Height;
-                    temp.Add(intersect);
-                }
+                area[s.avatar.color] += intersect.Width * intersect.Height - Calculate(intersect, sList);
             }
             return area;
         }

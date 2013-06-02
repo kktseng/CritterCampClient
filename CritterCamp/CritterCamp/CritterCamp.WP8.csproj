@@ -230,8 +230,17 @@
     <Compile Include="..\CritterCamp.Core\Screens\UIElement\Label.cs">
       <Link>Core\Screens\UIElement\Label.cs</Link>
     </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIElement\LargeButton.cs">
+      <Link>Core\Screens\UIElement\LargeButton.cs</Link>
+    </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\UIElement\PlayerAvatar.cs">
       <Link>Core\Screens\UIElement\PlayerAvatar.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIElement\SmallButton.cs">
+      <Link>Core\Screens\UIElement\SmallButton.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIElement\SquareButton.cs">
+      <Link>Core\Screens\UIElement\SquareButton.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\UIElement\UIElement.cs">
       <Link>Core\Screens\UIElement\UIElement.cs</Link>

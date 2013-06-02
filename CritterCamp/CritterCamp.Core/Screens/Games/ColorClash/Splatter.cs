@@ -23,8 +23,8 @@ namespace CritterCamp.Screens.Games.ColorClash {
         public int splatterType;
         public Avatar avatar;
         public Rectangle area;
+        public TimeSpan startTime;
 
-        protected TimeSpan startTime;
         protected Vector2 start, destination;
         protected bool grow = true;
 
@@ -70,7 +70,17 @@ namespace CritterCamp.Screens.Games.ColorClash {
                         (int)(Constants.BUFFER_SPRITE_DIM * Scale),
                         (int)(Constants.BUFFER_SPRITE_DIM * Scale)
                     );
-                    ((ColorClashScreen)screen).finishedSplats.Add(this);
+                    List<Splatter> finished = ((ColorClashScreen)screen).finishedSplats;
+                    if(finished.Count == 0) {
+                        finished.Add(this);
+                    } else {
+                        for(int i = finished.Count - 1; i >= 0; i--) {
+                            if(finished[i].startTime < startTime) {
+                                finished.Insert(i + 1, this);
+                                break;
+                            }
+                        }
+                    }
                 }
                 Coord = destination;
                 State = PaintStates.splatter;
@@ -83,7 +93,7 @@ namespace CritterCamp.Screens.Games.ColorClash {
         }
 
         public override void Draw(SpriteDrawer sd) {
-            float scale = (State == PaintStates.splatter) ? 1f : 0.2f;
+            float scale = (State == PaintStates.splatter) ? 1f : 0.3f;
             sd.Draw(GetImg(), Coord, GetNum(), avatar.color, spriteScale: scale * Scale);
         }
     }

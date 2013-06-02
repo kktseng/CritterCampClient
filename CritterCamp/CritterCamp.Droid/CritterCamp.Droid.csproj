@@ -108,9 +108,6 @@
     <Compile Include="..\CritterCamp.Core\ScreenManager\ScreenManager.cs">
       <Link>Core\ScreenManager\ScreenManager.cs</Link>
     </Compile>
-    <Compile Include="..\CritterCamp.Core\Screens\Button.cs">
-      <Link>Core\Screens\Button.cs</Link>
-    </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\Games\BaseGameScreen.cs">
       <Link>Core\Screens\Games\BaseGameScreen.cs</Link>
     </Compile>

@@ -50,6 +50,17 @@ namespace CritterCamp.Screens.Games.ColorClash {
             State = AvatarStates.Charging;
             ColorClashScreen ccs = (ColorClashScreen)screen;
             currentPaint = splatter;
+            List<Splatter> splatters = ((ColorClashScreen)screen).splatters;
+            if(splatters.Count == 0) {
+                splatters.Add(currentPaint);
+            } else {
+                for(int i = splatters.Count - 1; i >= 0; i--) {
+                    if(splatters[i].startTime < currentPaint.startTime) {
+                        splatters.Insert(i + 1, currentPaint);
+                        break;
+                    }
+                }
+            }
             ((ColorClashScreen)screen).splatters.Add(currentPaint);
         }
 

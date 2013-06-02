@@ -7,7 +7,7 @@ namespace CritterCamp.Screens {
     /// <summary>
     /// Represents an button to draw
     /// </summary>
-    class LargeButton : Button {
+    //class LargeButton : Button {
 
-    }
+    //}
 }
