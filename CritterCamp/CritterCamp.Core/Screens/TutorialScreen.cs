@@ -24,7 +24,7 @@ namespace CritterCamp.Screens {
         int timeLeft;
         Timer timeLeftTimer;
 
-        public TutorialScreen(GameData game) : base("Tutorial") {
+        public TutorialScreen(GameData game) : base() {
             this.game = game;
 
             // Allow the user to tap

@@ -119,9 +119,6 @@
     <Compile Include="..\CritterCamp.Core\ScreenManager\ScreenManager.cs">
       <Link>Core\ScreenManager\ScreenManager.cs</Link>
     </Compile>
-    <Compile Include="..\CritterCamp.Core\Screens\Button.cs">
-      <Link>Core\Screens\Button.cs</Link>
-    </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\Games\BaseGameScreen.cs">
       <Link>Core\Screens\Games\BaseGameScreen.cs</Link>
     </Compile>
@@ -196,6 +193,9 @@
     </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\LoadingScreen.cs">
       <Link>Core\Screens\LoadingScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\MainScreen.cs">
+      <Link>Core\Screens\MainScreen.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\MenuScreen.cs">
       <Link>Core\Screens\MenuScreen.cs</Link>
@@ -415,9 +415,15 @@
     </Content>
     <Content Include="pigIconM.png" />
     <Content Include="pigIconS.png" />
+    <Content Include="Content\buttonM.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Content\buttonProfile.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\buttonS.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Content\cow.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

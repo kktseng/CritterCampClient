@@ -25,7 +25,7 @@ namespace CritterCamp.Screens {
         BorderedView profileAvatar;
         BorderedView profileInfo;
         BorderedView profileMain;
-        HomeScreen homeScreen;
+        MainScreen homeScreen;
         string username;
         PlayerData dataToDisplay;
         PlayerData myData;
@@ -36,7 +36,7 @@ namespace CritterCamp.Screens {
         int rightX = 1330;
         int rightXSize = 900;
 
-        public ProfileScreen(HomeScreen hs, string username) : base("Profile Screen") {
+        public ProfileScreen(MainScreen hs, string username) : base("Profile Screen") {
             homeScreen = hs;
             this.username = username;
         }

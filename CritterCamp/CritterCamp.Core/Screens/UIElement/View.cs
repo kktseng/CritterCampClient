@@ -31,15 +31,17 @@ namespace CritterCamp.Screens {
             UIElements = new List<UIElement>();
         }
 
-        public void AddElement(UIElement uie) {
+        public void AddElement(params UIElement[] uie) {
             lock (UIElements) {
-                UIElements.Add(uie);
+                for(int i = 0; i < uie.Length; i++)
+                    UIElements.Add(uie[i]);
             }
         }
 
-        public void RemoveElement(UIElement uie) {
+        public void RemoveElement(params UIElement[] uie) {
             lock (UIElements) {
-                UIElements.Remove(uie);
+                for(int i = 0; i < uie.Length; i++)
+                    UIElements.Remove(uie[i]);
             }
         }
 

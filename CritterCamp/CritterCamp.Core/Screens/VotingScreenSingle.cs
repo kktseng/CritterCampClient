@@ -22,7 +22,7 @@ namespace CritterCamp.Screens {
         Button selectedButton = null;
         GameData selectedGame = null;
 
-        public VotingScreenSingle() : base("Voting") { }
+        public VotingScreenSingle() : base() { }
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);

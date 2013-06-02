@@ -12,13 +12,13 @@ namespace CritterCamp.Screens {
         private static string defaultButtonHighlightTexture = "gameIcons";
         private static string defaultButtonSound = "buttonSound";
 
-        // private UI elements for this button
-        private Label TextLabel = new Label();
-        private Label Caption1Label = new Label();
-        private Label Caption2Label = new Label();
-        private Image ButtonTexture = new Image(defaultButtonTexture, 0, new Vector2(290, 90), new Vector2());
-        private Image ButtonHighlightTexture = new Image(defaultButtonHighlightTexture, (int)TextureData.games.glow, new Vector2(290, 90), new Vector2());
-        private string ButtonSound = defaultButtonSound;
+        // protected UI elements for this button
+        protected Label TextLabel = new Label();
+        protected Label Caption1Label = new Label();
+        protected Label Caption2Label = new Label();
+        protected Image ButtonTexture = new Image(defaultButtonTexture, 0, new Vector2(290, 90), new Vector2());
+        protected Image ButtonHighlightTexture = new Image(defaultButtonHighlightTexture, (int)TextureData.games.glow, new Vector2(290, 90), new Vector2());
+        protected string ButtonSound = defaultButtonSound;
 
         public string Text { // text to display in the button
             get {
@@ -34,6 +34,14 @@ namespace CritterCamp.Screens {
             }
             set {
                 TextLabel.Scale = value;
+            }
+        }
+        public Color OverlayColor {
+            get {
+                return ButtonTexture.Overlay;
+            }
+            set {
+                ButtonTexture.Overlay = value;
             }
         }
         public string Caption1  { // text to display on the bottom of the button

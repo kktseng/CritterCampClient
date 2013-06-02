@@ -134,9 +134,10 @@ namespace GameStateManagement {
             string[] textureNames = new string[] {
                 "paperBG", "bgScreen",
                 "gameIcons", "scoreScreenIcons", "scorePanel", "pbg_twilight",
-                "backButton", "buttonMint",  "buttonGreen", "buttonSoundOn", "buttonSoundOff",
+                "backButton", "buttonMint",  "buttonGreen", "buttonSoundOn", "buttonSoundOff", "buttonS", "buttonM",
                 "whitePixel", "buttonProfile",
-                "avatars", "pig"
+                "avatars", "pig",
+                "twitterIcon", "fbIcon"
             };
             for(int i = 0; i < textureNames.Length; i++) {
                 textures[textureNames[i]] = content.Load<Texture2D>(textureNames[i]);
@@ -310,15 +311,6 @@ namespace GameStateManagement {
         /// </summary>
         public GameScreen[] GetScreens() {
             return screens.ToArray();
-        }
-
-
-        /// <summary>
-        /// Helper draws a translucent black fullscreen sprite, used for fading
-        /// screens in and out, and for darkening the background behind popups.
-        /// </summary>
-        public void FadeBackBufferToBlack(float alpha) {
-            // Deprecated
         }
 
         /// <summary>

@@ -11,6 +11,7 @@ namespace CritterCamp.Screens {
         public string Texture;
         public int TextureIndex;
         public Color Overlay;
+        public Color Tint = Color.White;
         public bool DrawOverlay;
 
         public override Vector2 Size {
@@ -67,9 +68,9 @@ namespace CritterCamp.Screens {
             if (DrawOverlay) {
                 MySpriteDrawer.Draw(MyScreenManager.Textures[Texture], Position, TextureIndex, Size/(Scale*Scale), rect, SpriteEffects.None, Overlay, spriteScale: Scale);
             } else if (Size != Vector2.Zero) {
-                MySpriteDrawer.Draw(MyScreenManager.Textures[Texture], Position, TextureIndex, Size/(Scale*Scale), spriteScale: Scale);
+                MySpriteDrawer.Draw(MyScreenManager.Textures[Texture], Position, TextureIndex, Size/(Scale*Scale), Tint, spriteScale: Scale);
             } else {
-                MySpriteDrawer.Draw(MyScreenManager.Textures[Texture], Position, TextureIndex, spriteScale : Scale);
+                MySpriteDrawer.Draw(MyScreenManager.Textures[Texture], Position, TextureIndex, Tint, spriteScale : Scale);
             }
         }
     }

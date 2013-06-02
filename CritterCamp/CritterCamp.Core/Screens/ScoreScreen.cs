@@ -17,7 +17,7 @@ namespace CritterCamp.Screens {
         FilledRectangle levelExpGain;
         int gainedExpToShowSize; // the total width to grow the level exp gain rectangle to
 
-        public ScoreScreen() : base("Score") {}
+        public ScoreScreen() : base() {}
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);

@@ -19,7 +19,6 @@ namespace CritterCamp.Screens {
     class MenuScreen : GameScreen {
         protected View mainView;
         private string background = "bgScreen";
-        Vector2 oldPos;
         Vector2 rawInput = Vector2.Zero;
         Vector2 scaledInput = Vector2.Zero;
 
@@ -27,7 +26,7 @@ namespace CritterCamp.Screens {
         /// Creates the PhoneMenuScreen with a particular title.
         /// </summary>
         /// <param name="title">The title of the screen</param>
-        public MenuScreen(string title) : base(true) {
+        public MenuScreen() : base(true) {
             // We need tap gestures to hit the buttons
             EnabledGestures = GestureType.Tap;
         }
@@ -37,7 +36,7 @@ namespace CritterCamp.Screens {
         /// </summary>
         /// <param name="title">The title of the screen</param>
         /// <param name="background">The texture to display as the background</param>
-        public MenuScreen(string title, string background) : this(title) {
+        public MenuScreen(string background) : this() {
             this.background = background;
         }
 

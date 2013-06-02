@@ -23,7 +23,7 @@ using CritterCamp.Core.Screens;
 #endif
 
 namespace CritterCamp.Screens {
-    class HomeScreen : MenuScreen {
+    class HomeScreen : MainScreen {
         private bool looking = false;
         private bool startingGame = false;
         private bool choosingType = false;
@@ -41,35 +41,35 @@ namespace CritterCamp.Screens {
         PlayerData myData;
         //public Song backMusic;
 
-        public HomeScreen() : base("Main Menu") {}
+        public HomeScreen() : base() {}
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            OfflineScreenCore osc = Storage.Get<OfflineScreenCore>("OfflineScreenCore");
-            osc.ShowAdDuplex(true);
-            ContentManager cm = ScreenManager.Game.Content;
-            
-            if (!ScreenManager.Textures.ContainsKey("fbIcon")) {
-                ScreenManager.Textures.Add("fbIcon", cm.Load<Texture2D>("fbIcon"));
-                ScreenManager.Textures.Add("twitterIcon", cm.Load<Texture2D>("twitterIcon"));
-            }
 
-            // load the files
-            //backMusic = cm.Load<Song>("Sounds/,"); // *.mp3
+            // Add buttons
+            Button play = new LargeButton("PLAY");
+            play.Position = new Vector2(1560, 360);
+            play.Tapped += playButton_Tapped;
 
-            // play files
-            //MediaPlayer.Volume = 1.0f;
-            //MediaPlayer.Play(backMusic);
+            Button leaders = new SmallButton("Leaders");
+            leaders.Position = new Vector2(1560, 546);
 
-            myData = Storage.Get<PlayerData>("myPlayerData");
+            Button options = new SmallButton("Options");
+            options.Position = new Vector2(1560, 666);
 
-            BorderedView myInfo = new BorderedView(new Vector2(1920/2-50, 300), new Vector2(1440, 150));
+            Button about = new SmallButton("About");
+            about.Position = new Vector2(1560, 786);
+
+            AddButton(play, leaders, options, about);
+            mainView.AddElement(play, leaders, options, about);
+
+            /*BorderedView myInfo = new BorderedView(new Vector2(1920/2-50, 300), new Vector2(1440, 150));
             me = new PlayerAvatar(myData, new Vector2(1135, 150));
             me.DrawFullProfileData = true;
             myInfo.AddElement(me);
-            Button profile = new Button("buttonProfile", 0);
-            profile.Size = new Vector2(100, 100);
-            profile.Position = new Vector2(1750, 200);
+            Button profile = new SmallButton();
+            //profile.Size = new Vector2(100, 100);
+            profile.Position = new Vector2(1250, 200);
             profile.Tapped += profileButton_Tapped;
             myInfo.AddElement(profile);
             myInfo.Disabled = false;
@@ -208,7 +208,7 @@ namespace CritterCamp.Screens {
             mainView.AddElement(myInfo);
             mainView.AddElement(menu);
             mainView.AddElement(info);
-            mainView.AddElement(volume);
+            mainView.AddElement(volume);*/
         }
 
         void news_Tapped(object sender, EventArgs e) {
@@ -364,12 +364,6 @@ namespace CritterCamp.Screens {
             }
         }
 
-        public override void Unload() {
-            OfflineScreenCore osc = Storage.Get<OfflineScreenCore>("OfflineScreenCore");
-            osc.ShowAdDuplex(false);
-            base.Unload();
-        }
-
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             if(startingGame) {
                 Storage.Set("singlePlayer", false);
@@ -393,7 +387,7 @@ namespace CritterCamp.Screens {
     class AboutScreen : MenuScreen {
         BorderedView aboutPage;
 
-        public AboutScreen() : base("About Screen") { }
+        public AboutScreen() : base() { }
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
