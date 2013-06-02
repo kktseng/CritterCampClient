@@ -38,7 +38,7 @@ namespace GameStateManagement {
     /// as screens.
     /// </summary>
     public abstract class GameScreen {
-        protected TCPConnection conn;
+        protected ITCPConnection conn;
         protected bool online;
 
         public GameScreen(bool online) {
@@ -47,7 +47,7 @@ namespace GameStateManagement {
 
         private SyncAction syncAction;
 
-        protected virtual void MessageReceived(string message, bool error, TCPConnection connection) {
+        protected virtual void MessageReceived(string message, bool error, ITCPConnection connection) {
             JObject o = JObject.Parse(message);
             if((string)o["action"] == "group" && (string)o["type"] == "synced") {
                 syncAction((JArray)o["data"], (double)o["rand"]);
@@ -69,7 +69,7 @@ namespace GameStateManagement {
             Helpers.Sync(data, timeout);
         }
 
-        public void setConn(TCPConnection conn) {
+        public void setConn(ITCPConnection conn) {
             removeConn(); // remove the old connection first
 
             if (conn != null) { // set the new conenction
@@ -264,7 +264,7 @@ namespace GameStateManagement {
         /// </param>
         public virtual void Activate(bool instancePreserved) {
             if(online)
-                setConn(Storage.Get<TCPConnection>("TCPSocket"));
+                setConn(Storage.Get<ITCPConnection>("TCPSocket"));
         }
 
 

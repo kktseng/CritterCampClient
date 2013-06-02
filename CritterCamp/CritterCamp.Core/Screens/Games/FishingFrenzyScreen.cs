@@ -435,7 +435,7 @@ namespace CritterCamp.Screens.Games {
             base.Draw(gameTime);
         }
 
-        protected override void MessageReceived(string message, bool error, TCPConnection connection) {
+        protected override void MessageReceived(string message, bool error, ITCPConnection connection) {
             base.MessageReceived(message, error, connection);
             JObject o = JObject.Parse(message);
             if((string)o["action"] == "game" && (string)o["name"] == "fishing_frenzy") {

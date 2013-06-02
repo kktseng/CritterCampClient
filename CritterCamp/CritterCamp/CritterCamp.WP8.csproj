@@ -245,7 +245,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Lib\HTTPWindowsPhone.cs" />
+    <Compile Include="Core\Screens\OfflineScreenCore.cs" />
+    <Compile Include="Core\Screens\UIScreens\IOfflineScreen.cs" />
+    <Compile Include="Lib\HTTPConnection.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>

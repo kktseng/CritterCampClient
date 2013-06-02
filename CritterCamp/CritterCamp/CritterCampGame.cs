@@ -1,3 +1,4 @@
+using CritterCamp.Core.Screens;
 using CritterCamp.Screens;
 using CritterCamp.Screens.Games.Lib;
 using GameStateManagement;
@@ -81,7 +82,9 @@ namespace CritterCamp {
 
         private void Deactivation(object sender, DeactivatedEventArgs e) {
             LoadingScreen.Load(screenManager, false, null, Helpers.GetScreenFactory(screenManager).CreateScreen(typeof(OfflineScreen)));
-            Storage.Get<GamePage>("GamePage").reset();
+
+            OfflineScreenCore osc = Storage.Get<OfflineScreenCore>("OfflineScreenCore");
+            osc.reset();
         }
     }
 }

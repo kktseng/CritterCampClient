@@ -8,7 +8,7 @@ using System.Net;
 using System.IO;
 
 namespace CritterCamp {
-    public interface HTTPConnection {
+    public interface IHTTPConnection {
         Task<HTTPConnectionResult> GetPostResult(string urlRegister, string postData);
     }
 
