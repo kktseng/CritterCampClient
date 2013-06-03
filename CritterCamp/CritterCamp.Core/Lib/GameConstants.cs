@@ -1,11 +1,7 @@
-﻿using CritterCamp.Screens.Games;
+﻿using CritterCamp.Core.Screens.Games;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CritterCamp {
+namespace CritterCamp.Core.Lib {
     class GameData {
         static int CurrentGameIndex = 0;
 

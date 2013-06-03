@@ -1,10 +1,7 @@
-﻿using CritterCamp.Screens.Games.Lib;
-using GameStateManagement;
+﻿using CritterCamp.Core.Lib;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input.Touch;
-using System.Collections.Generic;
 
-namespace CritterCamp.Screens {
+namespace CritterCamp.Core.Screens.UIElements {
     /// <summary>
     /// Represents a view element with a border and fill color
     /// </summary>

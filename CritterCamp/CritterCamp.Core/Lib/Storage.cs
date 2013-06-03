@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 #if WINDOWS_PHONE
     using Windows.ApplicationModel.Core;
@@ -11,7 +7,7 @@ using System.Threading.Tasks;
     using Android.App;
 #endif
 
-namespace CritterCamp {
+namespace CritterCamp.Core.Lib {
     public static class Storage {
         private static Dictionary<string, object> Dict = new Dictionary<string, object>();
        

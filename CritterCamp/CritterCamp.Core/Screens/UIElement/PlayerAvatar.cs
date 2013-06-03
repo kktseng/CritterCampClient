@@ -1,10 +1,8 @@
-﻿using CritterCamp.Screens.Games;
-using CritterCamp.Screens.Games.Lib;
-using GameStateManagement;
+﻿using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens.Games;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
-namespace CritterCamp.Screens {
+namespace CritterCamp.Core.Screens.UIElements {
     /// <summary>
     /// Represents an player to draw
     /// </summary>

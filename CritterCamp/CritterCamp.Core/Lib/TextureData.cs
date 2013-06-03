@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CritterCamp {
+namespace CritterCamp.Core.Lib {
     public static class TextureData {
         // Max number of sprites allowed in a single row
         public static int spriteSheetWidth = 10;

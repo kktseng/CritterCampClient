@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net;
+﻿using CritterCamp.Core.Lib;
 using System.IO;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CritterCamp.WP8.Lib {
     public class HTTPConnection : IHTTPConnection {

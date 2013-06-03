@@ -18,10 +18,10 @@ using Microsoft.Xna.Framework.Input.Touch;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Xml.Linq;
-using CritterCamp.Screens.Games.Lib;
 using CritterCamp;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
+using CritterCamp.Core.Lib;
 #endregion
 
 namespace GameStateManagement {

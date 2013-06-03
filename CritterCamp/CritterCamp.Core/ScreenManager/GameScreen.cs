@@ -7,16 +7,14 @@
 //-----------------------------------------------------------------------------
 #endregion
 
-using System;
-using System.IO;
+using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens;
+using CritterCamp.Core.Screens.Games.Lib;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input.Touch;
-using CritterCamp.Screens.Games.Lib;
-using CritterCamp;
-using Newtonsoft.Json.Linq;
 using Microsoft.Xna.Framework.Input;
-using CritterCamp.Screens;
-
+using Microsoft.Xna.Framework.Input.Touch;
+using Newtonsoft.Json.Linq;
+using System;
 namespace GameStateManagement {
     /// <summary>
     /// Enum describes the screen transition state.

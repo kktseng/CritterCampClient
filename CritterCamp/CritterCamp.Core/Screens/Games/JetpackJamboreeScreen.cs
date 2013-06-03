@@ -1,20 +1,17 @@
-﻿using CritterCamp.Screens.Games.JetpackJamboree;
-using CritterCamp.Screens.Games.Lib;
+﻿using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens.Games.JetpackJamboree;
+using CritterCamp.Core.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace CritterCamp.Screens.Games {
+namespace CritterCamp.Core.Screens.Games {
     class JetpackJamboreeScreen : BaseGameScreen {
         public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 2);
         public static TimeSpan PIG_DELAY = new TimeSpan(0, 0, 0, 1, 500);

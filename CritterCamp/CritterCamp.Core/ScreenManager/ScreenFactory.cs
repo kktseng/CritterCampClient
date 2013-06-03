@@ -8,8 +8,9 @@
 #endregion
 
 using CritterCamp;
-using CritterCamp.Screens;
-using CritterCamp.Screens.Games;
+using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens;
+using CritterCamp.Core.Screens.Games;
 using System;
 using System.Collections.Generic;
 

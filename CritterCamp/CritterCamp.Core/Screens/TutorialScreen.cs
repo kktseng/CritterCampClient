@@ -1,19 +1,14 @@
-﻿using CritterCamp.Screens.Games;
-using CritterCamp.Screens.Games.Lib;
+﻿using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace CritterCamp.Screens {
+namespace CritterCamp.Core.Screens {
     class TutorialScreen : MenuScreen {
         protected GameData game;
         protected ContentManager cm;

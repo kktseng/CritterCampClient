@@ -1,10 +1,8 @@
-﻿using CritterCamp.Screens.Games.Lib;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 
-namespace CritterCamp.Screens.Games.Lib {
+namespace CritterCamp.Core.Screens.Games.Lib {
     public interface IAnimatedObject {
         bool DrawAutomatically();
         void Draw(SpriteDrawer sd);

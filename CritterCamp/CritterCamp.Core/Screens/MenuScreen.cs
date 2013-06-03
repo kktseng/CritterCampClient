@@ -1,18 +1,13 @@
-﻿using CritterCamp.Screens.Games.Lib;
+﻿using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens.Games.Lib;
+using CritterCamp.Core.Screens.UIElements;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-using Microsoft.Xna.Framework.Media;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CritterCamp.Screens {
+namespace CritterCamp.Core.Screens {
     /// <summary>
     /// Provides a basic base screen for menus containing UIElements;
     /// </summary>

@@ -1,19 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Java.Net;
-using System.Threading.Tasks;
-using Java.IO;
-using System.Net;
+using CritterCamp.Core.Lib;
 using System.IO;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CritterCamp.Droid.Lib {
     class HTTPConnection : IHTTPConnection {

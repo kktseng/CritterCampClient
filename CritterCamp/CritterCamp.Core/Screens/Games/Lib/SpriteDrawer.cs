@@ -1,13 +1,11 @@
-﻿using GameStateManagement;
+﻿using CritterCamp.Core.Lib;
+using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CritterCamp.Screens.Games.Lib {
+namespace CritterCamp.Core.Screens.Games.Lib {
     // Used to store constant information on a player's customized model
     public struct PlayerDataSprite {
         public Texture2D body, faces, accessories, hats;

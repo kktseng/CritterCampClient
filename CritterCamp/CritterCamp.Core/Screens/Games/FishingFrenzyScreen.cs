@@ -1,8 +1,8 @@
-﻿using CritterCamp.Screens.Games.FishingFrenzy;
-using CritterCamp.Screens.Games.Lib;
+﻿using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens.Games.FishingFrenzy;
+using CritterCamp.Core.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using Newtonsoft.Json;
@@ -10,10 +10,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CritterCamp.Screens.Games {
+namespace CritterCamp.Core.Screens.Games {
     struct FishData {
         public int type;
         public int depth;

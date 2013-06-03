@@ -1,11 +1,4 @@
-﻿using CritterCamp.Screens.Games;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CritterCamp {
+﻿namespace CritterCamp.Core.Lib {
     class ProfileData {
         static int CurrentProfileIndex = 0;
 

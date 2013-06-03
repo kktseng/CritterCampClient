@@ -1,9 +1,7 @@
-﻿using Java.IO;
+﻿using CritterCamp.Core.Lib;
+using Java.IO;
 using Java.Net;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading;
 
 namespace CritterCamp.Droid.Lib {

@@ -1,19 +1,13 @@
-﻿using CritterCamp.Screens.Games;
-using CritterCamp.Screens.Games.Lib;
-using GameStateManagement;
+﻿using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens.Games;
+using CritterCamp.Core.Screens.UIElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input.Touch;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace CritterCamp.Screens {
+namespace CritterCamp.Core.Screens {
     class VotingScreenSingle : MenuScreen {
         int iconSpace = 175;
         int iconSize = 128;

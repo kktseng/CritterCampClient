@@ -1,14 +1,10 @@
-﻿using CritterCamp.Screens.Games.Lib;
-using GameStateManagement;
+﻿using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens.Games.Lib;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CritterCamp.Screens.Games.TwilightTango {
+namespace CritterCamp.Core.Screens.Games.TwilightTango {
     public enum PlayerDanceStates {
         Standing,
         DanceLeft,

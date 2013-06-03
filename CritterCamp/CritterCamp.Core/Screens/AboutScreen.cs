@@ -1,28 +1,11 @@
-﻿using CritterCamp.Screens.Games;
-using CritterCamp.Screens.Games.Lib;
-using GameStateManagement;
+﻿using CritterCamp.Core.Screens.UIElements;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input.Touch;
-using Microsoft.Xna.Framework.Media;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO.IsolatedStorage;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using CritterCamp.Core.Screens;
 
 #if WINDOWS_PHONE
 using Microsoft.Phone.Tasks;
 #endif
 
-namespace CritterCamp.Screens {
+namespace CritterCamp.Core.Screens {
     class AboutScreen : MenuScreen {
         BorderedView aboutPage;
 

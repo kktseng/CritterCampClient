@@ -1,24 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Media;
-using MonoGame.Framework.WindowsPhone;
-using CritterCamp.Resources;
-using System.IO.IsolatedStorage;
-using Windows.ApplicationModel.Core;
-using Newtonsoft.Json.Linq;
-using CritterCamp.Screens.Games;
-using CritterCamp.Screens;
-using GameStateManagement;
-using CritterCamp.Screens.UIScreens;
+﻿using CritterCamp.Core.Lib;
 using CritterCamp.Core.Screens;
+using CritterCamp.Core.Screens.UIScreens;
+using GameStateManagement;
+using Microsoft.Phone.Controls;
+using MonoGame.Framework.WindowsPhone;
+using System;
+using System.Windows;
 
 namespace CritterCamp {
     public partial class GamePage : PhoneApplicationPage, IOfflineScreen {

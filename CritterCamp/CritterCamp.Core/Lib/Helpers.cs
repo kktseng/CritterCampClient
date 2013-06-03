@@ -1,18 +1,12 @@
 ﻿using CritterCamp.Core.Screens;
-using CritterCamp.Screens.Games.Lib;
+using CritterCamp.Core.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 
-namespace CritterCamp {
+namespace CritterCamp.Core.Lib {
     public static class Helpers {
         public enum GameList {
             TwilightTango,

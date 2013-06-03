@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CritterCamp {
+namespace CritterCamp.Core.Lib {
     public static class Constants {
         public static float ROTATE_90 = 1.57f;
 

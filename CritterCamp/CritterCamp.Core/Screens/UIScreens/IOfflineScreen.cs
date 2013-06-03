@@ -1,5 +1,5 @@
 ﻿using System;
-namespace CritterCamp.Screens.UIScreens {
+namespace CritterCamp.Core.Screens.UIScreens {
     public interface IOfflineScreen {
         void ShowControls(bool show);
         void AppendStatusText(string text);

@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net;
-using System.IO;
-
-#if WINDOWS_PHONE
+﻿#if WINDOWS_PHONE
     using System.IO.IsolatedStorage;
 #endif
 #if ANDROID
@@ -15,12 +6,12 @@ using System.IO;
     using Android.Content;
 #endif
 
-namespace CritterCamp {
+namespace CritterCamp.Core.Lib {
     public static class PermanentStorage {
         
         public static bool Get(string key, out string value) {
 #if WINDOWS_PHONE
-            if(IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>(key, out value)) {
+            if(IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>(key, out value)) {
                 return true;
             } else {
                 return false;

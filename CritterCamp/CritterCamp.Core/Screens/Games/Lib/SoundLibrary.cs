@@ -1,11 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Audio;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CritterCamp.Screens.Games.Lib {
+namespace CritterCamp.Core.Screens.Games.Lib {
     public class SoundLibrary {
         protected List<SoundEffectInstance> loopedSounds = new List<SoundEffectInstance>();
 

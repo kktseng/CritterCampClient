@@ -1,12 +1,10 @@
-﻿using CritterCamp.Screens.Games.Lib;
+﻿using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens.Games.Lib;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CritterCamp.Screens.Games.ColorClash {
+namespace CritterCamp.Core.Screens.Games.ColorClash {
     public enum AvatarStates {
         Standing,
         Charging,

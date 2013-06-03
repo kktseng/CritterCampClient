@@ -1,14 +1,11 @@
-﻿using CritterCamp.Screens.Games.Lib;
-using GameStateManagement;
+﻿using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens.Games.Lib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CritterCamp.Screens.Games.JetpackJamboree {
+namespace CritterCamp.Core.Screens.Games.JetpackJamboree {
     public enum PigStates {
         WalkLeft,
         WalkRight,

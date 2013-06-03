@@ -1,11 +1,7 @@
-﻿using CritterCamp.Screens.Games;
+﻿using CritterCamp.Core.Screens.Games;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CritterCamp {
+namespace CritterCamp.Core.Lib {
     public class Configuration {
         // Server
         public static uint MAX_BUFFER_SIZE = 8192; // The maximum size of the data buffer to use with the asynchronous socket methods

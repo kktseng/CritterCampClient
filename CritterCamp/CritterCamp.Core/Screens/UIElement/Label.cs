@@ -1,8 +1,6 @@
-﻿using CritterCamp.Screens.Games.Lib;
-using GameStateManagement;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
-namespace CritterCamp.Screens {
+namespace CritterCamp.Core.Screens.UIElements {
     /// <summary>
     /// Represents a string of text to draw
     /// </summary>

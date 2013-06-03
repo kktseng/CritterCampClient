@@ -1,12 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CritterCamp.Core.Lib;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CritterCamp.Screens.Games.Lib {
+namespace CritterCamp.Core.Screens.Games.Lib {
     public class TextBanner {
         private string text;
         private BaseGameScreen screen;

@@ -4,7 +4,7 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CritterCamp.Core.Screens;
-using CritterCamp.Screens.UIScreens;
+using CritterCamp.Core.Screens.UIScreens;
 using System;
 
 namespace CritterCamp.Droid {

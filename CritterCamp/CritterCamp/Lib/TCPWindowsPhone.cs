@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using CritterCamp.Core.Lib;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Networking;

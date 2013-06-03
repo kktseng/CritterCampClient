@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace CritterCamp {
+﻿namespace CritterCamp.Core.Lib {
     public delegate void TCPMessageReceived(string message, bool error, ITCPConnection connection); // Callback for when a message is received from the server
     public delegate void TCPConnectionClosed(bool error, ITCPConnection connection); // Callback for when a this connection is closed
 

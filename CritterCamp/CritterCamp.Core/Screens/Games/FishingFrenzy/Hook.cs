@@ -1,15 +1,11 @@
-﻿using CritterCamp.Screens.Games.Lib;
+﻿using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens.Games.Lib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-
-namespace CritterCamp.Screens.Games.FishingFrenzy {
+namespace CritterCamp.Core.Screens.Games.FishingFrenzy {
     public enum HookState {
         down,
         up

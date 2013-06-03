@@ -1,5 +1,6 @@
-﻿using CritterCamp.Screens.Games.ColorClash;
-using CritterCamp.Screens.Games.Lib;
+﻿using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens.Games.ColorClash;
+using CritterCamp.Core.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,10 +9,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CritterCamp.Screens.Games {
+namespace CritterCamp.Core.Screens.Games {
     class ColorClashScreen : BaseGameScreen {
         public static Rectangle BOUNDS = new Rectangle(437, 110, 1337, 870);
         public static TimeSpan SCORE_TIME = new TimeSpan(0, 0, 0, 5);

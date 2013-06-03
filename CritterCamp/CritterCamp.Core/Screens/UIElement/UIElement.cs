@@ -1,11 +1,11 @@
-﻿using CritterCamp.Screens.Games.Lib;
+﻿using CritterCamp.Core.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using System;
 
-namespace CritterCamp.Screens {
+namespace CritterCamp.Core.Screens.UIElements {
     /// <summary>
     /// Represents the basic UIElement
     /// </summary>

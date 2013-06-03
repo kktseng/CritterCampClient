@@ -14,11 +14,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameStateManagement;
 using Microsoft.Xna.Framework.Input.Touch;
-using CritterCamp.Screens.Games.Lib;
+using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens.Games.Lib;
 
 #endregion
 
-namespace CritterCamp.Screens {
+namespace CritterCamp.Core.Screens {
     /// <summary>
     /// The loading screen coordinates transitions between the menu system and the
     /// game itself. Normally one screen will transition off at the same time as

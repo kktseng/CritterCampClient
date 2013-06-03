@@ -1,19 +1,14 @@
-﻿using CritterCamp.Screens;
-using CritterCamp.Screens.Games;
-using CritterCamp.Screens.UIScreens;
+﻿using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens.UIScreens;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
-using System.IO.IsolatedStorage;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CritterCamp.Core.Screens.Games;
 
 #if WINDOWS_PHONE
 using  CritterCamp.WP8.Lib;
 #endif
 #if ANDROID
-    using CritterCamp.Droid.Lib;
+using CritterCamp.Droid.Lib;
 #endif
 
 namespace CritterCamp.Core.Screens {

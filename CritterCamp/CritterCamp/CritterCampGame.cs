@@ -1,18 +1,13 @@
+using CritterCamp.Core.Lib;
 using CritterCamp.Core.Screens;
-using CritterCamp.Screens;
-using CritterCamp.Screens.Games.Lib;
+using CritterCamp.Core.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Phone.Shell;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.IO.IsolatedStorage;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Threading;
-using Windows.ApplicationModel.Core;
 
 namespace CritterCamp {
     /// <summary>
