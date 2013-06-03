@@ -19,6 +19,8 @@ using System.Windows;
 
 namespace CritterCamp.Screens {
     class ProfileScreen : MenuScreen {
+        protected List<UIElement> profileElements = new List<UIElement>();
+
         BorderedView profilePage;
         Label title;
         Button search;
@@ -36,14 +38,12 @@ namespace CritterCamp.Screens {
         int rightX = 1330;
         int rightXSize = 900;
 
-        public ProfileScreen(MainScreen hs, string username) : base("Profile Screen") {
-            homeScreen = hs;
-            this.username = username;
+        public ProfileScreen() : base() {
+            this.username = Storage.Get<string>("username");
         }
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
-            IsPopup = true;
 
             // Request the profile data
             JObject packet = new JObject(
@@ -56,6 +56,9 @@ namespace CritterCamp.Screens {
 
             myData = Storage.Get<PlayerData>("myPlayerData");
 
+
+
+            /*
             profilePage = new BorderedView(new Vector2(1800, 900), new Vector2(1920 / 2, 1080 / 2 - 75));
             profilePage.Disabled = false;
 
@@ -94,6 +97,7 @@ namespace CritterCamp.Screens {
             profilePage.AddElement(profileMain);
 
             mainView.AddElement(profilePage);
+             */
         }
 
         protected void handleProfile(string message, bool error, ITCPConnection connection) {

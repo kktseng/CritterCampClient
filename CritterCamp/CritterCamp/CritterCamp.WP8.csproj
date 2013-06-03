@@ -426,6 +426,9 @@
     <Content Include="Content\buttonSquare.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\buttonCorners.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Content\cow.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

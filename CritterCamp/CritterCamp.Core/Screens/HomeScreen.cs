@@ -65,11 +65,6 @@ namespace CritterCamp.Screens {
             ScreenManager.AddScreen(new AboutScreen(), null);
         }
 
-        void profileButton_Tapped(object sender, EventArgs e) {
-            ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
-            ScreenManager.AddScreen(new ProfileScreen(this, myData.username), null);
-        }
-
         public override void OnBackPressed() {
             base.OnBackPressed();
         }

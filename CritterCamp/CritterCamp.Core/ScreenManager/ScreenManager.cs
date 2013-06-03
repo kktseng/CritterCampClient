@@ -134,7 +134,7 @@ namespace GameStateManagement {
             string[] textureNames = new string[] {
                 "paperBG", "bgScreen",
                 "gameIcons", "scoreScreenIcons", "scorePanel", "profileBg",
-                "backButton", "buttonMint",  "buttonGreen", "buttonSoundOn", "buttonSoundOff", "buttonS", "buttonM", "buttonSquare",
+                "backButton", "buttonMint",  "buttonGreen", "buttonSoundOn", "buttonSoundOff", "buttonS", "buttonM", "buttonSquare", "buttonCorners",
                 "whitePixel", "profileContainer",
                 "avatars", "pig",
                 "twitterIcon", "fbIcon"

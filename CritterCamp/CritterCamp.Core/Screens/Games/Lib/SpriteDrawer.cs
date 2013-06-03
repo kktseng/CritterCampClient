@@ -88,8 +88,6 @@ namespace CritterCamp.Screens.Games.Lib {
         /// 
         /// <param name="color" />The fill color.
         public void FillRectangle(Rectangle rectangle, Color color) {
-            //Draw(WhiteTexture, new Vector2(rectangle.X, rectangle.Y), 0, Vector2.One, new Rectangle(0, 0, rectangle.Width, rectangle.Height), SpriteEffects.None, color);
-            
             SpriteBatch sb = sm.SpriteBatch;
 
             Vector2 coord = new Vector2(rectangle.X, rectangle.Y);
@@ -104,6 +102,28 @@ namespace CritterCamp.Screens.Games.Lib {
             Texture2D whiteTex = sm.Textures["whitePixel"];
             sb.Draw(whiteTex, new Rectangle((int)coord.X, (int)coord.Y, (int)(rectangle.Width / coordScale.X), (int)(rectangle.Height / coordScale.Y)), null, color, Constants.ROTATION, Vector2.Zero, SpriteEffects.None, 0f);
              
+        }
+
+        /// 
+        /// Fill a rounded rectangle
+        /// 
+        /// <param name="color" />The fill color.
+        public void FillRoundedRectangle(Rectangle rectangle, Color color) {
+            SpriteBatch sb = sm.SpriteBatch;
+            Texture2D corners = sm.Textures["buttonCorners"];
+
+            Rectangle main = new Rectangle(rectangle.X + 20, rectangle.Y, rectangle.Width - 40, rectangle.Height);
+            Rectangle side1 = new Rectangle(rectangle.X, rectangle.Y + 20, 30, rectangle.Height - 40);
+            Rectangle side2 = new Rectangle(rectangle.X + rectangle.Width - 30, rectangle.Y + 20, 30, rectangle.Height - 40);
+
+            FillRectangle(main, color);
+            FillRectangle(side1, color);
+            FillRectangle(side2, color);
+
+            Draw(corners, new Vector2(rectangle.X + 10, rectangle.Y + 12), 0, new Vector2(15, 15), color);
+            Draw(corners, new Vector2(rectangle.X + rectangle.Width - 13, rectangle.Y + 12), 1, new Vector2(15, 15), color);
+            Draw(corners, new Vector2(rectangle.X + 10, rectangle.Y + rectangle.Height - 10), 2, new Vector2(15, 15), color);
+            Draw(corners, new Vector2(rectangle.X + rectangle.Width - 13, rectangle.Y + rectangle.Height - 10), 3, new Vector2(15, 15), color);
         }
 
         public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect, SpriteEffects effect, Color color, float spriteRotation = 0, float spriteScale = 1f, bool cache = false, bool align = false) {

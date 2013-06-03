@@ -76,9 +76,9 @@ namespace CritterCamp.Screens {
         /// </summary>
         protected override void DrawThis() {
             // draw a border and 
-            MySpriteDrawer.FillRectangle(BorderRect, BorderColor);
+            MySpriteDrawer.FillRoundedRectangle(BorderRect, BorderColor);
             if (DrawFill) {
-                MySpriteDrawer.FillRectangle(FillRect, FillColor);
+                MySpriteDrawer.FillRoundedRectangle(FillRect, FillColor);
             }
 
             base.DrawThis();

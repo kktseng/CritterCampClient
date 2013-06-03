@@ -125,6 +125,10 @@ namespace CritterCamp.Screens {
         }
 
         public override void OnBackPressed() {
+            if(looking) {
+                cancelSearch();
+                return;
+            }
             SwitchScreen(typeof(HomeScreen));
         }
 

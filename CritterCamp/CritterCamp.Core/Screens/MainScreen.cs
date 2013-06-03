@@ -93,8 +93,8 @@ namespace CritterCamp.Screens {
         }
 
         void profileButton_Tapped(object sender, EventArgs e) {
-             ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
-            ScreenManager.AddScreen(new ProfileScreen(this, myData.username), null);
+             //ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
+           // ScreenManager.AddScreen(new ProfileScreen(this, myData.username), null);
         }
 
         public override void Unload() {
