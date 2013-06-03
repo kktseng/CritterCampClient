@@ -269,7 +269,7 @@
     <AndroidResource Include="Resources\Drawable\defaultButton.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\OffineScreen.axml" />
+    <AndroidResource Include="Resources\Layout\OfflineScreen.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Values\Strings.xml" />

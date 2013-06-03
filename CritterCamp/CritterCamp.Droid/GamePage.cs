@@ -29,7 +29,7 @@ namespace CritterCamp.Droid {
         protected override void OnCreate(Bundle bundle) {
             base.OnCreate(bundle);
 
-            SetContentView(Resource.Layout.OffineScreen);
+            SetContentView(Resource.Layout.OfflineScreen);
             LoginView = FindViewById<View>(Resource.Id.LoginView);
             UserInput = FindViewById<View>(Resource.Id.UserInput);
             Status = FindViewById<TextView>(Resource.Id.Status);
