@@ -8,7 +8,7 @@ using Windows.Networking;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 
-namespace CritterCamp {
+namespace CritterCamp.WP8.Lib {
     public class TCPConnection : ITCPConnection {
         private static readonly int TIMEOUT = 4000; // timeout is 4s
 

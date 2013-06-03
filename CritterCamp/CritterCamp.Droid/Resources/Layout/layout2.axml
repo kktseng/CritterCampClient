@@ -20,7 +20,13 @@
         <TextView
             android:text="Login with existing account or create a new one"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:shadowColor="@android:color/black"
+            android:textStyle="bold"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2" />
         <TableLayout
             android:minWidth="25px"
             android:minHeight="25px"
@@ -32,7 +38,12 @@
                     android:text="Username"
                     android:layout_column="0"
                     android:layout_gravity="center_vertical"
-                    android:paddingRight="10" />
+                    android:paddingRight="10"
+                    android:textColor="@android:color/white"
+                    android:shadowColor="@android:color/black"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2" />
                 <EditText
                     android:layout_column="1"
                     android:id="@+id/Username" />
@@ -42,7 +53,12 @@
                     android:text="Password"
                     android:layout_column="0"
                     android:layout_gravity="center_vertical"
-                    android:paddingRight="10" />
+                    android:paddingRight="10"
+                    android:textColor="@android:color/white"
+                    android:shadowColor="@android:color/black"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2" />
                 <EditText
                     android:layout_column="1"
                     android:id="@+id/Password" />
@@ -59,17 +75,11 @@
                         android:background="@drawable/defaultButton"
                         style="@style/button_text"
                         android:text="Login"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:id="@+id/Login" />
                     <Button
                         android:background="@drawable/defaultButton"
                         style="@style/button_text"
                         android:text="Register"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:id="@+id/Register" />
                 </LinearLayout>
             </TableRow>

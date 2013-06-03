@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <FrameLayout
+        android:id="@+id/LoginView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <RelativeLayout
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/ResumeButton"
+            android:clickable="true"
+            android:visibility="gone">
+            <TextView
+                android:text="Tap to Continue.."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:minWidth="25px"
+            android:minHeight="25px">
+            <ImageView
+                android:src="@drawable/critter_camp_logo_slim"
+                android:layout_width="fill_parent"
+                android:layout_height="100dp" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/UserInput"
+                    android:visibility="gone">
+                    <TextView
+                        android:text="Login with existing account or create a new one"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
+                    <TableLayout
+                        android:minWidth="25px"
+                        android:minHeight="25px"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:stretchColumns="1">
+                        <TableRow>
+                            <TextView
+                                android:text="Username"
+                                android:layout_column="0"
+                                android:layout_gravity="center_vertical"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="10dp"
+                                android:textColor="@android:color/white" />
+                            <EditText
+                                android:layout_column="1"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/Username" />
+                        </TableRow>
+                        <TableRow>
+                            <TextView
+                                android:text="Password"
+                                android:layout_column="0"
+                                android:layout_gravity="center_vertical"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="10dp"
+                                android:textColor="@android:color/white" />
+                            <EditText
+                                android:layout_column="1"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/Password" />
+                        </TableRow>
+                        <TableRow>
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:minWidth="25px"
+                                android:minHeight="25px"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1">
+                                <Button
+                                    android:background="@drawable/defaultButton"
+                                    style="@style/button_text"
+                                    android:text="Login"
+                                    android:id="@+id/Login" />
+                                <Button
+                                    android:background="@drawable/defaultButton"
+                                    style="@style/button_text"
+                                    android:text="Register"
+                                    android:id="@+id/Register" />
+                            </LinearLayout>
+                        </TableRow>
+                    </TableLayout>
+                </LinearLayout>
+                <TextView
+                    android:text=""
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:id="@+id/Status" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</FrameLayout>

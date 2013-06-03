@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CritterCamp {
     public static class Helpers {
@@ -154,6 +155,12 @@ namespace CritterCamp {
 
         public static IScreenFactory GetScreenFactory(ScreenManager sm) {
             return (ScreenFactory)sm.Game.Services.GetService(typeof(IScreenFactory));
+        }
+
+        public static void CloseApp() {
+#if WINDOWS_PHONE
+            Application.Current.Terminate();
+#endif
         }
     }
 }

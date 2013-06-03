@@ -83,20 +83,20 @@
     <Compile Include="..\CritterCamp.Core\Lib\Helpers.cs">
       <Link>Core\Lib\Helpers.cs</Link>
     </Compile>
-    <Compile Include="..\CritterCamp.Core\Lib\HTTPConnection.cs">
-      <Link>Core\Lib\HTTPConnection.cs</Link>
+    <Compile Include="..\CritterCamp.Core\Lib\IHTTPConnection.cs">
+      <Link>Core\Lib\IHTTPConnection.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Lib\ITCPConnection.cs">
+      <Link>Core\Lib\ITCPConnection.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Lib\PermanentStorage.cs">
-      <Link>Core\Screens\Games\Lib\PermanentStorage.cs</Link>
+      <Link>Core\Lib\PermanentStorage.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Lib\ProfileConstants.cs">
       <Link>Core\Lib\ProfileConstants.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Lib\Storage.cs">
       <Link>Core\Screens\Games\Lib\Storage.cs</Link>
-    </Compile>
-    <Compile Include="..\CritterCamp.Core\Lib\TCPConnection.cs">
-      <Link>Core\Lib\TCPConnection.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Lib\TextureData.cs">
       <Link>Core\Lib\TextureData.cs</Link>
@@ -257,6 +257,9 @@
     <Compile Include="..\CritterCamp.Core\Screens\UIElement\View.cs">
       <Link>Core\Screens\UIElement\View.cs</Link>
     </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIScreens\IOfflineScreen.cs">
+      <Link>Core\Screens\UIScreens\IOfflineScreen.cs</Link>
+    </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\VotingScreen.cs">
       <Link>Core\Screens\VotingScreen.cs</Link>
     </Compile>
@@ -266,7 +269,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core\Screens\UIScreens\IOfflineScreen.cs" />
     <Compile Include="Lib\HTTPConnection.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="GamePage.xaml.cs">

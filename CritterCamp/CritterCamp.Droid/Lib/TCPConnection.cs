@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 
 namespace CritterCamp.Droid.Lib {
-    class TCPAndroid : TCPConnection {
+    class TCPConnection : ITCPConnection {
         private static readonly int TIMEOUT = 4000; // timeout is 4s
 
         Socket mSocket = null;
@@ -20,7 +20,7 @@ namespace CritterCamp.Droid.Lib {
 
         private bool sendKeepAlive = false;
 
-        public TCPAndroid() {
+        public TCPConnection() {
             mId = sConnectionId++;
         }
 
@@ -44,8 +44,8 @@ namespace CritterCamp.Droid.Lib {
         }
 
         class ReceivingThread : Java.Lang.Thread {
-            TCPAndroid tcp;
-            public ReceivingThread(TCPAndroid tcp) {
+            TCPConnection tcp;
+            public ReceivingThread(TCPConnection tcp) {
                 this.tcp = tcp;
             }
 
@@ -55,8 +55,8 @@ namespace CritterCamp.Droid.Lib {
         }
 
         class KeepAliveThread : Java.Lang.Thread {
-            TCPAndroid tcp;
-            public KeepAliveThread(TCPAndroid tcp) {
+            TCPConnection tcp;
+            public KeepAliveThread(TCPConnection tcp) {
                 this.tcp = tcp;
             }
 

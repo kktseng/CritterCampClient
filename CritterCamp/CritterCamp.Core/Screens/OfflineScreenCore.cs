@@ -9,6 +9,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+#if WINDOWS_PHONE
+using  CritterCamp.WP8.Lib;
+#endif
+#if ANDROID
+    using CritterCamp.Droid.Lib;
+#endif
+
 namespace CritterCamp.Core.Screens {
     class OfflineScreenCore {
         string urlLogin = "http://" + Configuration.HOSTNAME + "/login";
@@ -55,8 +62,8 @@ namespace CritterCamp.Core.Screens {
                 offlineScreen.ShowResume(true); // show the tap to continue sign
             } else {
                 // get previous login information if it exisits
-                if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("username", out username) &&
-                    IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("password", out password)) {
+                if (PermanentStorage.Get("username", out username) &&
+                    PermanentStorage.Get("password", out password)) {
                     // login information is already in the app
 
                     offlineScreen.ShowResume(true); // show the tap to continue sign
@@ -172,16 +179,8 @@ namespace CritterCamp.Core.Screens {
 
                 if (response.success) { // login was sucessful
                     // save the username and password in local settings so that it can load it later
-                    if (IsolatedStorageSettings.ApplicationSettings.Contains("username")) {
-                        IsolatedStorageSettings.ApplicationSettings["username"] = response.username;
-                    } else {
-                        IsolatedStorageSettings.ApplicationSettings.Add("username", response.username);
-                    }
-                    if (IsolatedStorageSettings.ApplicationSettings.Contains("password")) {
-                        IsolatedStorageSettings.ApplicationSettings["password"] = password;
-                    } else {
-                        IsolatedStorageSettings.ApplicationSettings.Add("password", password);
-                    }
+                    PermanentStorage.Set("username", username);
+                    PermanentStorage.Set("password", password);
 
                     // Initialize data structures and store in CoreApplication.Properties for the following:
                     /**
@@ -227,8 +226,8 @@ namespace CritterCamp.Core.Screens {
                         offlineScreen.UpdateStatusText("Error connecting to server. Please try again.");
                     }
                 } else { // could not log in with the creditions. invalid username and password
-                    IsolatedStorageSettings.ApplicationSettings.Remove("username"); // remove any stored username and passwords
-                    IsolatedStorageSettings.ApplicationSettings.Remove("password");
+                    PermanentStorage.Remove("username"); // remove any stored username and passwords
+                    PermanentStorage.Remove("password");
                     ResetScreen(response.message); // reset the screen
                 }
 

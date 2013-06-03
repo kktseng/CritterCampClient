@@ -18,19 +18,22 @@ using System.IO;
 namespace CritterCamp {
     public static class PermanentStorage {
         
-        public static string Get(string key) {
+        public static bool Get(string key, out string value) {
 #if WINDOWS_PHONE
-            string value;
             if(IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>(key, out value)) {
-                return value;
+                return true;
             } else {
-                return "";
+                return false;
             }
 #endif
 #if ANDROID
             var prefs = Application.Context.GetSharedPreferences("CritterCamp", FileCreationMode.Private);
-            var somePref = prefs.GetString(key, null);
-            return somePref;
+            value = prefs.GetString(key, null);
+            if (value == null) {
+                return false;
+            } else {
+                return true;
+            }
 #endif
         }
 
@@ -42,6 +45,16 @@ namespace CritterCamp {
 #if ANDROID
             var prefs = Application.Context.GetSharedPreferences("CritterCamp", FileCreationMode.Private);
             prefs.Edit().PutString(key, value);
+#endif
+        }
+
+        public static void Remove(string key) {
+#if WINDOWS_PHONE
+            IsolatedStorageSettings.ApplicationSettings.Remove(key);
+#endif
+#if ANDROID
+            var prefs = Application.Context.GetSharedPreferences("CritterCamp", FileCreationMode.Private);
+            prefs.Edit().Remove(key);
 #endif
         }
     }

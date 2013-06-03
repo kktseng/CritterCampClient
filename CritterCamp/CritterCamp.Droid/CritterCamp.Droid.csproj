@@ -72,8 +72,11 @@
     <Compile Include="..\CritterCamp.Core\Lib\Helpers.cs">
       <Link>Core\Lib\Helpers.cs</Link>
     </Compile>
-    <Compile Include="..\CritterCamp.Core\Lib\HTTPConnection.cs">
-      <Link>Core\Lib\HTTPConnection.cs</Link>
+    <Compile Include="..\CritterCamp.Core\Lib\IHTTPConnection.cs">
+      <Link>Core\Lib\IHTTPConnection.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Lib\ITCPConnection.cs">
+      <Link>Core\Lib\ITCPConnection.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Lib\PermanentStorage.cs">
       <Link>Core\Lib\PermanentStorage.cs</Link>
@@ -83,9 +86,6 @@
     </Compile>
     <Compile Include="..\CritterCamp.Core\Lib\Storage.cs">
       <Link>Core\Lib\Storage.cs</Link>
-    </Compile>
-    <Compile Include="..\CritterCamp.Core\Lib\TCPConnection.cs">
-      <Link>Core\Lib\TCPConnection.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Lib\TextureData.cs">
       <Link>Core\Lib\TextureData.cs</Link>
@@ -107,6 +107,9 @@
     </Compile>
     <Compile Include="..\CritterCamp.Core\ScreenManager\ScreenManager.cs">
       <Link>Core\ScreenManager\ScreenManager.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\AboutScreen.cs">
+      <Link>Core\Screens\AboutScreen.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\Games\BaseGameScreen.cs">
       <Link>Core\Screens\Games\BaseGameScreen.cs</Link>
@@ -180,14 +183,26 @@
     <Compile Include="..\CritterCamp.Core\Screens\HomeScreen.cs">
       <Link>Core\Screens\HomeScreen.cs</Link>
     </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\LeaderScreen.cs">
+      <Link>Core\Screens\LeaderScreen.cs</Link>
+    </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\LoadingScreen.cs">
       <Link>Core\Screens\LoadingScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\MainScreen.cs">
+      <Link>Core\Screens\MainScreen.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\MenuScreen.cs">
       <Link>Core\Screens\MenuScreen.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\OfflineScreen.cs">
       <Link>Core\Screens\OfflineScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\OfflineScreenCore.cs">
+      <Link>Core\Screens\OfflineScreenCore.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\PlayScreen.cs">
+      <Link>Core\Screens\PlayScreen.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\ProfileScreen.cs">
       <Link>Core\Screens\ProfileScreen.cs</Link>
@@ -213,8 +228,17 @@
     <Compile Include="..\CritterCamp.Core\Screens\UIElement\Label.cs">
       <Link>Core\Screens\UIElement\Label.cs</Link>
     </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIElement\LargeButton.cs">
+      <Link>Core\Screens\UIElement\LargeButton.cs</Link>
+    </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\UIElement\PlayerAvatar.cs">
       <Link>Core\Screens\UIElement\PlayerAvatar.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIElement\SmallButton.cs">
+      <Link>Core\Screens\UIElement\SmallButton.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIElement\SquareButton.cs">
+      <Link>Core\Screens\UIElement\SquareButton.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\UIElement\UIElement.cs">
       <Link>Core\Screens\UIElement\UIElement.cs</Link>
@@ -222,16 +246,19 @@
     <Compile Include="..\CritterCamp.Core\Screens\UIElement\View.cs">
       <Link>Core\Screens\UIElement\View.cs</Link>
     </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIScreens\IOfflineScreen.cs">
+      <Link>Core\Screens\UIScreens\IOfflineScreen.cs</Link>
+    </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\VotingScreen.cs">
       <Link>Core\Screens\VotingScreen.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\VotingScreenSingle.cs">
       <Link>Core\Screens\VotingScreenSingle.cs</Link>
     </Compile>
-    <Compile Include="Activity1.cs" />
+    <Compile Include="GamePage.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="Lib\HTTPAndroid.cs" />
-    <Compile Include="Lib\TCPAndroid.cs" />
+    <Compile Include="Lib\HTTPConnection.cs" />
+    <Compile Include="Lib\TCPConnection.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -239,13 +266,10 @@
     <AndroidAsset Include="Assets\Content\spriteFont1.xnb" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\Layout\OfflineScreen.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\defaultButton.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout-land\layout2.axml" />
+    <AndroidResource Include="Resources\Layout\OffineScreen.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Values\Strings.xml" />
@@ -254,19 +278,23 @@
     <AndroidResource Include="Resources\Drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\bgScreen.png">
+    <AndroidResource Include="Resources\Drawable\bg_screen.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AndroidResource>
-    <Content Include="Properties\AndroidManifest.xml" />
-    <Content Include="Resources\Drawable\CritterCampLogoSlim.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="Properties\AndroidManifest.xml">
+      <SubType>Designer</SubType>
     </Content>
+    <AndroidResource Include="Resources\Drawable\critter_camp_logo_slim.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Drawable\Splash.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Values\Styles.xml" />
+    <AndroidResource Include="Resources\Values\Styles.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

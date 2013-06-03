@@ -16,7 +16,7 @@ using System.Net;
 using System.IO;
 
 namespace CritterCamp.Droid.Lib {
-    class HTTPAndroid : HTTPConnection {
+    class HTTPConnection : IHTTPConnection {
         public async Task<HTTPConnectionResult> GetPostResult(string url, string postData) {
             System.Diagnostics.Debug.WriteLine("HTTP Sent: " + url + "/" + postData);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);

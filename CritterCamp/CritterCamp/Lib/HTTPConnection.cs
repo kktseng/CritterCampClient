@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.IO;
 
-namespace CritterCamp {
+namespace CritterCamp.WP8.Lib {
     public class HTTPConnection : IHTTPConnection {
         public async Task<HTTPConnectionResult> GetPostResult(string url, string postData) {
             System.Diagnostics.Debug.WriteLine("HTTP Sent: " + url + "/" + postData);

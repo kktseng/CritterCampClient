@@ -18,7 +18,7 @@ namespace CritterCamp.Screens {
         }
 
         public override void OnBackPressed() {
-            Application.Current.Terminate();
+            Helpers.CloseApp();
         }
 
         public override void Activate(bool instancePreserved) {

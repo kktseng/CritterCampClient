@@ -16,7 +16,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using CritterCamp.Screens;
 using CritterCamp.Core.Screens;
+
+#if WINDOWS_PHONE
+    using Microsoft.Phone.Tasks;
+#endif
 
 namespace CritterCamp.Screens {
     class HomeScreen : MainScreen {
