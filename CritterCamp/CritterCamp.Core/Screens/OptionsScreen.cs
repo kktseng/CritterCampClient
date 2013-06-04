@@ -1,6 +1,4 @@
-﻿using CritterCamp.Screens.Games;
-using CritterCamp.Screens.Games.Lib;
-using GameStateManagement;
+﻿using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -18,6 +16,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using CritterCamp.Screens;
 using CritterCamp.Core.Screens;
+using CritterCamp.Core.Lib;
+using CritterCamp.Core.Screens.UIElements;
 
 namespace CritterCamp.Screens {
     class OptionsScreen : MainScreen {

@@ -3,6 +3,7 @@ using CritterCamp.Core.Screens;
 using CritterCamp.Core.Screens.UIScreens;
 using GameStateManagement;
 using Microsoft.Phone.Controls;
+using Microsoft.Xna.Framework.Media;
 using MonoGame.Framework.WindowsPhone;
 using System;
 using System.Windows;

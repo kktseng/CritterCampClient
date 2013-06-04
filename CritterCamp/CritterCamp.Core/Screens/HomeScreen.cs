@@ -8,6 +8,7 @@ using System;
 
 #if WINDOWS_PHONE
     using Microsoft.Phone.Tasks;
+using CritterCamp.Screens;
 #endif
 
 namespace CritterCamp.Core.Screens {

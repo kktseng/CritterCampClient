@@ -19,7 +19,7 @@ namespace CritterCamp.Core.Screens {
 
         public MainScreen(bool bounce) : base() {
             profileBounce = bounce;
-            TransitionOnTime = new TimeSpan(0, 0, 0, 1, 500);
+            TransitionOnTime = new TimeSpan(0, 0, 0, 1, 200);
             TransitionOffTime = new TimeSpan(0, 0, 0, 0, 200);
         }
 
@@ -82,8 +82,8 @@ namespace CritterCamp.Core.Screens {
             Random rand = new Random();
             for(int i = 0; i < b.Length; i++) {
                 destinations[b[i]] = b[i].Position;
-                timeOffset[b[i]] = rand.NextDouble() / 3;
-                velocityOffset[b[i]] = rand.NextDouble() + 1;
+                timeOffset[b[i]] = rand.NextDouble() / 4;
+                velocityOffset[b[i]] = rand.NextDouble() / 5  + 1;
                 // immediately hide button from view
                 b[i].Position = new Vector2(3000, 2000);
             }          
@@ -104,9 +104,9 @@ namespace CritterCamp.Core.Screens {
                 position *= 2;
                 if(position <= 1) {
                     if(ScreenState == GameStateManagement.ScreenState.TransitionOn) {
-                        b.Position = destinations[b] + new Vector2((float)Helpers.EaseOutBounce(1 - position, 1000 * (float)velocityOffset[b], -1000 * (float)velocityOffset[b], 1), 0);
+                        b.Position = destinations[b] + new Vector2((float)Helpers.EaseOutBounce(1 - position, 800 * (float)velocityOffset[b], -800 * (float)velocityOffset[b], 1), 0);
                     } else {
-                        b.Position = destinations[b] + new Vector2((float)velocityOffset[b] + ((float)position) * 1000, 0);
+                        b.Position = destinations[b] + new Vector2((float)velocityOffset[b] + ((float)position) * 800, 0);
                     }
                 }
             }

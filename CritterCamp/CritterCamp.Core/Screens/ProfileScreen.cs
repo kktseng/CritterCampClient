@@ -3,6 +3,7 @@ using CritterCamp.Core.Screens.Games;
 using CritterCamp.Core.Screens.UIElements;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace CritterCamp.Core.Screens {

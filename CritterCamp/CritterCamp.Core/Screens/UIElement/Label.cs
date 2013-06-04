@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CritterCamp.Core.Screens.Games.Lib;
+using Microsoft.Xna.Framework;
 
 namespace CritterCamp.Core.Screens.UIElements {
     /// <summary>
