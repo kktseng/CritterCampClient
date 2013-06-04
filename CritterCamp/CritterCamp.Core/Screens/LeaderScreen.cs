@@ -35,14 +35,12 @@ namespace CritterCamp.Core.Screens {
             leaderPage.Disabled = false;
 
             Label rank = new Label("Rank", new Vector2(startX, startY));
-            rank.Scale = 1.2f;
+            rank.Scale = 1.1f;
             Label player = new Label("Player", new Vector2(startX + 125, startY));
             player.CenterX = false;
-            player.Scale = 1.2f;
+            player.Scale = 1.1f;
             Label level = new Label("Level", new Vector2(startX + 850, startY));
-            level.Scale = 1.2f;
-            Label top10 = new Label("Top 10", new Vector2(1920 / 2, startY));
-            top10.Scale = 0.9f;
+            level.Scale = 1.1f;
 
             playerRows = new List<BorderedView>();
             for(int i = 0; i < 11; i++) {
@@ -63,7 +61,6 @@ namespace CritterCamp.Core.Screens {
             leaderPage.AddElement(rank);
             leaderPage.AddElement(player);
             leaderPage.AddElement(level);
-            leaderPage.AddElement(top10);
             leaderPage.AddElement(retrieving);
             mainView.AddElement(leaderPage);
         }
