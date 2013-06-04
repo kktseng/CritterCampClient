@@ -55,7 +55,7 @@ namespace CritterCamp.Core.Screens.UIElements {
         /// </summary>
         public BorderedView(Vector2 size, Vector2 position) : base(size, position) {
             DrawFill = true;
-            borderWidth = 25;
+            borderWidth = 0;
             UpdateRectangles();
         }
 

@@ -9,11 +9,13 @@ using System.Collections.Generic;
 
 namespace CritterCamp.Core.Screens {
     class LeaderScreen : MenuScreen {
-        BorderedView leaderPage;
-        Label retreiving;
-        List<BorderedView> playerRows;
-        int startX = 525;
-        int startY = 90;
+        protected bool doneRetrieving = false;
+
+        protected BorderedView leaderPage;
+        protected Label retrieving;
+        protected List<BorderedView> playerRows;
+        protected int startX = 525;
+        protected int startY = 90;
 
         public LeaderScreen() : base() {}
 
@@ -29,17 +31,18 @@ namespace CritterCamp.Core.Screens {
             conn.pMessageReceivedEvent += handleLeaders;
             conn.SendMessage(packet.ToString());
 
-            leaderPage = new BorderedView(new Vector2(1150, 890), new Vector2(1920 / 2, 1080 / 2 - 75));
+            leaderPage = new BorderedView(new Vector2(1100, 840), new Vector2(1920 / 2, 1080 / 2 - 75));
             leaderPage.Disabled = false;
 
             Label rank = new Label("Rank", new Vector2(startX, startY));
+            rank.Scale = 1.2f;
             Label player = new Label("Player", new Vector2(startX + 125, startY));
             player.CenterX = false;
+            player.Scale = 1.2f;
             Label level = new Label("Level", new Vector2(startX + 850, startY));
-
+            level.Scale = 1.2f;
             Label top10 = new Label("Top 10", new Vector2(1920 / 2, startY));
-            top10.Font = "tahoma";
-            top10.Scale = 0.75f;
+            top10.Scale = 0.9f;
 
             playerRows = new List<BorderedView>();
             for(int i = 0; i < 11; i++) {
@@ -54,37 +57,27 @@ namespace CritterCamp.Core.Screens {
                 playerRows.Add(row);
             }
 
-            retreiving = new Label("Retreiving the top players", new Vector2(startX, startY + 70));
-            retreiving.CenterX = false;
+            retrieving = new Label("Retreiving the top players", new Vector2(startX, startY + 70));
+            retrieving.CenterX = false;
 
             leaderPage.AddElement(rank);
             leaderPage.AddElement(player);
             leaderPage.AddElement(level);
             leaderPage.AddElement(top10);
-            leaderPage.AddElement(retreiving);
+            leaderPage.AddElement(retrieving);
             mainView.AddElement(leaderPage);
-
-            // Add buttons
-            //Button back = new SmallButton("Back");
-            //back.Position = new Vector2(1560, 894);
-            //back.Tapped += backButton_Tapped;
-
-            //AddButton(back);
-            //mainView.AddElement(back);
-        }
-
-        void backButton_Tapped(object sender, EventArgs e) {
-            OnBackPressed();
         }
 
         protected void handleLeaders(string message, bool error, ITCPConnection connection) {
             JObject o = JObject.Parse(message);
             if((string)o["action"] == "rank" && (string)o["type"] == "leader") {
+                doneRetrieving = true;
                 connection.pMessageReceivedEvent -= handleLeaders;
                 JArray leaderArr = (JArray)o["leaders"];
 
                 PlayerData myData = Storage.Get<PlayerData>("myPlayerData");
-                retreiving.Visible = false;
+                if(retrieving != null) 
+                    retrieving.Visible = false;
                 int index = 1;
                 int rank = 0;
                 int prevLvl = -1;
@@ -100,10 +93,13 @@ namespace CritterCamp.Core.Screens {
                         prevLvl = level;
                     } // otherwise display the same rank as before
 
-                    Label rankLabel = new Label(rank.ToString(), new Vector2(startX, startY + index * 70));
-                    Label player = new Label(username, new Vector2(startX + 125, startY + index * 70));
+                    Label rankLabel = new Label(rank.ToString(), new Vector2(startX, startY + index * 70 + 5));
+                    Label player = new Label(username, new Vector2(startX + 125, startY + index * 70 + 5));
                     player.CenterX = false;
-                    Label levelLabel = new Label(level.ToString(), new Vector2(startX + 850, startY + index * 70));
+                    player.Font = "gillsans";
+                    player.Scale = 0.85f;
+
+                    Label levelLabel = new Label(level.ToString(), new Vector2(startX + 850, startY + index * 70 + 5));
 
                     row.AddElement(rankLabel);
                     row.AddElement(player);
@@ -124,22 +120,24 @@ namespace CritterCamp.Core.Screens {
 
                 BorderedView myRow = playerRows.ElementAt(10);
 
-                Label myRankLabel = new Label(myRank.ToString(), new Vector2(startX, startY + 11 * 70));
-                Label myPlayer = new Label(myData.username, new Vector2(startX + 125, startY + 11 * 70));
+                Label myRankLabel = new Label(myRank.ToString(), new Vector2(startX, startY + 11 * 70 + 5));
+                Label myPlayer = new Label(myData.username, new Vector2(startX + 125, startY + 11 * 70 + 5));
                 myPlayer.CenterX = false;
-                Label myLevel = new Label(myData.level.ToString(), new Vector2(startX + 850, startY + 11 * 70));
+                myPlayer.Font = "gillsans";
+                myPlayer.Scale = 0.85f;
+                Label myLevel = new Label(myData.level.ToString(), new Vector2(startX + 850, startY + 11 * 70 + 5));
 
                 myRow.AddElement(myRankLabel);
                 myRow.AddElement(myPlayer);
                 myRow.AddElement(myLevel);
                 myRow.BorderColor = Constants.YellowHighlight;
             }
-
-            conn.pMessageReceivedEvent -= handleLeaders;
         }
 
-        public override void OnBackPressed() {
-            SwitchScreen(typeof(HomeScreen));
+        protected override bool PopupExit() {
+            if(!doneRetrieving)
+                conn.pMessageReceivedEvent -= handleLeaders;
+            return base.PopupExit();
         }
     }
 }

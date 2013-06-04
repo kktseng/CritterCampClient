@@ -212,6 +212,9 @@
     <Compile Include="..\CritterCamp.Core\Screens\OfflineScreenCore.cs">
       <Link>Core\Screens\OfflineScreenCore.cs</Link>
     </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\OptionsScreen.cs">
+      <Link>Core\Screens\OptionsScreen.cs</Link>
+    </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\PlayScreen.cs">
       <Link>Core\Screens\PlayScreen.cs</Link>
     </Compile>
@@ -316,9 +319,6 @@
     <Content Include="Content\effects.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\backButton.xnb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\twilight.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -326,9 +326,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\explosion.xnb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\paperBG.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Fonts\blueHighway28.xnb">
@@ -409,12 +406,6 @@
     <Content Include="Content\Sounds\blop.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\buttonSoundOff.xnb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\buttonSoundOn.xnb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="pigIconM.png" />
     <Content Include="pigIconS.png" />
     <Content Include="Content\buttonM.xnb">
@@ -483,6 +474,9 @@
     <Content Include="Content\profileBg.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Fonts\gillsans.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Content\Sounds\fbIcon.xnb" />
     <None Include="Content\Sounds\twitterIcon.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -523,7 +517,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\" />
     <Folder Include="NewFolder1\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

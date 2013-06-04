@@ -120,8 +120,8 @@ namespace CritterCamp.Core.Screens.Games.Lib {
 
             Draw(corners, new Vector2(rectangle.X + 10, rectangle.Y + 12), 0, new Vector2(15, 15), color);
             Draw(corners, new Vector2(rectangle.X + rectangle.Width - 13, rectangle.Y + 12), 1, new Vector2(15, 15), color);
-            Draw(corners, new Vector2(rectangle.X + 10, rectangle.Y + rectangle.Height - 10), 2, new Vector2(15, 15), color);
-            Draw(corners, new Vector2(rectangle.X + rectangle.Width - 13, rectangle.Y + rectangle.Height - 10), 3, new Vector2(15, 15), color);
+            Draw(corners, new Vector2(rectangle.X + 10, rectangle.Y + rectangle.Height - 11), 2, new Vector2(15, 15), color);
+            Draw(corners, new Vector2(rectangle.X + rectangle.Width - 13, rectangle.Y + rectangle.Height - 11), 3, new Vector2(15, 15), color);
         }
 
         public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect, SpriteEffects effect, Color color, float spriteRotation = 0, float spriteScale = 1f, bool cache = false, bool align = false) {

@@ -44,6 +44,12 @@ namespace CritterCamp {
             });
         }
 
+        public void MediaPlayerMuted(bool muted) {
+            Dispatcher.BeginInvoke(() => {
+                MediaPlayer.IsMuted = muted;
+            });
+        }
+
         public void AppendStatusText(string text) {
             Dispatcher.BeginInvoke(() => {
                 Status.Text += text;

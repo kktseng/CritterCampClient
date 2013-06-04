@@ -7,7 +7,8 @@ using System.Collections.Generic;
 
 namespace CritterCamp.Core.Screens {
     class MainScreen : MenuScreen {
-        protected bool profileBounce;
+        public bool profileBounce;
+
         protected PlayerData myData;
         protected Dictionary<Button, Vector2> destinations = new Dictionary<Button, Vector2>();
         protected Dictionary<Button, double> timeOffset = new Dictionary<Button, double>();
@@ -39,18 +40,27 @@ namespace CritterCamp.Core.Screens {
             profileElements.Add(profileBackground);
             profileElements.Add(avatar);
 
-            Label name = new Label(myData.username, new Vector2(420, 797));
-            Label level = new Label("Level: " + Helpers.PadNumber(myData.level, 3), new Vector2(780, 300));
-            level.CenterX = false;
-            Label rank = new Label("Rank #" + myData.rank, new Vector2(780, 360));
-            rank.CenterX = false;
+            Label name = new Label(myData.username, new Vector2(420, 790));
+            name.Font = "gillsans";
+            name.MaxSize(490);
+            Label levelTitle = new Label("Level", new Vector2(978, 300));
+            Label level = new Label(myData.level.ToString(), new Vector2(978, 375));
+            level.Font = "tahomaLarge";
+            level.Scale = 0.8f;
+            Label rankTitle = new Label("Rank", new Vector2(978, 460));
+            Label rank = new Label("#" + myData.rank, new Vector2(978, 535));
+            rank.Font = "tahomaLarge";
+            rank.Scale = 0.8f;
             profileElements.Add(name);
-            profileElements.Add(level);
+            profileElements.Add(rankTitle);
             profileElements.Add(rank);
+            profileElements.Add(levelTitle);
+            profileElements.Add(level);
 
             SquareButton profileButton = new SquareButton();
             profileButton.Icon = new Image("buttonSquare", (int)TextureData.ButtonSquare.profile);
             profileButton.Position = new Vector2(876, 720);
+            profileButton.Tapped += profileButton_Tapped;
             profileElements.Add(profileButton);
 
             SquareButton storeButton = new SquareButton();
@@ -60,8 +70,8 @@ namespace CritterCamp.Core.Screens {
 
             foreach(UIElement element in profileElements) {
                 mainView.AddElement(element);
+                profileDestinations[element] = element.Position;
                 if(profileBounce) {
-                    profileDestinations[element] = element.Position;
                     // immediately hide profile from view
                     element.Position = new Vector2(3000, 2000);
                 }
@@ -80,8 +90,8 @@ namespace CritterCamp.Core.Screens {
         }
 
         void profileButton_Tapped(object sender, EventArgs e) {
-             //ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
-           // ScreenManager.AddScreen(new ProfileScreen(this, myData.username), null);
+            Storage.Set("lastScreen", this.GetType());
+            SwitchScreen(typeof(ProfileScreen));
         }
 
         public override void Unload() {
@@ -106,9 +116,9 @@ namespace CritterCamp.Core.Screens {
                     position = position > 0 ? position : 0;
                     if(position <= 1) {
                         if(ScreenState == GameStateManagement.ScreenState.TransitionOn) {
-                            element.Position = profileDestinations[element] - new Vector2((float)Helpers.EaseOutBounce(1 - position, 1250, -1250, 1), 0);
+                            element.Position = profileDestinations[element] - new Vector2((float)Helpers.EaseOutBounce(1 - position, 1350, -1350, 1), 0);
                         } else {
-                            element.Position = profileDestinations[element] - new Vector2(((float)position) * 1250, 0);
+                            element.Position = profileDestinations[element] - new Vector2(((float)position) * 1350, 0);
                         }
                     }
                 }

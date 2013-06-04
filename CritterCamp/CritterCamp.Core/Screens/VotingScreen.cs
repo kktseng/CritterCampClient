@@ -28,7 +28,7 @@ namespace CritterCamp.Core.Screens {
         Label timeLeftNumber;
         Label messageLabel;
 
-        public VotingScreen() : base("Voting") {}
+        public VotingScreen() : base() {}
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);

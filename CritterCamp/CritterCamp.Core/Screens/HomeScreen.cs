@@ -30,6 +30,7 @@ namespace CritterCamp.Core.Screens {
 
             options = new SmallButton("Options");
             options.Position = new Vector2(1560, 666);
+            options.Tapped += optionsButton_Tapped;
 
             about = new SmallButton("About");
             about.Position = new Vector2(1560, 786);
@@ -46,6 +47,10 @@ namespace CritterCamp.Core.Screens {
 
         void leaderButton_Tapped(object sender, EventArgs e) {
             ScreenManager.AddScreen(new LeaderScreen(), null);
+        }
+
+        void optionsButton_Tapped(object sender, EventArgs e) {
+            SwitchScreen(typeof(OptionsScreen));
         }
 
         void aboutButton_Tapped(object sender, EventArgs e) {

@@ -9,6 +9,7 @@ namespace CritterCamp.Core.Screens.UIElements {
         public string Font; 
         public Color TextColor;
 
+        private int maxLength = -1; // used to autoscale font
         public override Vector2 Size {
             get {
                 return MyScreenManager.Fonts[Font].MeasureString(Text) * Scale;
@@ -41,6 +42,16 @@ namespace CritterCamp.Core.Screens.UIElements {
             Initialize(Text);
         }
 
+        public void MaxSize(int length) {
+            maxLength = length;
+        }
+
+        private void AutoScale(int length) {
+            while(MyScreenManager.Fonts[Font].MeasureString(Text).X * Scale / SpriteDrawer.drawScale.X > length) {
+                Scale -= 0.1f;
+            }
+        }
+
         protected void Initialize(string Text) {
             this.Text = Text;
             Font = "tahoma";
@@ -51,6 +62,10 @@ namespace CritterCamp.Core.Screens.UIElements {
         /// Draws the UIElement.
         /// </summary>
         protected override void DrawThis() {
+            if(maxLength > -1) {
+                AutoScale(maxLength);
+                maxLength = -1;
+            }
             MySpriteDrawer.DrawString(MyScreenManager.Fonts[Font], Text, Position, TextColor, CenterX, CenterY, Scale);
         }
     }

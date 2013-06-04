@@ -8,30 +8,32 @@ using System.Collections.Generic;
 namespace CritterCamp.Core.Screens {
     class ProfileScreen : MenuScreen {
         protected List<UIElement> profileElements = new List<UIElement>();
+        protected Dictionary<UIElement, Vector2> profileDestinations = new Dictionary<UIElement, Vector2>();
+        protected Dictionary<UIElement, Vector2> avatarDestinations = new Dictionary<UIElement,Vector2>();
+        protected Type lastScreen;
 
-        BorderedView profilePage;
-        Label title;
-        Button search;
-        BorderedView profileAvatar;
-        BorderedView profileInfo;
-        BorderedView profileMain;
-        MainScreen homeScreen;
+        BorderedView avatars, playerInfo;
         string username;
         PlayerData dataToDisplay;
         PlayerData myData;
-        BorderedView currentYellowHighlight;
+        Color selectedTint = new Color(164, 82, 209);
+        Color normalTint = new Color(82, 45, 200);
+        Button selectedButton;
         PlayerAvatar avatar;
-        int leftX = 475;
-        int leftXSize = 725;
-        int rightX = 1330;
-        int rightXSize = 900;
+        Label name, level, rank;
 
-        public ProfileScreen() : base() {
-            this.username = Storage.Get<string>("username");
+        public ProfileScreen(Type lastScreen) : base() {
+            this.lastScreen = lastScreen;
+
+            TransitionOnTime = new TimeSpan(0, 0, 0, 1, 0);
+            TransitionOffTime = new TimeSpan(0, 0, 0, 0, 200);
         }
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
+
+            myData = Storage.Get<PlayerData>("myPlayerData");
+            username = myData.username;
 
             // Request the profile data
             JObject packet = new JObject(
@@ -42,50 +44,51 @@ namespace CritterCamp.Core.Screens {
             conn.pMessageReceivedEvent += handleProfile;
             conn.SendMessage(packet.ToString());
 
-            myData = Storage.Get<PlayerData>("myPlayerData");
+            Image profileBackground = new Image("profileBg", 0, new Vector2(448, 312), new Vector2(1536, 258));
+            avatar = new PlayerAvatar(myData, new Vector2(1536, 258));
+            profileElements.Add(profileBackground);
+            profileElements.Add(avatar);
 
+            playerInfo = new BorderedView(new Vector2(672, 552), new Vector2(1536, 780));
+            playerInfo.BorderWidth = 0;
 
+            name = new Label(myData.username, new Vector2(1536, 580));
+            name.Font = "gillsans";
+            name.Scale = 1.2f;
+            name.MaxSize(760);
+            level = new Label("Level: " + Helpers.PadNumber(myData.level, 3), new Vector2(1536, 660));
+            rank = new Label("Rank #" + myData.rank, new Vector2(1536, 730));
+            profileElements.Add(name);
+            profileElements.Add(level);
+            profileElements.Add(rank);
 
-            /*
-            profilePage = new BorderedView(new Vector2(1800, 900), new Vector2(1920 / 2, 1080 / 2 - 75));
-            profilePage.Disabled = false;
+            Button store = new SmallButton("Store");
+            store.Position = new Vector2(1536, 858);
+            profileElements.Add(store);
 
-            title = new Label("Retreiving profile data", new Vector2(825, 125));
-            title.CenterX = false;
-            title.Scale = 0.7f;
-            title.Font = "tahoma";
-            profilePage.AddElement(title);
+            Button back = new SmallButton("Back");
+            back.Position = new Vector2(1536, 978);
+            back.Tapped += backButton_Tapped;
+            profileElements.Add(back);
 
-            // the view to draw our avatar
-            profileAvatar = new BorderedView(new Vector2(leftXSize, 470), new Vector2(leftX, 315));
-            profileAvatar.BorderColor = Constants.YellowHighlight;
-            profileAvatar.FillColor = Constants.DarkBrown;
-            profilePage.AddElement(profileAvatar);
+            playerInfo.AddElement(name, level, rank, store, back);
+            profileElements.Add(playerInfo);
 
-            Image profileBackground = new Image("pbg_twilight", 0);
-            profileBackground.Position = new Vector2(leftX, 315);
-            profileBackground.Size = new Vector2(483, 318);
-            profileAvatar.AddElement(profileBackground);
+            avatars = new BorderedView(new Vector2(1152, 1300), new Vector2(576, 540));
+            Label avatarsLabel = new Label("Unlocked Critters", new Vector2(576, 50));
+            avatarsLabel.Font = "gillsans";
+            mainView.AddElement(avatars, avatarsLabel);
 
-            // the view to draw our information
-            profileInfo = new BorderedView(new Vector2(leftXSize, 300), new Vector2(leftX, 715));
-            profileInfo.DrawFill = false;
-            profileInfo.BorderColor = Constants.Brown;
-            profilePage.AddElement(profileInfo);
-
-            search = new Button("Search");
-            search.Position = new Vector2(rightX, 125);
-            search.Visible = false;
-            //profilePage.AddElement(search);
-            // the view for the critters or for add friend/add to party button
-            profileMain = new BorderedView(new Vector2(rightXSize, 790), new Vector2(rightX, 469));
-            profileMain.DrawFill = false;
-            profileMain.BorderColor = Constants.Brown;
-            profileMain.Disabled = false;
-            profilePage.AddElement(profileMain);
-
-            mainView.AddElement(profilePage);
-             */
+            foreach(UIElement element in profileElements) {
+                mainView.AddElement(element);
+                profileDestinations[element] = element.Position;
+                // immediately hide profile from view
+                element.Position = new Vector2(3000, 2000);
+            }
+            avatarDestinations[avatars] = avatars.Position;
+            avatarDestinations[avatarsLabel] = avatarsLabel.Position;
+            avatars.Position = new Vector2(-2000, 2000);
+            avatarsLabel.Position = new Vector2(-500, -500);
         }
 
         protected void handleProfile(string message, bool error, ITCPConnection connection) {
@@ -104,85 +107,50 @@ namespace CritterCamp.Core.Screens {
         }
 
         private void updateProfileScreen() {
-            profilePage.RemoveElement(title);
-            search.Visible = true;
+            lock(avatarDestinations) {         
+                avatar.PlayerDataInfo = dataToDisplay;
 
-            avatar = new PlayerAvatar(dataToDisplay, new Vector2(leftX, 375));
-            profileAvatar.AddElement(avatar);
+                name.Text = dataToDisplay.username;
+                rank.Text = "Rank #" + dataToDisplay.rank;
+                level.Text = "Level: " + Helpers.PadNumber(dataToDisplay.level, 3);
 
-            Label usernameLabel = new Label(dataToDisplay.username, new Vector2(140, 625));
-            usernameLabel.CenterX = false;
-            usernameLabel.Font = "tahoma";
-            usernameLabel.Scale = 0.6f;
-            profileInfo.AddElement(usernameLabel);
-            int xSize = 485;
-            FilledRectangle levelBack = new FilledRectangle(new Rectangle(330, 680, xSize, 30));
-            levelBack.RectangleColor = new Color(102, 102, 102);
-            profileInfo.AddElement(levelBack);
-            FilledRectangle levelCurrExp = new FilledRectangle(new Rectangle(330, 680, (int)(xSize*dataToDisplay.expPercent), 30));
-            levelCurrExp.RectangleColor = new Color(48, 198, 48);
-            profileInfo.AddElement(levelCurrExp);
-            Label level = new Label("Lv " + Helpers.PadNumber(dataToDisplay.level, 3), new Vector2(140, 700));
-            level.CenterX = false;
-            level.Font = "tahoma";
-            level.Scale = 0.55f;
-            level.TextColor = Constants.DarkBrown;
-            profileInfo.AddElement(level);
-            Label rank = new Label("Rank #" + dataToDisplay.rank, new Vector2(140, 760));
-            rank.CenterX = false;
-            rank.Font = "tahoma";
-            rank.Scale = 0.55f;
-            profileInfo.AddElement(rank);
-            Label money = new Label("$250", new Vector2(140, 825));
-            money.CenterX = false;
-            money.Scale = 0.6f;
-            money.Font = "tahoma";
-            money.TextColor = Color.Yellow;
-            //profileInfo.AddElement(money);
+                if(dataToDisplay.username == myData.username) {
+                    // displaying our own profile. display the critters we can use
+                    int startX = 144;
+                    int startY = 200;
 
-            if (dataToDisplay.username == myData.username) {
-                // displaying our own profile. display the critters we can use
-                Label critters = new Label("Unlocked Critters", new Vector2(905, 150));
-                critters.CenterX = false;
-                critters.Font = "tahoma";
-                critters.Scale = 0.6f;
-                profileMain.AddElement(critters);
+                    List<string> unlockedProfiles = Storage.Get<List<string>>("unlocked");
+                    foreach(string prof in unlockedProfiles) {
+                        ProfileData pd = ProfileConstants.GetProfileData(prof);
 
-                int startX = 1000;
-                int startY = 280;
+                        SquareButton newIcon = new SquareButton();
+                        newIcon.Icon = new Image("avatars", pd.ProfileIndex * Constants.AVATAR_COLORS);
+                        newIcon.Icon.Size = new Vector2(128, 128);
+                        newIcon.Icon.Scale = 0.7f;
+                        newIcon.Position = new Vector2(startX, startY);
 
-                List<string> unlockedProfiles = Storage.Get<List<string>>("unlocked");
-                foreach (string prof in unlockedProfiles) {
-                    ProfileData pd = ProfileConstants.GetProfileData(prof);
+                        if(prof == myData.profile) {
+                            newIcon.ButtonTexture.Tint = selectedTint;
+                            selectedButton = newIcon;
+                        } else {
+                            newIcon.ButtonTexture.Tint = normalTint;
+                        }
 
-                    Button newIcon = new Button("avatars", pd.ProfileIndex * Constants.AVATAR_COLORS);
-                    newIcon.ButtonImageScale = .75f;
-                    newIcon.Size = new Vector2(96, 96);
-                    newIcon.Position = new Vector2(startX, startY);
+                        newIcon.TappedArgs.ObjectArg = pd;
+                        newIcon.Tapped += iconButton_Tapped;
 
-                    newIcon.TappedArgs.ObjectArg = pd;
-                    newIcon.Tapped += iconButton_Tapped;
+                        mainView.AddElement(newIcon);
+                        avatarDestinations[newIcon] = newIcon.Position;
+                        newIcon.Position = new Vector2(-500, -500);
 
-                    BorderedView yellowHighlight = new BorderedView(new Vector2(190, 190), new Vector2(startX, startY));
-                    yellowHighlight.BorderWidth = 7;
-                    if (pd.ServerName == myData.profile) {
-                        yellowHighlight.FillColor = Constants.YellowHighlight; // set the border color to yellow
-                        currentYellowHighlight = yellowHighlight;
-                    } else {
-                        yellowHighlight.FillColor = new Color(142, 101, 79);
+                        startX += 216;
                     }
-                    yellowHighlight.AddElement(newIcon);
-                    yellowHighlight.Disabled = false;
-                    newIcon.TappedArgs.ObjectArgExtra1 = yellowHighlight;
-                    profileMain.AddElement(yellowHighlight);
-
-                    startX += 225;
                 }
-
-                Button shop = new Button("Shop");
-                shop.Position = new Vector2(1500, 775);
-                //profileMain.AddElement(shop);
             }
+        }
+
+        public override void OnBackPressed() {
+            SwitchScreen(lastScreen);
         }
 
         private void iconButton_Tapped(object sender, UIElementTappedArgs e) {
@@ -195,21 +163,39 @@ namespace CritterCamp.Core.Screens {
             
             myData.profile = pd.ServerName;
             avatar.PlayerDataInfo = myData;
-            //homeScreen.updatePlayerData();
+            selectedButton.ButtonTexture.Tint = normalTint;
+            selectedButton = (Button)sender;
+            selectedButton.ButtonTexture.Tint = selectedTint;
+        }
 
-            currentYellowHighlight.FillColor = new Color(142, 101, 79);
-            BorderedView selectedIcon = (BorderedView)e.ObjectArgExtra1;
-            selectedIcon.FillColor = Constants.YellowHighlight;
-            currentYellowHighlight = selectedIcon;
+        private void backButton_Tapped(object sender, UIElementTappedArgs e) {
+            OnBackPressed();
+        }
+
+        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
+            foreach(UIElement element in profileElements) {
+                if(ScreenState == GameStateManagement.ScreenState.TransitionOn) {
+                    element.Position = profileDestinations[element] + new Vector2((float)Helpers.EaseOutBounce(1 - TransitionPosition, 1000, -1000, 1), 0);
+                } else {
+                    element.Position = profileDestinations[element] + new Vector2(((float)TransitionPosition) * 1000, 0);
+                }
+            }
+            lock(avatarDestinations) {
+                foreach(UIElement element in avatarDestinations.Keys) {
+                    if(ScreenState == GameStateManagement.ScreenState.TransitionOn) {
+                        element.Position = avatarDestinations[element] - new Vector2((float)Helpers.EaseOutBounce(1 - TransitionPosition, 1500, -1500, 1), 0);
+                    } else {
+                        element.Position = avatarDestinations[element] - new Vector2(((float)TransitionPosition) * 1500, 0);
+                    }
+                }
+            }
+            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
         public override void Unload() {
             Storage.Set("myPlayerData", myData);
-            //homeScreen.updatePlayerData();
             conn.SendMessage(@"{ ""action"": ""profile"", ""type"": ""set"", ""profile"": """ + myData.profile + "\" }");
-
             conn.pMessageReceivedEvent -= handleProfile;
-
             base.Unload();
         }
     }

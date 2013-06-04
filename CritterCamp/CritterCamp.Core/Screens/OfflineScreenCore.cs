@@ -30,6 +30,10 @@ namespace CritterCamp.Core.Screens {
             ShowAdDuplex(false);
         }
 
+        public IOfflineScreen OfflineScreen {
+            get { return offlineScreen; }
+        }
+
         public void ShowAdDuplex(bool show) {
             offlineScreen.ShowAdDuplex(show);
         }
@@ -192,6 +196,7 @@ namespace CritterCamp.Core.Screens {
                     Storage.Set("unlocked", response.unlockedProfiles);
 
                     PlayerData mydata = new PlayerData(response.username, response.profile, response.lvl, 0);
+                    mydata.rank = response.rank;
                     Storage.Set("myPlayerData", mydata);
 
                     // Create a TCP connection
@@ -267,6 +272,7 @@ namespace CritterCamp.Core.Screens {
         public string auth;
         public string username;
         public int lvl;
+        public int rank;
         public string profile;
         public List<NewsPost> news;
         public List<string> unlockedProfiles;
@@ -278,6 +284,7 @@ namespace CritterCamp.Core.Screens {
                 lvl = (int)responseJSON["level"];
                 profile = (string)responseJSON["profile"];
                 username = (string)responseJSON["username"];
+                rank = (int)responseJSON["rank"];
 
                 news = new List<NewsPost>();
                 JArray newsJson = (JArray)responseJSON["news"];

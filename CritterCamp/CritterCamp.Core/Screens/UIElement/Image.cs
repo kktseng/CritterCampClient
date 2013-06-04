@@ -64,9 +64,9 @@ namespace CritterCamp.Core.Screens.UIElements {
         /// </summary>
         protected override void DrawThis() {
             if (DrawOverlay) {
-                MySpriteDrawer.Draw(MyScreenManager.Textures[Texture], Position, TextureIndex, Size/(Scale*Scale), rect, SpriteEffects.None, Overlay, spriteScale: Scale);
+                MySpriteDrawer.Draw(MyScreenManager.Textures[Texture], Position, TextureIndex, Size, rect, SpriteEffects.None, Overlay, spriteScale: Scale);
             } else if (Size != Vector2.Zero) {
-                MySpriteDrawer.Draw(MyScreenManager.Textures[Texture], Position, TextureIndex, Size/(Scale*Scale), Tint, spriteScale: Scale);
+                MySpriteDrawer.Draw(MyScreenManager.Textures[Texture], Position, TextureIndex, Size, Tint, spriteScale: Scale);
             } else {
                 MySpriteDrawer.Draw(MyScreenManager.Textures[Texture], Position, TextureIndex, Tint, spriteScale : Scale);
             }

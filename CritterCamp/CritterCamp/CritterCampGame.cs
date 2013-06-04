@@ -4,6 +4,7 @@ using CritterCamp.Core.Screens.Games.Lib;
 using GameStateManagement;
 using Microsoft.Phone.Shell;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
 using System;
@@ -55,9 +56,14 @@ namespace CritterCamp {
             screenManager.AddScreen(new OfflineScreen(), null);
 
             string isOn;
-            if(IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("volume", out isOn)) {
+            if(IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("music", out isOn)) {
                 if(!Boolean.Parse(isOn)) {
                     MediaPlayer.IsMuted = true;
+                }
+            }
+            if(IsolatedStorageSettings.ApplicationSettings.TryGetValue<String>("sound", out isOn)) {
+                if(!Boolean.Parse(isOn)) {
+                    SoundEffect.MasterVolume = 0;
                 }
             }
             Song s = Content.Load<Song>("Sounds/adventure");

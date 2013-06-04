@@ -16,7 +16,7 @@ namespace CritterCamp.Core.Screens.UIElements {
 
         public virtual Vector2 Size {  // size of this element
             get {
-                return size * scale;
+                return size;
             }
             set {
                 size = value;
