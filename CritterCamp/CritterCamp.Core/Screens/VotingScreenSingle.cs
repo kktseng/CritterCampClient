@@ -16,7 +16,10 @@ namespace CritterCamp.Core.Screens {
         Button selectedButton = null;
         GameData selectedGame = null;
 
-        public VotingScreenSingle() : base() { }
+        public VotingScreenSingle() : base() {
+            OfflineScreenCore osc = Storage.Get<OfflineScreenCore>("OfflineScreenCore");
+            osc.ShowAdDuplex(false);
+        }
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
@@ -35,7 +38,7 @@ namespace CritterCamp.Core.Screens {
             voteMenu.Disabled = false;
 
             Label ChooseGame = new Label("Choose Game", new Vector2(960, 150));
-            ChooseGame.Font = "boris48";
+            ChooseGame.Font = "museoslab";
             voteMenu.AddElement(ChooseGame);
 
             // add the buttons for the games          
@@ -57,7 +60,7 @@ namespace CritterCamp.Core.Screens {
             }
 
             // add the vote button
-            playButton = new Button("Play");
+            playButton = new SmallButton("Play");
             playButton.Position = new Vector2(960, 900);
             playButton.Tapped += Play;
             playButton.Disabled = true;

@@ -153,7 +153,6 @@ namespace CritterCamp.Core.Screens.UIElements {
                 if (Selected) { // selected this button. draw a green
                     buttonTexture.Overlay = SelectedColor;
                     buttonTexture.DrawOverlay = true;
-                    textLabel.TextColor = SelectedColor;
                 } else { // button is not selected. draw no overlay
                     if (!Disabled) {
                         buttonTexture.DrawOverlay = false;

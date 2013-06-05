@@ -59,7 +59,7 @@ namespace CritterCamp.Core.Screens {
         }
 
         public override void OnBackPressed() {
-            base.OnBackPressed();
+            ScreenManager.AddScreen(new ExitPopupScreen(true), null);
         }
 
         protected override void MessageReceived(string message, bool error, ITCPConnection connection) {
@@ -76,32 +76,38 @@ namespace CritterCamp.Core.Screens {
 
     class ExitPopupScreen : MenuScreen {
         BorderedView exitPage;
+        bool exitGame = false;
 
-        public ExitPopupScreen() : base("About Screen") {}
+        public ExitPopupScreen() : base() {}
+
+        public ExitPopupScreen(bool exitGame) : base() {
+            this.exitGame = exitGame;
+        }
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
             IsPopup = true;
             RemoveConn(); // dont need our page to be handling any connections 
 
-            exitPage = new BorderedView(new Vector2(875, 600), new Vector2(1920 / 2, 1080 / 2 - 75));
+            exitPage = new BorderedView(new Vector2(875, 400), new Vector2(1920 / 2, 1080 / 2 - 125));
             exitPage.Disabled = false;
 
             int startX = 1920 / 2;
             int startY = 270;
             Label text = new Label("Are you sure you want to exit?", new Vector2(startX, startY));
 
-            Button keepPlaying = new Button("Keep Playing");
-            keepPlaying.Position = new Vector2(startX, startY + 150);
-            keepPlaying.TextScale = 0.7f;
+            Button keepPlaying = new SmallButton("Keep Playing");
+            keepPlaying.Position = new Vector2(startX, startY + 140);
             keepPlaying.Tapped += PopupExitTap;
-            keepPlaying.ButtonImage = "buttonGreen";
 
-            Button exitButton = new Button("Exit");
-            exitButton.Position = new Vector2(startX, startY + 350);
-            exitButton.TextScale = 0.7f;
+            Button exitButton = new SmallButton("Exit");
+            exitButton.Position = new Vector2(startX, startY + 260);
             exitButton.Tapped += (s, e) => {
-                LoadingScreen.Load(ScreenManager, false, null, Helpers.GetScreenFactory(this).CreateScreen(typeof(OfflineScreen)));
+                if(exitGame) {
+                    SwitchScreen(typeof(OfflineScreen));
+                } else {
+                    SwitchScreen(typeof(HomeScreen));
+                }
             };
 
             exitPage.AddElement(text);

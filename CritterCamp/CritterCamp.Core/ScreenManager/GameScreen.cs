@@ -362,7 +362,6 @@ namespace GameStateManagement {
 
         public virtual void OnBackPressed() {
             // open up the exit popup
-            ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
             ScreenManager.AddScreen(new ExitPopupScreen(), null);
         }
 

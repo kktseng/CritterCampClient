@@ -307,7 +307,7 @@ namespace CritterCamp.Core.Screens.Games {
                     timePercentage = timePercentage > 1 ? 1 : timePercentage;
                     int percentage = (int)(timePercentage * a.score * 10000);
                     string display = ((float)percentage / 100).ToString();
-                    sd.DrawString(ScreenManager.Fonts["boris48"], display + "%", a.Coord + new Vector2(175, 0), a.color, spriteScale: 0.55f);
+                    sd.DrawString(ScreenManager.Fonts["museoslab"], display + "%", a.Coord + new Vector2(175, 0), a.color, spriteScale: 0.55f);
                 }
             }
 

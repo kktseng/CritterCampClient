@@ -42,7 +42,7 @@ namespace CritterCamp.Core.Screens {
 
             Label name = new Label(myData.username, new Vector2(420, 790));
             name.Font = "gillsans";
-            name.MaxSize(490);
+            name.MaxSize(700);
             Label levelTitle = new Label("Level", new Vector2(978, 300));
             Label level = new Label(myData.level.ToString(), new Vector2(978, 375));
             level.Font = "tahomaLarge";

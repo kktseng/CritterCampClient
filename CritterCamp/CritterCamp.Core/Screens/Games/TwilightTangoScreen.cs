@@ -28,7 +28,7 @@ namespace CritterCamp.Core.Screens.Games {
         public static TimeSpan MOVE_TIME = new TimeSpan(0, 0, 0, 0, 600);
         public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 0, 1, 500);
 
-        protected TileMap tileMap;
+        protected TileMap tileMap, tileMap2;
         protected TextBanner banner;
         protected bool syncing;
         protected int currentRank;
@@ -80,21 +80,37 @@ namespace CritterCamp.Core.Screens.Games {
 
         public void SetMap() {
             tileMap = new TileMap(textureList["map"]);
+            tileMap2 = new TileMap(textureList["map"]);
             int[,] map = new int[,] {
-                {  3,  1,  2,  3,  0,  1,  2,  3,  0,  1,  2,  3,  0,  1,  2,  3,  0,  1,  2,  3 },
-                {  1,  2,  1,  3,  3,  2,  1,  3,  2,  0,  1,  2,  3,  3,  1,  1,  3,  0,  1,  2 },
-                {  2,  2,  0,  1,  2,  3,  0,  1,  2,  3,  2,  2,  3,  2,  2,  1,  1,  3,  2,  1 },
-                {  1,  2,  3,  2,  1,  2,  2,  3,  0,  2,  3,  0,  1,  3,  1,  0,  1,  1,  3,  0 },
-                {  2,  1,  2,  3,  0,  2,  0,  3,  2,  1,  1,  2,  3,  2,  2,  3,  1,  1,  2,  1 },
-                {  3,  0,  1,  1,  3,  3,  2,  2,  3,  0,  3,  2,  3,  0,  1,  2,  2,  0,  1,  2 },
-                { 20, 20, 21, 19, 20, 20, 21, 16, 18, 18, 19, 20, 20, 20, 21, 19, 20, 20, 20, 20 },
-                { 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17 },
-                {  9,  6,  4,  4,  5,  6,  4, 10, 11,  9,  4,  5,  4, 10, 11,  9,  4,  5,  4,  4 },
-                { 14,  4,  4,  6, 10,  9,  4,  8, 15, 14,  4,  4, 10, 15, 12, 12,  9, 10,  9,  4 },
-                {  7,  4, 10, 11, 12,  7,  4,  5,  8,  7, 10, 11, 15,  7,  6,  4, 13, 15, 14,  6 },
-                {  4,  4,  8,  7,  4,  4, 10, 11,  9,  4,  8, 15, 14,  4,  4,  5,  8, 15,  7,  4 }
+                {  0,  0,  0,  0,  0,  1,  0,  3,  0,  0,  2,  0,  0,  1,  0,  0,  0,  0,  5,  0 },
+                {  0,  1,  2,  3,  0,  0,  0,  0,  0,  0,  0,  0,  3,  0,  0,  5,  0,  0,  0,  2 },
+                {  0,  0,  4,  5,  0,  3,  0,  5,  2,  0,  4,  0,  0,  0,  2,  0,  4,  0,  0,  0 },
+                {  1,  0,  0,  0,  0,  0,  0,  0,  0,  2,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0 },
+                {  0,  1,  0,  0,  0,  5,  0,  3,  0,  1,  0,  0,  0,  2,  0,  3,  0,  0,  2,  0 },
+                {  8,  9, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13,  6,  7 },
+                { 15, 16, 17, 18, 19, 20, 17, 18, 19, 20, 17, 18, 19, 20, 17, 18, 19, 20, 14, 15 },
+                { 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15 },
+                { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }
+            };
+            int[,] map2 = new int[,] {
+                { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { 22, 23, 24, 25, -1, -1, -1, 21, 22, 23, 24, 25, -1, -1, -1, 21, 22, 23, 24, 25 },
+                { 27, 28, 29, 30, -1, -1, -1, 26, 27, 28, 29, 30, -1, -1, -1, 26, 27, 28, 29, 30 },
+                { 32, 33, 34, 35, 36, 37, 38, 31, 32, 33, 34, 35, 36, 37, 38, 31, 32, 33, 34, 35 },
+                { 39, 39, 39, 41, 39, 39, 39, 39, 42, 41, 39, 40, 39, 39, 39, 39, 42, 39, 40, 39 },
+                { 42, 39, 39, 39, 42, 39, 39, 40, 39, 39, 39, 39, 43, 39, 39, 41, 39, 39, 39, 39 },
+                { 39, 39, 43, 39, 41, 39, 39, 39, 39, 41, 39, 39, 41, 39, 39, 39, 40, 44, 41, 39 },
+                { 41, 39, 40, 39, 39, 39, 39, 39, 41, 39, 45, 39, 39, 39, 42, 39, 39, 39, 39, 40 },
             };
             tileMap.SetMap(map);
+            tileMap2.SetMap(map2);
         }
 
         public override void HandleInput(GameTime gameTime, InputState input) {
@@ -276,7 +292,7 @@ namespace CritterCamp.Core.Screens.Games {
                         if(error && p.health > 0) {
                             soundList["puff"].Play();
                             p.health--;
-                            new Smoke(this, p.Coord + new Vector2((100 * (p.health % 3)) + ((p.health / 3) * 50), (p.health / 3) * 65));               
+                            new Smoke(this, p.Coord + new Vector2((100 * (p.health % (p.maxHealth / 2 + 1)) + (p.health / (p.maxHealth / 2 + 1)) * 50), (p.health / (p.maxHealth / 2 + 1)) * 65));
                             if(p.health <= 0) {
                                 p.rank = currentRank;
                                 foreach(Player tiedPlayer in tieCheck) {
@@ -357,6 +373,7 @@ namespace CritterCamp.Core.Screens.Games {
             SpriteDrawer sd = Helpers.GetSpriteDrawer(this);
             sd.Begin();
             tileMap.Draw(sd);
+            tileMap2.Draw(sd);
             DrawActors(sd);
             if(banner != null) {
                 // Draw banner
@@ -367,12 +384,9 @@ namespace CritterCamp.Core.Screens.Games {
                 for(int i = 0; i < (timerBar * 18) - 1; i++) {
                     sd.Draw(textureList["twilight"], new Vector2(Constants.BUFFER_SPRITE_DIM * 1.5f + Constants.BUFFER_SPRITE_DIM * i, 64), (int)TextureData.twilightTexture.timer);
                 }
-                bool rocketBool = (((int)(timerBar * 15d) % 2) == 0);
-                int rocket = rocketBool ? (int)TextureData.twilightTexture.rocket1 : (int)TextureData.twilightTexture.rocket2;
-                float rocketOffset = rocketBool ? 0 : 8;
                 // Final bar, draw the partial bar
                 sd.Draw(textureList["twilight"], new Vector2(Constants.BUFFER_SPRITE_DIM * 1.5f + Constants.BUFFER_SPRITE_DIM * (int)Math.Floor(timerBar * 18), 64), (int)TextureData.twilightTexture.timer, new Rectangle(0, 0, (int)(timerBar % (1d / 18d) * 64d * 18d), 64));
-                sd.Draw(textureList["twilight"], new Vector2(Constants.BUFFER_SPRITE_DIM + (float)(timerBar * (Constants.BUFFER_WIDTH - 2 * Constants.BUFFER_SPRITE_DIM)), 60 + rocketOffset), rocket);
+                sd.Draw(textureList["twilight"], new Vector2(Constants.BUFFER_SPRITE_DIM + (float)(timerBar * (Constants.BUFFER_WIDTH - 2 * Constants.BUFFER_SPRITE_DIM)), 60), (int)TextureData.twilightTexture.rocket);
             }
             sd.End();
             base.Draw(gameTime);

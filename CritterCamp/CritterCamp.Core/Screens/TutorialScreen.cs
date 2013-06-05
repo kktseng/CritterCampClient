@@ -49,6 +49,14 @@ namespace CritterCamp.Core.Screens {
             base.Unload();
         }
 
+        public override void OnBackPressed() {
+            if(single) {
+                SwitchScreen(typeof(VotingScreenSingle));
+            } else {
+                base.OnBackPressed();
+            }
+        }
+
         // Method callback for every second of the countdown timer
         void timeLeftTimerCallback(object state) {
             timeLeft--;

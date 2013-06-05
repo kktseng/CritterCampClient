@@ -332,7 +332,7 @@ namespace CritterCamp.Core.Screens.Games {
                 }
                 sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6f + i), BUCKET_Y + waveOffset), (int)TextureData.fishingTextures.bucket);
                 sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * (7f + i), BUCKET_Y + waveOffset), (int)TextureData.fishingTextures.bucket, SpriteEffects.FlipHorizontally);
-                sd.DrawString(ScreenManager.Fonts["boris48"], displayScore[user].ToString(), new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 2.5f + waveOffset - 35), spriteScale: scale);
+                sd.DrawString(ScreenManager.Fonts["museoslab"], displayScore[user].ToString(), new Vector2((float)Constants.BUFFER_SPRITE_DIM * (6.5f + i), (float)Constants.BUFFER_SPRITE_DIM * 2.5f + waveOffset - 35), spriteScale: scale);
                 if(i == 2)
                     i++;
                 i += 2;

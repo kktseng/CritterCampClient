@@ -15,6 +15,7 @@ namespace CritterCamp.Core.Screens.Games.TwilightTango {
 
     public class Player : AnimatedObject<PlayerDanceStates>, IComparable<Player> {
         public int health;
+        public int maxHealth;
         public List<Direction> input;
         public int rank;
         public PlayerData player;
@@ -23,7 +24,8 @@ namespace CritterCamp.Core.Screens.Games.TwilightTango {
             : base(screen, "pig", coord) {
             input = new List<Direction>();
             State = PlayerDanceStates.Standing;
-            health = screen.singlePlayer ? 9 : 5;
+            maxHealth = screen.singlePlayer ? 9 : 5;
+            health = maxHealth;
             maxCycles = 1;
             this.player = player;
         }
@@ -52,7 +54,7 @@ namespace CritterCamp.Core.Screens.Games.TwilightTango {
 
         public override void Draw(SpriteDrawer sd) {
             for(int i = 0; i < health; i++) {
-                sd.DrawPlayer(screen, player, Coord + new Vector2((100 * (i % (health / 2 + 1)) + (i / (health / 2 + 1)) * 50), (i / (health / 2 + 1)) * 65), GetNum(), spriteEffect: GetFrame().Value.effect);
+                sd.DrawPlayer(screen, player, Coord + new Vector2((100 * (i % (maxHealth / 2 + 1)) + (i / (maxHealth / 2 + 1)) * 50), (i / (maxHealth / 2 + 1)) * 65), GetNum(), spriteEffect: GetFrame().Value.effect);
             }
         }
 

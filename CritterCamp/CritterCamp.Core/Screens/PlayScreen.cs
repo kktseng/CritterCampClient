@@ -70,7 +70,10 @@ namespace CritterCamp.Core.Screens {
             mainView.AddElement(SearchingButtons);
         }
 
+        
         void singleButton_Tapped(object sender, EventArgs e) {
+            if(looking)
+                cancelSearch();
             single.ButtonTexture.Tint = single.SelectedColor;
             Storage.Set("singlePlayer", true);
             SwitchScreen(typeof(VotingScreenSingle));
@@ -131,6 +134,7 @@ namespace CritterCamp.Core.Screens {
                     Storage.Set("group_info", playerInfo);
                     Storage.Set("game_choices", gameChoices);
                     startingGame = true;
+                    SearchingButtons.Visible = false;
                 } else if((string)o["type"] == "count") {
                     groupSize = (int)o["size"];
                     playersInParty.Text = "Searching for players: " + groupSize + "/4";

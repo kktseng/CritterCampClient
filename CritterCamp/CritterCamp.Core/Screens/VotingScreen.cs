@@ -14,8 +14,8 @@ namespace CritterCamp.Core.Screens {
         int iconStartY = Constants.BUFFER_HEIGHT * 4/10 - 50;
         int iconSpace = 175;
         int iconSize = 128;
-        int middleIconX = Constants.BUFFER_WIDTH * 3/4 - 20;
-        int middlePlayers = 465;
+        int middleIconX = 1416;
+        int middlePlayers = 480;
         Vector2 iconSizeVector;
         bool voted = false;
         Dictionary<string, PlayerData> players;
@@ -26,12 +26,13 @@ namespace CritterCamp.Core.Screens {
         int timeLeft;
         Timer timeLeftTimer;
         Label timeLeftNumber;
-        Label messageLabel;
 
         public VotingScreen() : base() {}
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
+            OfflineScreenCore osc = Storage.Get<OfflineScreenCore>("OfflineScreenCore");
+            osc.ShowAdDuplex(false);
 
             if (!ScreenManager.Textures.ContainsKey("gameIcons")) {
                 ContentManager cm = ScreenManager.Game.Content;
@@ -65,11 +66,11 @@ namespace CritterCamp.Core.Screens {
             Storage.Set("player_data", players);
 
             int iconX = middleIconX - iconSpace - iconSize;
-            BorderedView voteMenu = new BorderedView(new Vector2(950, 875), new Vector2(middleIconX, 540));
+            BorderedView voteMenu = new BorderedView(new Vector2(912, 960), new Vector2(middleIconX, 1080 / 2));
             voteMenu.Disabled = false;
 
             Label ChooseGame = new Label("Choose Game", new Vector2(middleIconX, 200));
-            ChooseGame.Font = "boris48";
+            ChooseGame.Font = "museoslab";
             voteMenu.AddElement(ChooseGame);
 
             // add the buttons for the games            
@@ -83,51 +84,65 @@ namespace CritterCamp.Core.Screens {
                 Button gameChoice = new Button(gd.GameIconTexture, gd.GameIconIndex);
                 gameChoice.Size = iconSizeVector;
                 gameChoice.Position = new Vector2(iconX, iconStartY);
-                gameChoice.Caption1 = gd.NameLine1;
-                gameChoice.Caption2 = gd.NameLine2;
+                //gameChoice.Caption1 = gd.NameLine1;
+                //gameChoice.Caption2 = gd.NameLine2;
                 gameChoice.TappedArgs.ObjectArg = gd;
                 gameChoice.Tapped += selectGame;
+                Label line1 = new Label(gd.NameLine1, new Vector2(iconX, iconStartY + 140));
+                line1.Font = "gillsans";
+                line1.Scale = 0.8f;
+                Label line2 = new Label(gd.NameLine2, new Vector2(iconX, iconStartY + 200));
+                line2.Font = "gillsans";
+                line2.Scale = 0.8f;
 
                 buttons.Add(gameChoice);
-                voteMenu.AddElement(gameChoice);
+                voteMenu.AddElement(gameChoice, line1, line2);
 
                 iconX += iconSpace + iconSize;
             }
 
             // add the vote button
-            voteButton = new Button("Vote");
-            voteButton.Position = new Vector2(middleIconX, iconStartY + iconSpace + 120);
+            voteButton = new SmallButton("Vote");
+            voteButton.Position = new Vector2(middleIconX, iconStartY + iconSpace + 200);
             voteButton.Tapped += vote;
             voteButton.Disabled = true;
             voteMenu.AddElement(voteButton);
 
-            messageLabel = new Label("Select a game and click vote.", new Vector2(middleIconX, (float)(iconStartY + iconSpace + 240)));
-            voteMenu.AddElement(messageLabel);
-
-            Label timeLeftLabel = new Label("Time Left: ", new Vector2(middleIconX - 15, iconStartY + iconSpace + 320));
-            timeLeftNumber = new Label(timeLeft.ToString(), new Vector2(middleIconX + 115, iconStartY + iconSpace + 320));
+            Label timeLeftLabel = new Label("Time Left: ", new Vector2(middleIconX - 15, iconStartY + iconSpace + 330));
+            timeLeftLabel.Font = "gillsans";
+            timeLeftLabel.Scale = 0.8f;
+            timeLeftNumber = new Label(timeLeft.ToString(), new Vector2(middleIconX + 115, iconStartY + iconSpace + 330));
             timeLeftNumber.CenterX = false;
+            timeLeftNumber.Scale = 1.2f;
             voteMenu.AddElement(timeLeftLabel);
             voteMenu.AddElement(timeLeftNumber);
 
             mainView.AddElement(voteMenu);
 
-            BorderedView playersView = new BorderedView(new Vector2(890, 875), new Vector2(middlePlayers, 540));
+            BorderedView playersView = new BorderedView(new Vector2(840, 960), new Vector2(middlePlayers, 1080 / 2));
             float playersX = 175;
-            float playersY = 540 - 825 * 3 / 8;
-            float spacing = (875 - 50) / 4;
+            float playersY = 180;
+            float spacing = 240;
             PlayerData myData = Storage.Get<PlayerData>("myPlayerData");
             foreach (PlayerData p in players.Values) {
                 PlayerAvatar playerAvatar = new PlayerAvatar(p, new Vector2(playersX, playersY));
+                Label playerName = new Label(p.username, new Vector2(playersX + 110, playersY - 30));
+                Label level = new Label("Level " + p.level, new Vector2(playersX + 110, playersY + 30));
+                level.CenterX = false;
+                level.Scale = 0.8f;
+                playerName.CenterX = false;
+                playerName.Scale = 1.2f;
+                playerName.Font = "gillsans";
+                playerName.MaxSize(700);
                 if (myData.username == p.username) {
                     // drawing our own avatar. put it in a view so we can highlight it yellow
                     BorderedView yellowHighlight = new BorderedView(new Vector2(840, spacing), new Vector2(middlePlayers, playersY));
                     yellowHighlight.BorderColor = Constants.YellowHighlight; // set the border color to yellow
                     yellowHighlight.DrawFill = false; // don't draw the fill color
-                    yellowHighlight.AddElement(playerAvatar);
+                    yellowHighlight.AddElement(playerAvatar, playerName, level);
                     playersView.AddElement(yellowHighlight);
                 } else {
-                    playersView.AddElement(playerAvatar);
+                    playersView.AddElement(playerAvatar, playerName);
                 }
                 playersY += spacing;
             }
@@ -183,7 +198,7 @@ namespace CritterCamp.Core.Screens {
             }
             voted = true;
             voteButton.Disabled = true;
-            messageLabel.Text = "Waiting for the other players.";
+            voteButton.Text = "Waiting for others..";
 
             Sync(handleVotes, selectedGame.ServerName, 13);  // give other players 13 seconds to vote
         }
