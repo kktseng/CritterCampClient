@@ -117,10 +117,10 @@ namespace CritterCamp.Core.Screens {
             sd.Begin();
 
             sd.Draw(tutorial, new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT / 2), 0, new Vector2(1280, 775));
-            sd.DrawString(ScreenManager.Fonts["blueHighway28"], text, new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT - 150));
+            sd.DrawString(ScreenManager.Fonts["gillsans"], text, new Vector2(Constants.BUFFER_WIDTH / 2, Constants.BUFFER_HEIGHT - 150));
             if (!single) { // it not single player, draw the timer information
-                sd.DrawString(ScreenManager.Fonts["blueHighway28"], "Continuing in ", new Vector2(Constants.BUFFER_WIDTH / 2 - 30, Constants.BUFFER_HEIGHT - 225), Color.Black);
-                sd.DrawString(ScreenManager.Fonts["blueHighway28"], timeLeft.ToString(), new Vector2(Constants.BUFFER_WIDTH / 2 + 130, Constants.BUFFER_HEIGHT - 225), Color.Black, false, true);
+                sd.DrawString(ScreenManager.Fonts["gillsans"], "Continuing in ", new Vector2(Constants.BUFFER_WIDTH / 2 - 30, Constants.BUFFER_HEIGHT - 225), Color.Black);
+                sd.DrawString(ScreenManager.Fonts["gillsans"], timeLeft.ToString(), new Vector2(Constants.BUFFER_WIDTH / 2 + 130, Constants.BUFFER_HEIGHT - 225), Color.Black, false, true);
             }
             sd.End();
         }

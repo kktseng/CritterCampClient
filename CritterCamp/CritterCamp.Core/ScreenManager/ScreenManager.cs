@@ -127,7 +127,7 @@ namespace GameStateManagement {
 
             // Load global resources here
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            string[] fontNames = new string[] { "museoslab", "blueHighway28", "tahoma", "tahomaLarge", "gillsans" };
+            string[] fontNames = new string[] { "museoslab", "tahoma", "tahomaLarge", "gillsans" };
             for(int i = 0; i < fontNames.Length; i++) {
                 fonts[fontNames[i]] = content.Load<SpriteFont>("Fonts/" + fontNames[i]);
             }
