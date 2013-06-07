@@ -13,7 +13,7 @@ using CritterCamp.Screens;
 
 namespace CritterCamp.Core.Screens {
     class HomeScreen : MainScreen {
-        public HomeScreen(bool bounce) : base(bounce) {}
+        public HomeScreen(bool bounce) : base(bounce) { }
         protected Button play, leaders, options, about;
 
         public override void Activate(bool instancePreserved) {
@@ -72,15 +72,14 @@ namespace CritterCamp.Core.Screens {
 
     }
 
-    
-
     class ExitPopupScreen : MenuScreen {
         BorderedView exitPage;
         bool exitGame = false;
 
-        public ExitPopupScreen() : base() {}
+        public ExitPopupScreen() : base() { }
 
-        public ExitPopupScreen(bool exitGame) : base() {
+        public ExitPopupScreen(bool exitGame)
+            : base() {
             this.exitGame = exitGame;
         }
 
@@ -114,62 +113,6 @@ namespace CritterCamp.Core.Screens {
             exitPage.AddElement(keepPlaying);
             exitPage.AddElement(exitButton);
             mainView.AddElement(exitPage);
-        }
-    }
-
-    class NewsPost {
-        public DateTime TimeStamp;
-        public string Post;
-        public string Id;
-
-        NewsPost(DateTime timeStamp, string post, string id) {
-            TimeStamp = timeStamp;
-            Post = post;
-            Id = id;
-        }
-
-        public static NewsPost createFromJObject(JObject newsPost) {
-            if (newsPost["_id"] == null || newsPost["post"] == null || newsPost["date"] == null) {
-                return null;
-            }
-
-            string id = (string)newsPost["_id"];
-            string post = (string)newsPost["post"];
-            DateTime timeStamp = (DateTime)newsPost["date"];
-
-            return new NewsPost(timeStamp, post, id);
-        }
-
-        public static string insertLineBreaks(string post, float maxSize, ScreenManager MyScreenManager) {
-            float maxSizeScaled = maxSize * SpriteDrawer.drawScale.X;
-            string result = "";
-            string wordToAdd = "";
-            string tryAdd;
-            foreach (char c in post) {
-                if (c == ' ') {
-                    // this char is a white space. word to add contains the next word to add 
-                    tryAdd = result + (result == "" ? "" : " ") + wordToAdd;
-                    if (MyScreenManager.Fonts["blueHighway28"].MeasureString(tryAdd).X < maxSizeScaled) {
-                        result = tryAdd;
-                    } else {
-                        result += "\n" + wordToAdd;
-                    }
-                    wordToAdd = "";
-                } else {
-                    // keep building our word
-                    wordToAdd += c;
-                }
-            }
-
-            // add the last word
-            tryAdd = result + (result == "" ? "" : " ") + wordToAdd;
-            if (MyScreenManager.Fonts["blueHighway28"].MeasureString(tryAdd).X < maxSizeScaled) {
-                result = tryAdd;
-            } else {
-                result += "\n" + wordToAdd;
-            }
-
-            return result;
         }
     }
 }

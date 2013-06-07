@@ -212,11 +212,10 @@ namespace CritterCamp.Core.Screens.Games {
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             // If the score has already been received, it's time to quit
             if(scoreReceived) {
-                ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
                 if(singlePlayer) {
-                    LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(HomeScreen)));
+                    SwitchScreen(typeof(HomeScreen));
                 } else {
-                    LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(ScoreScreen)));
+                    SwitchScreen(typeof(ScoreScreen));
                 }
                 return;
             }
