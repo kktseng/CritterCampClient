@@ -206,6 +206,9 @@
     <Compile Include="..\CritterCamp.Core\Screens\MenuScreen.cs">
       <Link>Core\Screens\MenuScreen.cs</Link>
     </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\NewsScreen.cs">
+      <Link>Core\Screens\NewsScreen.cs</Link>
+    </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\OfflineScreen.cs">
       <Link>Core\Screens\OfflineScreen.cs</Link>
     </Compile>
@@ -326,9 +329,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\explosion.xnb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Fonts\blueHighway28.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Fonts\boris48.xnb">

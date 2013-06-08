@@ -89,7 +89,7 @@ namespace CritterCamp.Core.Screens {
             }
             // go to the tutorial screen
             Storage.Set("currentGameData", selectedGame);
-            LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(typeof(TutorialScreen)));
+            SwitchScreen(typeof(TutorialScreen));
         }
 
         public override void OnBackPressed() {

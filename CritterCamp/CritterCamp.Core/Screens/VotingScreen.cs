@@ -242,7 +242,7 @@ namespace CritterCamp.Core.Screens {
 
             // go to the tutorial screen
             Storage.Set("currentGameData", gameToPlay);
-            LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(typeof(TutorialScreen)));
+            SwitchScreen(typeof(TutorialScreen));
         }
 
         protected override void MessageReceived(string message, bool error, ITCPConnection connection) {

@@ -10,16 +10,7 @@ namespace CritterCamp.Core.Lib {
 
         // All background sprites for maps
         public enum mapTexture {
-            nightSky1, nightSky2, nightSky3, nightSky4, // 0
-            grass1, grass2, grass3, // 4
-            dirtTL, dirtTR, dirtBL, dirtBR, // 7
-            dirtB, dirtT, dirtR, dirtL, // 11
-            dirt, // 15
-            longGrassNight, longGrass1, // 16
-            tree, treeLeft, treeMiddle, treeRight, // 18
-            water, // 22
-            sandtop, sand1, sand2, sand3, sandstar, sandcrab, // 23
-            sunset1, sunset2, sunset3, sunset4 // 29
+            // too lazy
         }
 
         public enum ButtonSquare {

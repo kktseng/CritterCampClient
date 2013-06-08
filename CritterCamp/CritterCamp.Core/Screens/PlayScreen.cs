@@ -145,8 +145,7 @@ namespace CritterCamp.Core.Screens {
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             if(startingGame) {
                 Storage.Set("singlePlayer", false);
-                ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
-                LoadingScreen.Load(ScreenManager, false, null, sf.CreateScreen(typeof(VotingScreen)));
+                SwitchScreen(typeof(VotingScreen));
             }
             if (looking) {
                 // change the texture index of the pigs

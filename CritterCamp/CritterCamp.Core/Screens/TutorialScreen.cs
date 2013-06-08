@@ -68,9 +68,9 @@ namespace CritterCamp.Core.Screens {
 
                 Sync((JArray data, double rand) => {
                     if(Configuration.GAME_TEST) {
-                        LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(Configuration.DEF_GAME));
+                        SwitchScreen(Configuration.DEF_GAME);
                     } else {
-                        LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(game.ScreenType));
+                        SwitchScreen(game.ScreenType);
                     }
                 }, "tutorial", 10);
             }
@@ -86,10 +86,10 @@ namespace CritterCamp.Core.Screens {
             // Read in our gestures
             foreach(GestureSample gesture in input.Gestures) {
                 if (single) { // if it is single player, just start the game
-                    if (Configuration.GAME_TEST) {
-                        LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(Configuration.DEF_GAME));
+                    if(Configuration.GAME_TEST) {
+                        SwitchScreen(Configuration.DEF_GAME);
                     } else {
-                        LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(game.ScreenType));
+                        SwitchScreen(game.ScreenType);
                     }
                     return;
                 }
@@ -101,9 +101,9 @@ namespace CritterCamp.Core.Screens {
                     Sync((JArray data, double rand) => {
                         timeLeftTimer.Dispose(); // dispose of the timer so we don't decrement the time anymore
                         if(Configuration.GAME_TEST) {
-                            LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(Configuration.DEF_GAME));
+                            SwitchScreen(Configuration.DEF_GAME);
                         } else {
-                            LoadingScreen.Load(ScreenManager, true, null, Helpers.GetScreenFactory(this).CreateScreen(game.ScreenType));
+                            SwitchScreen(game.ScreenType);
                         }
                     }, "tutorial", 13); // give other players 13 seconds to continue
                 }

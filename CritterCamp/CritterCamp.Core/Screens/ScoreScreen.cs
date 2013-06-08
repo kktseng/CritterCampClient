@@ -129,8 +129,7 @@ namespace CritterCamp.Core.Screens {
             // Read in our gestures
             foreach (GestureSample gesture in input.Gestures) {
                 if (gesture.GestureType == GestureType.Tap) {
-                    ScreenFactory sf = (ScreenFactory)ScreenManager.Game.Services.GetService(typeof(IScreenFactory));
-                    LoadingScreen.Load(ScreenManager, true, null, sf.CreateScreen(typeof(HomeScreen)));
+                    SwitchScreen(typeof(HomeScreen));
                 }
             }
 

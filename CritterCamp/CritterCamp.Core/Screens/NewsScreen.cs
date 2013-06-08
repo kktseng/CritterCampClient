@@ -66,7 +66,7 @@ namespace CritterCamp.Core.Screens {
 
             // add the last word
             tryAdd = result + (result == "" ? "" : " ") + wordToAdd;
-            if (MyScreenManager.Fonts["blueHighway28"].MeasureString(tryAdd).X < maxSizeScaled) {
+            if (MyScreenManager.Fonts["gillsans"].MeasureString(tryAdd).X < maxSizeScaled) {
                 result = tryAdd;
             } else {
                 result += "\n" + wordToAdd;

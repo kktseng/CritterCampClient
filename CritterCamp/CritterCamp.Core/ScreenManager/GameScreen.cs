@@ -48,8 +48,11 @@ namespace GameStateManagement {
         protected virtual void MessageReceived(string message, bool error, ITCPConnection connection) {
             JObject o = JObject.Parse(message);
             if((string)o["action"] == "group" && (string)o["type"] == "synced") {
-                syncAction((JArray)o["data"], (double)o["rand"]);
-            }
+                if(syncAction != null) {
+                    syncAction((JArray)o["data"], (double)o["rand"]);
+                    CancelSync();
+                }
+            }   
         }
 
         protected void Sync(SyncAction syncAction) {
@@ -65,6 +68,10 @@ namespace GameStateManagement {
         protected void Sync(SyncAction syncAction, string data, int timeout) {
             this.syncAction = syncAction;
             Helpers.Sync(data, timeout);
+        }
+
+        protected void CancelSync() {
+            syncAction = null;
         }
 
         public void SetConn(ITCPConnection conn) {
@@ -363,6 +370,7 @@ namespace GameStateManagement {
         public virtual void OnBackPressed() {
             // open up the exit popup
             ScreenManager.AddScreen(new ExitPopupScreen(), null);
+            CancelSync();
         }
 
         /// <summary>

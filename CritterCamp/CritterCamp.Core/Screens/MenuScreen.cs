@@ -144,8 +144,8 @@ namespace CritterCamp.Core.Screens {
         }
 
         protected void DrawCoordinates(SpriteDrawer sd) {
-            sd.DrawString(ScreenManager.Fonts["blueHighway28"], "raw: X " + rawInput.X + " Y: " + rawInput.Y, new Vector2(0, 1000), Color.Red, centerX: false, spriteScale: 0.8f);
-            sd.DrawString(ScreenManager.Fonts["blueHighway28"], "scaled: X " + scaledInput.X + " Y: " + scaledInput.Y, new Vector2(0, 1050), Color.Red, centerX: false, spriteScale: 0.8f);
+            sd.DrawString(ScreenManager.Fonts["gillsans"], "raw: X " + rawInput.X + " Y: " + rawInput.Y, new Vector2(0, 1000), Color.Red, centerX: false, spriteScale: 0.8f);
+            sd.DrawString(ScreenManager.Fonts["gillsans"], "scaled: X " + scaledInput.X + " Y: " + scaledInput.Y, new Vector2(0, 1050), Color.Red, centerX: false, spriteScale: 0.8f);
         }
     }
 }

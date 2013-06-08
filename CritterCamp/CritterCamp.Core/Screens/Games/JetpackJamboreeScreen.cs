@@ -60,16 +60,18 @@ namespace CritterCamp.Core.Screens.Games {
         }
 
         void updateTimerCallback(object state) {
-            // send out info on # of pigs in main pen
-            JObject packet = new JObject(
-                new JProperty("action", "game"),
-                new JProperty("name", "jetpack_jamboree"),
-                new JProperty("data", new JObject(
-                    new JProperty("action", "update"),
-                    new JProperty("count", mainPigs.Count)
-                ))
-            );
-            conn.SendMessage(packet.ToString());
+            if(phase == Phase.Begin) {
+                // send out info on # of pigs in main pen
+                JObject packet = new JObject(
+                    new JProperty("action", "game"),
+                    new JProperty("name", "jetpack_jamboree"),
+                    new JProperty("data", new JObject(
+                        new JProperty("action", "update"),
+                        new JProperty("count", mainPigs.Count)
+                    ))
+                );
+                conn.SendMessage(packet.ToString());
+            }
         }
 
         public override void Activate(bool instancePreserved) {
@@ -85,13 +87,13 @@ namespace CritterCamp.Core.Screens.Games {
             int[,] map = new int[,] {
                 {  39, 39, 39, 39, 39, 39, 39, 40, 39, 40, 39, 39, 39, 40, 39, 39, 39, 39, 39, 39 },
                 {  15, 15, 15, 15, 15, 39, 39, 39, 39, 39, 41, 39, 39, 39, 39, 15, 15, 15, 15, 15 },
-                {  15, 15, 15, 15, 15, 39, 44, 39, 39, 43, 39, 39, 41, 39, 39, 15, 15, 15, 15, 15 },
+                {  15, 15, 15, 15, 15, 39, 39, 39, 39, 43, 39, 39, 41, 39, 39, 15, 15, 15, 15, 15 },
                 {  15, 15, 15, 15, 15, 39, 39, 42, 39, 39, 41, 39, 39, 39, 39, 15, 15, 15, 15, 15 },
                 {  15, 15, 15, 15, 15, 39, 39, 39, 39, 39, 39, 39, 41, 39, 39, 15, 15, 15, 15, 15 },
-                {  15, 15, 15, 15, 15, 39, 41, 39, 41, 39, 40, 39, 40, 39, 39, 15, 15, 15, 15, 15 },
-                {  39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39 },
+                {  15, 15, 15, 15, 15, 39, 41, 39, 41, 39, 47, 39, 39, 40, 39, 15, 15, 15, 15, 15 },
+                {  39, 39, 39, 39, 39, 39, 39, 42, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39 },
                 {  15, 15, 15, 15, 15, 39, 40, 39, 39, 41, 39, 41, 39, 39, 39, 15, 15, 15, 15, 15 },
-                {  15, 15, 15, 15, 15, 39, 39, 41, 39, 39, 40, 39, 40, 39, 39, 15, 15, 15, 15, 15 },
+                {  15, 15, 15, 15, 15, 39, 39, 46, 39, 39, 40, 39, 40, 39, 39, 15, 15, 15, 15, 15 },
                 {  15, 15, 15, 15, 15, 39, 39, 39, 39, 42, 39, 39, 45, 39, 39, 15, 15, 15, 15, 15 },
                 {  15, 15, 15, 15, 15, 39, 39, 43, 39, 39, 39, 40, 39, 39, 39, 15, 15, 15, 15, 15 },
                 {  15, 15, 15, 15, 15, 39, 39, 39, 39, 39, 41, 39, 39, 39, 39, 15, 15, 15, 15, 15 },
@@ -356,48 +358,48 @@ namespace CritterCamp.Core.Screens.Games {
             for(int i = 0; i < 5; i++) {
                 for(int j = 0; j < 5; j++) {
                     if(i == 0) {
-                        sd.Draw(textureList["jetpack"], coord + new Vector2(dim / 2, dim * (j + 0.5f)), (int)TextureData.jetpackTextures.cautionLeft);
+                        sd.Draw(textureList["jetpack"], coord + new Vector2(dim / 2, dim * (j + 0.5f)), (int)TextureData.jetpackTextures.cautionLeft, cache: true, align: true);
                         if(j == 0) {
-                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim / 2), (int)TextureData.jetpackTextures.orangeL + color * 5, SpriteEffects.FlipVertically);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim / 2), (int)TextureData.jetpackTextures.orangeL + color * 5, SpriteEffects.FlipVertically, cache: true, align: true);
                         } else if(j == 4) {
-                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim / 2, dim * 4.5f), (int)TextureData.jetpackTextures.orangeL + color * 5);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim / 2, dim * 4.5f), (int)TextureData.jetpackTextures.orangeL + color * 5, cache: true, align: true);
                         } else {
-                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim / 2, dim * (j + 0.5f)), (int)TextureData.jetpackTextures.orange_ + color * 5, spriteRotation: Constants.ROTATE_90);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim / 2, dim * (j + 0.5f)), (int)TextureData.jetpackTextures.orange_ + color * 5, spriteRotation: Constants.ROTATE_90, cache: true, align: true);
                         }
                     } else if(i == 4) {
-                        sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 4.5f, dim * (j + 0.5f)), (int)TextureData.jetpackTextures.cautionRight);
+                        sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 4.5f, dim * (j + 0.5f)), (int)TextureData.jetpackTextures.cautionRight, cache: true, align: true);
                         if(j == 0) {
-                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 4.5f, dim / 2), (int)TextureData.jetpackTextures.orangeL + color * 5, SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 4.5f, dim / 2), (int)TextureData.jetpackTextures.orangeL + color * 5, SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally, cache: true, align: true);
                         } else if(j == 4) {
-                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 4.5f), (int)TextureData.jetpackTextures.orangeL + color * 5, SpriteEffects.FlipHorizontally);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 4.5f), (int)TextureData.jetpackTextures.orangeL + color * 5, SpriteEffects.FlipHorizontally, cache: true, align: true);
                         } else {
-                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 4.5f, dim * (j + 0.5f)), (int)TextureData.jetpackTextures.orange_ + color * 5, spriteRotation: Constants.ROTATE_90 * 3);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 4.5f, dim * (j + 0.5f)), (int)TextureData.jetpackTextures.orange_ + color * 5, spriteRotation: Constants.ROTATE_90 * 3, cache: true, align: true);
                         }
                     }
                     if(j == 0) {
-                        sd.Draw(textureList["jetpack"], coord + new Vector2(dim * (i + 0.5f), dim / 2), (int)TextureData.jetpackTextures.cautionTop);
+                        sd.Draw(textureList["jetpack"], coord + new Vector2(dim * (i + 0.5f), dim / 2), (int)TextureData.jetpackTextures.cautionTop, cache: true, align: true);
                         if(i != 0 && i != 4) {
-                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * (i + 0.5f), dim / 2), (int)TextureData.jetpackTextures.orange_ + color * 5, spriteRotation: Constants.ROTATE_90 * 2);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * (i + 0.5f), dim / 2), (int)TextureData.jetpackTextures.orange_ + color * 5, spriteRotation: Constants.ROTATE_90 * 2, cache: true, align: true);
                         }
                     } else if(j == 4) {
-                        sd.Draw(textureList["jetpack"], coord + new Vector2(dim * (i + 0.5f), dim * 4.5f), (int)TextureData.jetpackTextures.cautionBottom);
+                        sd.Draw(textureList["jetpack"], coord + new Vector2(dim * (i + 0.5f), dim * 4.5f), (int)TextureData.jetpackTextures.cautionBottom, cache: true, align: true);
                         if(i != 0 && i != 4) {
-                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * (i + 0.5f), dim * 4.5f), (int)TextureData.jetpackTextures.orange_ + color * 5);
+                            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * (i + 0.5f), dim * 4.5f), (int)TextureData.jetpackTextures.orange_ + color * 5, cache: true, align: true);
                         }
                     }
                 }
             }
 
             // Draw the circle
-            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 1.5f, dim * 1.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5);
-            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 2.5f, dim * 1.5f), (int)TextureData.jetpackTextures.orangeTCurve + color * 5);
-            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 3.5f, dim * 1.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5, SpriteEffects.FlipHorizontally);
-            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 1.5f, dim * 2.5f), (int)TextureData.jetpackTextures.orangeTCurve + color * 5, spriteRotation: Constants.ROTATE_90 * 3);
-            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 2.5f, dim * 2.5f), (int)TextureData.jetpackTextures.orangeCross + color * 5);
-            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 3.5f, dim * 2.5f), (int)TextureData.jetpackTextures.orangeTCurve + color * 5, spriteRotation: Constants.ROTATE_90);
-            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 1.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5, SpriteEffects.FlipVertically);
-            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 2.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeTCurve + color * 5, spriteRotation: Constants.ROTATE_90 * 2);
-            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 3.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 1.5f, dim * 1.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5, cache: true, align: true);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 2.5f, dim * 1.5f), (int)TextureData.jetpackTextures.orangeTCurve + color * 5, cache: true, align: true);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 3.5f, dim * 1.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5, SpriteEffects.FlipHorizontally, cache: true, align: true);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 1.5f, dim * 2.5f), (int)TextureData.jetpackTextures.orangeTCurve + color * 5, spriteRotation: Constants.ROTATE_90 * 3, cache: true, align: true);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 2.5f, dim * 2.5f), (int)TextureData.jetpackTextures.orangeCross + color * 5, cache: true, align: true);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 3.5f, dim * 2.5f), (int)TextureData.jetpackTextures.orangeTCurve + color * 5, spriteRotation: Constants.ROTATE_90, cache: true, align: true);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 1.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5, SpriteEffects.FlipVertically, cache: true, align: true);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 2.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeTCurve + color * 5, spriteRotation: Constants.ROTATE_90 * 2, cache: true, align: true);
+            sd.Draw(textureList["jetpack"], coord + new Vector2(dim * 3.5f, dim * 3.5f), (int)TextureData.jetpackTextures.orangeLCurve + color * 5, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically, cache: true, align: true);
         }
 
         protected override void MessageReceived(string message, bool error, ITCPConnection connection) {
@@ -434,7 +436,8 @@ namespace CritterCamp.Core.Screens.Games {
         public override void Unload() {
             if(updateTimer != null)
                 updateTimer.Dispose();
-            base.Unload();
+            cm.Unload();
+            RemoveConn();
         }
     }
 }

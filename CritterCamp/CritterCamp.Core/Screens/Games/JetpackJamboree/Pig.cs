@@ -34,7 +34,7 @@ namespace CritterCamp.Core.Screens.Games.JetpackJamboree {
             MIN_FLY_ENTER,
             (int)(Constants.BUFFER_SPRITE_DIM),
             MAX_FLY_ENTER - MIN_FLY_ENTER,
-            (int)(Constants.BUFFER_HEIGHT - Constants.BUFFER_SPRITE_DIM * 4f)
+            (int)(Constants.BUFFER_HEIGHT - Constants.BUFFER_SPRITE_DIM * 3.5f)
         );
 
         private static Rectangle[] areas = new Rectangle[] {
@@ -198,22 +198,24 @@ namespace CritterCamp.Core.Screens.Games.JetpackJamboree {
         }
 
         protected bool checkBounds(Rectangle r, TimeSpan time) {
+            bool inBounds = true;
             Vector2 new_coord = Coord + Velocity * (float)time.TotalSeconds;
             Vector2 old_vel = Velocity;
             if(new_coord.X <= r.Left || new_coord.X >= r.Right) {
                 Velocity = Velocity * new Vector2(-1, 1);
+                inBounds = false;
             } else if(new_coord.Y <= r.Top || new_coord.Y >= r.Bottom) {
                 Velocity = Velocity * new Vector2(1, -1);
+                inBounds = false;
             }
-            if(Velocity != old_vel) {
+            if(!inBounds) {
                 State = Velocity.X < 0 ? PigStates.WalkLeft : PigStates.WalkRight;
-                return false;
             }
-            return true;
+            return inBounds;
         }
 
         protected void walk() {
-            Velocity = new Vector2(rand.Next(-MAX_WALK_SPD, MAX_WALK_SPD), rand.Next(-MAX_WALK_SPD / 2, MAX_WALK_SPD / 2));
+            Velocity = new Vector2(rand.Next(-MAX_WALK_SPD, MAX_WALK_SPD), rand.Next(-MAX_WALK_SPD, MAX_WALK_SPD));
             if(Velocity.X < MIN_WALK_SPD) {
                 Velocity = new Vector2(Velocity.X < 0 ? -MIN_WALK_SPD : MIN_WALK_SPD, 0);
             }
