@@ -288,6 +288,7 @@ namespace GameStateManagement {
         /// </summary>
         public virtual void Unload() {
             RemoveConn();
+            CancelSync();
         }
 
 
@@ -370,7 +371,6 @@ namespace GameStateManagement {
         public virtual void OnBackPressed() {
             // open up the exit popup
             ScreenManager.AddScreen(new ExitPopupScreen(), null);
-            CancelSync();
         }
 
         /// <summary>

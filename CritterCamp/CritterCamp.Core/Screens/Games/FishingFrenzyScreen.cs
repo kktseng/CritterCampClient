@@ -29,15 +29,15 @@ namespace CritterCamp.Core.Screens.Games {
     class FishingFrenzyScreen : BaseGameScreen {
         protected static double[][,] roundData = new double[][,] {
             new double[,] {{ 0.4, 450, 700 }, { 0.3, 450, 850 }, { 0.18, 550, 900 }, { 0.1, 650, 900 }, { 0.02, 750, 900 }},
-           // new double[,] {{ 0.3, 450, 700 }, { 0.3, 450, 800 }, { 0.21, 525, 900 }, { 0.15, 600, 900 }, { 0.04, 700, 900 }},
-           // new double[,] {{ 0.2, 450, 700 }, { 0.3, 450, 750 }, { 0.24, 500, 900 }, { 0.2, 550, 900 }, { 0.06, 650, 900 }},
+            new double[,] {{ 0.3, 450, 700 }, { 0.3, 450, 800 }, { 0.21, 525, 900 }, { 0.15, 600, 900 }, { 0.04, 700, 900 }},
+            new double[,] {{ 0.2, 450, 700 }, { 0.3, 450, 750 }, { 0.24, 500, 900 }, { 0.2, 550, 900 }, { 0.06, 650, 900 }},
         };
 
         public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 2);
         public float BUCKET_Y = (float)Constants.BUFFER_SPRITE_DIM * 2.5f - 40;
         public static double FISH_SPACING = 0.2d;
         public static TimeSpan SHADOW_INTERVAL = new TimeSpan(0, 0, 45);
-        public static int GEN_FISH_NUM = 10;
+        public static int GEN_FISH_NUM = 5;
 
         protected enum Phase {
             Begin,
@@ -97,8 +97,8 @@ namespace CritterCamp.Core.Screens.Games {
                 {  50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 },
                 {  50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 },
                 {  50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 },
-                {  58, 50, 50, 50, 50, 50, 57, 50, 50, 50, 63, 64, 50, 50, 59, 60, 50, 50, 57, 50 },
-                {  51, 56, 53, 54, 55, 52, 58, 54, 55, 52, 65, 66, 51, 56, 61, 62, 55, 52, 58, 54 }
+                {  50, 50, 50, 50, 50, 57, 63, 64, 50, 50, 63, 64, 50, 50, 59, 60, 50, 57, 59, 60 },
+                {  55, 52, 56, 54, 55, 58, 65, 66, 55, 52, 65, 66, 51, 52, 61, 62, 55, 58, 61, 62 }
             };
             tileMap.SetMap(map);
         }
@@ -283,7 +283,7 @@ namespace CritterCamp.Core.Screens.Games {
         // [ weighting, minDepth, maxDepth ]
         protected void phaseFish(double[,] weights) {
             List<int> fishRawData = new List<int>();
-            int numToGenerate = singlePlayer ? GEN_FISH_NUM * 5 : GEN_FISH_NUM;
+            int numToGenerate = singlePlayer ? GEN_FISH_NUM * 4 : GEN_FISH_NUM;
             for(int i = 0; i < numToGenerate; i++) {
                 double temp = rand.NextDouble();
                 double sum = 0;

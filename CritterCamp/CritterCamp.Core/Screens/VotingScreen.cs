@@ -248,5 +248,10 @@ namespace CritterCamp.Core.Screens {
         protected override void MessageReceived(string message, bool error, ITCPConnection connection) {
             base.MessageReceived(message, error, connection);
         }
+
+        public override void Unload() {
+            timeLeftTimer.Dispose();
+            base.Unload();
+        }
     }
 }

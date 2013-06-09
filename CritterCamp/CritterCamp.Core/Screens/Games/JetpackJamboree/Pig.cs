@@ -28,7 +28,7 @@ namespace CritterCamp.Core.Screens.Games.JetpackJamboree {
         private static int FLY_SPD = 800;
 
         private static int MAX_WALK_SPD = 300;
-        private static int MIN_WALK_SPD = 100;
+        private static int MIN_WALK_SPD = 200;
 
         private static Rectangle MAIN_BOUNDS = new Rectangle(
             MIN_FLY_ENTER,
@@ -215,9 +215,12 @@ namespace CritterCamp.Core.Screens.Games.JetpackJamboree {
         }
 
         protected void walk() {
-            Velocity = new Vector2(rand.Next(-MAX_WALK_SPD, MAX_WALK_SPD), rand.Next(-MAX_WALK_SPD, MAX_WALK_SPD));
-            if(Velocity.X < MIN_WALK_SPD) {
-                Velocity = new Vector2(Velocity.X < 0 ? -MIN_WALK_SPD : MIN_WALK_SPD, 0);
+            Velocity = new Vector2(rand.Next(-MAX_WALK_SPD, MAX_WALK_SPD), rand.Next(-MAX_WALK_SPD / 2, MAX_WALK_SPD / 2));
+            if(Math.Abs(Velocity.X) < MIN_WALK_SPD) {
+                Velocity = new Vector2(Velocity.X < 0 ? -MIN_WALK_SPD : MIN_WALK_SPD, Velocity.Y);
+            }
+            if(Math.Abs(Velocity.Y) < MIN_WALK_SPD / 2) {
+                Velocity = new Vector2(Velocity.X, Velocity.Y < 0 ? -MIN_WALK_SPD / 2 : MIN_WALK_SPD / 2);
             }
             State = Velocity.X < 0 ? PigStates.WalkLeft : PigStates.WalkRight;
         }

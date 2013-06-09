@@ -31,10 +31,10 @@ namespace CritterCamp.Core.Screens {
             // TODO: do it
 
             // Draw profile information
-            Image profileContainer = new Image("profileContainer", 0, new Vector2(767, 400), new Vector2(630, 540));
-            profileContainer.Tint = new Color(250, 206, 155);
+            BorderedView profileContainer = new BorderedView(new Vector2(1140, 600), new Vector2(630, 540));
+            profileContainer.FillColor = new Color(250, 206, 155);
             profileElements.Add(profileContainer);
-
+            
             Image profileBackground = new Image("profileBg", 0, new Vector2(448, 312), new Vector2(420, 498));
             PlayerAvatar avatar = new PlayerAvatar(myData, new Vector2(420, 515));
             profileElements.Add(profileBackground);

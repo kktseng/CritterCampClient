@@ -41,19 +41,21 @@ namespace CritterCamp.Core.Screens {
             List<PlayerData> sortedScoreData = Storage.Get<List<PlayerData>>("scores");
             for (int i = 0; i < sortedScoreData.Count; i++) {
                 PlayerData player = sortedScoreData[i];
-                BorderedView playerView = new BorderedView(new Vector2(410, 525), new Vector2(312 + 424 * i, 425));
+                BorderedView playerView = new BorderedView(new Vector2(432, 525), new Vector2(276 + 456 * i, 425));
                 if (player.username == myData.username) {
                     // displaying ourself. draw a yellow background instead of the default light brown
                     playerView.FillColor = Constants.YellowHighlight;
                     player.level = myLevel; // update the level info
                 }
 
-                PlayerAvatar playerAvatar = new PlayerAvatar(player, new Vector2(312 + 424 * i, 400));
-                Label playerName = new Label(player.username, new Vector2(312 + 424 * i, 575));
-                Label playerLevel = new Label("Level " + player.level.ToString(), new Vector2(312 + 424 * i, 625));
+                PlayerAvatar playerAvatar = new PlayerAvatar(player, new Vector2(276 + 456 * i, 400));
+                Label playerName = new Label(player.username, new Vector2(276 + 456 * i, 575));
+                playerName.Font = "gillsans";
+                playerName.MaxSize(500);
+                Label playerLevel = new Label("Level " + player.level.ToString(), new Vector2(276 + 456 * i, 625));
                 playerLevel.Scale = 0.8f;
 
-                Image badge = new Image("scoreScreenIcons", player.score - 1, new Vector2(192, 192), new Vector2(312 + 424 * i, 150 + 20 * (player.score - 1)));
+                Image badge = new Image("scoreScreenIcons", player.score - 1, new Vector2(192, 192), new Vector2(276 + 456 * i, 150 + 20 * (player.score - 1)));
 
                 playerView.AddElement(playerAvatar);
                 playerView.AddElement(playerName);
@@ -63,14 +65,14 @@ namespace CritterCamp.Core.Screens {
                 mainView.AddElement(badge);
             }
             
-            const int levelViewHeight = 200;
-            const int levelViewWidth = 1650;
+            const int levelViewHeight = 125;
+            const int levelViewWidth = 1800;
             const int levelViewX = 960;
             const int levelViewY = 825;
-            const int rectX = levelViewX - levelViewWidth / 2 + 75; // top left corner of the level rectangle;
-            const int rectY = levelViewY - levelViewHeight / 2 + 50; // top right corner of the level rectangle;
-            const int rectSizeX = levelViewWidth - 150;
-            const int rectSizeY = levelViewHeight - 100;
+            const int rectX = levelViewX - levelViewWidth / 2 + 20; // top left corner of the level rectangle;
+            const int rectY = levelViewY - levelViewHeight / 2 + 20; // top right corner of the level rectangle;
+            const int rectSizeX = levelViewWidth - 40;
+            const int rectSizeY = levelViewHeight - 40;
 
             int currExpToShowSize = rectSizeX * prevExp / expToNext;
             gainedExpToShowSize = rectSizeX * gainedExpToShow / expToNext;

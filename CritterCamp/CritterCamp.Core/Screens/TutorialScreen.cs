@@ -46,6 +46,8 @@ namespace CritterCamp.Core.Screens {
 
         public override void Unload() {
             cm.Unload();
+            if(!single)
+                timeLeftTimer.Dispose();
             base.Unload();
         }
 

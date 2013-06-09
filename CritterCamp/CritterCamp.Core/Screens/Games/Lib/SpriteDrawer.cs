@@ -88,18 +88,22 @@ namespace CritterCamp.Core.Screens.Games.Lib {
         public void FillRectangle(Rectangle rectangle, Color color) {
             SpriteBatch sb = sm.SpriteBatch;
 
-            Vector2 coord = new Vector2(rectangle.X, rectangle.Y);
-            coord = new Vector2((float)(Math.Floor(coord.X)), (float)(Math.Floor(coord.Y)));
-            coord += new Vector2(0, offset);
-            coord /= coordScale;
+            Vector2 start = new Vector2(rectangle.X, rectangle.Y);
+            Vector2 dim = new Vector2(rectangle.Width, rectangle.Height);
+            start += new Vector2(0, offset);
+            start /= coordScale;
+            dim /= coordScale;
 
             // Fix coordinates for landscape
-            if (Constants.ROTATION != 0)
-                coord = new Vector2(backBuffer.X - coord.Y, coord.X);
+            if(Constants.ROTATION != 0) {
+                start = new Vector2(backBuffer.X - (int)start.Y, (int)start.X);
+                dim = new Vector2(dim.Y, dim.X);
+                start.X = (int)start.X - (int)dim.X;
+            }
 
-            Texture2D whiteTex = sm.Textures["whitePixel"];
-            sb.Draw(whiteTex, new Rectangle((int)coord.X, (int)coord.Y, (int)(rectangle.Width / coordScale.X), (int)(rectangle.Height / coordScale.Y)), null, color, Constants.ROTATION, Vector2.Zero, SpriteEffects.None, 0f);
-             
+           
+           Texture2D whiteTex = sm.Textures["whitePixel"];
+           sb.Draw(whiteTex, new Rectangle((int)start.X, (int)start.Y, (int)dim.X, (int)dim.Y), color);            
         }
 
         /// 
@@ -110,6 +114,19 @@ namespace CritterCamp.Core.Screens.Games.Lib {
             SpriteBatch sb = sm.SpriteBatch;
             Texture2D corners = sm.Textures["buttonCorners"];
 
+            Vector2 start = new Vector2(rectangle.X, rectangle.Y);
+            Vector2 dim = new Vector2(rectangle.Width, rectangle.Height);
+            start += new Vector2(0, offset);
+            start /= coordScale;
+            dim /= coordScale;
+
+            // Fix coordinates for landscape
+            if(Constants.ROTATION != 0) {
+                start = new Vector2(backBuffer.X - (int)start.Y, (int)start.X);
+                dim = new Vector2(dim.Y, dim.X);
+                start.X = (int)start.X - (int)dim.X;
+            }
+
             Rectangle main = new Rectangle(rectangle.X + 20, rectangle.Y, rectangle.Width - 40, rectangle.Height);
             Rectangle side1 = new Rectangle(rectangle.X, rectangle.Y + 20, 30, rectangle.Height - 40);
             Rectangle side2 = new Rectangle(rectangle.X + rectangle.Width - 30, rectangle.Y + 20, 30, rectangle.Height - 40);
@@ -118,10 +135,13 @@ namespace CritterCamp.Core.Screens.Games.Lib {
             FillRectangle(side1, color);
             FillRectangle(side2, color);
 
-            Draw(corners, new Vector2(rectangle.X + 10, rectangle.Y + 12), 0, new Vector2(15, 15), color);
-            Draw(corners, new Vector2(rectangle.X + rectangle.Width - 13, rectangle.Y + 12), 1, new Vector2(15, 15), color);
-            Draw(corners, new Vector2(rectangle.X + 10, rectangle.Y + rectangle.Height - 11), 2, new Vector2(15, 15), color);
-            Draw(corners, new Vector2(rectangle.X + rectangle.Width - 13, rectangle.Y + rectangle.Height - 11), 3, new Vector2(15, 15), color);
+            int cx = (int)Math.Ceiling(15f * drawScale.X);
+            float cy = 15f * drawScale.Y;
+
+            sb.Draw(corners, start, new Rectangle(0, 0, 15, 15), color, 0f, Vector2.Zero, drawScale, SpriteEffects.None, 0f);
+            sb.Draw(corners, start + new Vector2(dim.X - cx, 0), new Rectangle(17, 0, 15, 15), color, 0f, Vector2.Zero, drawScale, SpriteEffects.None, 0f);
+            sb.Draw(corners, start + new Vector2(0, dim.Y - cy), new Rectangle(34, 0, 15, 15), color, 0f, Vector2.Zero, drawScale, SpriteEffects.None, 0f);
+            sb.Draw(corners, start + dim - new Vector2(cx, cy), new Rectangle(51, 0, 15, 15), color, 0f, Vector2.Zero, drawScale, SpriteEffects.None, 0f);
         }
 
         public void Draw(Texture2D texture, Vector2 coord, int spriteNum, Vector2 spriteDim, Rectangle rect, SpriteEffects effect, Color color, float spriteRotation = 0, float spriteScale = 1f, bool cache = false, bool align = false) {

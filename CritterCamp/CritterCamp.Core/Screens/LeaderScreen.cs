@@ -95,6 +95,7 @@ namespace CritterCamp.Core.Screens {
                     player.CenterX = false;
                     player.Font = "gillsans";
                     player.Scale = 0.85f;
+                    player.MaxSize(700);
 
                     Label levelLabel = new Label(level.ToString(), new Vector2(startX + 850, startY + index * 70 + 5));
 
@@ -122,6 +123,7 @@ namespace CritterCamp.Core.Screens {
                 myPlayer.CenterX = false;
                 myPlayer.Font = "gillsans";
                 myPlayer.Scale = 0.85f;
+                myPlayer.MaxSize(700);
                 Label myLevel = new Label(myData.level.ToString(), new Vector2(startX + 850, startY + 11 * 70 + 5));
 
                 myRow.AddElement(myRankLabel);
