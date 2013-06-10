@@ -35,7 +35,7 @@ namespace CritterCamp.Core.Lib {
 
         public static Color Brown = new Color(206, 162, 120);
         public static Color DarkBrown = new Color(84, 50, 0);
-        public static Color LightBrown = new Color(234, 199, 157);
+        public static Color LightBrown = new Color(250, 227, 180);
         public static Color YellowHighlight = new Color(247, 215, 137);
 
         public static int AVATAR_COLORS = 4;

@@ -56,7 +56,7 @@ namespace CritterCamp.Core.Screens.UIElements {
         protected void Initialize(string Text) {
             this.Text = Text;
             Font = "tahoma";
-            TextColor = new Color(50, 50, 50);
+            TextColor = new Color(20, 20, 20);
         }
 
         /// <summary>
