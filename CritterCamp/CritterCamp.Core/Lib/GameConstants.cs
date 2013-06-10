@@ -2,7 +2,7 @@
 using System;
 
 namespace CritterCamp.Core.Lib {
-    class GameData {
+    public class GameData {
         static int CurrentGameIndex = 0;
 
         public string Name; // regular name i.e Twilight Tango

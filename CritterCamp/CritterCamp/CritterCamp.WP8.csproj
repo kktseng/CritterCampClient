@@ -459,9 +459,6 @@
     <Content Include="Content\color.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\profileContainer.xnb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\Fonts\tahoma.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

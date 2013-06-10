@@ -39,8 +39,6 @@ namespace CritterCamp.Core.Screens.UIElements {
                 Icon.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
             buttonHighlightTexture.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
             textLabel.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
-            caption1Label.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
-            caption2Label.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
         }
     }
 }

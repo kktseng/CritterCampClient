@@ -42,6 +42,7 @@ namespace CritterCamp.Core.Screens.Games {
         protected ContentManager cm;
         protected Random rand = new Random();
         protected int expGained = 0;
+        protected GameData myData;
 
         protected List<IAnimatedObject> actors = new List<IAnimatedObject>();
         protected List<IAnimatedObject> toAdd = new List<IAnimatedObject>();
@@ -50,9 +51,10 @@ namespace CritterCamp.Core.Screens.Games {
         public int score = 0; // for single player
         protected bool scoreReceived = false; // We can't exit immediately due to race conditions
 
-        public BaseGameScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer) : base(true) {
+        public BaseGameScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer, GameData gd) : base(true) {
             this.playerData = playerData;
             this.singlePlayer = singlePlayer;
+            this.myData = gd;
         }
 
         public Random Rand {
@@ -213,6 +215,15 @@ namespace CritterCamp.Core.Screens.Games {
             // If the score has already been received, it's time to quit
             if(scoreReceived) {
                 if(singlePlayer) {
+                    // Set high score data
+                    string scoreString;
+                    if(PermanentStorage.Get(myData.ServerName + "_score", out scoreString)) {
+                        if(int.Parse(scoreString) < score) {
+                            PermanentStorage.Set(myData.ServerName + "_score", score.ToString());
+                        }
+                    } else {
+                        PermanentStorage.Set(myData.ServerName + "_score", score.ToString());
+                    }
                     SwitchScreen(typeof(HomeScreen));
                 } else {
                     SwitchScreen(typeof(ScoreScreen));

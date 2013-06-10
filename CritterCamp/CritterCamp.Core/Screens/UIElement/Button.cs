@@ -16,8 +16,6 @@ namespace CritterCamp.Core.Screens.UIElements {
 
         // protected UI elements for this button
         protected Label textLabel = new Label();
-        protected Label caption1Label = new Label();
-        protected Label caption2Label = new Label();
         protected Image buttonTexture = new Image(defaultButtonTexture, 0, new Vector2(290, 90), new Vector2());
         protected Image buttonHighlightTexture = new Image(defaultButtonHighlightTexture, (int)TextureData.games.glow, new Vector2(290, 90), new Vector2());
         protected string buttonSound = defaultButtonSound;
@@ -57,22 +55,6 @@ namespace CritterCamp.Core.Screens.UIElements {
             }
             set {
                 buttonTexture.Overlay = value;
-            }
-        }
-        public string Caption1  { // text to display on the bottom of the button
-            get {
-                return caption1Label.Text;
-            }
-            set {
-                caption1Label.Text = value;
-            }
-        }
-        public string Caption2 { // text to display on the bottom of the button
-            get {
-                return caption2Label.Text;
-            }
-            set {
-                caption2Label.Text = value;
             }
         }
 
@@ -183,8 +165,6 @@ namespace CritterCamp.Core.Screens.UIElements {
                 base.Position = value;
                 // need to update all our UIelements with the new position
                 textLabel.Position = value;
-                caption1Label.Position = value + new Vector2(0, 135);
-                caption2Label.Position = value + new Vector2(0, 185);
                 buttonTexture.Position = value;
                 buttonHighlightTexture.Position = value;
             }
@@ -227,8 +207,6 @@ namespace CritterCamp.Core.Screens.UIElements {
             buttonTexture.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
             buttonHighlightTexture.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
             textLabel.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
-            caption1Label.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
-            caption2Label.Draw(MyScreen, MyGameTime, MySpriteBatch, MySpriteDrawer);
         }
     }
 }

@@ -38,7 +38,7 @@ namespace CritterCamp.Core.Screens.Games {
         }
 
         public ColorClashScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer)
-            : base(playerData, singlePlayer) {
+            : base(playerData, singlePlayer, GameConstants.COLOR_CLASH) {
             // assign players colors
             int colorCount = 0;
             for(int i = 0; i < playerData.Values.Count; i++) {

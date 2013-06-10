@@ -83,9 +83,6 @@ namespace CritterCamp.Core.Screens {
                 index++;
                 Button gameChoice = new Button(gd.GameIconTexture, gd.GameIconIndex);
                 gameChoice.Size = iconSizeVector;
-                gameChoice.Position = new Vector2(iconX, iconStartY);
-                //gameChoice.Caption1 = gd.NameLine1;
-                //gameChoice.Caption2 = gd.NameLine2;
                 gameChoice.TappedArgs.ObjectArg = gd;
                 gameChoice.Tapped += selectGame;
                 Label line1 = new Label(gd.NameLine1, new Vector2(iconX, iconStartY + 140));

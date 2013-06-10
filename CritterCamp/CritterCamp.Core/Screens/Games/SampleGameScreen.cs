@@ -11,7 +11,7 @@ namespace CritterCamp.Core.Screens.Games {
         protected TileMap tileMap;
 
         public SampleGameScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer)
-            : base(playerData, singlePlayer) {
+            : base(playerData, singlePlayer, null) {
             EnabledGestures = GestureType.Tap;
         }
 

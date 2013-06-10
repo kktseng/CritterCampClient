@@ -9,11 +9,13 @@ using System.Collections.Generic;
 
 namespace CritterCamp.Core.Screens {
     class VotingScreenSingle : MenuScreen {
-        int iconSpace = 175;
+        int iconSpace = 88;
         int iconSize = 128;
         Vector2 iconSizeVector;
         Button playButton;
         Button selectedButton = null;
+        Label gameName;
+        Label highScore;
         GameData selectedGame = null;
 
         public VotingScreenSingle() : base() {
@@ -37,27 +39,23 @@ namespace CritterCamp.Core.Screens {
             BorderedView voteMenu = new BorderedView(new Vector2(1800, 950), new Vector2(960, 540));
             voteMenu.Disabled = false;
 
-            Label ChooseGame = new Label("Choose Game", new Vector2(960, 150));
-            ChooseGame.Font = "museoslab";
-            voteMenu.AddElement(ChooseGame);
+            Label chooseGame = new Label("Choose Game", new Vector2(960, 150));
+            chooseGame.Font = "museoslab";
+            voteMenu.AddElement(chooseGame);
 
-            // add the buttons for the games          
-            iconSizeVector = new Vector2(iconSize, iconSize);
-            int iconX = 300;
-            int iconY = 325;
-            foreach (GameData gd in GameConstants.GAMES) {
-                Button gameChoice = new Button(gd.GameIconTexture, gd.GameIconIndex);
-                gameChoice.Size = iconSizeVector;
-                gameChoice.Position = new Vector2(iconX, iconY);
-                gameChoice.Caption1 = gd.NameLine1;
-                gameChoice.Caption2 = gd.NameLine2;
-                gameChoice.TappedArgs.ObjectArg = gd;
-                gameChoice.Tapped += SelectGame;
+            gameName = new Label("", new Vector2(960, 500));
+            gameName.Font = "gillsans";
+            gameName.Scale = 1.2f;
+            voteMenu.AddElement(gameName);
 
-                voteMenu.AddElement(gameChoice);
+            Label highScoreText = new Label("High Score:", new Vector2(800, 650));
+            highScoreText.Font = "gillsans";
+            highScoreText.Scale = 0.8f;
+            voteMenu.AddElement(highScoreText);
 
-                iconX += iconSpace + iconSize;
-            }
+            highScore = new Label("0", new Vector2(950, 650));
+            highScore.CenterX = false;
+            voteMenu.AddElement(highScore);
 
             // add the vote button
             playButton = new SmallButton("Play");
@@ -65,6 +63,25 @@ namespace CritterCamp.Core.Screens {
             playButton.Tapped += Play;
             playButton.Disabled = true;
             voteMenu.AddElement(playButton);
+
+            // add the buttons for the games          
+            iconSizeVector = new Vector2(iconSize, iconSize);
+            int iconX = 200;
+            int iconY = 325;
+            foreach (GameData gd in GameConstants.GAMES) {
+                Button gameChoice = new Button(gd.GameIconTexture, gd.GameIconIndex);
+                gameChoice.Size = iconSizeVector;
+                gameChoice.Position = new Vector2(iconX, iconY);
+                gameChoice.TappedArgs.ObjectArg = gd;
+                gameChoice.Tapped += SelectGame;
+                if(selectedGame == null) {
+                    SelectGame(gameChoice, gameChoice.TappedArgs);
+                }
+
+                voteMenu.AddElement(gameChoice);
+
+                iconX += iconSpace + iconSize;
+            }
             
             mainView.AddElement(voteMenu);
         }
@@ -74,11 +91,17 @@ namespace CritterCamp.Core.Screens {
             if (selectedButton != null) {
                 selectedButton.Highlight = false;
             }
-
             selectedButton = (Button)e.Element;
             selectedButton.Highlight = true; // highlight the button we pressed
             selectedGame = (GameData)e.ObjectArg; // our selected game is the button we pressed
             playButton.Disabled = false; // enable the vote button for people to play
+            gameName.Text = selectedGame.Name;
+
+
+            // Get high score data
+            if(!PermanentStorage.Get(selectedGame.ServerName + "_score", out highScore.Text)) {
+                highScore.Text = "0";
+            }
         }
 
         // Method callback for the play button

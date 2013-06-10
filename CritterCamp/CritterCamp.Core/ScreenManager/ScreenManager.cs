@@ -135,7 +135,7 @@ namespace GameStateManagement {
                 "bgScreen",
                 "gameIcons", "scoreScreenIcons", "scorePanel", "profileBg",
                 "buttonMint",  "buttonGreen", "buttonS", "buttonM", "buttonSquare", "buttonCorners",
-                "whitePixel", "profileContainer",
+                "whitePixel",
                 "avatars", "pig",
                 "twitterIcon", "fbIcon"
             };
