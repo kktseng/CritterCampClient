@@ -15,7 +15,7 @@ namespace CritterCamp.Core.Screens {
     class HomeScreen : MainScreen {
         public HomeScreen(bool bounce) : base(bounce) { }
         protected Button play, leaders, options, about, news;
-        protected static bool firstIsntance = true;
+        protected static bool firstInstance = true;
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
@@ -74,8 +74,8 @@ namespace CritterCamp.Core.Screens {
         protected override void FinishedTransitioning(bool active) {
             base.FinishedTransitioning(active);
 
-            if (firstIsntance) { // first time showing the home screen
-                firstIsntance = false;
+            if (firstInstance) { // first time showing the home screen
+                firstInstance = false;
                 ShowNewsScreen(); // show the news screen
             }
         }
