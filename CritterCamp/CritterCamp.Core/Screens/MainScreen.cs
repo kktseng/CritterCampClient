@@ -32,7 +32,6 @@ namespace CritterCamp.Core.Screens {
 
             // Draw profile information
             BorderedView profileContainer = new BorderedView(new Vector2(1140, 600), new Vector2(630, 540));
-            profileContainer.FillColor = new Color(250, 206, 155);
             profileElements.Add(profileContainer);
             
             Image profileBackground = new Image("profileBg", 0, new Vector2(448, 312), new Vector2(420, 498));
@@ -64,7 +63,7 @@ namespace CritterCamp.Core.Screens {
             profileElements.Add(profileButton);
 
             SquareButton storeButton = new SquareButton();
-            storeButton.Icon = new Image("buttonSquare", (int)TextureData.ButtonSquare.store);
+            storeButton.Icon = new Image("buttonSquare", 0);
             storeButton.Position = new Vector2(1080, 720);
             profileElements.Add(storeButton);
 

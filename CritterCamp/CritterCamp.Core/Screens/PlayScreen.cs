@@ -135,6 +135,9 @@ namespace CritterCamp.Core.Screens {
                     Storage.Set("game_choices", gameChoices);
                     startingGame = true;
                     SearchingButtons.Visible = false;
+                    looking = false;
+                    multi.Text = "Multiplayer";
+                    multi.Disabled = false;
                 } else if((string)o["type"] == "count") {
                     groupSize = (int)o["size"];
                     playersInParty.Text = "Searching for players: " + groupSize + "/4";

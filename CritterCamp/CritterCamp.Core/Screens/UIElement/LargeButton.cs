@@ -12,7 +12,6 @@ namespace CritterCamp.Core.Screens.UIElements {
             Text = text;
             CenterX = true;
             CenterY = true;
-            SelectedColor = new Color(210, 72, 88);
         }
     }
 }

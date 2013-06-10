@@ -24,27 +24,35 @@ namespace CritterCamp.Core.Screens {
             BorderedView newsPage = new BorderedView(new Vector2(1100, 840), new Vector2(1920 / 2, 1080 / 2 - 75));
             newsPage.Disabled = false;
 
-            Label newsTitle = new Label("News Board", new Vector2(1920/2, startY));
-            newsTitle.Scale = 1.3f;
+            Label newsTitle = new Label("Latest News", new Vector2(1920/2, startY));
+            newsTitle.Font = "museoslab";
+            newsTitle.Scale = 0.8f;
 
             List<NewsPost> news = Storage.Get<List<NewsPost>>("news");
             if (news.Count != 0) {
                 NewsPost firstNews = news.ElementAt(0);
                 Label newsDate = new Label(firstNews.TimeStamp.ToString("M", new CultureInfo("en-US")), new Vector2(startX, startY + 75));
-                newsDate.CenterX = false;
-                newsDate.TextColor = Constants.DarkBrown;
+                newsDate.CenterX = false;;
                 String lineBreaksPost = NewsPost.insertLineBreaks(firstNews.Post, 1050, ScreenManager);
                 Label newsPostLabel = new Label(lineBreaksPost, new Vector2(startX, startY + 115));
                 newsPostLabel.CenterX = false;
                 newsPostLabel.CenterY = false;
 
-                newsPage.AddElement(newsTitle, newsDate, newsPostLabel);
+                Button close = new SmallButton("Close");
+                close.Position = new Vector2(1920 / 2, startY + 700);
+                close.Tapped += close_Tapped;
+
+                newsPage.AddElement(newsTitle, newsDate, newsPostLabel, close);
             } else {
                 Label noNews = new Label("No new news posts to display", new Vector2(startX, startY + 100));
                 noNews.CenterX = false;
                 newsPage.AddElement(newsTitle, noNews);
             }
             mainView.AddElement(newsPage);
+        }
+
+        void close_Tapped(object sender, UIElementTappedArgs e) {
+            OnBackPressed();
         }
     }
 
