@@ -8,15 +8,43 @@ using System;
 using System.Collections.Generic;
 using CritterCamp.Core.Screens.Games.Lib;
 using GameStateManagement;
+using System.Globalization;
 
 namespace CritterCamp.Core.Screens {
     class NewsScreen : MenuScreen {
+        protected int startX = 475;
+        protected int startY = 110;
+
         public NewsScreen() : base() { }
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
             IsPopup = true;
 
+            BorderedView newsPage = new BorderedView(new Vector2(1100, 840), new Vector2(1920 / 2, 1080 / 2 - 75));
+            newsPage.Disabled = false;
+
+            Label newsTitle = new Label("News Board", new Vector2(1920/2, startY));
+            newsTitle.Scale = 1.3f;
+
+            List<NewsPost> news = Storage.Get<List<NewsPost>>("news");
+            if (news.Count != 0) {
+                NewsPost firstNews = news.ElementAt(0);
+                Label newsDate = new Label(firstNews.TimeStamp.ToString("M", new CultureInfo("en-US")), new Vector2(startX, startY + 75));
+                newsDate.CenterX = false;
+                newsDate.TextColor = Constants.DarkBrown;
+                String lineBreaksPost = NewsPost.insertLineBreaks(firstNews.Post, 1050, ScreenManager);
+                Label newsPostLabel = new Label(lineBreaksPost, new Vector2(startX, startY + 115));
+                newsPostLabel.CenterX = false;
+                newsPostLabel.CenterY = false;
+
+                newsPage.AddElement(newsTitle, newsDate, newsPostLabel);
+            } else {
+                Label noNews = new Label("No new news posts to display", new Vector2(startX, startY + 100));
+                noNews.CenterX = false;
+                newsPage.AddElement(newsTitle, noNews);
+            }
+            mainView.AddElement(newsPage);
         }
     }
 
@@ -52,7 +80,7 @@ namespace CritterCamp.Core.Screens {
                 if (c == ' ') {
                     // this char is a white space. word to add contains the next word to add 
                     tryAdd = result + (result == "" ? "" : " ") + wordToAdd;
-                    if (MyScreenManager.Fonts["gillsans"].MeasureString(tryAdd).X < maxSizeScaled) {
+                    if (MyScreenManager.Fonts["tahoma"].MeasureString(tryAdd).X < maxSizeScaled) {
                         result = tryAdd;
                     } else {
                         result += "\n" + wordToAdd;
@@ -66,7 +94,7 @@ namespace CritterCamp.Core.Screens {
 
             // add the last word
             tryAdd = result + (result == "" ? "" : " ") + wordToAdd;
-            if (MyScreenManager.Fonts["gillsans"].MeasureString(tryAdd).X < maxSizeScaled) {
+            if (MyScreenManager.Fonts["tahoma"].MeasureString(tryAdd).X < maxSizeScaled) {
                 result = tryAdd;
             } else {
                 result += "\n" + wordToAdd;

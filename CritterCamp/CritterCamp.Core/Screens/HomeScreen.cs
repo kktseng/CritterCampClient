@@ -14,7 +14,8 @@ using CritterCamp.Screens;
 namespace CritterCamp.Core.Screens {
     class HomeScreen : MainScreen {
         public HomeScreen(bool bounce) : base(bounce) { }
-        protected Button play, leaders, options, about;
+        protected Button play, leaders, options, about, news;
+        protected static bool firstIsntance = true;
 
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
@@ -37,8 +38,12 @@ namespace CritterCamp.Core.Screens {
             about.Position = new Vector2(1560, 786);
             about.Tapped += aboutButton_Tapped;
 
-            AddButton(play, leaders, options, about);
-            mainView.AddElement(play, leaders, options, about);
+            news = new SmallButton("News");
+            news.Position = new Vector2(1560, 906);
+            news.Tapped += newsButton_Tapped;
+
+            AddButton(play, leaders, options, about, news);
+            mainView.AddElement(play, leaders, options, about, news);            
         }
 
         void playButton_Tapped(object sender, EventArgs e) {
@@ -56,6 +61,23 @@ namespace CritterCamp.Core.Screens {
 
         void aboutButton_Tapped(object sender, EventArgs e) {
             ScreenManager.AddScreen(new AboutScreen(), null);
+        }
+
+        void newsButton_Tapped(object sender, EventArgs e) {
+            ShowNewsScreen();
+        }
+
+        void ShowNewsScreen() {
+            ScreenManager.AddScreen(new NewsScreen(), null);
+        }
+
+        protected override void FinishedTransitioning(bool active) {
+            base.FinishedTransitioning(active);
+
+            if (firstIsntance) { // first time showing the home screen
+                firstIsntance = false;
+                ShowNewsScreen(); // show the news screen
+            }
         }
 
         public override void OnBackPressed() {

@@ -316,6 +316,7 @@ namespace GameStateManagement {
                 } else {
                     // Transition finished!
                     screenState = ScreenState.Hidden;
+                    FinishedTransitioning(false);
                 }
             } else {
                 // Otherwise the screen should transition on and become active.
@@ -325,9 +326,15 @@ namespace GameStateManagement {
                 } else {
                     // Transition finished!
                     screenState = ScreenState.Active;
+                    FinishedTransitioning(true);
                 }
             }
         }
+
+        /// <summary>
+        /// Called when the screen finishes transitioning 
+        /// </summary>
+        protected virtual void FinishedTransitioning(bool active) { }
 
 
         /// <summary>
