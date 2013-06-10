@@ -16,7 +16,7 @@ namespace CritterCamp.Core.Screens.Games {
         public static TimeSpan SCORE_TIME = new TimeSpan(0, 0, 0, 5);
         public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 0, 2);
         public static TimeSpan BLINK_TIME = new TimeSpan(0, 0, 1);
-        public static TimeSpan PAINT_TIME = new TimeSpan(0, 0, 20);
+        public static TimeSpan PAINT_TIME = new TimeSpan(0, 0, 60);
 
         public TimeSpan gameStart, gameEnd;
         public bool synced = false, ready = false;
@@ -50,6 +50,9 @@ namespace CritterCamp.Core.Screens.Games {
                     colorCount++;
                 }
             }
+            if(singlePlayer) {
+                players[""] = new Avatar(this, new Vector2(-100, -100), new PlayerData("", "pig", 1, 1), new Color(100, 100, 100));
+            }
 
             EnabledGestures = GestureType.Tap;
         }
@@ -66,46 +69,46 @@ namespace CritterCamp.Core.Screens.Games {
             doodadMap = new TileMap(textureList["doodads"]);
             overlayMap = new TileMap(textureList["map"]);
             int[,] map = new int[,] {
-                {   4,  5,  6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   5,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   4,  4,  6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   6,  5,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   4,  4,  5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   5,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   6,  4,  5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   5,  6,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                {   4,  4,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }
+                { 39, 39, 42, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { 40, 39, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { 39, 39, 47, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { 39, 39, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { 39, 39, 41, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { 39, 42, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { 39, 39, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { 41, 39, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { 39, 39, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { 39, 39, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { 44, 39, 40, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+                { 39, 39, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }
             };
             int[,] ddMap = new int[,] {
-                {  -1, -1, -1, 19, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22 },
+                {  -1, 32, 33, 19, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  34, 35, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
+                {  -1, -1, 36, 37, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
                 {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
-                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
-                {  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16 },
-                {  -1, -1, -1, 19, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 23 },
+                {  38, 39, -1, 19, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 23 },
             };
             int[,] olMap = new int[,] {
-                {  -1, -1, -1,  4,  4,  5,  4,  6,  4,  4,  5,  4,  4,  5,  4,  6,  4,  4,  4,  5 },
-                {  -1, -1, -1,  5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  5 },
-                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
-                {  -1, -1, -1,  6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  6 },
-                {  -1, -1, -1,  5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
-                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
-                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  5 },
-                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
-                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  6 },
-                {  -1, -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  5 },
-                {  -1, -1, -1,  5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  4 },
-                {  -1, -1, -1,  4,  6,  4,  5,  6,  4,  5,  4,  4,  4,  5,  4,  5,  4,  6,  5,  4 },
+                {  -1, -1, -1, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39 },  
+                {  -1, -1, -1, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39 },
+                {  -1, -1, -1, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39 },
+                {  -1, -1, -1, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39 },
+                {  -1, -1, -1, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39 },
+                {  -1, -1, -1, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39 },
+                {  -1, -1, -1, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39 },
+                {  -1, -1, -1, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39 },
+                {  -1, -1, -1, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39 },
+                {  -1, -1, -1, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39 },
+                {  -1, -1, -1, 39, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39 },
+                {  -1, -1, -1, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39 },
             };
             overlayMap.SetMap(olMap);                                                 
             tileMap.SetMap(map);
@@ -119,19 +122,21 @@ namespace CritterCamp.Core.Screens.Games {
                     players[playerName].ThrowPaint(gameTime.TotalGameTime + BLINK_TIME - gameStart, crosshair.Coord);
                     crosshair.Blink(BLINK_TIME, gameTime.TotalGameTime);
 
-                    // let others know you threw paint
-                    JObject packet = new JObject(
-                        new JProperty("action", "game"),
-                        new JProperty("name", "color_clash"),
-                        new JProperty("data", new JObject(
-                            new JProperty("action", "paint"),
-                            new JProperty("x_pos", crosshair.Coord.X),
-                            new JProperty("y_pos", crosshair.Coord.Y),
-                            new JProperty("time", (gameTime.TotalGameTime + BLINK_TIME - gameStart).Ticks),
-                            new JProperty("scale", players[playerName].currentPaint.Scale)
-                        ))
-                    );
-                    conn.SendMessage(packet.ToString());
+                    if(!singlePlayer) {
+                        // let others know you threw paint
+                        JObject packet = new JObject(
+                            new JProperty("action", "game"),
+                            new JProperty("name", "color_clash"),
+                            new JProperty("data", new JObject(
+                                new JProperty("action", "paint"),
+                                new JProperty("x_pos", crosshair.Coord.X),
+                                new JProperty("y_pos", crosshair.Coord.Y),
+                                new JProperty("time", (gameTime.TotalGameTime + BLINK_TIME - gameStart).Ticks),
+                                new JProperty("scale", players[playerName].currentPaint.Scale)
+                            ))
+                        );
+                        conn.SendMessage(packet.ToString());
+                    }
                 }
             } else if(phase == Phase.Main) {
                 foreach(TouchLocation loc in input.TouchState) {
@@ -150,7 +155,9 @@ namespace CritterCamp.Core.Screens.Games {
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             if(phase == Phase.Begin) {
-                if(!synced) {
+                if(singlePlayer) {
+                    phase = Phase.Main;
+                } else if(!synced) {
                     Sync((JArray data, double random) => {
                         gameStart = gameTime.TotalGameTime;
                         phase = Phase.Main;
@@ -158,6 +165,15 @@ namespace CritterCamp.Core.Screens.Games {
                     synced = true;
                 }
             } else if(phase == Phase.Main) {
+                // randomly drop paint on the canvas
+                if(singlePlayer) {
+                    if(rand.Next(0, 100) < 2) {
+                        Splatter splatter = new Splatter(this, players[""], rand);
+                        splatter.Scale = (float)rand.NextDouble() + 1;
+                        players[""].StartThrow(splatter);
+                        players[""].ThrowPaint(gameTime.TotalGameTime, new Vector2(rand.Next(BOUNDS.Left, BOUNDS.Right), rand.Next(BOUNDS.Top, BOUNDS.Bottom)));
+                    }
+                }
                 if(gameTime.TotalGameTime - gameStart > PAINT_TIME) {
                     Dictionary<Color, float> areas = CalculatePaint();
                     foreach(Avatar a in players.Values) {
@@ -177,12 +193,14 @@ namespace CritterCamp.Core.Screens.Games {
                         RemoveActor(crosshair);
                         crosshair = null;
                     }
+                    if(singlePlayer) {
+                        score = (int)(players[playerName].score * 10000);
+                    }
                     phase = Phase.Calculation;
                 }
             } else if(phase == Phase.Calculation) {
                 if(gameTime.TotalGameTime - gameEnd > BANNER_TIME + BANNER_TIME + SCORE_TIME) {
                     if(singlePlayer) {
-                        scoreReceived = true;
                         phase = Phase.Limbo;
                     } else {
                         // Sync scores
@@ -191,14 +209,16 @@ namespace CritterCamp.Core.Screens.Games {
                             new JProperty("type", "report_score"),
                             new JProperty("score", new JObject(
                                 from username in players.Keys
-                                select new JProperty(username, (int)(players[username].score * 100))
+                                select new JProperty(username, (int)(players[username].score * 10000))
                             ))
                         );
                         conn.SendMessage(packet.ToString());
                         phase = Phase.Limbo;
                     }
                 } else if(gameTime.TotalGameTime - gameEnd > BANNER_TIME + SCORE_TIME) {
-                    banner = banner ?? new TextBanner(this, "GAME OVER");
+                    banner = singlePlayer ?
+                        banner ?? new TextBanner(this, "Score: " + score) :
+                        banner ?? new TextBanner(this, "GAME OVER");
                 } else if(gameTime.TotalGameTime - gameEnd > BANNER_TIME) {
                     banner = null;
                 } 
@@ -230,6 +250,8 @@ namespace CritterCamp.Core.Screens.Games {
             for(int i = 0; i < 4; i++) {
                 area[Helpers.MapColor(i)] = 0;
             }
+            if(singlePlayer)
+                area[new Color(100, 100, 100)] = 0;
             List<Splatter> sList = new List<Splatter>(finishedSplats);
             foreach(Splatter s in finishedSplats) {
                 sList.Remove(s);
@@ -333,7 +355,6 @@ namespace CritterCamp.Core.Screens.Games {
                             splatter.Scale = (float)data["scale"];
                             players[user].StartThrow(splatter);
                             players[user].ThrowPaint(new TimeSpan((long)data["time"]), new Vector2((float)data["x_pos"], (float)data["y_pos"]));
-                            // splatter.Throw(new TimeSpan((long)data["time"]));
                         }
                     }
                 }

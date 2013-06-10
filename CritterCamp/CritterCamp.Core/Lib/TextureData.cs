@@ -16,6 +16,7 @@ namespace CritterCamp.Core.Lib {
         public enum ButtonSquare {
             main,
             profile,
+            profile2,
             store
         }
 
@@ -96,7 +97,8 @@ namespace CritterCamp.Core.Lib {
             glow,
             twilightTango,
             jetpackJamboree,
-            fishingFrenzy
+            fishingFrenzy,
+            colorClash
         }
     }
 }

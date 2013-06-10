@@ -417,6 +417,7 @@
     <Content Include="Content\buttonCorners.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Content\buttonProfile.xnb" />
     <None Include="Content\cow.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -39,7 +39,7 @@ namespace CritterCamp.Core.Lib {
         public static GameData TWILIGHT_TANGO = new GameData("Twilight Tango", "twilight_tango", "twilightTut", typeof(TwilightTangoScreen), (int)TextureData.games.twilightTango);
         public static GameData JETPACK_JAMBOREE = new GameData("Jetpack Jamboree", "jetpack_jamboree", "jetpackTut", typeof(JetpackJamboreeScreen), (int)TextureData.games.jetpackJamboree);
         public static GameData FISHING_FRENZY = new GameData("Fishing Frenzy", "fishing_frenzy", "fishingTut", typeof(FishingFrenzyScreen), (int)TextureData.games.fishingFrenzy);
-        public static GameData COLOR_CLASH = new GameData("Color Clash", "color_clash", "fishingTut", typeof(ColorClashScreen), (int)TextureData.games.fishingFrenzy);
+        public static GameData COLOR_CLASH = new GameData("Color Clash", "color_clash", "fishingTut", typeof(ColorClashScreen), (int)TextureData.games.colorClash);
         public static GameData[] GAMES = { TWILIGHT_TANGO, JETPACK_JAMBOREE, FISHING_FRENZY, COLOR_CLASH };
 
         public static GameData GetGameData(string name) {

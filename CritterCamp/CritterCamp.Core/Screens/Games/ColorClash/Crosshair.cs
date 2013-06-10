@@ -39,7 +39,7 @@ namespace CritterCamp.Core.Screens.Games.ColorClash {
 
         public override void Animate(GameTime time) {
             if(!blinking) {
-                Scale = Math.Min(Scale + (float)time.ElapsedGameTime.TotalSeconds, 2.5f);
+                Scale = Math.Min(Scale + (float)time.ElapsedGameTime.TotalSeconds * 2, 2.5f);
                 return;
             }
             TimeSpan blinkElapsed = time.TotalGameTime - blinkStart;

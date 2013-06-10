@@ -36,7 +36,7 @@ namespace CritterCamp.Core.Screens {
             profileElements.Add(profileContainer);
             
             Image profileBackground = new Image("profileBg", 0, new Vector2(448, 312), new Vector2(420, 498));
-            PlayerAvatar avatar = new PlayerAvatar(myData, new Vector2(420, 515));
+            PlayerAvatar avatar = new PlayerAvatar(myData, new Vector2(420, 533));
             profileElements.Add(profileBackground);
             profileElements.Add(avatar);
 
@@ -64,7 +64,7 @@ namespace CritterCamp.Core.Screens {
             profileElements.Add(profileButton);
 
             SquareButton storeButton = new SquareButton();
-            storeButton.Icon = new Image("buttonSquare", (int)TextureData.ButtonSquare.profile);
+            storeButton.Icon = new Image("buttonSquare", (int)TextureData.ButtonSquare.store);
             storeButton.Position = new Vector2(1080, 720);
             profileElements.Add(storeButton);
 

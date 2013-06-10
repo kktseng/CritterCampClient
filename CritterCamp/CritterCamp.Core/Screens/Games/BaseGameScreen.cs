@@ -88,25 +88,31 @@ namespace CritterCamp.Core.Screens.Games {
                         }
                     }
                 }
-                Storage.Set("scores", new List<PlayerData>(sortedScoreData));
 
                 // calculate exp
-                int tieCount = 0;
+                List<PlayerData> normalizedScores = new List<PlayerData>();
                 for(int i = 0; i < sortedScoreData.Count; i++) {
+                    PlayerData data = sortedScoreData[i];
+                    int tieCount = 0;
+                    int temp = i - 1;
+                    while(temp >= 0) {
+                        if(sortedScoreData[temp].score == data.score) {
+                            tieCount++;
+                            temp--;
+                        } else {
+                            break;
+                        }
+                    }
+                    PlayerData newData = new PlayerData(data.username, data.profile, data.level, data.color);
+                    newData.score = i - tieCount + 1;
+                    normalizedScores.Add(newData);
                     if(sortedScoreData[i].username == playerName) {
                         expGained = (4 - i) * 100;
-                        int temp = i - 1;
-                        while(temp >= 0) {
-                            if(sortedScoreData[temp].score == sortedScoreData[i].score) {
-                                tieCount++;
-                                temp--;
-                            } else {
-                                break;
-                            }
-                        }
                         expGained += tieCount * 100;
                     }
                 }
+
+                Storage.Set("scores", new List<PlayerData>(normalizedScores));
 
                 JObject packet = new JObject(
                     new JProperty("action", "rank"),

@@ -46,7 +46,7 @@ namespace CritterCamp.Core.Screens {
             conn.SendMessage(packet.ToString());
 
             Image profileBackground = new Image("profileBg", 0, new Vector2(448, 312), new Vector2(1536, 258));
-            avatar = new PlayerAvatar(myData, new Vector2(1536, 258));
+            avatar = new PlayerAvatar(myData, new Vector2(1536, 293));
             profileElements.Add(profileBackground);
             profileElements.Add(avatar);
 
