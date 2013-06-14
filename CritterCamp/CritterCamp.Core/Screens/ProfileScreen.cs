@@ -17,8 +17,8 @@ namespace CritterCamp.Core.Screens {
         string username;
         PlayerData dataToDisplay;
         PlayerData myData;
-        Color selectedTint = new Color(238, 90, 85);
-        Color normalTint = new Color(132, 201, 73);
+        Color selectedTint = new Color(239, 116, 111);
+        Color normalTint = new Color(195, 221, 84);
         Button selectedButton;
         PlayerAvatar avatar;
         Label name, level, rank;
@@ -113,7 +113,7 @@ namespace CritterCamp.Core.Screens {
 
                 name.Text = dataToDisplay.username;
                 rank.Text = "Rank #" + dataToDisplay.rank;
-                level.Text = "Level: " + Helpers.PadNumber(dataToDisplay.level, 3);
+                level.Text = "Level: " + dataToDisplay.level;
 
                 if(dataToDisplay.username == myData.username) {
                     // displaying our own profile. display the critters we can use

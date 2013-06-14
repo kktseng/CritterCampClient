@@ -87,7 +87,7 @@ namespace CritterCamp.Core.Screens {
             back.Tapped -= backButton_Tapped;
             back.Tapped += cancelButton_Tapped;
             back.Text = "Cancel";
-            back.ButtonTexture.Tint = new Color(127, 199, 175);
+            back.ButtonTexture.Tint = new Color(72, 182, 216);
 
             // Search for group
             conn.SendMessage(@"{ ""action"": ""group"", ""type"": ""join"" }");

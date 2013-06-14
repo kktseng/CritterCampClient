@@ -7,7 +7,7 @@ namespace CritterCamp.Core.Screens.UIElements {
     /// Represents an button to draw
     /// </summary>
     class Button : UIElement{
-        public Color SelectedColor = new Color(63, 184, 175);
+        public Color SelectedColor = new Color(57, 56, 124);
         public Color SelectedTextColor = Color.Gray;
 
         private static string defaultButtonTexture = "buttonMint";
