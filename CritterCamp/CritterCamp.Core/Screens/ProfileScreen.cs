@@ -17,8 +17,8 @@ namespace CritterCamp.Core.Screens {
         string username;
         PlayerData dataToDisplay;
         PlayerData myData;
-        Color selectedTint = new Color(164, 82, 209);
-        Color normalTint = new Color(82, 45, 200);
+        Color selectedTint = new Color(238, 90, 85);
+        Color normalTint = new Color(132, 201, 73);
         Button selectedButton;
         PlayerAvatar avatar;
         Label name, level, rank;
@@ -57,7 +57,7 @@ namespace CritterCamp.Core.Screens {
             name.Font = "gillsans";
             name.Scale = 1.2f;
             name.MaxSize(760);
-            level = new Label("Level: " + Helpers.PadNumber(myData.level, 3), new Vector2(1536, 660));
+            level = new Label("Level: " + myData.level, new Vector2(1536, 660));
             rank = new Label("Rank #" + myData.rank, new Vector2(1536, 730));
             profileElements.Add(name);
             profileElements.Add(level);

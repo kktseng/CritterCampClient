@@ -135,7 +135,7 @@ namespace CritterCamp.Core.Screens {
                 if (myData.username == p.username) {
                     // drawing our own avatar. put it in a view so we can highlight it yellow
                     BorderedView yellowHighlight = new BorderedView(new Vector2(840, spacing), new Vector2(middlePlayers, playersY));
-                    yellowHighlight.BorderColor = Constants.YellowHighlight; // set the border color to yellow
+                    yellowHighlight.BorderColor = new Color(132, 201, 73); // set the border color to yellow
                     yellowHighlight.DrawFill = false; // don't draw the fill color
                     yellowHighlight.AddElement(playerAvatar, playerName, level);
                     playersView.AddElement(yellowHighlight);

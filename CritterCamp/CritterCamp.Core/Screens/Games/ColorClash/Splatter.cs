@@ -39,6 +39,7 @@ namespace CritterCamp.Core.Screens.Games.ColorClash {
         }
 
         public void Throw(TimeSpan time) {
+            screen.soundList["swoosh"].Play();
             startTime = time;
             State = PaintStates.throwing;
         }
@@ -78,6 +79,8 @@ namespace CritterCamp.Core.Screens.Games.ColorClash {
                     }
                 }
                 Coord = destination;
+                if(State != PaintStates.splatter)
+                    screen.soundList["splat"].Play();
                 State = PaintStates.splatter;
             } else {
                 double heightRatio = Math.Abs(0.5d - ratio) * 2;

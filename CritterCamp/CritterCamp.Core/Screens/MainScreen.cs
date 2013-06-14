@@ -63,7 +63,7 @@ namespace CritterCamp.Core.Screens {
             profileElements.Add(profileButton);
 
             SquareButton storeButton = new SquareButton();
-            storeButton.Icon = new Image("buttonSquare", 0);
+            storeButton.Icon = new Image("buttonSquare", (int)TextureData.ButtonSquare.store);
             storeButton.Position = new Vector2(1080, 720);
             profileElements.Add(storeButton);
 

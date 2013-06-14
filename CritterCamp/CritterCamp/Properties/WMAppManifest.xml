@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{f13744ce-a3b0-426b-8a4a-cf6f482b80cd}" Title="Critter Camp" RuntimeType="Silverlight" Version="1.1.0.0" Genre="apps.normal" Author="CritterCamp author" Description="Sample description" Publisher="CritterCamp" PublisherID="{0df4bf76-7146-42eb-ba7c-83daa7249a23}">
+  <App xmlns="" ProductID="{f13744ce-a3b0-426b-8a4a-cf6f482b80cd}" Title="Critter Camp" RuntimeType="Silverlight" Version="2.0.0.0" Genre="apps.normal" Author="Pigmaster" Description="Sample description" Publisher="Pigmaster" PublisherID="{0df4bf76-7146-42eb-ba7c-83daa7249a23}">
     <IconPath IsRelative="true" IsResource="false">pigIcon300.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />

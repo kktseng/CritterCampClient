@@ -245,6 +245,9 @@ namespace CritterCamp.Core.Screens.Games {
         }
 
         public override void Unload() {
+            if(!singlePlayer && !scoreReceived) {
+                conn.SendMessage(@"{ ""action"": ""group"", ""type"": ""leave"" }");
+            }
             cm.Unload();
             GC.Collect();
             base.Unload();

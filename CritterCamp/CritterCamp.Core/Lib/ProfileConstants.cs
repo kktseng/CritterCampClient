@@ -18,7 +18,9 @@
     static class ProfileConstants {
         public static ProfileData pig = new ProfileData("Pig", "pig");
         public static ProfileData cow = new ProfileData("Cow", "cow");
-        public static ProfileData[] PROFILES = { pig, cow };
+        public static ProfileData dog = new ProfileData("Dog", "dog");
+        public static ProfileData cat = new ProfileData("Cat", "cat");
+        public static ProfileData[] PROFILES = { pig, cow, dog, cat };
 
         public static ProfileData GetProfileData(string name) {
             name = name.ToLower();

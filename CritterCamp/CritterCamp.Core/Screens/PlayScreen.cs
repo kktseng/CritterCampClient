@@ -113,7 +113,7 @@ namespace CritterCamp.Core.Screens {
             back.ButtonTexture.Tint = SmallButton.DefaultColor;
 
             // cancel this search request
-            conn.SendMessage(@"{ ""action"": ""group"", ""type"": ""cancel"" }");
+            conn.SendMessage(@"{ ""action"": ""group"", ""type"": ""leave"" }");
         }
 
         public override void OnBackPressed() {
@@ -138,8 +138,8 @@ namespace CritterCamp.Core.Screens {
                     looking = false;
                     multi.Text = "Multiplayer";
                     multi.Disabled = false;
-                } else if((string)o["type"] == "count") {
-                    groupSize = (int)o["size"];
+                } else if((string)o["type"] == "update") {
+                    groupSize = ((JArray)o["users"]).Count;
                     playersInParty.Text = "Searching for players: " + groupSize + "/4";
                 }
             }

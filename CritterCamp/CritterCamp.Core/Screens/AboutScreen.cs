@@ -23,7 +23,7 @@ namespace CritterCamp.Core.Screens {
             Label about = new Label("About", new Vector2(startX, startY));
             about.CenterX = false;
             about.Font = "tahoma";
-            Label version = new Label("Version 1.0", new Vector2(startX, startY + 70));
+            Label version = new Label("Version 2.0", new Vector2(startX, startY + 70));
             version.CenterX = false;
             version.Scale = 0.8f;
 

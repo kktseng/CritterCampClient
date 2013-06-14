@@ -60,7 +60,7 @@ namespace CritterCamp.Core.Screens.Games {
         public override void Activate(bool instancePreserved) {
             base.Activate(instancePreserved);
             AddTextures("map", "pig", "doodads", "color");
-            // addSounds("swoosh", "splash", "reelingIn", "bucket", "blop");
+            AddSounds("swoosh", "splat");
             setMap();
         }
 
@@ -156,6 +156,7 @@ namespace CritterCamp.Core.Screens.Games {
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             if(phase == Phase.Begin) {
                 if(singlePlayer) {
+                    gameStart = gameTime.TotalGameTime;
                     phase = Phase.Main;
                 } else if(!synced) {
                     Sync((JArray data, double random) => {
@@ -171,7 +172,7 @@ namespace CritterCamp.Core.Screens.Games {
                         Splatter splatter = new Splatter(this, players[""], rand);
                         splatter.Scale = (float)rand.NextDouble() + 1;
                         players[""].StartThrow(splatter);
-                        players[""].ThrowPaint(gameTime.TotalGameTime, new Vector2(rand.Next(BOUNDS.Left, BOUNDS.Right), rand.Next(BOUNDS.Top, BOUNDS.Bottom)));
+                        players[""].ThrowPaint(gameTime.TotalGameTime - gameStart, new Vector2(rand.Next(BOUNDS.Left, BOUNDS.Right), rand.Next(BOUNDS.Top, BOUNDS.Bottom)));
                     }
                 }
                 if(gameTime.TotalGameTime - gameStart > PAINT_TIME) {

@@ -14,14 +14,16 @@ namespace CritterCamp.Core.Lib {
         public string GameIconTexture = "gameIcons";
         public int GameIconIndex;
         public int GameIndex;
+        public int[] StarMap;
 
-        public GameData(string name, string serverName, string tutorialTexture, Type screenType, int gameIconIndex) {
+        public GameData(string name, string serverName, string tutorialTexture, Type screenType, int gameIconIndex, int[] starMap) {
             Name = name;
             ServerName = serverName;
             TutorialTexture = "Tutorials/" + tutorialTexture;
             ScreenType = screenType;
             GameIconIndex = gameIconIndex;
             GameIndex = CurrentGameIndex;
+            StarMap = starMap;
             CurrentGameIndex++;
 
             int space = Name.IndexOf(' '); // replace the space with a newline char
@@ -36,10 +38,18 @@ namespace CritterCamp.Core.Lib {
     }
 
     static class GameConstants {
-        public static GameData TWILIGHT_TANGO = new GameData("Twilight Tango", "twilight_tango", "twilightTut", typeof(TwilightTangoScreen), (int)TextureData.games.twilightTango);
-        public static GameData JETPACK_JAMBOREE = new GameData("Jetpack Jamboree", "jetpack_jamboree", "jetpackTut", typeof(JetpackJamboreeScreen), (int)TextureData.games.jetpackJamboree);
-        public static GameData FISHING_FRENZY = new GameData("Fishing Frenzy", "fishing_frenzy", "fishingTut", typeof(FishingFrenzyScreen), (int)TextureData.games.fishingFrenzy);
-        public static GameData COLOR_CLASH = new GameData("Color Clash", "color_clash", "fishingTut", typeof(ColorClashScreen), (int)TextureData.games.colorClash);
+        public static GameData TWILIGHT_TANGO = new GameData("Twilight Tango", "twilight_tango", "twilightTut", typeof(TwilightTangoScreen), (int)TextureData.games.twilightTango, new int[] {
+            100, 200, 300, 400, 500
+        });
+        public static GameData JETPACK_JAMBOREE = new GameData("Jetpack Jamboree", "jetpack_jamboree", "jetpackTut", typeof(JetpackJamboreeScreen), (int)TextureData.games.jetpackJamboree, new int[] {
+            100, 200, 300, 400, 500
+        });
+        public static GameData FISHING_FRENZY = new GameData("Fishing Frenzy", "fishing_frenzy", "fishingTut", typeof(FishingFrenzyScreen), (int)TextureData.games.fishingFrenzy, new int[] {
+            100, 200, 300, 400, 500
+        });
+        public static GameData COLOR_CLASH = new GameData("Color Clash", "color_clash", "colorTut", typeof(ColorClashScreen), (int)TextureData.games.colorClash, new int[] {
+            100, 200, 300, 400, 500
+        });
         public static GameData[] GAMES = { TWILIGHT_TANGO, JETPACK_JAMBOREE, FISHING_FRENZY, COLOR_CLASH };
 
         public static GameData GetGameData(string name) {
