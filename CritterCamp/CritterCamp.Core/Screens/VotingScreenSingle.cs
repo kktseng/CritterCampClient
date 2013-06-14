@@ -165,16 +165,16 @@ namespace CritterCamp.Core.Screens {
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             foreach(UIElement element in gameDataElements) {
                 if(ScreenState == GameStateManagement.ScreenState.TransitionOn) {
-                    element.Position = gameDataDestinations[element] + new Vector2((float)Helpers.EaseOutBounce(1 - TransitionPosition, 1000, -1000, 1), 0);
+                    element.Position = gameDataDestinations[element] + new Vector2((float)Helpers.EaseOutBounce(1 - TransitionPosition, 1200, -1200, 1), 0);
                 } else {
-                    element.Position = gameDataDestinations[element] + new Vector2(((float)TransitionPosition) * 1000, 0);
+                    element.Position = gameDataDestinations[element] + new Vector2(((float)TransitionPosition) * 1200, 0);
                 }
             }
             foreach(UIElement element in gameIconDestinations.Keys) {
                 if(ScreenState == GameStateManagement.ScreenState.TransitionOn) {
-                    element.Position = gameIconDestinations[element] - new Vector2((float)Helpers.EaseOutBounce(1 - TransitionPosition, 1500, -1500, 1), 0);
+                    element.Position = gameIconDestinations[element] - new Vector2((float)Helpers.EaseOutBounce(1 - TransitionPosition, 1700, -1700, 1), 0);
                 } else {
-                    element.Position = gameIconDestinations[element] - new Vector2(((float)TransitionPosition) * 1500, 0);
+                    element.Position = gameIconDestinations[element] - new Vector2(((float)TransitionPosition) * 1700, 0);
                 }
             }
 

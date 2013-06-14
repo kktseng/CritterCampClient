@@ -60,6 +60,7 @@ namespace CritterCamp.Core.Screens.Games.ColorClash {
             double ratio = elapsed.TotalMilliseconds / TRAVEL_TIME.TotalMilliseconds;
             if(ratio >= 1) {
                 if(State != PaintStates.splatter) {
+                    screen.soundList["splat"].Play();
                     area = new Rectangle(
                         (int)(destination.X - Constants.BUFFER_SPRITE_DIM / 2 * Scale),
                         (int)(destination.Y - Constants.BUFFER_SPRITE_DIM / 2 * Scale),
@@ -79,8 +80,6 @@ namespace CritterCamp.Core.Screens.Games.ColorClash {
                     }
                 }
                 Coord = destination;
-                if(State != PaintStates.splatter)
-                    screen.soundList["splat"].Play();
                 State = PaintStates.splatter;
             } else {
                 double heightRatio = Math.Abs(0.5d - ratio) * 2;

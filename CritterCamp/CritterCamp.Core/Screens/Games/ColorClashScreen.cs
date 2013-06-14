@@ -210,7 +210,7 @@ namespace CritterCamp.Core.Screens.Games {
                             new JProperty("type", "report_score"),
                             new JProperty("score", new JObject(
                                 from username in players.Keys
-                                select new JProperty(username, (int)(players[username].score * 10000))
+                                select new JProperty(username, (int)(players[username].score * -10000))
                             ))
                         );
                         conn.SendMessage(packet.ToString());
@@ -284,10 +284,8 @@ namespace CritterCamp.Core.Screens.Games {
 
             // Draw splatters that have already hit
             lock(splatters) {
-                foreach(Splatter s in splatters) {
-                    if(s.State == PaintStates.splatter) {
-                        s.Draw(sd);
-                    }
+                foreach(Splatter s in finishedSplats) {
+                    s.Draw(sd);
                 }
             }
 
@@ -330,7 +328,7 @@ namespace CritterCamp.Core.Screens.Games {
                     timePercentage = timePercentage > 1 ? 1 : timePercentage;
                     int percentage = (int)(timePercentage * a.score * 10000);
                     string display = ((float)percentage / 100).ToString();
-                    sd.DrawString(ScreenManager.Fonts["museoslab"], display + "%", a.Coord + new Vector2(175, 0), a.color, spriteScale: 0.55f);
+                    sd.DrawString(ScreenManager.Fonts["gillsans"], display + "%", a.Coord + new Vector2(175, 0), a.color, spriteScale: 1.1f);
                 }
             }
 
