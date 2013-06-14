@@ -39,16 +39,16 @@ namespace CritterCamp.Core.Lib {
 
     static class GameConstants {
         public static GameData TWILIGHT_TANGO = new GameData("Twilight Tango", "twilight_tango", "twilightTut", typeof(TwilightTangoScreen), (int)TextureData.games.twilightTango, new int[] {
-            100, 200, 300, 400, 500
+            16, 32, 48, 64, 80
         });
         public static GameData JETPACK_JAMBOREE = new GameData("Jetpack Jamboree", "jetpack_jamboree", "jetpackTut", typeof(JetpackJamboreeScreen), (int)TextureData.games.jetpackJamboree, new int[] {
-            100, 200, 300, 400, 500
+            30, 60, 90, 120, 150
         });
         public static GameData FISHING_FRENZY = new GameData("Fishing Frenzy", "fishing_frenzy", "fishingTut", typeof(FishingFrenzyScreen), (int)TextureData.games.fishingFrenzy, new int[] {
-            100, 200, 300, 400, 500
+            200, 400, 600, 800, 1000
         });
         public static GameData COLOR_CLASH = new GameData("Color Clash", "color_clash", "colorTut", typeof(ColorClashScreen), (int)TextureData.games.colorClash, new int[] {
-            100, 200, 300, 400, 500
+            1000, 2000, 3000, 4000, 5000
         });
         public static GameData[] GAMES = { TWILIGHT_TANGO, JETPACK_JAMBOREE, FISHING_FRENZY, COLOR_CLASH };
 
