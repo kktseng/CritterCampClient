@@ -154,6 +154,9 @@ namespace CritterCamp.Core.Screens {
                 // haven't choosen a game yet
                 return;
             }
+            // send packet for sp metrics
+            conn.SendMessage(@"{ ""action"": ""game"", ""type"": ""single""}");
+
             // go to the tutorial screen
             Storage.Set("currentGameData", selectedGame);
             SwitchScreen(typeof(TutorialScreen));
