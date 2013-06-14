@@ -5,7 +5,7 @@ namespace CritterCamp.Core.Screens.UIElements {
     /// Represents a large button to draw
     /// </summary>
     class LargeButton : Button {
-        public static Color DefaultColor = new Color(238, 90, 85);
+        public static Color DefaultColor = new Color(239, 116, 111);
         public LargeButton(string text) : base("buttonM", 0) {
             buttonTexture.Tint = DefaultColor;
             Size = new Vector2(416, 160);

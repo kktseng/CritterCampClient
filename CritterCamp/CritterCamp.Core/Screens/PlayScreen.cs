@@ -36,7 +36,7 @@ namespace CritterCamp.Core.Screens {
 
             multi = new LargeButton("Multiplayer");
             multi.Position = new Vector2(1560, 612);
-            multi.ButtonTexture.Tint = new Color(127, 199, 175);
+            multi.ButtonTexture.Tint = new Color(72, 182, 216);
             multi.TextFont = "tahomaLarge";
             multi.TextScale = 0.8f;
             multi.Tapped += multiButton_Tapped;

@@ -7,7 +7,7 @@ namespace CritterCamp.Core.Screens.UIElements {
     /// </summary>
     class BorderedView : View {
         public Color BorderColor = Constants.DarkBrown;
-        public Color FillColor = Constants.LightBrown;
+        public Color FillColor = new Color(247, 237, 196);
 
         public bool DrawFill;
 

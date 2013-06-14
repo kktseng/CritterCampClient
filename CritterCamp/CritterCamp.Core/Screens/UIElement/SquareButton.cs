@@ -9,7 +9,7 @@ namespace CritterCamp.Core.Screens.UIElements {
         protected Image icon;
 
         public SquareButton() : base("buttonSquare", (int)TextureData.ButtonSquare.main) {
-            buttonTexture.Tint = new Color(63, 184, 175);
+            buttonTexture.Tint = new Color(195, 221, 84);
             Size = new Vector2(128, 128);
         }
 
