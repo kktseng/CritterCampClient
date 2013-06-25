@@ -6,7 +6,7 @@ namespace CritterCamp.Core.Lib {
         // Server
         public static uint MAX_BUFFER_SIZE = 8192; // The maximum size of the data buffer to use with the asynchronous socket methods
         public static string HOSTNAME = "192.168.1.3";
-       // public static string HOSTNAME = "pig-east1.cloudapp.net";
+        // public static string HOSTNAME = "pig-east1.cloudapp.net";
         public static int PORT = 8000;
         public static string VERSION = "2.1";
 
