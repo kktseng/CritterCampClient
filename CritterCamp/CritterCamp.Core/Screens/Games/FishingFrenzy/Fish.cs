@@ -60,6 +60,10 @@ namespace CritterCamp.Core.Screens.Games.FishingFrenzy {
                 speed = 400;
             }
 
+            if(screen.singlePlayer) {
+                speed = (int)(speed * 1d - 0.1d * (int)screen.upgrades[(int)FishingFrenzyScreen.Upgrade.FishSpeed]);
+            }
+
             // reset animation for new texture
             animation.Clear();
             SetAnim();

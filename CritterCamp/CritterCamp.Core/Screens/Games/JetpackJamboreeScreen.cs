@@ -19,11 +19,17 @@ namespace CritterCamp.Core.Screens.Games {
         public static int MAX_PIG_COUNT = 8;
         public bool exploded = false;
 
-        protected enum Phase {
+        public enum Phase {
             Sync,
             Limbo,
             Begin,
             GameOver
+        }
+
+        public enum Upgrade {
+            ExplosionTime,
+            PigFreq,
+            WalkSpeed
         }
         protected Phase phase = Phase.Sync;
 
@@ -41,8 +47,8 @@ namespace CritterCamp.Core.Screens.Games {
         protected List<string> deadUsers = new List<string>(); // keeps track of who lost
         protected Dictionary<string, Avatar> avatars = new Dictionary<string, Avatar>(); // keeps track of baton waving
 
-        public JetpackJamboreeScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer)
-            : base(playerData, singlePlayer, GameConstants.JETPACK_JAMBOREE) {
+        public JetpackJamboreeScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer, int[] upgrades)
+            : base(playerData, singlePlayer, GameConstants.JETPACK_JAMBOREE, upgrades) {
             for(int i = 0; i < 4; i++) {
                 pennedPigs.Add(new List<Pig>());
             }
@@ -148,7 +154,7 @@ namespace CritterCamp.Core.Screens.Games {
 
                                 if(p.State == PigStates.Entering) {
                                     old_pos += new Vector2(0, 96);
-                                    p.timeLeft = Pig.EXPLODE_TIME;
+                                    p.timeLeft = p.EXPLODE_TIME;
                                 }
                                 break;
                             }
@@ -231,13 +237,16 @@ namespace CritterCamp.Core.Screens.Games {
                     TimeSpan trueDelay = (singlePlayer) ? new TimeSpan(PIG_DELAY.Ticks / 5) : PIG_DELAY;
                     if((gameTime.TotalGameTime - timeSincePig) > trueDelay && rand.Next(1000) < (gameTime.TotalGameTime - start).Seconds) {
                         if(singlePlayer) {
-                            if(rand.Next(4) == 0) {
-                                for(int i = 0; i < (gameTime.TotalGameTime - start).TotalMinutes; i++)
-                                    AddFlyingPig(rand.Next(4));
-                                soundList["landing"].Play();
-                                avatars[playerName].State = true;
-                            } else {
-                                mainPigs.Add(new Pig(this, PigStates.Entering, rand));
+                            // lower rate of pigs upgrade
+                            if(rand.Next(10) >= upgrades[(int)Upgrade.PigFreq]) {
+                                if(rand.Next(4) == 0) {
+                                    for(int i = 0; i < (gameTime.TotalGameTime - start).TotalMinutes; i++)
+                                        AddFlyingPig(rand.Next(4));
+                                    soundList["landing"].Play();
+                                    avatars[playerName].State = true;
+                                } else {
+                                    mainPigs.Add(new Pig(this, PigStates.Entering, rand));
+                                }
                             }
                         } else {
                             mainPigs.Add(new Pig(this, PigStates.Entering, rand));

@@ -16,7 +16,7 @@ namespace CritterCamp.Core.Screens.Games.JetpackJamboree {
     }
     
     class Pig : AnimatedObject<PigStates> {
-        public static TimeSpan EXPLODE_TIME = new TimeSpan(0, 0, 10);
+        public TimeSpan EXPLODE_TIME = new TimeSpan(0, 0, 10);
 
         private static int MIN_FLY_ENTER = 600;
         private static int MAX_FLY_ENTER = 1320;
@@ -27,8 +27,8 @@ namespace CritterCamp.Core.Screens.Games.JetpackJamboree {
         private static int ENTER_SPD = 200;
         private static int FLY_SPD = 800;
 
-        private static int MAX_WALK_SPD = 300;
-        private static int MIN_WALK_SPD = 200;
+        private int MAX_WALK_SPD = 300;
+        private int MIN_WALK_SPD = 200;
 
         private static Rectangle MAIN_BOUNDS = new Rectangle(
             MIN_FLY_ENTER,
@@ -62,6 +62,13 @@ namespace CritterCamp.Core.Screens.Games.JetpackJamboree {
             State = startingState;
             this.rand = rand;
             color = rand.Next(4);
+
+            // Explode time upgrade
+            if(screen.singlePlayer) {
+                EXPLODE_TIME += new TimeSpan(0, 0, screen.upgrades[(int)JetpackJamboreeScreen.Upgrade.ExplosionTime]);
+                MIN_WALK_SPD -= 20 * screen.upgrades[(int)JetpackJamboreeScreen.Upgrade.WalkSpeed];
+                MAX_WALK_SPD -= 20 * screen.upgrades[(int)JetpackJamboreeScreen.Upgrade.WalkSpeed];
+            }
         }
 
         protected override void SetAnim() {

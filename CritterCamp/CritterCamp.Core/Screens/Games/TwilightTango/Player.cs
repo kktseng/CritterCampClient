@@ -24,7 +24,7 @@ namespace CritterCamp.Core.Screens.Games.TwilightTango {
             : base(screen, "pig", coord) {
             input = new List<Direction>();
             State = PlayerDanceStates.Standing;
-            maxHealth = screen.singlePlayer ? 9 : 5;
+            maxHealth = screen.singlePlayer ?  5 + screen.upgrades[(int)TwilightTangoScreen.Upgrade.NumLives] : 5;
             health = maxHealth;
             maxCycles = 1;
             this.player = player;

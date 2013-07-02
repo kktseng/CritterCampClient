@@ -15,7 +15,7 @@ namespace CritterCamp.Core.Screens.Games {
         public static Rectangle BOUNDS = new Rectangle(437, 110, 1337, 870);
         public static TimeSpan SCORE_TIME = new TimeSpan(0, 0, 0, 5);
         public static TimeSpan BANNER_TIME = new TimeSpan(0, 0, 0, 2);
-        public static TimeSpan BLINK_TIME = new TimeSpan(0, 0, 1);
+        public TimeSpan BLINK_TIME = new TimeSpan(0, 0, 1);
         public static TimeSpan PAINT_TIME = new TimeSpan(0, 0, 60);
 
         public TimeSpan gameStart, gameEnd;
@@ -37,8 +37,14 @@ namespace CritterCamp.Core.Screens.Games {
             Limbo
         }
 
-        public ColorClashScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer)
-            : base(playerData, singlePlayer, GameConstants.COLOR_CLASH) {
+        public enum Upgrade {
+            ChargeSpeed,
+            EnemyFreq,
+            BlinkTime
+        }
+
+        public ColorClashScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer, int[] upgrades)
+            : base(playerData, singlePlayer, GameConstants.COLOR_CLASH, upgrades) {
             // assign players colors
             int colorCount = 0;
             for(int i = 0; i < playerData.Values.Count; i++) {
@@ -52,6 +58,7 @@ namespace CritterCamp.Core.Screens.Games {
             }
             if(singlePlayer) {
                 players[""] = new Avatar(this, new Vector2(-100, -100), new PlayerData("", "pig", 1, 1), new Color(100, 100, 100));
+                BLINK_TIME -= new TimeSpan(0, 0, 0, 0, 150 * upgrades[(int)Upgrade.BlinkTime]);
             }
 
             EnabledGestures = GestureType.Tap;
@@ -168,7 +175,7 @@ namespace CritterCamp.Core.Screens.Games {
             } else if(phase == Phase.Main) {
                 // randomly drop paint on the canvas
                 if(singlePlayer) {
-                    if(rand.Next(0, 100) < 2) {
+                    if(rand.Next(0, 1000) < 20 - 3 * upgrades[(int)Upgrade.EnemyFreq]) {
                         Splatter splatter = new Splatter(this, players[""], rand);
                         splatter.Scale = (float)rand.NextDouble() + 1;
                         players[""].StartThrow(splatter);

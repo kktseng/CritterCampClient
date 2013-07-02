@@ -5,14 +5,16 @@ using System;
 
 namespace CritterCamp.Core.Screens.Games.ColorClash {
     class Crosshair : AnimatedObject<bool> {
-
+        float SCALING_RATE = 2f;
 
         public bool blinking = false;
         protected TimeSpan blinkStart, blinkTime;
 
         public Crosshair(ColorClashScreen screen, Vector2 pos)
             : base(screen, "color", pos) {
-
+                if(screen.singlePlayer) {
+                    SCALING_RATE += 0.3f * screen.upgrades[(int)ColorClashScreen.Upgrade.ChargeSpeed];
+                }
         }
 
         protected override void SetAnim() {
@@ -39,7 +41,7 @@ namespace CritterCamp.Core.Screens.Games.ColorClash {
 
         public override void Animate(GameTime time) {
             if(!blinking) {
-                Scale = Math.Min(Scale + (float)time.ElapsedGameTime.TotalSeconds * 2, 2.5f);
+                Scale = Math.Min(Scale + (float)time.ElapsedGameTime.TotalSeconds * SCALING_RATE, 2.5f);
                 return;
             }
             TimeSpan blinkElapsed = time.TotalGameTime - blinkStart;

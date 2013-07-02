@@ -20,9 +20,9 @@ namespace CritterCamp.Core.Screens.Games {
         public static int COMMAND_INCR = 1;
         public static int COMMAND_INIT = 4;
 
-        public static TimeSpan COMMAND_TIME = new TimeSpan(0, 0, 4);
+        public TimeSpan COMMAND_TIME = new TimeSpan(0, 0, 4);
         public static TimeSpan COMMAND_TIME_INCR = new TimeSpan(0, 0, 1);
-        public static TimeSpan INPUT_TIME = new TimeSpan(0, 0, 3);
+        public TimeSpan INPUT_TIME = new TimeSpan(0, 0, 3);
         public static TimeSpan INPUT_INCR = new TimeSpan(0, 0, 1);
         public static TimeSpan TIMEOUT_TIME = new TimeSpan(0, 0, 1);
         public static TimeSpan MOVE_TIME = new TimeSpan(0, 0, 0, 0, 600);
@@ -48,6 +48,12 @@ namespace CritterCamp.Core.Screens.Games {
             Sleep
         }
 
+        public enum Upgrade {
+            InputTime,
+            MemorizationTime,
+            NumLives
+        }
+
         protected Dictionary<string, Player> players = new Dictionary<string, Player>();
         protected List<Arrow> commandList = new List<Arrow>();
         protected List<Arrow> inputArrows = new List<Arrow>();
@@ -59,12 +65,17 @@ namespace CritterCamp.Core.Screens.Games {
         private TimeSpan start;
         private TimeSpan timer;
 
-        public TwilightTangoScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer)
-            : base(playerData, singlePlayer, GameConstants.TWILIGHT_TANGO) {
+        public TwilightTangoScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer, int[] upgrades)
+            : base(playerData, singlePlayer, GameConstants.TWILIGHT_TANGO, upgrades) {
             currentRank = playerData.Count;
             for(int i = 0; i < playerData.Values.Count; i++) {
                 PlayerData data = playerData.Values.ElementAt(i);
                 players[data.username] = new Player(this, new Vector2(150 + 450 * i, 800), data);
+            }
+
+            if(singlePlayer) {
+                INPUT_TIME += new TimeSpan(0, 0, upgrades[(int)Upgrade.InputTime]);
+                COMMAND_TIME += new TimeSpan(0, 0, upgrades[(int)Upgrade.MemorizationTime]);
             }
 
             // Enable flick gestures

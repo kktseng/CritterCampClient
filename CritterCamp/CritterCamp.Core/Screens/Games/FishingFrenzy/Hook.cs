@@ -12,7 +12,7 @@ namespace CritterCamp.Core.Screens.Games.FishingFrenzy {
     }
 
     class Hook : AnimatedObject<HookState> {
-        public static int HOOK_SPD = 700;
+        public int HOOK_SPD = 700;
         public static int PARABOLA_SIZE = 150;
         public static int MAX_DEPTH = 1020 - PARABOLA_SIZE;
         public List<Fish> hookedFish = new List<Fish>();
@@ -31,6 +31,11 @@ namespace CritterCamp.Core.Screens.Games.FishingFrenzy {
             this.player = player;
             reelingIn = screen.soundList["reelingIn"].CreateInstance();
             Helpers.GetSoundLibrary(screen).LoopSound(reelingIn);
+
+            if(screen.singlePlayer) {
+                start += new TimeSpan(0, 0, 0, 0, 100 * screen.upgrades[(int)FishingFrenzyScreen.Upgrade.HookDelay]);
+                HOOK_SPD += 50 * screen.upgrades[(int)FishingFrenzyScreen.Upgrade.HookSpeed];
+            }
         }
 
         protected override void SetAnim() {

@@ -15,8 +15,9 @@ namespace CritterCamp.Core.Lib {
         public int GameIconIndex;
         public int GameIndex;
         public int[] StarMap;
+        public string[] UpgradeNames;
 
-        public GameData(string name, string serverName, string tutorialTexture, Type screenType, int gameIconIndex, int[] starMap) {
+        public GameData(string name, string serverName, string tutorialTexture, Type screenType, int gameIconIndex, int[] starMap, string[] upgradeNames) {
             Name = name;
             ServerName = serverName;
             TutorialTexture = "Tutorials/" + tutorialTexture;
@@ -24,6 +25,7 @@ namespace CritterCamp.Core.Lib {
             GameIconIndex = gameIconIndex;
             GameIndex = CurrentGameIndex;
             StarMap = starMap;
+            UpgradeNames = upgradeNames;
             CurrentGameIndex++;
 
             int space = Name.IndexOf(' '); // replace the space with a newline char
@@ -40,15 +42,23 @@ namespace CritterCamp.Core.Lib {
     static class GameConstants {
         public static GameData TWILIGHT_TANGO = new GameData("Twilight Tango", "twilight_tango", "twilightTut", typeof(TwilightTangoScreen), (int)TextureData.games.twilightTango, new int[] {
             16, 32, 48, 64, 80
+        }, new string[] {
+            "Raise Input Time", "Raise Memorization Time", "Increase Lives"
         });
         public static GameData JETPACK_JAMBOREE = new GameData("Jetpack Jamboree", "jetpack_jamboree", "jetpackTut", typeof(JetpackJamboreeScreen), (int)TextureData.games.jetpackJamboree, new int[] {
             30, 60, 90, 120, 150
+        }, new string[] {
+            "Raise Time to Explode", "Lower Rate of Pigs", "Decrease Pig Walk Speed"
         });
         public static GameData FISHING_FRENZY = new GameData("Fishing Frenzy", "fishing_frenzy", "fishingTut", typeof(FishingFrenzyScreen), (int)TextureData.games.fishingFrenzy, new int[] {
             200, 400, 600, 800, 1000
+        }, new string[] {
+            "Increase Hook Speed", "Decrease Hook Delay", "Decrease Fish Speed"
         });
         public static GameData COLOR_CLASH = new GameData("Color Clash", "color_clash", "colorTut", typeof(ColorClashScreen), (int)TextureData.games.colorClash, new int[] {
             1000, 2000, 3000, 4000, 5000
+        }, new string[] {
+            "Increase Charge Speed", "Decrease Enemy Paint", "Decrease Throw Delay"
         });
         public static GameData[] GAMES = { TWILIGHT_TANGO, JETPACK_JAMBOREE, FISHING_FRENZY, COLOR_CLASH };
 
