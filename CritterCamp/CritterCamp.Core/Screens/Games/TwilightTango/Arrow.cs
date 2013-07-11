@@ -61,7 +61,7 @@ namespace CritterCamp.Core.Screens.Games.TwilightTango {
             }
         }
 
-        public override void Draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd, GameTime time) {
             sd.Draw(GetImg(), Coord, GetNum(), spriteRotation: (int)dir * Constants.ROTATE_90, spriteScale: Scale);
         }
     }

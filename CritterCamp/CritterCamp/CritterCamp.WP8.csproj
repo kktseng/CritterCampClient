@@ -176,6 +176,12 @@
     <Compile Include="..\CritterCamp.Core\Screens\Games\Lib\TileMap.cs">
       <Link>Core\Screens\Games\Lib\TileMap.cs</Link>
     </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\MatchingMayhemScreen.cs">
+      <Link>Core\Screens\Games\MatchingMayhemScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\Games\MatchingMayhem\Crate.cs">
+      <Link>Core\Screens\Games\MatchingMayhem\Crate.cs</Link>
+    </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\Games\SampleGameScreen.cs">
       <Link>Core\Screens\Games\SampleGameScreen.cs</Link>
     </Compile>
@@ -466,6 +472,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Fonts\museoslab.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\matching.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Content\Sounds\fbIcon.xnb" />

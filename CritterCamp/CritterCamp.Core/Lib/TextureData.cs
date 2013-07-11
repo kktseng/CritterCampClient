@@ -76,13 +76,15 @@ namespace CritterCamp.Core.Lib {
         }
 
         public enum colorTextures {
-            splatter1, //splatter1_2, splatter1_3, splatter1_4,
-            //splatter2_1, splatter2_2, splatter2_3, splatter2_4,
-            //splatter3_1, splatter3_2, splatter3_3, splatter3_4,
-            //splatter4_1, splatter4_2, splatter4_3, splatter4_4,
+            splatter,
             paintBall,
             crosshair,
             frameCorner, frameSide, canvas
+        }
+
+        public enum matchingTextures {
+            crate1, crate2, crate3, crate4,
+            power1, power2, power3, power4
         }
 
         public enum Fish {

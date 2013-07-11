@@ -34,7 +34,7 @@ namespace CritterCamp.Core.Screens.Games.JetpackJamboree {
             });
         }
 
-        public override void Draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd, GameTime time) {
             sd.Draw(screen.textureList["explosion"], Coord, GetNum(), new Vector2(128, 128), spriteScale: 2f);
         }
     }

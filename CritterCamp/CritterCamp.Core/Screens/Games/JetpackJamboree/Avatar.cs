@@ -25,7 +25,7 @@ namespace CritterCamp.Core.Screens.Games.JetpackJamboree {
             });
         }
 
-        public override void Draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd, GameTime time) {
             sd.DrawPlayer(screen, player, Coord, GetNum());
             // draw red baton if sending pigs down
             if(State) {

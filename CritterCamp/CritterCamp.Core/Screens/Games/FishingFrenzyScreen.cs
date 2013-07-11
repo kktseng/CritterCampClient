@@ -374,7 +374,7 @@ namespace CritterCamp.Core.Screens.Games {
             }
 
             // Draw non important actors
-            DrawActors(sd);
+            DrawActors(sd, gameTime);
 
             // Draw the boat
             sd.Draw(textureList["fishing"], new Vector2((float)Constants.BUFFER_SPRITE_DIM * 4.5f, (float)Constants.BUFFER_SPRITE_DIM * 1.5f + waveOffset), (int)TextureData.fishingTextures.boat1, align: true);
@@ -400,7 +400,7 @@ namespace CritterCamp.Core.Screens.Games {
             // Draw all fish not hooked
             foreach(Fish f in fishies) {
                 if(f.State != FishStates.hooked) {
-                    f.Draw(sd);
+                    f.Draw(sd, gameTime);
                 }
             }
 
@@ -423,12 +423,12 @@ namespace CritterCamp.Core.Screens.Games {
             // Draw hooks and hooked fish
             lock(hooked) {
                 foreach(Hook h in hooked.Values) {
-                    h.Draw(sd);
+                    h.Draw(sd, gameTime);
                 }
             }
             foreach(Fish f in fishies) {
                 if(f.State == FishStates.hooked) {
-                    f.Draw(sd);
+                    f.Draw(sd, gameTime);
                 }
             }
 

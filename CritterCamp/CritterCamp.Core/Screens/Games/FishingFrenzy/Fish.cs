@@ -132,7 +132,7 @@ namespace CritterCamp.Core.Screens.Games.FishingFrenzy {
             }
         }
 
-        public override void Draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd, GameTime time) {
             if(State == FishStates.hooked) {
                 if(type == FishTypes.small || type == FishTypes.medium || type == FishTypes.shiny) {
                     sd.Draw(GetImg(), Coord, GetNum(), GetFrame().Value.effect, spriteRotation: Constants.ROTATE_90);
@@ -150,7 +150,7 @@ namespace CritterCamp.Core.Screens.Games.FishingFrenzy {
                 }
             } else {
                 if(type == FishTypes.small || type == FishTypes.medium || type == FishTypes.shiny) {
-                    base.Draw(sd);
+                    base.Draw(sd, time);
                 } else if(State == FishStates.swimRight) {
                     sd.Draw(GetImg(), Coord - new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), GetNum() + 1, GetFrame().Value.effect, align: true);
                     sd.Draw(GetImg(), Coord + new Vector2(Constants.BUFFER_SPRITE_DIM / 2, 0), GetNum(), GetFrame().Value.effect, align: true);

@@ -54,7 +54,7 @@ namespace CritterCamp.Core.Screens.Games.ColorClash {
             base.Animate(time);
         }
 
-        public override void Draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd, GameTime time) {
             if(Visible)
                 sd.Draw(screen.textureList["color"], Coord, (int)TextureData.colorTextures.crosshair, ((ColorClashScreen)screen).players[screen.playerName].color, spriteScale: Scale);
         }

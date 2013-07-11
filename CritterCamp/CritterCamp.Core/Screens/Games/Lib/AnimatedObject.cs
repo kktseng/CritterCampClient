@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace CritterCamp.Core.Screens.Games.Lib {
     public interface IAnimatedObject {
         bool DrawAutomatically();
-        void Draw(SpriteDrawer sd);
+        void Draw(SpriteDrawer sd, GameTime time);
         void Animate(GameTime time);
     }
     public abstract class AnimatedObject<T> : IAnimatedObject {
@@ -179,7 +179,7 @@ namespace CritterCamp.Core.Screens.Games.Lib {
             coord += velocity * (float)time.ElapsedGameTime.TotalSeconds;
         }
 
-        public virtual void Draw(SpriteDrawer sd) {
+        public virtual void Draw(SpriteDrawer sd, GameTime time) {
             if(visible) {
                 sd.Draw(GetImg(), Coord, GetNum(), GetFrame().Value.effect, spriteScale: scale);
             }

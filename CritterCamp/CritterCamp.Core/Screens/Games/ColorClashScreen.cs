@@ -292,7 +292,7 @@ namespace CritterCamp.Core.Screens.Games {
             // Draw splatters that have already hit
             lock(splatters) {
                 foreach(Splatter s in finishedSplats) {
-                    s.Draw(sd);
+                    s.Draw(sd, gameTime);
                 }
             }
 
@@ -317,13 +317,13 @@ namespace CritterCamp.Core.Screens.Games {
             doodadMap.Draw(sd);
 
             // Draw players
-            DrawActors(sd);
+            DrawActors(sd, gameTime);
 
             // Draw paint balls
             lock(splatters) {
                 foreach(Splatter s in splatters) {
                     if(s.State != PaintStates.splatter) {
-                        s.Draw(sd);
+                        s.Draw(sd, gameTime);
                     }
                 }
             }

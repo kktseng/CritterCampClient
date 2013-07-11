@@ -127,7 +127,7 @@ namespace CritterCamp.Core.Screens.Games.FishingFrenzy {
             }
         }
 
-        public override void Draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd, GameTime time) {
             // draw line
             for(int i = 0; i < Coord.Y - Constants.BUFFER_SPRITE_DIM / 2; i += Constants.BUFFER_SPRITE_DIM) {
                 sd.Draw(GetImg(), new Vector2(Coord.X, i), (int)TextureData.fishingTextures.line, align: true);
@@ -140,7 +140,7 @@ namespace CritterCamp.Core.Screens.Games.FishingFrenzy {
             sd.DrawPlayer(screen, player, new Vector2(Coord.X, Coord.Y - Constants.BUFFER_SPRITE_DIM), (int)TextureData.PlayerStates.standing, spriteScale: 0.5f * scale);
 
             // draw hook
-            base.Draw(sd);
+            base.Draw(sd, time);
         }
     }
 }

@@ -339,7 +339,7 @@ namespace CritterCamp.Core.Screens.Games {
             DrawLaunchpad(sd, new Vector2(Constants.BUFFER_SPRITE_DIM * 15, Constants.BUFFER_SPRITE_DIM * 7 - Constants.BUFFER_OFFSET - 32), 3);
             doodadMap.Draw(sd);
 
-            DrawActors(sd);
+            DrawActors(sd, gameTime);
 
             // Draw player count info
             for(int i = 0; i < avatars.Keys.Count; i++) {

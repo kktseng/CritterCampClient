@@ -80,7 +80,7 @@ namespace CritterCamp.Core.Screens.Games.ColorClash {
             base.Animate(time);
         }
 
-        public override void Draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd, GameTime time) {
             int len = Helpers.TextureLen(typeof(TextureData.PlayerStates));
             sd.DrawPlayer(screen, player, Coord, GetNum(), spriteScale: 1.5f);
         }

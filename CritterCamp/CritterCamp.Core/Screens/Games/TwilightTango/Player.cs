@@ -52,7 +52,7 @@ namespace CritterCamp.Core.Screens.Games.TwilightTango {
             }, PlayerDanceStates.DanceRight, PlayerDanceStates.DanceLeft);
         }
 
-        public override void Draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd, GameTime time) {
             for(int i = 0; i < health; i++) {
                 sd.DrawPlayer(screen, player, Coord + new Vector2((100 * (i % (maxHealth / 2 + 1)) + (i / (maxHealth / 2 + 1)) * 50), (i / (maxHealth / 2 + 1)) * 65), GetNum(), spriteEffect: GetFrame().Value.effect);
             }

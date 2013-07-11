@@ -145,7 +145,7 @@ namespace CritterCamp.Core.Screens.Games.JetpackJamboree {
             return base.GetNum() + color * TextureData.playerStateCount;
         }
 
-        public override void Draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd, GameTime time) {
             int jetFlameState = rand.Next(0, 1);
             float scale = selected ? 1.2f : 1;
             switch(State) {
@@ -160,12 +160,12 @@ namespace CritterCamp.Core.Screens.Games.JetpackJamboree {
                 case PigStates.Flying:
                     sd.Draw(screen.textureList["doodads"], Coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
                     sd.Draw(screen.textureList["doodads"], Coord - new Vector2(0, 40) + new Vector2(0, Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.jetFlame1 + jetFlameState);
-                    base.Draw(sd);
+                    base.Draw(sd, time);
                     break;
                 case PigStates.Falling:
                     sd.Draw(screen.textureList["doodads"], Coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
                     sd.Draw(screen.textureList["doodads"], Coord - new Vector2(0, 40) + new Vector2(0, Constants.BUFFER_SPRITE_DIM), (int)TextureData.Doodads.jetFlame1 + jetFlameState);
-                    base.Draw(sd);
+                    base.Draw(sd, time);
                     break;
                 case PigStates.Entering:
                     sd.Draw(screen.textureList["doodads"], Coord - (new Vector2(0, 20) * scale), (int)TextureData.Doodads.jetPack1, spriteScale: scale);
@@ -173,7 +173,7 @@ namespace CritterCamp.Core.Screens.Games.JetpackJamboree {
                     break;
                 case PigStates.Standing:
                     sd.Draw(screen.textureList["doodads"], Coord - new Vector2(0, 20), (int)TextureData.Doodads.jetPack1);
-                    base.Draw(sd);
+                    base.Draw(sd, time);
                     break;
             }
         }

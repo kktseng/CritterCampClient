@@ -60,7 +60,12 @@ namespace CritterCamp.Core.Lib {
         }, new string[] {
             "Increase Charge Speed", "Decrease Enemy Paint", "Decrease Throw Delay"
         });
-        public static GameData[] GAMES = { TWILIGHT_TANGO, JETPACK_JAMBOREE, FISHING_FRENZY, COLOR_CLASH };
+        public static GameData MATCHING_MAYHEM = new GameData("Matching Mayhem", "matching_mayhem", "colorTut", typeof(MatchingMayhemScreen), (int)TextureData.games.colorClash, new int[] {
+            100, 200, 300, 400, 500
+        }, new string[] {
+            "Increase Time", "Improve Powerups", "Time Boost After Clear"
+        });
+        public static GameData[] GAMES = { TWILIGHT_TANGO, JETPACK_JAMBOREE, FISHING_FRENZY, COLOR_CLASH, MATCHING_MAYHEM };
 
         public static GameData GetGameData(string name) {
             name = name.ToLower();

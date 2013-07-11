@@ -27,7 +27,7 @@ namespace GameStateManagement {
             } else if(typeof(BaseGameScreen).IsAssignableFrom(screenType)) {
                 Dictionary<string, PlayerData> playerData = Storage.Get<Dictionary<string, PlayerData>>("player_data");
                 bool single = Storage.Get<bool>("singlePlayer");
-                return Activator.CreateInstance(screenType, new object[2] { playerData, single }) as GameScreen;
+                return Activator.CreateInstance(screenType, new object[3] { playerData, single, new int[] { 0, 0, 0 } }) as GameScreen;
             } else if(typeof(MainScreen).IsAssignableFrom(screenType)) {
                 if(Storage.ContainsKey("profileBounce")) {
                     bool bounce = Storage.Get<bool>("profileBounce");

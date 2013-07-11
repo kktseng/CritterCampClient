@@ -199,10 +199,10 @@ namespace CritterCamp.Core.Screens.Games {
             }
         }
 
-        protected void DrawActors(SpriteDrawer sd) {
+        protected void DrawActors(SpriteDrawer sd, GameTime time) {
             foreach(IAnimatedObject actor in actors) {
                 if(actor.DrawAutomatically()) {
-                    actor.Draw(sd);
+                    actor.Draw(sd, time);
                 }
             }
         }

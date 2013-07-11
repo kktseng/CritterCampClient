@@ -42,7 +42,7 @@ namespace CritterCamp.Core.Screens.Games.FishingFrenzy {
             }
         }
 
-        public override void Draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd, GameTime time) {
             int spriteCount = (shadowType == 0) ? 8 : 6;
             // going left
             if(State) {

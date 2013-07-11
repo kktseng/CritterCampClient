@@ -61,7 +61,7 @@ namespace CritterCamp.Core.Screens.Games {
             // Draw the game map
             tileMap.Draw(sd);
 
-            DrawActors(sd);
+            DrawActors(sd, gameTime);
 
             ScreenManager.SpriteBatch.End();
             base.Draw(gameTime);

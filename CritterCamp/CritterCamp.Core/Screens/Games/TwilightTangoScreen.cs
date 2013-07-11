@@ -385,7 +385,7 @@ namespace CritterCamp.Core.Screens.Games {
             sd.Begin();
             tileMap.Draw(sd);
             tileMap2.Draw(sd);
-            DrawActors(sd);
+            DrawActors(sd, gameTime);
             if(banner != null) {
                 // Draw banner
                 banner.Draw(new Vector2(Constants.BUFFER_WIDTH / 2, 300));

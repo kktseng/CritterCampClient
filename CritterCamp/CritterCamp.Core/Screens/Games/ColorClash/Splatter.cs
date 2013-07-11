@@ -35,7 +35,7 @@ namespace CritterCamp.Core.Screens.Games.ColorClash {
 
         protected override void SetAnim() {
             SetFrames(SingleFrame((int)TextureData.colorTextures.paintBall), PaintStates.throwing, PaintStates.charging);
-            animation.Add(PaintStates.splatter, SingleFrame((int)TextureData.colorTextures.splatter1 + splatterType));
+            animation.Add(PaintStates.splatter, SingleFrame((int)TextureData.colorTextures.splatter + splatterType));
         }
 
         public void Throw(TimeSpan time) {
@@ -89,7 +89,7 @@ namespace CritterCamp.Core.Screens.Games.ColorClash {
             }
         }
 
-        public override void Draw(SpriteDrawer sd) {
+        public override void Draw(SpriteDrawer sd, GameTime time) {
             float scale = (State == PaintStates.splatter) ? 1f : 0.3f;
             sd.Draw(GetImg(), Coord, GetNum(), avatar.color, spriteScale: scale * Scale);
         }
