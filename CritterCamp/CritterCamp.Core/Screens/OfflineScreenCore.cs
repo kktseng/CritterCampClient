@@ -197,9 +197,17 @@ namespace CritterCamp.Core.Screens {
 
                     PlayerData mydata = new PlayerData(response.username, response.profile, response.lvl, 0);
                     mydata.rank = response.rank;
-                    mydata.money = response.gold;
+                    mydata.money = 2000;
                     Storage.Set("myPlayerData", mydata);
 
+                    // set the upgrades
+                    foreach (string s in response.gameUpgrades.Keys) {
+                        GameData gd = GameConstants.GetGameData(s);
+                        int[] upgrades = response.gameUpgrades[s];
+                        gd.GameUpgrades[0].Level = upgrades[0];
+                        gd.GameUpgrades[1].Level = upgrades[1];
+                        gd.GameUpgrades[2].Level = upgrades[2];
+                    }
                     StoreData.GameUpgradePrices = response.gameUpgradePrices.ToArray();
 
                     // Create a TCP connection
