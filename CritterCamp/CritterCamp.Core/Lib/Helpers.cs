@@ -111,6 +111,34 @@ namespace CritterCamp.Core.Lib {
             return c - EaseOutBounce (d-t, 0, c, d) + b;
         }
 
+        // defines the animation delegate.
+        // start is where the object started at the beginning of the animation
+        // end is where the object should end up at the end of the animation
+        // percent is a number between 0-1. 0 means the animation just started. 1 means the animation just completed
+        // return is the new position of where the object should be
+        public delegate Vector2 Animation(Vector2 start, Vector2 end, float percent);
+
+        // an ease out bounce style animation. check http://easings.net/
+        public static Vector2 EaseOutBounceAnimation(Vector2 start, Vector2 end, float percent) {
+            float xInitialOffset = start.X - end.X;
+            float newXPosition = (float)EaseOutBounce(percent, xInitialOffset, -xInitialOffset, 1) + end.X;
+
+            float yInitialOffset = start.Y - end.Y;
+            float newYPosition = (float)EaseOutBounce(percent, yInitialOffset, -yInitialOffset, 1) + end.Y;
+
+            return new Vector2(newXPosition, newYPosition);
+        }
+
+        public static Vector2 SlideAnimation(Vector2 start, Vector2 end, float percent) {
+            float xInitialOffset = end.X - start.X;
+            float newXPosition = xInitialOffset * percent + start.X;
+
+            float yInitialOffset = end.Y - start.Y;
+            float newYPosition = yInitialOffset * percent + start.Y;
+
+            return new Vector2(newXPosition, newYPosition);
+        }
+
         public static void ResetState() {
             // save important values
             OfflineScreenCore osc = Storage.Get<OfflineScreenCore>("OfflineScreenCore");

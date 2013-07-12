@@ -44,6 +44,35 @@ namespace CritterCamp.Core.Screens.UIElements {
             }
         }
 
+        public void RemoveAllElements() {
+            lock (UIElements) {
+                UIElements.Clear();
+            }
+        }
+
+        // sets the offset for all the elements in this view
+        public override bool SetAnimationOffset(Vector2 offset, CritterCamp.Core.Lib.Helpers.Animation animation, bool startAtCurrent) {
+            bool result = true;
+            lock (UIElements) {
+                // pass on the animation parameters to all the children
+                result &= base.SetAnimationOffset(offset, animation, startAtCurrent);
+                foreach (UIElement uie in UIElements) {
+                    result &= uie.SetAnimationOffset(offset, animation, startAtCurrent);
+                }
+            }
+            return result;
+        }
+
+        public override void UpdateAnimationPosition(float percent) {
+            lock (UIElements) {
+                // pass on the animation percent to all this view's children
+                base.UpdateAnimationPosition(percent);
+                foreach (UIElement uie in UIElements) {
+                    uie.UpdateAnimationPosition(percent);
+                }
+            }
+        }
+
         /// <summary>
         /// Invokes the Tapped event and allows subclasses to perform actions when tapped.
         /// </summary>

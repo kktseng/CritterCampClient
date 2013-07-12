@@ -108,6 +108,81 @@ namespace CritterCamp.Core.Screens.UIElements {
             TappedArgs = new UIElementTappedArgs(this);
         }
 
+        private CritterCamp.Core.Lib.Helpers.Animation AnimationDel;
+        private Vector2 StartAnimationPosition;
+        private Vector2 EndAnimationPosition;
+        private bool animationReady;
+        public bool AnimationReady {
+            get {
+                return animationReady;
+            }
+            protected set {
+                animationReady = value;
+            }
+        }
+
+        // sets the animation parameters for this uielement
+        // start is the start position of the animation. if null, it uses the current position of the element
+        // end is the end position of the animation. if null, it uses the current position of the element
+        // animation is the animation delegate to use. if null, it uses the old animation delegate.
+        // if the old delegate is null, returns false and this uielement is not animation ready
+        public bool SetAnimation(Vector2 start, Vector2 end, CritterCamp.Core.Lib.Helpers.Animation animation) {
+            if (start == null) {
+                StartAnimationPosition = Position;
+            } else {
+                StartAnimationPosition = start;
+            }
+
+            if (end == null) {
+                EndAnimationPosition = Position;
+            } else {
+                EndAnimationPosition = end;
+            }
+
+            if (animation == null) {
+                if (AnimationDel == null) {
+                    return false;
+                }
+            } else {
+                AnimationDel = animation;
+            }
+
+            AnimationReady = true; // set this uielement ready to animate
+            return true;
+        }
+
+        // sets the animation parameters for this uielement. 
+        // if startAtCurrent is true, then the animation is from start to start+offset
+        // otherwise, the animation is from start+offset to start
+        public virtual bool SetAnimationOffset(Vector2 offset, CritterCamp.Core.Lib.Helpers.Animation animation, bool startAtCurrent) {
+            if (startAtCurrent) {
+                return SetAnimation(Position, Position + offset, animation);
+            } else {
+                return SetAnimation(Position + offset, Position, animation);
+            }
+        }
+
+        // updates the current position of this uielement based on how much done percent the animation is
+        public virtual void UpdateAnimationPosition(float percent) {
+            if (!AnimationReady) {
+                return; // did not set the animatino parameters correctly. don't animate
+            }
+            if (percent <= 0) {
+                //animation hasn't started yet. keep the position at the start position
+                Position = StartAnimationPosition;
+                return;
+            }
+            if (percent >= 1) {
+                // animation finished. keep the position at the end position.
+                Position = EndAnimationPosition;
+                AnimationReady = false; // don't try to animate this element anymore until animation is updated
+                return;
+            }
+
+            // get and set the new position for the object
+            Position = AnimationDel(StartAnimationPosition, EndAnimationPosition, percent);
+        }
+
         /// <summary>
         /// Invokes the Tapped event and allows subclasses to perform actions when tapped.
         /// </summary>

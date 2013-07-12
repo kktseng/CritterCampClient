@@ -65,6 +65,7 @@ namespace CritterCamp.Core.Screens {
             SquareButton storeButton = new SquareButton();
             storeButton.Icon = new Image("buttonSquare", (int)TextureData.ButtonSquare.store);
             storeButton.Position = new Vector2(1080, 720);
+            storeButton.Tapped += storeButton_Tapped;
             profileElements.Add(storeButton);
 
             foreach(UIElement element in profileElements) {
@@ -91,6 +92,11 @@ namespace CritterCamp.Core.Screens {
         void profileButton_Tapped(object sender, EventArgs e) {
             Storage.Set("lastScreen", this.GetType());
             SwitchScreen(typeof(ProfileScreen));
+        }
+
+        void storeButton_Tapped(object sender, EventArgs e) {
+            Storage.Set("lastScreen", this.GetType());
+            SwitchScreen(typeof(StoreScreen));
         }
 
         public override void Unload() {

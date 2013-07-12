@@ -139,7 +139,7 @@ namespace CritterCamp.Core.Screens {
 
             HTTPConnectionResult registerResult = await httpConn.GetPostResult(urlRegister, postData);
             if (!registerResult.error) { // not an error connecting to server
-                LoginResponse response = new LoginResponse(registerResult.message);
+                Response response = new Response(registerResult.message);
                 offlineScreen.UpdateStatusText(response.message);
 
                 connecting = false;
@@ -197,7 +197,10 @@ namespace CritterCamp.Core.Screens {
 
                     PlayerData mydata = new PlayerData(response.username, response.profile, response.lvl, 0);
                     mydata.rank = response.rank;
+                    mydata.money = response.gold;
                     Storage.Set("myPlayerData", mydata);
+
+                    StoreData.GameUpgradePrices = response.gameUpgradePrices.ToArray();
 
                     // Create a TCP connection
                     ITCPConnection conn = new TCPConnection();
@@ -276,6 +279,9 @@ namespace CritterCamp.Core.Screens {
         public string profile;
         public List<NewsPost> news;
         public List<string> unlockedProfiles;
+        public List<int> gameUpgradePrices;
+        public Dictionary<string, int[]> gameUpgrades;
+        public int gold;
 
         public LoginResponse(string response)
             : base(response) {
@@ -298,6 +304,23 @@ namespace CritterCamp.Core.Screens {
                     unlockedProfiles.Add((string)n);
                 }
 
+                gameUpgradePrices = new List<int>();
+                JObject prices = (JObject)responseJSON["prices"];
+                JArray gameUpgradesP = (JArray)prices["game_upgrades"];
+                foreach (int n in gameUpgradesP) {
+                    gameUpgradePrices.Add(n);
+                }
+
+                
+                gameUpgrades = new Dictionary<string, int[]>();
+                JArray games = (JArray)responseJSON["gameData"];
+                foreach (JObject g in games) {
+                    string name = (string)g["name"];
+                    int[] upgrades = g["upgrades"].ToObject<int[]>();
+                    gameUpgrades[name] = upgrades;
+                }
+
+                gold = (int)responseJSON["gold"];
             }
         }
     }

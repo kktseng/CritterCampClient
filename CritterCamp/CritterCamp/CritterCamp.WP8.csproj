@@ -98,6 +98,9 @@
     <Compile Include="..\CritterCamp.Core\Lib\Storage.cs">
       <Link>Core\Screens\Games\Lib\Storage.cs</Link>
     </Compile>
+    <Compile Include="..\CritterCamp.Core\Lib\StoreData.cs">
+      <Link>Core\Lib\StoreData.cs</Link>
+    </Compile>
     <Compile Include="..\CritterCamp.Core\Lib\TextureData.cs">
       <Link>Core\Lib\TextureData.cs</Link>
     </Compile>
@@ -233,6 +236,9 @@
     <Compile Include="..\CritterCamp.Core\Screens\ScoreScreen.cs">
       <Link>Core\Screens\ScoreScreen.cs</Link>
     </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\StoreScreen.cs">
+      <Link>Core\Screens\StoreScreen.cs</Link>
+    </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\TutorialScreen.cs">
       <Link>Core\Screens\TutorialScreen.cs</Link>
     </Compile>
@@ -253,6 +259,9 @@
     </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\UIElement\LargeButton.cs">
       <Link>Core\Screens\UIElement\LargeButton.cs</Link>
+    </Compile>
+    <Compile Include="..\CritterCamp.Core\Screens\UIElement\LongButton.cs">
+      <Link>Core\Screens\UIElement\LongButton.cs</Link>
     </Compile>
     <Compile Include="..\CritterCamp.Core\Screens\UIElement\PlayerAvatar.cs">
       <Link>Core\Screens\UIElement\PlayerAvatar.cs</Link>
@@ -411,6 +420,12 @@
     <Content Include="Content\cat.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Content\buttonLong.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\buyButton.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\cow.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

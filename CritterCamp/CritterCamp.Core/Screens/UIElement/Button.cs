@@ -143,6 +143,30 @@ namespace CritterCamp.Core.Screens.UIElements {
                 }
             }
         }
+        private bool drawSelected;
+        public bool DrawSelected {
+            get {
+                return drawSelected;
+            }
+            set {
+                if (drawSelected != value) {
+                    // changed the draw selected settings
+                    if (value) {
+                        // want to change it to draw selected color
+                        buttonTexture.Overlay = SelectedColor;
+                        buttonTexture.DrawOverlay = true;
+                    } else {
+                        // want to draw the default color
+                        if (!Disabled) {
+                            buttonTexture.DrawOverlay = false;
+                            textLabel.TextColor = Color.White;
+                        }
+                    }
+                }
+                drawSelected = value;
+            }
+        }
+
 
         public override Vector2 Size {
             set {

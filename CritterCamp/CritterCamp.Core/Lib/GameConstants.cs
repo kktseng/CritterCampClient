@@ -15,7 +15,7 @@ namespace CritterCamp.Core.Lib {
         public int GameIconIndex;
         public int GameIndex;
         public int[] StarMap;
-        public string[] UpgradeNames;
+        public GameUpgrade[] GameUpgrades;
 
         public GameData(string name, string serverName, string tutorialTexture, Type screenType, int gameIconIndex, int[] starMap, string[] upgradeNames) {
             Name = name;
@@ -25,7 +25,11 @@ namespace CritterCamp.Core.Lib {
             GameIconIndex = gameIconIndex;
             GameIndex = CurrentGameIndex;
             StarMap = starMap;
-            UpgradeNames = upgradeNames;
+            GameUpgrades = new GameUpgrade[upgradeNames.Length];
+            for (int i = 0; i < upgradeNames.Length; i++) {
+                GameUpgrades[i] = new GameUpgrade(upgradeNames[i], 0, this, i);
+            }
+
             CurrentGameIndex++;
 
             int space = Name.IndexOf(' '); // replace the space with a newline char
@@ -36,6 +40,20 @@ namespace CritterCamp.Core.Lib {
                 NameLine1 = Name;
                 NameLine2 = "";
             }
+        }
+    }
+
+    public class GameUpgrade {
+        public string Name;
+        public int Level;
+        public GameData MyGame;
+        public int Index;
+
+        public GameUpgrade(string name, int level, GameData myGame, int index) {
+            Name = name;
+            Level = level;
+            MyGame = myGame;
+            Index = index;
         }
     }
 

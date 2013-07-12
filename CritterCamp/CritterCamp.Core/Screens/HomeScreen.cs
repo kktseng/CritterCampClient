@@ -137,4 +137,37 @@ namespace CritterCamp.Core.Screens {
             mainView.AddElement(exitPage);
         }
     }
+
+    class MessagePopup : MenuScreen {
+        string Line1;
+        string Line2;
+
+        public MessagePopup(string line1, string line2) : base() {
+            Line1 = line1;
+            Line2 = line2;
+        }
+
+        public override void Activate(bool instancePreserved) {
+            base.Activate(instancePreserved);
+            IsPopup = true;
+            RemoveConn(); // dont need our page to be handling any connections 
+            
+            BorderedView messagePage = new BorderedView(new Vector2(1350, 400), new Vector2(1920 / 2, 1080 / 2 - 125));
+            messagePage.Disabled = false;
+
+            int startX = 1920 / 2;
+            int startY = 270;
+            Label text1 = new Label(Line1, new Vector2(startX, startY));
+            Label text2 = new Label(Line2, new Vector2(startX, startY+80));
+
+            Button okButton = new SmallButton("Ok");
+            okButton.Position = new Vector2(startX, startY + 260);
+            okButton.Tapped += PopupExitTap;
+
+            messagePage.AddElement(text1);
+            messagePage.AddElement(text2);
+            messagePage.AddElement(okButton);
+            mainView.AddElement(messagePage);
+        }
+    }
 }

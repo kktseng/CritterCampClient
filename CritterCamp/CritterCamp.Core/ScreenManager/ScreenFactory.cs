@@ -36,7 +36,7 @@ namespace GameStateManagement {
                 } else {
                     return Activator.CreateInstance(screenType, new object[1] { true }) as GameScreen;
                 }
-            } else if(typeof(ProfileScreen).IsAssignableFrom(screenType)) {
+            } else if (typeof(ProfileScreen).IsAssignableFrom(screenType) || typeof(StoreScreen).IsAssignableFrom(screenType)) {
                 return Activator.CreateInstance(screenType, new object[1] { Storage.Get<Type>("lastScreen") }) as GameScreen;
             } else {
                 return Activator.CreateInstance(screenType) as GameScreen;

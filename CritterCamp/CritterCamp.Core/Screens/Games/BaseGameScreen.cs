@@ -18,6 +18,7 @@ namespace CritterCamp.Core.Screens.Games {
         public int score;
         public int rank;
         public float expPercent;
+        public int money;
 
         public PlayerData(string username, string profile, int level, int color) {
             this.username = username;
@@ -27,6 +28,7 @@ namespace CritterCamp.Core.Screens.Games {
             this.score = 0;
             this.rank = 0;
             this.expPercent = 0;
+            this.money = 0;
         }
     }
 
@@ -52,11 +54,15 @@ namespace CritterCamp.Core.Screens.Games {
         public int score = 0; // for single player
         protected bool scoreReceived = false; // We can't exit immediately due to race conditions
 
-        public BaseGameScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer, GameData gd, int[] upgrades) : base(true) {
+        public BaseGameScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer, GameData gd) : base(true) {
             this.playerData = playerData;
             this.singlePlayer = singlePlayer;
             this.myData = gd;
-            this.upgrades = upgrades;
+
+            upgrades = new int[3];
+            upgrades[0] = gd.GameUpgrades[0].Level;
+            upgrades[1] = gd.GameUpgrades[1].Level;
+            upgrades[2] = gd.GameUpgrades[2].Level;
         }
 
         public Random Rand {

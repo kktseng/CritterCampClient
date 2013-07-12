@@ -35,8 +35,8 @@ namespace CritterCamp.Core.Screens.Games {
         public enum Upgrade {
 
         }
-        public MatchingMayhemScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer, int[] upgrades)
-            : base(playerData, singlePlayer, GameConstants.MATCHING_MAYHEM, upgrades) {
+        public MatchingMayhemScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer)
+            : base(playerData, singlePlayer, GameConstants.MATCHING_MAYHEM) {
             phase = Phase.Begin;
 
             foreach(PlayerData pd in playerData.Values) {

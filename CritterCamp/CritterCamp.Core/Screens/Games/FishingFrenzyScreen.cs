@@ -75,8 +75,8 @@ namespace CritterCamp.Core.Screens.Games {
         protected Phase phase = Phase.Begin;
         protected int round = 1;
 
-        public FishingFrenzyScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer, int[] upgrades)
-            : base(playerData, singlePlayer, GameConstants.FISHING_FRENZY, upgrades) {
+        public FishingFrenzyScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer)
+            : base(playerData, singlePlayer, GameConstants.FISHING_FRENZY) {
             foreach(PlayerData pd in playerData.Values) {
                 scores.Add(pd.username, 0);
                 displayScore.Add(pd.username, 0);

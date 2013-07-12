@@ -43,8 +43,8 @@ namespace CritterCamp.Core.Screens.Games {
             BlinkTime
         }
 
-        public ColorClashScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer, int[] upgrades)
-            : base(playerData, singlePlayer, GameConstants.COLOR_CLASH, upgrades) {
+        public ColorClashScreen(Dictionary<string, PlayerData> playerData, bool singlePlayer)
+            : base(playerData, singlePlayer, GameConstants.COLOR_CLASH) {
             // assign players colors
             int colorCount = 0;
             for(int i = 0; i < playerData.Values.Count; i++) {
